@@ -46,4 +46,8 @@ public class NBTItem {
 		return NBTReflectionutil.getBoolean(bukkititem, key);
 	}
 	
+	public Boolean hasKey(String key){
+		return NBTReflectionutil.hasKey(bukkititem, key);
+	}
+	
 }

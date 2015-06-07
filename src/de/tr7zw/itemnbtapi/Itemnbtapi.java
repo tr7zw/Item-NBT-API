@@ -23,6 +23,12 @@ public class Itemnbtapi extends JavaPlugin{
 		nbti.setDouble("Doubletest", 1.5d);
 		nbti.setBoolean("Booleantest", true);
 		nbti.getItem();
+		if(!nbti.hasKey("Stringtest")){
+			works = false;
+			System.out.println("Exeption while testing! Assuming reflections are broken! Check for a plugin update!");
+			onDisable();
+			return;
+		}
 		if(!nbti.getString("Stringtest").equals("Teststring")){
 			works = false;
 			System.out.println("Exeption while testing! Assuming reflections are broken! Check for a plugin update!");

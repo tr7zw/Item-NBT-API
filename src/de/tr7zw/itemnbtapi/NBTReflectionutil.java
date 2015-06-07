@@ -254,4 +254,23 @@ public class NBTReflectionutil {
 		return null;
 	}
 	
+	public static Boolean hasKey(ItemStack item, String key){
+		Object nmsitem = getNMSItemStack(item);
+		if(nmsitem == null){
+			System.out.println("Got null! (Outdated Plugin?)");
+			return null;
+		}
+		Object nbttag = getNBTTagCompound(nmsitem);
+		if(nbttag == null)
+			nbttag = getnewNBTTag();
+		java.lang.reflect.Method method;
+		try{
+			method = nbttag.getClass().getMethod("hasKey", String.class);
+			return (Boolean) method.invoke(nbttag, key);
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return null;
+	}
+	
 }
