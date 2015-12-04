@@ -5,7 +5,7 @@ import org.bukkit.inventory.ItemStack;
 public class NBTItem {
 
     private ItemStack bukkitItem;
-
+    
     public NBTItem(ItemStack item) {
         bukkitItem = item.clone();
     }

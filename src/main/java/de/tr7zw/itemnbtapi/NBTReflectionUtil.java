@@ -67,7 +67,7 @@ public class NBTReflectionUtil {
         Class cis = getCraftItemStack();
         java.lang.reflect.Method method;
         try {
-            method = cis.getMethod("asBukkitCopy", item.getClass());
+            method = cis.getMethod("asCraftMirror", item.getClass());
             Object answer = method.invoke(cis, item);
             return (ItemStack) answer;
         } catch (Exception e) {
