@@ -13,3 +13,5 @@ hs_err_pid*
 bin/
 .classpath
 .settings/org.eclipse.jdt.core.prefs
+/Item-NBT-API/target/
+/target/
