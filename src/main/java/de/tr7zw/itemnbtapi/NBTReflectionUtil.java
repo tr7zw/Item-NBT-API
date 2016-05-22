@@ -123,7 +123,7 @@ public class NBTReflectionUtil {
         }
         Object nbttag = getNBTTagCompound(nmsitem);
         if (nbttag == null) {
-            nbttag = getNewNBTTag();
+            return null;
         }
         java.lang.reflect.Method method;
         try {
@@ -165,7 +165,7 @@ public class NBTReflectionUtil {
         }
         Object nbttag = getNBTTagCompound(nmsitem);
         if (nbttag == null) {
-            nbttag = getNewNBTTag();
+            return null;
         }
         java.lang.reflect.Method method;
         try {
@@ -207,7 +207,7 @@ public class NBTReflectionUtil {
         }
         Object nbttag = getNBTTagCompound(nmsitem);
         if (nbttag == null) {
-            nbttag = getNewNBTTag();
+            return null;
         }
         java.lang.reflect.Method method;
         try {
@@ -249,7 +249,7 @@ public class NBTReflectionUtil {
         }
         Object nbttag = getNBTTagCompound(nmsitem);
         if (nbttag == null) {
-            nbttag = getNewNBTTag();
+            return false;
         }
         java.lang.reflect.Method method;
         try {
@@ -269,7 +269,7 @@ public class NBTReflectionUtil {
         }
         Object nbttag = getNBTTagCompound(nmsitem);
         if (nbttag == null) {
-            nbttag = getNewNBTTag();
+            return false;
         }
         java.lang.reflect.Method method;
         try {
