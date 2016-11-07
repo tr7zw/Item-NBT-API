@@ -1,5 +1,7 @@
 package de.tr7zw.itemnbtapi;
 
+import java.util.Set;
+
 import org.bukkit.inventory.ItemStack;
 
 public class NBTItem {
@@ -48,6 +50,14 @@ public class NBTItem {
 
     public boolean hasKey(String key) {
         return NBTReflectionUtil.hasKey(bukkitItem, key);
+    }
+    
+    public void removeKey(String key){
+        bukkitItem = NBTReflectionUtil.remove(bukkitItem, key);
+    }
+    
+    public Set<String> getKeys(){
+        return NBTReflectionUtil.getKeys(bukkitItem);
     }
 
 }

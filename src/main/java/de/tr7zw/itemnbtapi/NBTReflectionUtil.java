@@ -1,5 +1,7 @@
 package de.tr7zw.itemnbtapi;
 
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
@@ -93,7 +95,8 @@ public class NBTReflectionUtil {
         return null;
     }
 
-    public static ItemStack setString(ItemStack item, String key, String Text) {
+    public static ItemStack setString(ItemStack item, String key, String text) {
+        if(text == null)return remove(item, key);
         Object nmsitem = getNMSItemStack(item);
         if (nmsitem == null) {
             System.out.println("Got null! (Outdated Plugin?)");
@@ -106,7 +109,7 @@ public class NBTReflectionUtil {
         java.lang.reflect.Method method;
         try {
             method = nbttag.getClass().getMethod("setString", String.class, String.class);
-            method.invoke(nbttag, key, Text);
+            method.invoke(nbttag, key, text);
             nmsitem = setNBTTag(nbttag, nmsitem);
             return getBukkitItemStack(nmsitem);
         } catch (Exception ex) {
@@ -136,6 +139,7 @@ public class NBTReflectionUtil {
     }
 
     public static ItemStack setInt(ItemStack item, String key, Integer i) {
+        if(i == null)return remove(item, key);
         Object nmsitem = getNMSItemStack(item);
         if (nmsitem == null) {
             System.out.println("Got null! (Outdated Plugin?)");
@@ -178,6 +182,7 @@ public class NBTReflectionUtil {
     }
 
     public static ItemStack setDouble(ItemStack item, String key, Double d) {
+        if(d == null)return remove(item, key);
         Object nmsitem = getNMSItemStack(item);
         if (nmsitem == null) {
             System.out.println("Got null! (Outdated Plugin?)");
@@ -220,6 +225,7 @@ public class NBTReflectionUtil {
     }
 
     public static ItemStack setBoolean(ItemStack item, String key, Boolean d) {
+        if(d == null)return remove(item, key);
         Object nmsitem = getNMSItemStack(item);
         if (nmsitem == null) {
             System.out.println("Got null! (Outdated Plugin?)");
@@ -260,6 +266,28 @@ public class NBTReflectionUtil {
         }
         return null;
     }
+    
+    public static ItemStack remove(ItemStack item, String key) {
+        Object nmsitem = getNMSItemStack(item);
+        if (nmsitem == null) {
+            System.out.println("Got null! (Outdated Plugin?)");
+            return null;
+        }
+        Object nbttag = getNBTTagCompound(nmsitem);
+        if (nbttag == null) {
+            nbttag = getNewNBTTag();
+        }
+        java.lang.reflect.Method method;
+        try {
+            method = nbttag.getClass().getMethod("remove", String.class);
+            method.invoke(nbttag, key);
+            nmsitem = setNBTTag(nbttag, nmsitem);
+            return getBukkitItemStack(nmsitem);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return item;
+    }
 
     public static Boolean hasKey(ItemStack item, String key) {
         Object nmsitem = getNMSItemStack(item);
@@ -275,6 +303,27 @@ public class NBTReflectionUtil {
         try {
             method = nbttag.getClass().getMethod("hasKey", String.class);
             return (Boolean) method.invoke(nbttag, key);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static Set<String> getKeys(ItemStack item) {
+        Object nmsitem = getNMSItemStack(item);
+        if (nmsitem == null) {
+            System.out.println("Got null! (Outdated Plugin?)");
+            return null;
+        }
+        Object nbttag = getNBTTagCompound(nmsitem);
+        if (nbttag == null) {
+            nbttag = getNewNBTTag();
+        }
+        java.lang.reflect.Method method;
+        try {
+            method = nbttag.getClass().getMethod("c");
+            return (Set<String>) method.invoke(nbttag);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

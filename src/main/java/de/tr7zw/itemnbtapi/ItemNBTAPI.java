@@ -4,16 +4,13 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
 
-public class ItemNBTAPI extends JavaPlugin implements CommandExecutor {
+public class ItemNBTAPI extends JavaPlugin{
 
-    private static boolean compatible = false;
+    private static boolean compatible = true;
 
     @Override
     public void onEnable() {
@@ -31,24 +28,30 @@ public class ItemNBTAPI extends JavaPlugin implements CommandExecutor {
             item = nbtItem.getItem();
 
             if (!nbtItem.hasKey("stringTest")) {
-                getLogger().info("Does not have key...");
-                return;
+                getLogger().warning("Wasn't able to check a key! The Item-NBT-API may not work!");
+                compatible = false;
             }
-            if (!nbtItem.getString("stringTest").equals("TestString")
+            if (!("TestString").equals(nbtItem.getString("stringTest"))
                     || nbtItem.getInteger("intTest") != 42
                     || nbtItem.getDouble("doubleTest") != 1.5d
                     || !nbtItem.getBoolean("booleanTest")) {
-                getLogger().info("Key does not equal original value...");
-
-                return;
+                getLogger().warning("One key does not equal the original value! The Item-NBT-API may not work!");
+                compatible = false;
+            }
+            nbtItem.setString("stringTest", null);
+            if(nbtItem.getKeys().size() != 3){
+                getLogger().warning("Wasn't able to remove a key (Got " + nbtItem.getKeys().size() + " when expecting 3)! The Item-NBT-API may not work!");
+                compatible = false;
             }
         } catch (Exception ex) {
             getLogger().log(Level.SEVERE, null, ex);
-            return;
+            compatible = false;
         }
-
-        compatible = true;
+        if(compatible){
         getLogger().info("Success! This version of Item-NBT-API is compatible with your server.");
+        }else{
+            getLogger().warning("WARNING! This version of Item-NBT-API seems to be broken with your Spigot version! Plugins that don't check properly, may throw Exeptions, crash or have unexpected behaviors!");
+        }
     }
 
     @Override
@@ -57,6 +60,10 @@ public class ItemNBTAPI extends JavaPlugin implements CommandExecutor {
 
     public boolean isCompatible() {
         return compatible;
+    }
+    
+    public static NBTItem getNBTItem(ItemStack item){
+        return new NBTItem(item);
     }
 
     private void initMetrics() {
