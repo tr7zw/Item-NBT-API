@@ -5,6 +5,9 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
 public class NBTReflectionUtil {
 
     @SuppressWarnings("rawtypes")
@@ -266,6 +269,38 @@ public class NBTReflectionUtil {
         }
         return null;
     }
+    
+    public static ItemStack setObject(ItemStack item, String key, Object value) {
+    	try {
+			String json = new Gson().toJson(value);
+			return setString(item, key, json);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+    	return null;
+    }
+    
+    public static <T> T getObject(ItemStack item, String key, Class<T> type) {
+    	String json = getString(item, key);
+    	if(json == null){
+    		return null;
+    	}
+		try {
+			return deserializeJson(json, type);
+		} catch (JsonSyntaxException ex) {
+			ex.printStackTrace();
+		}
+		return null;
+	}
+    
+    private static <T> T deserializeJson(String json, Class<T> type) throws JsonSyntaxException {
+		if (json == null) {
+			return null;
+		}
+
+		T obj = new Gson().fromJson(json, type);
+		return type.cast(obj);
+	}
     
     public static ItemStack remove(ItemStack item, String key) {
         Object nmsitem = getNMSItemStack(item);
