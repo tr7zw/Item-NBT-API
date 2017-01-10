@@ -57,7 +57,7 @@ public class ItemNBTAPI extends JavaPlugin{
         	if(jsonCompatible){
             	getLogger().info("Success! This version of Item-NBT-API is compatible with your server.");
             }else{
-            	getLogger().info("General Success! This version of Item-NBT-API is mostoly compatible with your server. JSON serialization is not working properly. " + checkMessage);
+            	getLogger().info("General Success! This version of Item-NBT-API is mostly compatible with your server. JSON serialization is not working properly. " + checkMessage);
             }
         }else{
             getLogger().warning("WARNING! This version of Item-NBT-API seems to be broken with your Spigot version! " + checkMessage);
