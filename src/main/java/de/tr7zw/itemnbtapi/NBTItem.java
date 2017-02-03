@@ -47,6 +47,14 @@ public class NBTItem {
     public boolean getBoolean(String key) {
         return NBTReflectionUtil.getBoolean(bukkitItem, key);
     }
+    
+    public void setObject(String key, Object value) {
+    	bukkitItem = NBTReflectionUtil.setObject(bukkitItem, key, value);
+    }
+    
+    public <T> T getObject(String key, Class<T> type) {
+    	return NBTReflectionUtil.getObject(bukkitItem, key, type);
+	}
 
     public boolean hasKey(String key) {
         return NBTReflectionUtil.hasKey(bukkitItem, key);
