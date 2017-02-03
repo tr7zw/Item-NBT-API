@@ -10,6 +10,8 @@ import com.google.gson.JsonSyntaxException;
 
 public class NBTReflectionUtil {
 
+    private static final Gson gson = new Gson();
+    
     @SuppressWarnings("rawtypes")
     private static Class getCraftItemStack() {
         String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
@@ -60,7 +62,6 @@ public class NBTReflectionUtil {
             Object answer = method.invoke(cis, item);
             return answer;
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;
@@ -76,7 +77,6 @@ public class NBTReflectionUtil {
             Object answer = method.invoke(cis, item);
             return (ItemStack) answer;
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;
@@ -92,7 +92,6 @@ public class NBTReflectionUtil {
             Object answer = method.invoke(nmsitem);
             return answer;
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;
@@ -272,7 +271,7 @@ public class NBTReflectionUtil {
     
     public static ItemStack setObject(ItemStack item, String key, Object value) {
     	try {
-			String json = new Gson().toJson(value);
+			String json = gson.toJson(value);
 			return setString(item, key, json);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -298,7 +297,7 @@ public class NBTReflectionUtil {
 			return null;
 		}
 
-		T obj = new Gson().fromJson(json, type);
+		T obj = gson.fromJson(json, type);
 		return type.cast(obj);
 	}
     
