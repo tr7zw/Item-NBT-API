@@ -25,8 +25,18 @@ public class ItemNBTAPI extends JavaPlugin{
 			nbtItem.setInteger(INT_TEST_KEY, INT_TEST_VALUE);
 			nbtItem.setDouble(DOUBLE_TEST_KEY, DOUBLE_TEST_VALUE);
 			nbtItem.setBoolean(BOOLEAN_TEST_KEY, BOOLEAN_TEST_VALUE);
+			nbtItem.addCompound(COMP_TEST_KEY);
+			NBTCompound comp = nbtItem.getCompound(COMP_TEST_KEY);
+			comp.setString(STRING_TEST_KEY, STRING_TEST_VALUE+"2");
+			comp.setInteger(INT_TEST_KEY, INT_TEST_VALUE*2);
+			comp.setDouble(DOUBLE_TEST_KEY, DOUBLE_TEST_VALUE*2);
+			comp.setBoolean(BOOLEAN_TEST_KEY, !BOOLEAN_TEST_VALUE);
+			
 
             item = nbtItem.getItem();
+            nbtItem = null;
+            comp = null;
+            nbtItem = new NBTItem(item);
 
             if (!nbtItem.hasKey(STRING_TEST_KEY)) {
             	getLogger().warning("Wasn't able to check a key! The Item-NBT-API may not work!");
@@ -40,11 +50,27 @@ public class ItemNBTAPI extends JavaPlugin{
 				compatible = false;
 			}
 			nbtItem.setString(STRING_TEST_KEY, null);
-			if (nbtItem.getKeys().size() != 3) {
+			if (nbtItem.getKeys().size() != 4) {
 				getLogger().warning("Wasn't able to remove a key (Got " + nbtItem.getKeys().size()
-						+ " when expecting 3)! The Item-NBT-API may not work!");
+						+ " when expecting 4)! The Item-NBT-API may not work!");
 				compatible = false;
 			}
+			comp = nbtItem.getCompound(COMP_TEST_KEY);
+			if (comp == null) {
+                getLogger().warning("Wasn't able to get the NBTCompound! The Item-NBT-API may not work!");
+                compatible = false;
+            }
+			if (!comp.hasKey(STRING_TEST_KEY)) {
+                getLogger().warning("Wasn't able to check a compound key! The Item-NBT-API may not work!");
+                compatible = false;
+            }
+	         if (!(STRING_TEST_VALUE+"2").equals(comp.getString(STRING_TEST_KEY)) 
+	                    || comp.getInteger(INT_TEST_KEY) != INT_TEST_VALUE*2
+	                    || comp.getDouble(DOUBLE_TEST_KEY) != DOUBLE_TEST_VALUE *2
+	                    || comp.getBoolean(BOOLEAN_TEST_KEY) == BOOLEAN_TEST_VALUE) {
+	                getLogger().warning("One key does not equal the original compound value! The Item-NBT-API may not work!");
+	                compatible = false;
+	            }
         } catch (Exception ex) {
             getLogger().log(Level.SEVERE, null, ex);
             compatible = false;
@@ -62,7 +88,6 @@ public class ItemNBTAPI extends JavaPlugin{
         }else{
             getLogger().warning("WARNING! This version of Item-NBT-API seems to be broken with your Spigot version! " + checkMessage);
         }
-        
         
     }
     
@@ -126,6 +151,7 @@ public class ItemNBTAPI extends JavaPlugin{
   	private static final String DOUBLE_TEST_KEY = "doubleTest";
   	private static final String BOOLEAN_TEST_KEY = "booleanTest";
   	private static final String JSON_TEST_KEY = "jsonTest";
+    private static final String COMP_TEST_KEY = "componentTest";
   	
   	private static final String STRING_TEST_VALUE = "TestString";
   	private static final  int INT_TEST_VALUE = 42;
