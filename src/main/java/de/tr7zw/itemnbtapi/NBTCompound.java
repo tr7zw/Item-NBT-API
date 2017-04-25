@@ -106,6 +106,10 @@ public class NBTCompound {
     public void setBoolean(String key, Boolean value) {
         setItem(NBTReflectionUtil.setBoolean(getItem(), this, key, value));
     }
+    
+    protected void set(String key, Object val){
+    	setItem(NBTReflectionUtil.set(getItem(), this, key, val));
+    }
 
     public Boolean getBoolean(String key) {
         return NBTReflectionUtil.getBoolean(getItem(), this, key);
@@ -140,6 +144,15 @@ public class NBTCompound {
         NBTCompound next = new NBTCompound(this, name);
         if(NBTReflectionUtil.valideCompound(getItem(), next))return next;
         return null;
+    }
+    
+    @Deprecated
+    public NBTList getList(String name, NBTType type){
+    	return NBTReflectionUtil.getList(getItem(), this, name, type);
+    }
+    
+    public NBTType getType(String name){
+    	return NBTType.valueOf(NBTReflectionUtil.getType(getItem(), this, name));
     }
 
 }

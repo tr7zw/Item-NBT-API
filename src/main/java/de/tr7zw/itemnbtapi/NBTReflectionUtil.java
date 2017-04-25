@@ -28,9 +28,21 @@ public class NBTReflectionUtil {
     }
     
     @SuppressWarnings("rawtypes")
-    private static Class getNBTBase() {
+    protected static Class getNBTBase() {
         try {
             Class c = Class.forName("net.minecraft.server." + version + ".NBTBase");
+            return c;
+        } catch (Exception ex) {
+            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
+            ex.printStackTrace();
+            return null;
+        }
+    }
+    
+    @SuppressWarnings("rawtypes")
+    protected static Class getNBTTagString() {
+        try {
+            Class c = Class.forName("net.minecraft.server." + version + ".NBTTagString");
             return c;
         } catch (Exception ex) {
             System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
@@ -606,6 +618,28 @@ public class NBTReflectionUtil {
         }
         return null;
     }
+    
+    public static byte getType(ItemStack item, NBTCompound comp, String key) {
+        Object nmsitem = getNMSItemStack(item);
+        if (nmsitem == null) {
+            System.out.println("Got null! (Outdated Plugin?)");
+            return 0;
+        }
+        Object rootnbttag = getRootNBTTagCompound(nmsitem);
+        if (rootnbttag == null) {
+            rootnbttag = getNewNBTTag();
+        }
+        if(!valideCompound(item, comp))return 0;
+        Object workingtag = gettoCompount(rootnbttag, comp);
+        java.lang.reflect.Method method;
+        try {
+            method = workingtag.getClass().getMethod("d", String.class);
+            return (byte) method.invoke(workingtag, key);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return 0;
+    }
 
     public static ItemStack setBoolean(ItemStack item, NBTCompound comp, String key, Boolean d) {
         if(d == null)return remove(item, comp, key);
@@ -648,6 +682,57 @@ public class NBTReflectionUtil {
         try {
             method = workingtag.getClass().getMethod("getBoolean", String.class);
             return (Boolean) method.invoke(workingtag, key);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    
+    public static ItemStack set(ItemStack item, NBTCompound comp, String key, Object val) {
+    	if(val == null)return remove(item, comp, key);
+        Object nmsitem = getNMSItemStack(item);
+        if (nmsitem == null) {
+            System.out.println("Got null! (Outdated Plugin?)");
+            return null;
+        }
+        Object rootnbttag = getRootNBTTagCompound(nmsitem);
+        if (rootnbttag == null) {
+            rootnbttag = getNewNBTTag();
+        }
+        if(!valideCompound(item, comp)){
+        	new Throwable("InvalideCompound").printStackTrace();
+        	return item;
+        }
+        Object workingtag = gettoCompount(rootnbttag, comp);
+        java.lang.reflect.Method method;
+        try {
+        	method = workingtag.getClass().getMethod("set", String.class, getNBTBase());
+            method.invoke(workingtag, key, val);
+            nmsitem = setNBTTag(rootnbttag, nmsitem);
+            return getBukkitItemStack(nmsitem);
+           
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return item;
+    }
+    
+    public static NBTList getList(ItemStack item, NBTCompound comp, String key, NBTType type) {
+        Object nmsitem = getNMSItemStack(item);
+        if (nmsitem == null) {
+            System.out.println("Got null! (Outdated Plugin?)");
+            return null;
+        }
+        Object rootnbttag = getRootNBTTagCompound(nmsitem);
+        if (rootnbttag == null) {
+            rootnbttag = getNewNBTTag();
+        }
+        if(!valideCompound(item, comp))return null;
+        Object workingtag = gettoCompount(rootnbttag, comp);
+        java.lang.reflect.Method method;
+        try {
+            method = workingtag.getClass().getMethod("getList", String.class, int.class);
+            return new NBTList(comp, key, type, method.invoke(workingtag, key, type.getId()));
         } catch (Exception ex) {
             ex.printStackTrace();
         }

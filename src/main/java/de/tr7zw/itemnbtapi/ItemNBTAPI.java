@@ -8,6 +8,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
 
+import net.minecraft.server.v1_10_R1.NBTTagString;
+
 public class ItemNBTAPI extends JavaPlugin{
 
 	private static boolean compatible = true;
@@ -36,11 +38,18 @@ public class ItemNBTAPI extends JavaPlugin{
 			comp.setString(STRING_TEST_KEY, STRING_TEST_VALUE+"2");
 			comp.setInteger(INT_TEST_KEY, INT_TEST_VALUE*2);
 			comp.setDouble(DOUBLE_TEST_KEY, DOUBLE_TEST_VALUE*2);
-
+			NBTList list = comp.getList("testlist", NBTType.NBTTagString);
+			list.addString("test1");
+			list.addString("test2");
+			list.addString("test3");
+			list.addString("test4");
+			list.setString(2, "test42");
+			list.remove(1);
 
 			item = nbtItem.getItem();
 			nbtItem = null;
 			comp = null;
+			list = null;
 			nbtItem = new NBTItem(item);
 
 			
@@ -83,6 +92,15 @@ public class ItemNBTAPI extends JavaPlugin{
 					|| comp.getBoolean(BOOLEAN_TEST_KEY) == BOOLEAN_TEST_VALUE) {
 				getLogger().warning("One key does not equal the original compound value! The Item-NBT-API may not work!");
 				compatible = false;
+			}
+
+			list = comp.getList("testlist", NBTType.NBTTagString);
+			if(comp.getType("testlist") != NBTType.NBTTagList){
+				getLogger().warning("Wasn't able to get the correct Tag type! The Item-NBT-API may not work!");
+				compatible = false;
+			}
+			if(!list.get(1).equals("test42") || list.size() != 3){
+				getLogger().warning("The List support got an error, and may not work!");
 			}
 		} catch (Exception ex) {
 			getLogger().log(Level.SEVERE, null, ex);
