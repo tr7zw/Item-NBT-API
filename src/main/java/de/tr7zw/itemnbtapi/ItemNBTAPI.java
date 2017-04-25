@@ -10,96 +10,109 @@ import org.mcstats.Metrics;
 
 public class ItemNBTAPI extends JavaPlugin{
 
-    private static boolean compatible = true;
-    private static boolean jsonCompatible = true;
-    
-    @Override
-    public void onEnable() {
-        initMetrics();
-        getLogger().info("Running NBT reflection test...");
-        try {
-            ItemStack item = new ItemStack(Material.STONE, 1);
-            NBTItem nbtItem = new NBTItem(item);
+	private static boolean compatible = true;
+	private static boolean jsonCompatible = true;
 
-            nbtItem.setString(STRING_TEST_KEY, STRING_TEST_VALUE);
+	@Override
+	public void onEnable() {
+		initMetrics();
+		getLogger().info("Running NBT reflection test...");
+		try {
+			ItemStack item = new ItemStack(Material.STONE, 1);
+			NBTItem nbtItem = new NBTItem(item);
+
+			nbtItem.setString(STRING_TEST_KEY, STRING_TEST_VALUE);
 			nbtItem.setInteger(INT_TEST_KEY, INT_TEST_VALUE);
 			nbtItem.setDouble(DOUBLE_TEST_KEY, DOUBLE_TEST_VALUE);
 			nbtItem.setBoolean(BOOLEAN_TEST_KEY, BOOLEAN_TEST_VALUE);
+			nbtItem.setByte(BYTE_TEST_KEY, BYTE_TEST_VALUE);
+			nbtItem.setShort(SHORT_TEST_KEY, SHORT_TEST_VALUE);
+			nbtItem.setLong(LONG_TEST_KEY, LONG_TEST_VALUE);
+			nbtItem.setFloat(FLOAT_TEST_KEY, FLOAT_TEST_VALUE);
+			nbtItem.setIntArray(INTARRAY_TEST_KEY, INTARRAY_TEST_VALUE);
+			nbtItem.setByteArray(BYTEARRAY_TEST_KEY, BYTEARRAY_TEST_VALUE);
 			nbtItem.addCompound(COMP_TEST_KEY);
 			NBTCompound comp = nbtItem.getCompound(COMP_TEST_KEY);
 			comp.setString(STRING_TEST_KEY, STRING_TEST_VALUE+"2");
 			comp.setInteger(INT_TEST_KEY, INT_TEST_VALUE*2);
 			comp.setDouble(DOUBLE_TEST_KEY, DOUBLE_TEST_VALUE*2);
-			comp.setBoolean(BOOLEAN_TEST_KEY, !BOOLEAN_TEST_VALUE);
+
+
+			item = nbtItem.getItem();
+			nbtItem = null;
+			comp = null;
+			nbtItem = new NBTItem(item);
+
 			
-
-            item = nbtItem.getItem();
-            nbtItem = null;
-            comp = null;
-            nbtItem = new NBTItem(item);
-
-            if (!nbtItem.hasKey(STRING_TEST_KEY)) {
-            	getLogger().warning("Wasn't able to check a key! The Item-NBT-API may not work!");
+			if (!nbtItem.hasKey(STRING_TEST_KEY)) {
+				getLogger().warning("Wasn't able to check a key! The Item-NBT-API may not work!");
 				compatible = false;
 			}
-			if (!(STRING_TEST_VALUE).equals(nbtItem.getString(STRING_TEST_KEY)) 
+			if (!(STRING_TEST_VALUE).equals(nbtItem.getString(STRING_TEST_KEY))
 					|| nbtItem.getInteger(INT_TEST_KEY) != INT_TEST_VALUE
 					|| nbtItem.getDouble(DOUBLE_TEST_KEY) != DOUBLE_TEST_VALUE 
-					|| !nbtItem.getBoolean(BOOLEAN_TEST_KEY) == BOOLEAN_TEST_VALUE) {
+					|| nbtItem.getByte(BYTE_TEST_KEY) != BYTE_TEST_VALUE
+					|| nbtItem.getShort(SHORT_TEST_KEY) != SHORT_TEST_VALUE 
+					|| nbtItem.getFloat(FLOAT_TEST_KEY) != FLOAT_TEST_VALUE 
+					|| nbtItem.getLong(LONG_TEST_KEY) != LONG_TEST_VALUE 
+					|| nbtItem.getIntArray(INTARRAY_TEST_KEY).length != (INTARRAY_TEST_VALUE).length
+					|| nbtItem.getByteArray(BYTEARRAY_TEST_KEY).length != (BYTEARRAY_TEST_VALUE).length
+					|| !nbtItem.getBoolean(BOOLEAN_TEST_KEY).equals(BOOLEAN_TEST_VALUE)
+					){
 				getLogger().warning("One key does not equal the original value! The Item-NBT-API may not work!");
 				compatible = false;
 			}
 			nbtItem.setString(STRING_TEST_KEY, null);
-			if (nbtItem.getKeys().size() != 4) {
+			if (nbtItem.getKeys().size() != 10) {
 				getLogger().warning("Wasn't able to remove a key (Got " + nbtItem.getKeys().size()
 						+ " when expecting 4)! The Item-NBT-API may not work!");
 				compatible = false;
 			}
 			comp = nbtItem.getCompound(COMP_TEST_KEY);
 			if (comp == null) {
-                getLogger().warning("Wasn't able to get the NBTCompound! The Item-NBT-API may not work!");
-                compatible = false;
-            }
+				getLogger().warning("Wasn't able to get the NBTCompound! The Item-NBT-API may not work!");
+				compatible = false;
+			}
 			if (!comp.hasKey(STRING_TEST_KEY)) {
-                getLogger().warning("Wasn't able to check a compound key! The Item-NBT-API may not work!");
-                compatible = false;
-            }
-	         if (!(STRING_TEST_VALUE+"2").equals(comp.getString(STRING_TEST_KEY)) 
-	                    || comp.getInteger(INT_TEST_KEY) != INT_TEST_VALUE*2
-	                    || comp.getDouble(DOUBLE_TEST_KEY) != DOUBLE_TEST_VALUE *2
-	                    || comp.getBoolean(BOOLEAN_TEST_KEY) == BOOLEAN_TEST_VALUE) {
-	                getLogger().warning("One key does not equal the original compound value! The Item-NBT-API may not work!");
-	                compatible = false;
-	            }
-        } catch (Exception ex) {
-            getLogger().log(Level.SEVERE, null, ex);
-            compatible = false;
-        }
-        
-        testJson();
-        
-        String checkMessage = "Plugins that don't check properly, may throw Exeptions, crash or have unexpected behaviors!";
-        if(compatible){
-        	if(jsonCompatible){
-            	getLogger().info("Success! This version of Item-NBT-API is compatible with your server.");
-            }else{
-            	getLogger().info("General Success! This version of Item-NBT-API is mostly compatible with your server. JSON serialization is not working properly. " + checkMessage);
-            }
-        }else{
-            getLogger().warning("WARNING! This version of Item-NBT-API seems to be broken with your Spigot version! " + checkMessage);
-        }
-        
-    }
-    
-    public void testJson(){
+				getLogger().warning("Wasn't able to check a compound key! The Item-NBT-API may not work!");
+				compatible = false;
+			}
+			if (!(STRING_TEST_VALUE+"2").equals(comp.getString(STRING_TEST_KEY)) 
+					|| comp.getInteger(INT_TEST_KEY) != INT_TEST_VALUE*2
+					|| comp.getDouble(DOUBLE_TEST_KEY) != DOUBLE_TEST_VALUE *2
+					|| comp.getBoolean(BOOLEAN_TEST_KEY) == BOOLEAN_TEST_VALUE) {
+				getLogger().warning("One key does not equal the original compound value! The Item-NBT-API may not work!");
+				compatible = false;
+			}
+		} catch (Exception ex) {
+			getLogger().log(Level.SEVERE, null, ex);
+			compatible = false;
+		}
+
+		testJson();
+
+		String checkMessage = "Plugins that don't check properly, may throw Exeptions, crash or have unexpected behaviors!";
+		if(compatible){
+			if(jsonCompatible){
+				getLogger().info("Success! This version of Item-NBT-API is compatible with your server.");
+			}else{
+				getLogger().info("General Success! This version of Item-NBT-API is mostly compatible with your server. JSON serialization is not working properly. " + checkMessage);
+			}
+		}else{
+			getLogger().warning("WARNING! This version of Item-NBT-API seems to be broken with your Spigot version! " + checkMessage);
+		}
+
+	}
+
+	public void testJson(){
 		try {
 			ItemStack item = new ItemStack(Material.STONE, 1);
 			NBTItem nbtItem = new NBTItem(item);
-			
+
 			nbtItem.setObject(JSON_TEST_KEY, new SimpleJsonTestObject());
-			
+
 			item = nbtItem.getItem();
-			
+
 			if(!nbtItem.hasKey(JSON_TEST_KEY)){
 				getLogger().warning("Wasn't able to find JSON key! The Item-NBT-API may not work with Json serialization/deserialization!");
 				jsonCompatible = false;
@@ -123,82 +136,94 @@ public class ItemNBTAPI extends JavaPlugin{
 		}
 	}
 
-    @Override
-    public void onDisable() {
-    }
+	@Override
+	public void onDisable() {
+	}
 
-    public boolean isCompatible() {
-        return compatible;
-    }
-    
-    public static NBTItem getNBTItem(ItemStack item){
-        return new NBTItem(item);
-    }
+	public boolean isCompatible() {
+		return compatible;
+	}
 
-    private void initMetrics() {
-        try {
-            Metrics metrics = new Metrics(this);
-            metrics.start();
-        } catch (IOException ex) {
-            getLogger().log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    
-  //region STATIC FINAL VARIABLES
-  	private static final String STRING_TEST_KEY = "stringTest";
-  	private static final String INT_TEST_KEY = "intTest";
-  	private static final String DOUBLE_TEST_KEY = "doubleTest";
-  	private static final String BOOLEAN_TEST_KEY = "booleanTest";
-  	private static final String JSON_TEST_KEY = "jsonTest";
-    private static final String COMP_TEST_KEY = "componentTest";
-  	
-  	private static final String STRING_TEST_VALUE = "TestString";
-  	private static final  int INT_TEST_VALUE = 42;
-  	private static final double DOUBLE_TEST_VALUE = 1.5d;
-  	private static final boolean BOOLEAN_TEST_VALUE = true;
-  	//end region STATIC FINAL VARIABLES
-  	
-  	public static class SimpleJsonTestObject{
-  		private String testString = STRING_TEST_VALUE;
-  		private int testInteger = INT_TEST_VALUE;
-  		private double testDouble = DOUBLE_TEST_VALUE;
-  		private boolean testBoolean = BOOLEAN_TEST_VALUE;
-  		
-  		public SimpleJsonTestObject(){
-  		}
+	public static NBTItem getNBTItem(ItemStack item){
+		return new NBTItem(item);
+	}
 
-  		public String getTestString() {
-  			return testString;
-  		}
+	private void initMetrics() {
+		try {
+			Metrics metrics = new Metrics(this);
+			metrics.start();
+		} catch (IOException ex) {
+			getLogger().log(Level.SEVERE, null, ex);
+		}
+	}
 
-  		public void setTestString(String testString) {
-  			this.testString = testString;
-  		}
 
-  		public int getTestInteger() {
-  			return testInteger;
-  		}
+	//region STATIC FINAL VARIABLES
+	private static final String STRING_TEST_KEY = "stringTest";
+	private static final String INT_TEST_KEY = "intTest";
+	private static final String DOUBLE_TEST_KEY = "doubleTest";
+	private static final String BOOLEAN_TEST_KEY = "booleanTest";
+	private static final String JSON_TEST_KEY = "jsonTest";
+	private static final String COMP_TEST_KEY = "componentTest";
+	private static final String SHORT_TEST_KEY = "shortTest";
+	private static final String BYTE_TEST_KEY = "byteTest";
+	private static final String FLOAT_TEST_KEY = "floatTest";
+	private static final String LONG_TEST_KEY = "longTest";
+	private static final String INTARRAY_TEST_KEY = "intarrayTest";
+	private static final String BYTEARRAY_TEST_KEY = "bytearrayTest";
 
-  		public void setTestInteger(int testInteger) {
-  			this.testInteger = testInteger;
-  		}
+	private static final String STRING_TEST_VALUE = "TestString";
+	private static final  int INT_TEST_VALUE = 42;
+	private static final double DOUBLE_TEST_VALUE = 1.5d;
+	private static final boolean BOOLEAN_TEST_VALUE = true;
+	private static final short SHORT_TEST_VALUE = 64;
+	private static final byte BYTE_TEST_VALUE = 7;
+	private static final float FLOAT_TEST_VALUE = 13.37f;
+	private static final long LONG_TEST_VALUE = (long)Integer.MAX_VALUE+42l;
+	private static final int[] INTARRAY_TEST_VALUE = new int[]{1337, 42, 69};
+	private static final byte[] BYTEARRAY_TEST_VALUE = new byte[]{8,7,3,2};
+	//end region STATIC FINAL VARIABLES
 
-  		public double getTestDouble() {
-  			return testDouble;
-  		}
+	public static class SimpleJsonTestObject{
+		private String testString = STRING_TEST_VALUE;
+		private int testInteger = INT_TEST_VALUE;
+		private double testDouble = DOUBLE_TEST_VALUE;
+		private boolean testBoolean = BOOLEAN_TEST_VALUE;
 
-  		public void setTestDouble(double testDouble) {
-  			this.testDouble = testDouble;
-  		}
+		public SimpleJsonTestObject(){
+		}
 
-  		public boolean isTestBoolean() {
-  			return testBoolean;
-  		}
+		public String getTestString() {
+			return testString;
+		}
 
-  		public void setTestBoolean(boolean testBoolean) {
-  			this.testBoolean = testBoolean;
-  		}
-  	}
+		public void setTestString(String testString) {
+			this.testString = testString;
+		}
+
+		public int getTestInteger() {
+			return testInteger;
+		}
+
+		public void setTestInteger(int testInteger) {
+			this.testInteger = testInteger;
+		}
+
+		public double getTestDouble() {
+			return testDouble;
+		}
+
+		public void setTestDouble(double testDouble) {
+			this.testDouble = testDouble;
+		}
+
+		public boolean isTestBoolean() {
+			return testBoolean;
+		}
+
+		public void setTestBoolean(boolean testBoolean) {
+			this.testBoolean = testBoolean;
+		}
+	}
 
 }
