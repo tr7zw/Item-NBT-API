@@ -242,6 +242,28 @@ public class NBTReflectionUtil {
         }
         return null;
     }
+    
+    public static String getContent(ItemStack item, NBTCompound comp, String key) {
+        Object nmsitem = getNMSItemStack(item);
+        if (nmsitem == null) {
+            System.out.println("Got null! (Outdated Plugin?)");
+            return null;
+        }
+        Object rootnbttag = getRootNBTTagCompound(nmsitem);
+        if (rootnbttag == null) {
+            rootnbttag = getNewNBTTag();
+        }
+        if(!valideCompound(item, comp))return null;
+        Object workingtag = gettoCompount(rootnbttag, comp);
+        java.lang.reflect.Method method;
+        try {
+            method = workingtag.getClass().getMethod("get", String.class);
+            return method.invoke(workingtag, key).toString();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
 
     public static ItemStack setInt(ItemStack item, NBTCompound comp, String key, Integer i) {
         if(i == null)return remove(item, comp, key);

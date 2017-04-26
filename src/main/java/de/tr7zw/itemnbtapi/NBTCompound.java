@@ -38,6 +38,11 @@ public class NBTCompound {
     public String getString(String key) {
         return NBTReflectionUtil.getString(getItem(), this, key);
     }
+    
+    protected String getContent(String key) {
+        return NBTReflectionUtil.getContent(getItem(), this, key);
+    }
+
 
     public void setInteger(String key, Integer value) {
         setItem(NBTReflectionUtil.setInt(getItem(), this, key, value));
@@ -152,6 +157,29 @@ public class NBTCompound {
     
     public NBTType getType(String name){
     	return NBTType.valueOf(NBTReflectionUtil.getType(getItem(), this, name));
+    }
+    
+    @Override
+    public String toString(){
+        String str = "";
+        for(String k : getKeys()){
+            str += toString(k);
+        }
+        return str;
+    }
+    
+    public String toString(String key){
+        String s = "";
+        NBTCompound c = this;
+        while(c.getParent() != null){
+            s += "   ";
+            c = c.getParent();
+        }
+        if(this.getType(key) == NBTType.NBTTagCompound){
+            return this.getCompound(key).toString();
+        }else{
+            return s + "-" + key + ": " + getContent(key) + System.lineSeparator();
+        }
     }
 
 }
