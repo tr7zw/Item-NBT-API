@@ -14,17 +14,52 @@ public class NBTList{
 		listname = name;
 		this.type = type;
 		this.listobject = list;
-		if(type != NBTType.NBTTagString){
-			System.err.println("List types != String are currently not implemented!");
+		if(!(type == NBTType.NBTTagString || type == NBTType.NBTTagCompound)){
+			System.err.println("List types != String/Compound are currently not implemented!");
 		}
 	}
 
-	private void save(){
+	protected void save(){
 		parent.set(listname, listobject);
 	}
+	
+	public NBTListCompound addCompound(){
+	       if(type != NBTType.NBTTagCompound){
+	            new Throwable("Using Compound method on a non Compound list!").printStackTrace();
+	            return null;
+	        }
+	        try{
+	            Method m = listobject.getClass().getMethod("add", NBTReflectionUtil.getNBTBase());
+	            Object comp = NBTReflectionUtil.getNBTTagCompound().newInstance();
+	            m.invoke(listobject, comp);
+	            return new NBTListCompound(this, comp);
+	        }catch(Exception ex){
+	            ex.printStackTrace();
+	        }
+	        return null;
+	}
+	
+	public NBTListCompound getCompound(int id){
+	    if(type != NBTType.NBTTagCompound){
+            new Throwable("Using Compound method on a non Compound list!").printStackTrace();
+            return null;
+        }
+        try{
+            Method m = listobject.getClass().getMethod("get", int.class);
+            Object comp = m.invoke(listobject, id);
+            return new NBTListCompound(this, comp);
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
+	}
 
-	public String get(int i){
-		try{
+	public String getString(int i){
+		if(type != NBTType.NBTTagString){
+		    new Throwable("Using String method on a non String list!").printStackTrace();
+		    return null;
+		}
+	    try{
 			Method m = listobject.getClass().getMethod("getString", int.class);
 			return (String) m.invoke(listobject, i);
 		}catch(Exception ex){
@@ -35,6 +70,10 @@ public class NBTList{
 	
 	@SuppressWarnings("unchecked")
 	public void addString(String s){
+	       if(type != NBTType.NBTTagString){
+	            new Throwable("Using String method on a non String list!").printStackTrace();
+	            return;
+	        }
 		try{
 			Method m = listobject.getClass().getMethod("add", NBTReflectionUtil.getNBTBase());
 			m.invoke(listobject, NBTReflectionUtil.getNBTTagString().getConstructor(String.class).newInstance(s));
@@ -46,6 +85,10 @@ public class NBTList{
 	
 	@SuppressWarnings("unchecked")
 	public void setString(int i, String s){
+	       if(type != NBTType.NBTTagString){
+	            new Throwable("Using String method on a non String list!").printStackTrace();
+	            return;
+	        }
 		try{
 			Method m = listobject.getClass().getMethod("a", int.class, NBTReflectionUtil.getNBTBase());
 			m.invoke(listobject, i, NBTReflectionUtil.getNBTTagString().getConstructor(String.class).newInstance(s));
@@ -73,6 +116,10 @@ public class NBTList{
 			ex.printStackTrace();
 		}
 		return -1;
+	}
+	
+	public NBTType getType(){
+	    return type;
 	}
 	
 }

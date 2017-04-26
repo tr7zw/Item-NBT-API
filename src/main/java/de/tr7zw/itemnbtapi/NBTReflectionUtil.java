@@ -52,7 +52,7 @@ public class NBTReflectionUtil {
     }
     
     @SuppressWarnings("rawtypes")
-    private static Class getNBTTagCompound() {
+    protected static Class getNBTTagCompound() {
         try {
             Class c = Class.forName("net.minecraft.server." + version + ".NBTTagCompound");
             return c;

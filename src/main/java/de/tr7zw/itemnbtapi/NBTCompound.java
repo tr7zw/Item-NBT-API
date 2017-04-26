@@ -146,7 +146,6 @@ public class NBTCompound {
         return null;
     }
     
-    @Deprecated
     public NBTList getList(String name, NBTType type){
     	return NBTReflectionUtil.getList(getItem(), this, name, type);
     }
