@@ -11,7 +11,14 @@ public class NBTItem extends NBTCompound{
         bukkitItem = item.clone();
     }
 
-    @Override
+    protected Object getCompound() {
+        return NBTReflectionUtil.getItemRootNBTTagCompound(NBTReflectionUtil.getNMSItemStack(bukkitItem));
+    }
+    
+    protected void setCompound(Object tag) {
+        bukkitItem = NBTReflectionUtil.getBukkitItemStack(NBTReflectionUtil.setNBTTag(tag, NBTReflectionUtil.getNMSItemStack(bukkitItem)));
+    }
+    
     public ItemStack getItem() {
         return bukkitItem;
     }
