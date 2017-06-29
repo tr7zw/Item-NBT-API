@@ -1,12 +1,10 @@
 package de.tr7zw.itemnbtapi;
 
-import java.io.IOException;
 import java.util.logging.Level;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mcstats.Metrics;
 
 public class ItemNBTAPI extends JavaPlugin{
 
@@ -17,7 +15,7 @@ public class ItemNBTAPI extends JavaPlugin{
     @Override
     public void onEnable() {
         instance = this;
-        initMetrics();
+        new MetricsLite(this);
         getLogger().info("Running NBT reflection test...");
         try {
             ItemStack item = new ItemStack(Material.STONE, 1);
@@ -190,16 +188,6 @@ public class ItemNBTAPI extends JavaPlugin{
     public static NBTItem getNBTItem(ItemStack item){
         return new NBTItem(item);
     }
-
-    private void initMetrics() {
-        try {
-            Metrics metrics = new Metrics(this);
-            metrics.start();
-        } catch (IOException ex) {
-            getLogger().log(Level.SEVERE, null, ex);
-        }
-    }
-
 
     //region STATIC FINAL VARIABLES
     private static final String STRING_TEST_KEY = "stringTest";
