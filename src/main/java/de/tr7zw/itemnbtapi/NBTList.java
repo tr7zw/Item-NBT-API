@@ -100,7 +100,7 @@ public class NBTList{
 	
 	public void remove(int i){
 		try{
-			Method m = listobject.getClass().getMethod("remove", int.class);
+			Method m = listobject.getClass().getMethod(MethodNames.getremoveMethodName(), int.class);
 			m.invoke(listobject, i);
 			save();
 		}catch(Exception ex){

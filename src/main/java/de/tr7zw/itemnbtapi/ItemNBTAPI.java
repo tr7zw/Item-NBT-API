@@ -12,9 +12,11 @@ public class ItemNBTAPI extends JavaPlugin{
 
     private static boolean compatible = true;
     private static boolean jsonCompatible = true;
+    public static ItemNBTAPI instance;
 
     @Override
     public void onEnable() {
+        instance = this;
         initMetrics();
         getLogger().info("Running NBT reflection test...");
         try {

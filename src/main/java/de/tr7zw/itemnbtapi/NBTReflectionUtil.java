@@ -204,8 +204,11 @@ public class NBTReflectionUtil {
         Class c = nmsitem.getClass();
         java.lang.reflect.Method method;
         try {
-            method = c.getMethod("e", getNBTTagCompound());
-            Object answer = method.invoke(nmsitem, getNBTTagCompound().newInstance());
+            method = c.getMethod(MethodNames.getEntitynbtgetterMethodName(), getNBTTagCompound());
+            Object nbt = getNBTTagCompound().newInstance();
+            Object answer = method.invoke(nmsitem, nbt);
+            if(answer == null)
+                answer = nbt;
             return answer;
         } catch (Exception e) {
             e.printStackTrace();
@@ -216,7 +219,7 @@ public class NBTReflectionUtil {
     public static Object setEntityNBTTag(Object NBTTag, Object NMSItem) {
         try {
             java.lang.reflect.Method method;
-            method = NMSItem.getClass().getMethod("f", getNBTTagCompound());
+            method = NMSItem.getClass().getMethod(MethodNames.getEntitynbtsetterMethodName(), getNBTTagCompound());
             method.invoke(NMSItem, NBTTag);
             return NMSItem;
         } catch (Exception ex) {
@@ -232,8 +235,11 @@ public class NBTReflectionUtil {
             Object cworld = getCraftWorld().cast(tile.getWorld());
             Object nmsworld = cworld.getClass().getMethod("getHandle").invoke(cworld);
             Object o = nmsworld.getClass().getMethod("getTileEntity", pos.getClass()).invoke(nmsworld, pos);
-            method = getTileEntity().getMethod("save", getNBTTagCompound());
-            Object answer = method.invoke(o, getNBTTagCompound().newInstance());
+            method = getTileEntity().getMethod(MethodNames.getTiledataMethodName(), getNBTTagCompound());
+            Object tag = getNBTTagCompound().newInstance();
+            Object answer = method.invoke(o, tag);
+            if(answer == null)
+                answer = tag;
             return answer;
         } catch (Exception e) {
             e.printStackTrace();
@@ -686,7 +692,7 @@ public class NBTReflectionUtil {
         Object workingtag = gettoCompount(rootnbttag, comp);
         java.lang.reflect.Method method;
         try {
-            method = workingtag.getClass().getMethod("d", String.class);
+            method = workingtag.getClass().getMethod(MethodNames.getTypeMethodName(), String.class);
             return (byte) method.invoke(workingtag, key);
         } catch (Exception ex) {
             ex.printStackTrace();
