@@ -8,12 +8,8 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-
 public class NBTReflectionUtil {
 
-    private static final Gson gson = new Gson();
     private static final String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
 
     @SuppressWarnings("rawtypes")
@@ -28,7 +24,7 @@ public class NBTReflectionUtil {
             return null;
         }
     }
-    
+
     @SuppressWarnings("rawtypes")
     private static Class getCraftEntity() {
         try {
@@ -76,7 +72,7 @@ public class NBTReflectionUtil {
             return null;
         }
     }
-    
+
     @SuppressWarnings("rawtypes")
     protected static Class getTileEntity() {
         try {
@@ -113,7 +109,7 @@ public class NBTReflectionUtil {
             return null;
         }
     }
-    
+
     private static Object getnewBlockPosition(int x, int y, int z) {
         String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
         try {
@@ -153,7 +149,7 @@ public class NBTReflectionUtil {
         }
         return null;
     }
-    
+
     @SuppressWarnings("unchecked")
     public static Object getNMSEntity(Entity entity) {
         @SuppressWarnings("rawtypes")
@@ -197,7 +193,7 @@ public class NBTReflectionUtil {
         }
         return null;
     }
-    
+
     @SuppressWarnings({"unchecked"})
     public static Object getEntityNBTTagCompound(Object nmsitem) {
         @SuppressWarnings("rawtypes")
@@ -215,7 +211,7 @@ public class NBTReflectionUtil {
         }
         return null;
     }
-    
+
     public static Object setEntityNBTTag(Object NBTTag, Object NMSItem) {
         try {
             java.lang.reflect.Method method;
@@ -227,7 +223,7 @@ public class NBTReflectionUtil {
         }
         return null;
     }
-    
+
     public static Object getTileEntityNBTTagCompound(BlockState tile) {
         java.lang.reflect.Method method;
         try {
@@ -246,7 +242,7 @@ public class NBTReflectionUtil {
         }
         return null;
     }
-    
+
     public static void setTileEntityNBTTagCompound(BlockState tile, Object comp) {
         java.lang.reflect.Method method;
         try {
@@ -780,8 +776,9 @@ public class NBTReflectionUtil {
     }
 
     public static void setObject( NBTCompound comp, String key, Object value) {
+        if(!MinecraftVersion.hasGson())return;
         try {
-            String json = gson.toJson(value);
+            String json = GsonWrapper.getString(value);
             setString(comp, key, json);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -789,25 +786,12 @@ public class NBTReflectionUtil {
     }
 
     public static <T> T getObject(NBTCompound comp, String key, Class<T> type) {
+        if(!MinecraftVersion.hasGson())return null;
         String json = getString(comp, key);
         if(json == null){
             return null;
         }
-        try {
-            return deserializeJson(json, type);
-        } catch (JsonSyntaxException ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
-    private static <T> T deserializeJson(String json, Class<T> type) throws JsonSyntaxException {
-        if (json == null) {
-            return null;
-        }
-
-        T obj = gson.fromJson(json, type);
-        return type.cast(obj);
+        return GsonWrapper.deserializeJson(json, type);
     }
 
     public static void remove(NBTCompound comp, String key) {

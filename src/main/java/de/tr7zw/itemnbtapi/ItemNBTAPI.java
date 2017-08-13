@@ -36,13 +36,17 @@ public class ItemNBTAPI extends JavaPlugin{
             comp.setString(STRING_TEST_KEY, STRING_TEST_VALUE+"2");
             comp.setInteger(INT_TEST_KEY, INT_TEST_VALUE*2);
             comp.setDouble(DOUBLE_TEST_KEY, DOUBLE_TEST_VALUE*2);
-            NBTList list = comp.getList("testlist", NBTType.NBTTagString);
-            list.addString("test1");
-            list.addString("test2");
-            list.addString("test3");
-            list.addString("test4");
-            list.setString(2, "test42");
-            list.remove(1);
+             NBTList list = comp.getList("testlist", NBTType.NBTTagString);
+            if(MinecraftVersion.getVersion() == MinecraftVersion.MC1_7_R4){
+                getLogger().warning("Skipped the NBTList check, because 1.7 doesn't fully support it! The Item-NBT-API may not work!");
+            }else{
+                list.addString("test1");
+                list.addString("test2");
+                list.addString("test3");
+                list.addString("test4");
+                list.setString(2, "test42");
+                list.remove(1);
+            }
             NBTList taglist = comp.getList("complist", NBTType.NBTTagCompound);
             NBTListCompound lcomp = taglist.addCompound();
             lcomp.setDouble("double1", 0.3333);
@@ -146,6 +150,10 @@ public class ItemNBTAPI extends JavaPlugin{
     }
 
     public void testJson(){
+        if(!MinecraftVersion.hasGson()){
+            getLogger().warning("Wasn't able to find Gson! The Item-NBT-API may not work with Json serialization/deserialization!");
+            return;
+        }
         try {
             ItemStack item = new ItemStack(Material.STONE, 1);
             NBTItem nbtItem = new NBTItem(item);
