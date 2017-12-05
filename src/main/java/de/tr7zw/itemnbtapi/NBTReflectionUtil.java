@@ -1,5 +1,9 @@
 package de.tr7zw.itemnbtapi;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Set;
 import java.util.Stack;
 
@@ -65,6 +69,18 @@ public class NBTReflectionUtil {
     protected static Class getNBTTagCompound() {
         try {
             Class c = Class.forName("net.minecraft.server." + version + ".NBTTagCompound");
+            return c;
+        } catch (Exception ex) {
+            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
+            ex.printStackTrace();
+            return null;
+        }
+    }
+    
+    @SuppressWarnings("rawtypes")
+    protected static Class getNBTCompressedStreamTools() {
+        try {
+            Class c = Class.forName("net.minecraft.server." + version + ".NBTCompressedStreamTools");
             return c;
         } catch (Exception ex) {
             System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
@@ -164,6 +180,34 @@ public class NBTReflectionUtil {
         return null;
     }
 
+    @SuppressWarnings({"unchecked"})
+    public static Object readNBTFile(FileInputStream stream) {
+        @SuppressWarnings("rawtypes")
+        Class cis = getNBTCompressedStreamTools();
+        java.lang.reflect.Method method;
+        try {
+            method = cis.getMethod("a", InputStream.class);
+            return method.invoke(cis, stream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    @SuppressWarnings({"unchecked"})
+    public static Object saveNBTFile(Object nbt, FileOutputStream stream) {
+        @SuppressWarnings("rawtypes")
+        Class cis = getNBTCompressedStreamTools();
+        java.lang.reflect.Method method;
+        try {
+            method = cis.getMethod("a", getNBTTagCompound(), OutputStream.class);
+            return method.invoke(cis, nbt, stream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
     @SuppressWarnings({"unchecked"})
     public static ItemStack getBukkitItemStack(Object item) {
         @SuppressWarnings("rawtypes")

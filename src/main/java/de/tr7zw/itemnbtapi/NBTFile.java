@@ -7,9 +7,6 @@ import java.io.IOException;
 
 import org.bukkit.inventory.ItemStack;
 
-import net.minecraft.server.v1_12_R1.NBTCompressedStreamTools;
-import net.minecraft.server.v1_12_R1.NBTTagCompound;
-
 public class NBTFile extends NBTCompound{
 
     private final File file;
@@ -20,7 +17,7 @@ public class NBTFile extends NBTCompound{
         this.file = file;
         if(file.exists()){
             FileInputStream inputsteam = new FileInputStream(file);
-            nbt = NBTCompressedStreamTools.a(inputsteam);
+            nbt = NBTReflectionUtil.readNBTFile(inputsteam);
         }else{
             nbt = NBTReflectionUtil.getNewNBTTag();
             save();
@@ -33,7 +30,7 @@ public class NBTFile extends NBTCompound{
             file.createNewFile();
         }
         FileOutputStream outStream = new FileOutputStream(file);
-        NBTCompressedStreamTools.a((NBTTagCompound) nbt, outStream);
+        NBTReflectionUtil.saveNBTFile(nbt, outStream);
     }
 
     protected Object getCompound() {
