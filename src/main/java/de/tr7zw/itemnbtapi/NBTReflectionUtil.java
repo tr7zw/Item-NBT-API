@@ -97,7 +97,7 @@ public class NBTReflectionUtil {
         }
     }
 
-    private static Object getNewNBTTag() {
+    public static Object getNewNBTTag() {
         String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
         try {
             @SuppressWarnings("rawtypes")

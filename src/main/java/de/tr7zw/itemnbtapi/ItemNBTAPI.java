@@ -1,5 +1,6 @@
 package de.tr7zw.itemnbtapi;
 
+import java.io.File;
 import java.util.logging.Level;
 
 import org.bukkit.Material;
@@ -18,6 +19,13 @@ public class ItemNBTAPI extends JavaPlugin{
         new MetricsLite(this);
         getLogger().info("Running NBT reflection test...");
         try {
+            //File
+            NBTFile file = new NBTFile(new File(getDataFolder(), "test.nbt"));
+            file.addCompound("testcomp");
+            file.setLong("time", System.currentTimeMillis());
+            file.setString("test", "test");
+            file.save();
+            //Item
             ItemStack item = new ItemStack(Material.STONE, 1);
             NBTItem nbtItem = new NBTItem(item);
 
