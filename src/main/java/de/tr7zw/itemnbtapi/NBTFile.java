@@ -32,6 +32,10 @@ public class NBTFile extends NBTCompound{
         FileOutputStream outStream = new FileOutputStream(file);
         NBTReflectionUtil.saveNBTFile(nbt, outStream);
     }
+    
+    public File getFile(){
+        return file;
+    }
 
     protected Object getCompound() {
         return nbt;

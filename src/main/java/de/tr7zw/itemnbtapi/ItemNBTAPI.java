@@ -25,6 +25,7 @@ public class ItemNBTAPI extends JavaPlugin{
             file.setLong("time", System.currentTimeMillis());
             file.setString("test", "test");
             file.save();
+            file.getFile().delete();
             //Item
             ItemStack item = new ItemStack(Material.STONE, 1);
             NBTItem nbtItem = new NBTItem(item);
