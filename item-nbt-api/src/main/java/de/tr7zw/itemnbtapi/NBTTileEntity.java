@@ -2,7 +2,7 @@ package de.tr7zw.itemnbtapi;
 
 import org.bukkit.block.BlockState;
 
-public class NBTTileEntity extends NBTCompound{
+public class NBTTileEntity extends NBTCompound {
 
     private final BlockState tile;
 
@@ -15,9 +15,8 @@ public class NBTTileEntity extends NBTCompound{
         return NBTReflectionUtil.getTileEntityNBTTagCompound(tile);
     }
 
-    protected void setCompound(Object tag) {
-        NBTReflectionUtil.setTileEntityNBTTagCompound(tile, tag);
+    protected void setCompound(Object compound) {
+        NBTReflectionUtil.setTileEntityNBTTagCompound(tile, compound);
     }
-
 
 }
