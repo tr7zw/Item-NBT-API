@@ -1,39 +1,39 @@
 package de.tr7zw.itemnbtapi;
 
+import org.bukkit.inventory.ItemStack;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.bukkit.inventory.ItemStack;
-
-public class NBTFile extends NBTCompound{
+public class NBTFile extends NBTCompound {
 
     private final File file;
     private Object nbt;
 
-    public NBTFile(File file) throws IOException{
+    public NBTFile(File file) throws IOException {
         super(null, null);
         this.file = file;
-        if(file.exists()){
+        if (file.exists()) {
             FileInputStream inputsteam = new FileInputStream(file);
             nbt = NBTReflectionUtil.readNBTFile(inputsteam);
-        }else{
+        } else {
             nbt = NBTReflectionUtil.getNewNBTTag();
             save();
         }
     }
 
-    public void save() throws IOException{
-        if(!file.exists()){
+    public void save() throws IOException {
+        if (!file.exists()) {
             file.getParentFile().mkdirs();
             file.createNewFile();
         }
         FileOutputStream outStream = new FileOutputStream(file);
         NBTReflectionUtil.saveNBTFile(nbt, outStream);
     }
-    
-    public File getFile(){
+
+    public File getFile() {
         return file;
     }
 
@@ -41,8 +41,8 @@ public class NBTFile extends NBTCompound{
         return nbt;
     }
 
-    protected void setCompound(Object tag) {
-        nbt = tag;
+    protected void setCompound(Object compound) {
+        nbt = compound;
     }
 
     public ItemStack getItem() {
@@ -50,6 +50,7 @@ public class NBTFile extends NBTCompound{
     }
 
     @Override
-    protected void setItem(ItemStack item) {}
+    protected void setItem(ItemStack item) {
+    }
 
 }
