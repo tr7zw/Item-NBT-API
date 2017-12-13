@@ -26,5 +26,13 @@ public class NBTItem extends NBTCompound {
     protected void setItem(ItemStack item) {
         bukkitItem = item;
     }
+    
+    public static NBTContainer convertItemtoNBT(ItemStack item){
+        return NBTReflectionUtil.convertNMSItemtoNBTCompound(NBTReflectionUtil.getNMSItemStack(item));
+    }
+    
+    public static ItemStack convertNBTtoItem(NBTCompound comp){
+        return NBTReflectionUtil.getBukkitItemStack(NBTReflectionUtil.convertNBTCompoundtoNMSItem(comp));
+    }
 
 }

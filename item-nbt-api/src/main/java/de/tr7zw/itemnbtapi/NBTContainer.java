@@ -8,6 +8,11 @@ public class NBTContainer extends NBTCompound{
         super(null, null);
         nbt = NBTReflectionUtil.getNewNBTTag();
     }
+    
+    protected NBTContainer(Object nbt){
+        super(null, null);
+        this.nbt = nbt;
+    }
 
     public NBTContainer(String nbtString) throws IllegalArgumentException {
         super(null, null);

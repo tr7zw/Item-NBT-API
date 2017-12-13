@@ -4,6 +4,7 @@ import de.tr7zw.itemnbtapi.utils.MinecraftVersion;
 import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -27,20 +28,6 @@ public class ItemNBTAPI extends JavaPlugin {
         new MetricsLite(this);
         getLogger().info("Running NBT reflection test...");
         try {
-            //File
-            NBTFile file = new NBTFile(new File(getDataFolder(), "test.nbt"));
-            file.addCompound("testcomp");
-            file.setLong("time", System.currentTimeMillis());
-            file.setString("test", "test");
-            file.save();
-            file.getFile().delete();
-            //String
-            String str = file.asNBTString();
-            NBTContainer rebuild = new NBTContainer(str);
-            if(!str.equals(rebuild.asNBTString())){
-                getLogger().warning("Wasn't able to parse NBT from a String! The Item-NBT-API may not work!");
-                compatible = false;
-            }
             //Item
             ItemStack item = new ItemStack(Material.STONE, 1);
             NBTItem nbtItem = new NBTItem(item);
@@ -152,6 +139,37 @@ public class ItemNBTAPI extends JavaPlugin {
         }
 
         testJson();
+
+        try{
+            //File
+            NBTFile file = new NBTFile(new File(getDataFolder(), "test.nbt"));
+            file.addCompound("testcomp");
+            file.setLong("time", System.currentTimeMillis());
+            file.setString("test", "test");
+            file.save();
+            file.getFile().delete();
+            //String
+            String str = file.asNBTString();
+            NBTContainer rebuild = new NBTContainer(str);
+            if(!str.equals(rebuild.asNBTString())){
+                getLogger().warning("Wasn't able to parse NBT from a String! The Item-NBT-API may not work!");
+                compatible = false;
+            }
+            //Item->NBT->String->NBT->Item
+            ItemStack preitem = new ItemStack(Material.STICK, 5);
+            ItemMeta premeta = preitem.getItemMeta();
+            premeta.setDisplayName("test");
+            preitem.setItemMeta(premeta);
+            String itemasString = NBTItem.convertItemtoNBT(preitem).asNBTString();
+            ItemStack afteritem = NBTItem.convertNBTtoItem(new NBTContainer(itemasString));
+            if(!preitem.isSimilar(afteritem)){
+                getLogger().warning("Wasn't able to convert an Item to String and back to Item! The Item-NBT-API may not work!");
+                compatible = false;
+            }
+        }catch(Exception ex){
+            getLogger().log(Level.SEVERE, null, ex);
+            compatible = false;
+        }
 
         String checkMessage = "Plugins that don't check properly, may throw Exeptions, crash or have unexpected behaviors!";
         if (compatible) {

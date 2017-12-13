@@ -12,6 +12,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.Stack;
@@ -62,6 +63,18 @@ public class NBTReflectionUtil {
     protected static Class getNBTTagString() {
         try {
             Class clazz = Class.forName("net.minecraft.server." + version + ".NBTTagString");
+            return clazz;
+        } catch (Exception ex) {
+            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
+            ex.printStackTrace();
+            return null;
+        }
+    }
+    
+    @SuppressWarnings("rawtypes")
+    protected static Class getNMSItemStack() {
+        try {
+            Class clazz = Class.forName("net.minecraft.server." + version + ".ItemStack");
             return clazz;
         } catch (Exception ex) {
             System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
@@ -263,6 +276,34 @@ public class NBTReflectionUtil {
             method = clazz.getMethod("getTag");
             Object answer = method.invoke(nmsitem);
             return answer;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    @SuppressWarnings({"unchecked"})
+    public static Object convertNBTCompoundtoNMSItem(NBTCompound nbtcompound) {
+        @SuppressWarnings("rawtypes")
+        Class clazz = getNMSItemStack();
+        try {
+            Object nmsstack = clazz.getConstructor(getNBTTagCompound()).newInstance(nbtcompound.getCompound());
+            return nmsstack;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    @SuppressWarnings({"unchecked"})
+    public static NBTContainer convertNMSItemtoNBTCompound(Object nmsitem) {
+        @SuppressWarnings("rawtypes")
+        Class clazz = nmsitem.getClass();
+        Method method;
+        try {
+            method = clazz.getMethod("save", getNBTTagCompound());
+            Object answer = method.invoke(nmsitem, getNewNBTTag());
+            return new NBTContainer(answer);
         } catch (Exception e) {
             e.printStackTrace();
         }
