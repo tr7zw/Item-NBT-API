@@ -5,8 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.bukkit.inventory.ItemStack;
-
 public class NBTFile extends NBTCompound{
 
     private final File file;
@@ -44,12 +42,5 @@ public class NBTFile extends NBTCompound{
     protected void setCompound(Object tag) {
         nbt = tag;
     }
-
-    public ItemStack getItem() {
-        return null;
-    }
-
-    @Override
-    protected void setItem(ItemStack item) {}
 
 }

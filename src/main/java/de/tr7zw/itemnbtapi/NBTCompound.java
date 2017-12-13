@@ -2,8 +2,6 @@ package de.tr7zw.itemnbtapi;
 
 import java.util.Set;
 
-import org.bukkit.inventory.ItemStack;
-
 
 public class NBTCompound {
 
@@ -29,10 +27,6 @@ public class NBTCompound {
 
     public NBTCompound getParent(){
         return parent;
-    }
-
-    protected void setItem(ItemStack item){
-        parent.setItem(item);
     }
 
     public void setString(String key, String value) {
@@ -185,6 +179,10 @@ public class NBTCompound {
         }else{
             return s + "-" + key + ": " + getContent(key) + System.lineSeparator();
         }
+    }
+    
+    public String asNBTString(){
+        return getCompound().toString();
     }
 
 }

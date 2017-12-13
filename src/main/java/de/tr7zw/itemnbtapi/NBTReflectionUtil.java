@@ -88,6 +88,18 @@ public class NBTReflectionUtil {
             return null;
         }
     }
+    
+    @SuppressWarnings("rawtypes")
+    protected static Class getMojangsonParser() {
+        try {
+            Class c = Class.forName("net.minecraft.server." + version + ".MojangsonParser");
+            return c;
+        } catch (Exception ex) {
+            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
+            ex.printStackTrace();
+            return null;
+        }
+    }
 
     @SuppressWarnings("rawtypes")
     protected static Class getTileEntity() {
@@ -180,6 +192,20 @@ public class NBTReflectionUtil {
         return null;
     }
 
+    @SuppressWarnings({"unchecked"})
+    public static Object parseNBT(String json) {
+        @SuppressWarnings("rawtypes")
+        Class cis = getMojangsonParser();
+        java.lang.reflect.Method method;
+        try {
+            method = cis.getMethod("parse", String.class);
+            return method.invoke(null, json);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
     @SuppressWarnings({"unchecked"})
     public static Object readNBTFile(FileInputStream stream) {
         @SuppressWarnings("rawtypes")
