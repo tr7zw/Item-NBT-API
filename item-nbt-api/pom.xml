@@ -13,4 +13,8 @@
     <artifactId>item-nbt-api</artifactId>
     <packaging>jar</packaging>
 
+    <build>
+        <defaultGoal>clean install javadoc:javadoc</defaultGoal>
+    </build>
+
 </project>
