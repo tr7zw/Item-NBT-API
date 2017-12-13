@@ -34,6 +34,13 @@ public class ItemNBTAPI extends JavaPlugin {
             file.setString("test", "test");
             file.save();
             file.getFile().delete();
+            //String
+            String str = file.asNBTString();
+            NBTContainer rebuild = new NBTContainer(str);
+            if(!str.equals(rebuild.asNBTString())){
+                getLogger().warning("Wasn't able to parse NBT from a String! The Item-NBT-API may not work!");
+                compatible = false;
+            }
             //Item
             ItemStack item = new ItemStack(Material.STONE, 1);
             NBTItem nbtItem = new NBTItem(item);

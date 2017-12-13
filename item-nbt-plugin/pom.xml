@@ -10,7 +10,7 @@
         <version>1.7-SNAPSHOT</version>
     </parent>
 
-    <artifactId>item-nbt-test</artifactId>
+    <artifactId>item-nbt-api-plugin</artifactId>
     <packaging>jar</packaging>
 
     <build>

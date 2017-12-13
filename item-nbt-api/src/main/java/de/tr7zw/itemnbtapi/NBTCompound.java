@@ -1,9 +1,8 @@
 package de.tr7zw.itemnbtapi;
 
-import de.tr7zw.itemnbtapi.utils.MinecraftVersion;
-import org.bukkit.inventory.ItemStack;
-
 import java.util.Set;
+
+import de.tr7zw.itemnbtapi.utils.MinecraftVersion;
 
 
 public class NBTCompound {
@@ -30,10 +29,6 @@ public class NBTCompound {
 
     public NBTCompound getParent() {
         return parent;
-    }
-
-    protected void setItem(ItemStack item) {
-        parent.setItem(item);
     }
 
     public void setString(String key, String value) {
@@ -185,6 +180,10 @@ public class NBTCompound {
         } else {
             return result + "-" + key + ": " + getContent(key) + System.lineSeparator();
         }
+    }
+    
+    public String asNBTString(){
+        return getCompound().toString();
     }
 
 }

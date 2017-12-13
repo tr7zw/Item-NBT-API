@@ -23,7 +23,6 @@ public class NBTItem extends NBTCompound {
         return bukkitItem;
     }
 
-    @Override
     protected void setItem(ItemStack item) {
         bukkitItem = item;
     }

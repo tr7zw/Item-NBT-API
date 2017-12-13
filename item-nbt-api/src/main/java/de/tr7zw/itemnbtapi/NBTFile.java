@@ -1,7 +1,5 @@
 package de.tr7zw.itemnbtapi;
 
-import org.bukkit.inventory.ItemStack;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -43,14 +41,6 @@ public class NBTFile extends NBTCompound {
 
     protected void setCompound(Object compound) {
         nbt = compound;
-    }
-
-    public ItemStack getItem() {
-        return null;
-    }
-
-    @Override
-    protected void setItem(ItemStack item) {
     }
 
 }
