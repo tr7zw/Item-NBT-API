@@ -19,7 +19,7 @@
     </properties>
 
     <build>
-        <defaultGoal>clean install javadoc:javadoc</defaultGoal>
+        <defaultGoal>clean install</defaultGoal>
 
 		<resources>
 			<resource>
