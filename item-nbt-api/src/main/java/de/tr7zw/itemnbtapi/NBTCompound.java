@@ -31,6 +31,10 @@ public class NBTCompound {
         return parent;
     }
 
+    public void mergeCompound(NBTCompound comp){
+        NBTReflectionUtil.addOtherNBTCompound(this, comp);
+    }
+    
     public void setString(String key, String value) {
         NBTReflectionUtil.setString(this, key, value);
     }

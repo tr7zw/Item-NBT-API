@@ -166,6 +166,17 @@ public class ItemNBTAPI extends JavaPlugin {
                 getLogger().warning("Wasn't able to convert an Item to String and back to Item! The Item-NBT-API may not work!");
                 compatible = false;
             }
+            //mergingtags
+            NBTContainer test1 = new NBTContainer();
+            test1.setString("test1", "test");
+            NBTContainer test2 = new NBTContainer();
+            test2.setString("test2", "test");
+            test2.addCompound("test").setLong("time", System.currentTimeMillis());
+            test1.mergeCompound(test2);
+            if(!test1.getString("test1").equals(test1.getString("test2"))){
+                getLogger().warning("Wasn't able to merge Compounds! The Item-NBT-API may not work!");
+                compatible = false;
+            }
         }catch(Exception ex){
             getLogger().log(Level.SEVERE, null, ex);
             compatible = false;

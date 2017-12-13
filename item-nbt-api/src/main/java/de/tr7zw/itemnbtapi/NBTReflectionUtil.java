@@ -1,21 +1,21 @@
 package de.tr7zw.itemnbtapi;
 
-import de.tr7zw.itemnbtapi.utils.GsonWrapper;
-import de.tr7zw.itemnbtapi.utils.MethodNames;
-import de.tr7zw.itemnbtapi.utils.MinecraftVersion;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Method;
+import java.util.Set;
+import java.util.Stack;
+
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.util.Set;
-import java.util.Stack;
+import de.tr7zw.itemnbtapi.utils.GsonWrapper;
+import de.tr7zw.itemnbtapi.utils.MethodNames;
+import de.tr7zw.itemnbtapi.utils.MinecraftVersion;
 
 // TODO: finish codestyle cleanup -sgdc3
 public class NBTReflectionUtil {
@@ -433,6 +433,23 @@ public class NBTReflectionUtil {
             }
         }
         return nbttag;
+    }
+    
+    public static void addOtherNBTCompound(NBTCompound comp, NBTCompound nbtcompound) {
+        Object rootnbttag = comp.getCompound();
+        if (rootnbttag == null) {
+            rootnbttag = getNewNBTTag();
+        }
+        if (!valideCompound(comp)) return;
+        Object workingtag = gettoCompount(rootnbttag, comp);
+        Method method;
+        try {
+            method = workingtag.getClass().getMethod("a", getNBTTagCompound());
+            method.invoke(workingtag, nbtcompound.getCompound());
+            comp.setCompound(rootnbttag);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public static void setString(NBTCompound comp, String key, String text) {
