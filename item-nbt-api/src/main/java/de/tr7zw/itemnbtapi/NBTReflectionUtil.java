@@ -347,7 +347,7 @@ public class NBTReflectionUtil {
             Object cworld = getCraftWorld().cast(tile.getWorld());
             Object nmsworld = cworld.getClass().getMethod("getHandle").invoke(cworld);
             Object o = nmsworld.getClass().getMethod("getTileEntity", pos.getClass()).invoke(nmsworld, pos);
-            method = getTileEntity().getMethod(MethodNames.getTileDataMethodName(), getNBTTagCompound());
+            method = getTileEntity().getMethod(MethodNames.getTileDataGetterMethodName(), getNBTTagCompound());
             Object tag = getNBTTagCompound().newInstance();
             Object answer = method.invoke(o, tag);
             if (answer == null)
@@ -366,7 +366,7 @@ public class NBTReflectionUtil {
             Object cworld = getCraftWorld().cast(tile.getWorld());
             Object nmsworld = cworld.getClass().getMethod("getHandle").invoke(cworld);
             Object o = nmsworld.getClass().getMethod("getTileEntity", pos.getClass()).invoke(nmsworld, pos);
-            method = getTileEntity().getMethod("a", getNBTTagCompound());
+            method = getTileEntity().getMethod(MethodNames.getTileDataSetterMethodName(), getNBTTagCompound());
             method.invoke(o, comp);
         } catch (Exception e) {
             e.printStackTrace();

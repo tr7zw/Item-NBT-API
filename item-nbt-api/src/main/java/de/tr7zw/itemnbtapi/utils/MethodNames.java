@@ -4,11 +4,18 @@ public class MethodNames {
 
     private final static MinecraftVersion MINECRAFT_VERSION = MinecraftVersion.getVersion();
 
-    public static String getTileDataMethodName() {
+    public static String getTileDataGetterMethodName() {
         if (MINECRAFT_VERSION == MinecraftVersion.MC1_8_R3) {
             return "b";
         }
         return "save";
+    }
+    
+    public static String getTileDataSetterMethodName() {
+        if (MINECRAFT_VERSION != MinecraftVersion.MC1_12_R1) {
+            return "b";
+        }
+        return "load";
     }
 
     public static String getTypeMethodName() {
