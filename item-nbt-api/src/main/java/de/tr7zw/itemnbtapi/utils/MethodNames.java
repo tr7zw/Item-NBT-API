@@ -13,7 +13,7 @@ public class MethodNames {
     
     public static String getTileDataSetterMethodName() {
         if (MINECRAFT_VERSION != MinecraftVersion.MC1_12_R1) {
-            return "b";
+            return "a";
         }
         return "load";
     }
