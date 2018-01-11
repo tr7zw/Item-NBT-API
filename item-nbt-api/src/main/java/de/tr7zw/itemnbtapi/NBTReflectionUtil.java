@@ -287,7 +287,7 @@ public class NBTReflectionUtil {
         @SuppressWarnings("rawtypes")
         Class clazz = getNMSItemStack();
         try {
-            Object nmsstack = clazz.getConstructor(getNBTTagCompound()).newInstance(nbtcompound.getCompound());
+            Object nmsstack = clazz.getConstructor(getNBTTagCompound()).newInstance(gettoCompount(nbtcompound.getCompound(), nbtcompound));
             return nmsstack;
         } catch (Exception e) {
             e.printStackTrace();
