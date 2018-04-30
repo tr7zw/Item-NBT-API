@@ -88,7 +88,7 @@ public class NBTCompound {
     }
 
     public void setFloat(String key, Float value) {
-        NBTReflectionUtil.setFloat(this, key, value);
+        NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_FLOAT, key, value);
     }
 
     public Float getFloat(String key) {

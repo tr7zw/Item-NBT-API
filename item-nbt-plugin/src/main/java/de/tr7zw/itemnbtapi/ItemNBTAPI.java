@@ -143,10 +143,15 @@ public class ItemNBTAPI extends JavaPlugin {
         try{
             //File
             NBTFile file = new NBTFile(new File(getDataFolder(), "test.nbt"));
-            file.addCompound("testcomp");
+            file.addCompound("testcomp").setString("test1", "ok");
+            NBTCompound comp = file.getCompound("testcomp");
+            comp.setString("test2", "ok");
             file.setLong("time", System.currentTimeMillis());
             file.setString("test", "test");
             file.save();
+            file = null;
+            file = new NBTFile(new File(getDataFolder(), "test.nbt"));
+            System.out.println(file.asNBTString());
             file.getFile().delete();
             //String
             String str = file.asNBTString();

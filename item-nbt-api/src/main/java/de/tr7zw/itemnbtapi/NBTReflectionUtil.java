@@ -622,27 +622,6 @@ public class NBTReflectionUtil {
         return null;
     }
 
-    public static void setFloat(NBTCompound comp, String key, Float f) {
-        if (f == null) {
-            remove(comp, key);
-            return;
-        }
-        Object rootnbttag = comp.getCompound();
-        if (rootnbttag == null) {
-            rootnbttag = getNewNBTTag();
-        }
-        if (!valideCompound(comp)) return;
-        Object workingtag = gettoCompount(rootnbttag, comp);
-        Method method;
-        try {
-            method = workingtag.getClass().getMethod("setFloat", String.class, float.class);
-            method.invoke(workingtag, key, (float) f);
-            comp.setCompound(rootnbttag);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
     public static Float getFloat(NBTCompound comp, String key) {
         Object rootnbttag = comp.getCompound();
         if (rootnbttag == null) {
@@ -977,6 +956,20 @@ public class NBTReflectionUtil {
             ex.printStackTrace();
         }
         return null;
+    }
+    
+    public static void setData(NBTCompound comp, ReflectionMethod type, String key, Object data) {
+        if (data == null) {
+            remove(comp, key);
+            return;
+        }
+        Object rootnbttag = comp.getCompound();
+        if (rootnbttag == null) {
+            rootnbttag = getNewNBTTag();
+        }
+        if (!valideCompound(comp)) return;
+        Object workingtag = gettoCompount(rootnbttag, comp);
+        type.run(workingtag, data);
     }
 
 }
