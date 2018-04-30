@@ -187,7 +187,7 @@ public class NBTCompound {
     }
     
     public String asNBTString(){
-        return getCompound().toString();
+        return NBTReflectionUtil.gettoCompount(getCompound(), this).toString();
     }
 
 }
