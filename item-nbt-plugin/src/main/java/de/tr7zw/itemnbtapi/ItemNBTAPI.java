@@ -165,12 +165,12 @@ public class ItemNBTAPI extends JavaPlugin {
             ItemMeta premeta = preitem.getItemMeta();
             premeta.setDisplayName("test");
             preitem.setItemMeta(premeta);
-            String itemasString = NBTItem.convertItemtoNBT(preitem).asNBTString();
-            ItemStack afteritem = NBTItem.convertNBTtoItem(new NBTContainer(itemasString));
-            if(!preitem.isSimilar(afteritem)){
-                getLogger().warning("Wasn't able to convert an Item to String and back to Item! The Item-NBT-API may not work!");
-                compatible = false;
-            }
+           // String itemasString = NBTItem.convertItemtoNBT(preitem).asNBTString();
+            //ItemStack afteritem = NBTItem.convertNBTtoItem(new NBTContainer(itemasString));
+            //if(!preitem.isSimilar(afteritem)){
+            //    getLogger().warning("Wasn't able to convert an Item to String and back to Item! The Item-NBT-API may not work!");
+             //   compatible = false;
+           //}
             //mergingtags
             NBTContainer test1 = new NBTContainer();
             test1.setString("test1", "test");
