@@ -31,8 +31,8 @@ public class NBTList {
             return null;
         }
         try {
-            Method method = listObject.getClass().getMethod("add", NBTReflectionUtil.getNBTBase());
-            Object compound = NBTReflectionUtil.getNBTTagCompound().newInstance();
+            Method method = listObject.getClass().getMethod("add", ClassWrapper.NMS_NBTBASE.getClazz());
+            Object compound = ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance();
             method.invoke(listObject, compound);
             return new NBTListCompound(this, compound);
         } catch (Exception ex) {
@@ -70,30 +70,28 @@ public class NBTList {
         return null;
     }
 
-    @SuppressWarnings("unchecked")
     public void addString(String s) {
         if (type != NBTType.NBTTagString) {
             new Throwable("Using String method on a non String list!").printStackTrace();
             return;
         }
         try {
-            Method method = listObject.getClass().getMethod("add", NBTReflectionUtil.getNBTBase());
-            method.invoke(listObject, NBTReflectionUtil.getNBTTagString().getConstructor(String.class).newInstance(s));
+            Method method = listObject.getClass().getMethod("add", ClassWrapper.NMS_NBTBASE.getClazz());
+            method.invoke(listObject, ClassWrapper.NMS_NBTTAGSTRING.getClazz().getConstructor(String.class).newInstance(s));
             save();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    @SuppressWarnings("unchecked")
     public void setString(int i, String s) {
         if (type != NBTType.NBTTagString) {
             new Throwable("Using String method on a non String list!").printStackTrace();
             return;
         }
         try {
-            Method method = listObject.getClass().getMethod("a", int.class, NBTReflectionUtil.getNBTBase());
-            method.invoke(listObject, i, NBTReflectionUtil.getNBTTagString().getConstructor(String.class).newInstance(s));
+            Method method = listObject.getClass().getMethod("a", int.class, ClassWrapper.NMS_NBTBASE.getClazz());
+            method.invoke(listObject, i, ClassWrapper.NMS_NBTTAGSTRING.getClazz().getConstructor(String.class).newInstance(s));
             save();
         } catch (Exception ex) {
             ex.printStackTrace();

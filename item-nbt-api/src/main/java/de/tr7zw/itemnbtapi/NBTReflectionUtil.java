@@ -17,131 +17,7 @@ import de.tr7zw.itemnbtapi.utils.GsonWrapper;
 import de.tr7zw.itemnbtapi.utils.MethodNames;
 import de.tr7zw.itemnbtapi.utils.MinecraftVersion;
 
-// TODO: finish codestyle cleanup -sgdc3
-public class NBTReflectionUtil {
-
-    private static final String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-
-    @SuppressWarnings("rawtypes")
-    private static Class getCraftItemStack() {
-
-        try {
-            Class clazz = Class.forName("org.bukkit.craftbukkit." + version + ".inventory.CraftItemStack");
-            return clazz;
-        } catch (Exception ex) {
-            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
-    @SuppressWarnings("rawtypes")
-    private static Class getCraftEntity() {
-        try {
-            Class clazz = Class.forName("org.bukkit.craftbukkit." + version + ".entity.CraftEntity");
-            return clazz;
-        } catch (Exception ex) {
-            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
-    @SuppressWarnings("rawtypes")
-    protected static Class getNBTBase() {
-        try {
-            Class clazz = Class.forName("net.minecraft.server." + version + ".NBTBase");
-            return clazz;
-        } catch (Exception ex) {
-            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
-    @SuppressWarnings("rawtypes")
-    protected static Class getNBTTagString() {
-        try {
-            Class clazz = Class.forName("net.minecraft.server." + version + ".NBTTagString");
-            return clazz;
-        } catch (Exception ex) {
-            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
-            ex.printStackTrace();
-            return null;
-        }
-    }
-    
-    @SuppressWarnings("rawtypes")
-    protected static Class getNMSItemStack() {
-        try {
-            Class clazz = Class.forName("net.minecraft.server." + version + ".ItemStack");
-            return clazz;
-        } catch (Exception ex) {
-            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
-    @SuppressWarnings("rawtypes")
-    protected static Class getNBTTagCompound() {
-        try {
-            Class clazz = Class.forName("net.minecraft.server." + version + ".NBTTagCompound");
-            return clazz;
-        } catch (Exception ex) {
-            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
-    @SuppressWarnings("rawtypes")
-    protected static Class getNBTCompressedStreamTools() {
-        try {
-            Class clazz = Class.forName("net.minecraft.server." + version + ".NBTCompressedStreamTools");
-            return clazz;
-        } catch (Exception ex) {
-            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
-            ex.printStackTrace();
-            return null;
-        }
-    }
-    
-    @SuppressWarnings("rawtypes")
-    protected static Class getMojangsonParser() {
-        try {
-            Class c = Class.forName("net.minecraft.server." + version + ".MojangsonParser");
-            return c;
-        } catch (Exception ex) {
-            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
-    @SuppressWarnings("rawtypes")
-    protected static Class getTileEntity() {
-        try {
-            Class clazz = Class.forName("net.minecraft.server." + version + ".TileEntity");
-            return clazz;
-        } catch (Exception ex) {
-            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
-    @SuppressWarnings("rawtypes")
-    protected static Class getCraftWorld() {
-        try {
-            Class clazz = Class.forName("org.bukkit.craftbukkit." + version + ".CraftWorld");
-            return clazz;
-        } catch (Exception ex) {
-            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
-            ex.printStackTrace();
-            return null;
-        }
-    }
+public class NBTReflectionUtil {  
 
     public static Object getNewNBTTag() {
         String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
@@ -159,8 +35,7 @@ public class NBTReflectionUtil {
     private static Object getNewBlockPosition(int x, int y, int z) {
         String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
         try {
-            @SuppressWarnings("rawtypes")
-            Class clazz = Class.forName("net.minecraft.server." + version + ".BlockPosition");
+            Class<?> clazz = Class.forName("net.minecraft.server." + version + ".BlockPosition");
             return clazz.getConstructor(int.class, int.class, int.class).newInstance(x, y, z);
         } catch (Exception ex) {
             System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
@@ -184,7 +59,7 @@ public class NBTReflectionUtil {
     @SuppressWarnings("unchecked")
     public static Object getNMSItemStack(ItemStack item) {
         @SuppressWarnings("rawtypes")
-        Class clazz = getCraftItemStack();
+        Class clazz = ClassWrapper.CRAFT_ITEMSTACK.getClazz();
         Method method;
         try {
             method = clazz.getMethod("asNMSCopy", ItemStack.class);
@@ -199,11 +74,11 @@ public class NBTReflectionUtil {
     @SuppressWarnings("unchecked")
     public static Object getNMSEntity(Entity entity) {
         @SuppressWarnings("rawtypes")
-        Class clazz = getCraftEntity();
+        Class clazz = ClassWrapper.CRAFT_ENTITY.getClazz();
         Method method;
         try {
             method = clazz.getMethod("getHandle");
-            return method.invoke(getCraftEntity().cast(entity));
+            return method.invoke(clazz.cast(entity));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -213,7 +88,7 @@ public class NBTReflectionUtil {
     @SuppressWarnings({"unchecked"})
     public static Object parseNBT(String json) {
         @SuppressWarnings("rawtypes")
-        Class cis = getMojangsonParser();
+        Class cis = ClassWrapper.NMS_MOJANGSONPARSER.getClazz();
         java.lang.reflect.Method method;
         try {
             method = cis.getMethod("parse", String.class);
@@ -227,7 +102,7 @@ public class NBTReflectionUtil {
     @SuppressWarnings({"unchecked"})
     public static Object readNBTFile(FileInputStream stream) {
         @SuppressWarnings("rawtypes")
-        Class clazz = getNBTCompressedStreamTools();
+        Class clazz = ClassWrapper.NMS_NBTCOMPRESSEDSTREAMTOOLS.getClazz();
         Method method;
         try {
             method = clazz.getMethod("a", InputStream.class);
@@ -241,10 +116,10 @@ public class NBTReflectionUtil {
     @SuppressWarnings({"unchecked"})
     public static Object saveNBTFile(Object nbt, FileOutputStream stream) {
         @SuppressWarnings("rawtypes")
-        Class clazz = getNBTCompressedStreamTools();
+        Class clazz = ClassWrapper.NMS_NBTCOMPRESSEDSTREAMTOOLS.getClazz();
         Method method;
         try {
-            method = clazz.getMethod("a", getNBTTagCompound(), OutputStream.class);
+            method = clazz.getMethod("a", ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), OutputStream.class);
             return method.invoke(clazz, nbt, stream);
         } catch (Exception e) {
             e.printStackTrace();
@@ -255,7 +130,7 @@ public class NBTReflectionUtil {
     @SuppressWarnings({"unchecked"})
     public static ItemStack getBukkitItemStack(Object item) {
         @SuppressWarnings("rawtypes")
-        Class clazz = getCraftItemStack();
+        Class clazz = ClassWrapper.CRAFT_ITEMSTACK.getClazz();
         Method method;
         try {
             method = clazz.getMethod("asCraftMirror", item.getClass());
@@ -285,9 +160,9 @@ public class NBTReflectionUtil {
     @SuppressWarnings({"unchecked"})
     public static Object convertNBTCompoundtoNMSItem(NBTCompound nbtcompound) {
         @SuppressWarnings("rawtypes")
-        Class clazz = getNMSItemStack();
+        Class clazz = ClassWrapper.NMS_ITEMSTACK.getClazz();
         try {
-            Object nmsstack = clazz.getConstructor(getNBTTagCompound()).newInstance(nbtcompound.getCompound());
+            Object nmsstack = clazz.getConstructor(ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz()).newInstance(nbtcompound.getCompound());
             return nmsstack;
         } catch (Exception e) {
             e.printStackTrace();
@@ -301,7 +176,7 @@ public class NBTReflectionUtil {
         Class clazz = nmsitem.getClass();
         Method method;
         try {
-            method = clazz.getMethod("save", getNBTTagCompound());
+            method = clazz.getMethod("save", ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz());
             Object answer = method.invoke(nmsitem, getNewNBTTag());
             return new NBTContainer(answer);
         } catch (Exception e) {
@@ -316,8 +191,8 @@ public class NBTReflectionUtil {
         Class c = nmsitem.getClass();
         Method method;
         try {
-            method = c.getMethod(MethodNames.getEntityNbtGetterMethodName(), getNBTTagCompound());
-            Object nbt = getNBTTagCompound().newInstance();
+            method = c.getMethod(MethodNames.getEntityNbtGetterMethodName(), ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz());
+            Object nbt = ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance();
             Object answer = method.invoke(nmsitem, nbt);
             if (answer == null)
                 answer = nbt;
@@ -331,7 +206,7 @@ public class NBTReflectionUtil {
     public static Object setEntityNBTTag(Object NBTTag, Object NMSItem) {
         try {
             Method method;
-            method = NMSItem.getClass().getMethod(MethodNames.getEntityNbtSetterMethodName(), getNBTTagCompound());
+            method = NMSItem.getClass().getMethod(MethodNames.getEntityNbtSetterMethodName(), ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz());
             method.invoke(NMSItem, NBTTag);
             return NMSItem;
         } catch (Exception ex) {
@@ -344,11 +219,11 @@ public class NBTReflectionUtil {
         Method method;
         try {
             Object pos = getNewBlockPosition(tile.getX(), tile.getY(), tile.getZ());
-            Object cworld = getCraftWorld().cast(tile.getWorld());
+            Object cworld = ClassWrapper.CRAFT_WORLD.getClazz().cast(tile.getWorld());
             Object nmsworld = cworld.getClass().getMethod("getHandle").invoke(cworld);
             Object o = nmsworld.getClass().getMethod("getTileEntity", pos.getClass()).invoke(nmsworld, pos);
-            method = getTileEntity().getMethod(MethodNames.getTileDataMethodName(), getNBTTagCompound());
-            Object tag = getNBTTagCompound().newInstance();
+            method = ClassWrapper.NMS_TILEENTITY.getClazz().getMethod(MethodNames.getTileDataMethodName(), ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz());
+            Object tag = ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance();
             Object answer = method.invoke(o, tag);
             if (answer == null)
                 answer = tag;
@@ -363,10 +238,10 @@ public class NBTReflectionUtil {
         Method method;
         try {
             Object pos = getNewBlockPosition(tile.getX(), tile.getY(), tile.getZ());
-            Object cworld = getCraftWorld().cast(tile.getWorld());
+            Object cworld = ClassWrapper.CRAFT_WORLD.getClazz().cast(tile.getWorld());
             Object nmsworld = cworld.getClass().getMethod("getHandle").invoke(cworld);
             Object o = nmsworld.getClass().getMethod("getTileEntity", pos.getClass()).invoke(nmsworld, pos);
-            method = getTileEntity().getMethod("a", getNBTTagCompound());
+            method = ClassWrapper.NMS_TILEENTITY.getClazz().getMethod("a", ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz());
             method.invoke(o, comp);
         } catch (Exception e) {
             e.printStackTrace();
@@ -402,8 +277,8 @@ public class NBTReflectionUtil {
         Object workingtag = gettoCompount(nbttag, comp);
         Method method;
         try {
-            method = workingtag.getClass().getMethod("set", String.class, getNBTBase());
-            method.invoke(workingtag, name, getNBTTagCompound().newInstance());
+            method = workingtag.getClass().getMethod("set", String.class, ClassWrapper.NMS_NBTBASE.getClazz());
+            method.invoke(workingtag, name, ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance());
             comp.setCompound(nbttag);
             return;
         } catch (Exception ex) {
@@ -444,7 +319,7 @@ public class NBTReflectionUtil {
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
-            method = workingtag.getClass().getMethod("a", getNBTTagCompound());
+            method = workingtag.getClass().getMethod("a", ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz());
             method.invoke(workingtag, nbtcompound.getCompound());
             comp.setCompound(rootnbttag);
         } catch (Exception ex) {
@@ -502,7 +377,7 @@ public class NBTReflectionUtil {
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
-            method = workingtag.getClass().getMethod("set", String.class, getNBTBase());
+            method = workingtag.getClass().getMethod("set", String.class, ClassWrapper.NMS_NBTBASE.getClazz());
             method.invoke(workingtag, key, val);
             comp.setCompound(rootnbttag);
         } catch (Exception ex) {
