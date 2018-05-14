@@ -26,6 +26,21 @@ public class ItemNBTAPI extends JavaPlugin {
     public void onEnable() {
         instance = this;
         new MetricsLite(this);
+        getLogger().info("Checking reflection bindings...");
+        getLogger().info("Classes:");
+        for(ClassWrapper c : ClassWrapper.values()){
+            if(c.getClazz() == null){
+                getLogger().warning(c.name() + " did not find it's class!");
+                compatible = false;
+            }
+        }
+        getLogger().info("Methods:");
+        for(ReflectionMethod method : ReflectionMethod.values()){
+            if(method.isCompatible() && !method.isLoaded()){
+                getLogger().warning(method.name() + " did not find the method!");
+                compatible = false;
+            }
+        }
         getLogger().info("Running NBT reflection test...");
         try {
             //Item

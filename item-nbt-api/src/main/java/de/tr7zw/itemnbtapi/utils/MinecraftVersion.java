@@ -3,7 +3,7 @@ package de.tr7zw.itemnbtapi.utils;
 import org.bukkit.Bukkit;
 
 public enum MinecraftVersion {
-    Unknown(0),
+    Unknown(Integer.MAX_VALUE),//Use the newest known mappings
     MC1_7_R4(174),
     MC1_8_R3(183),
     MC1_9_R1(191),

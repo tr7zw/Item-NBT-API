@@ -8,7 +8,6 @@ import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.Stack;
 
-import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
@@ -18,31 +17,6 @@ import de.tr7zw.itemnbtapi.utils.MethodNames;
 import de.tr7zw.itemnbtapi.utils.MinecraftVersion;
 
 public class NBTReflectionUtil {  
-
-    public static Object getNewNBTTag() {
-        String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-        try {
-            @SuppressWarnings("rawtypes")
-            Class c = Class.forName("net.minecraft.server." + version + ".NBTTagCompound");
-            return c.newInstance();
-        } catch (Exception ex) {
-            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
-    private static Object getNewBlockPosition(int x, int y, int z) {
-        String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-        try {
-            Class<?> clazz = Class.forName("net.minecraft.server." + version + ".BlockPosition");
-            return clazz.getConstructor(int.class, int.class, int.class).newInstance(x, y, z);
-        } catch (Exception ex) {
-            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
-            ex.printStackTrace();
-            return null;
-        }
-    }
 
     public static Object setNBTTag(Object NBTTag, Object NMSItem) {
         try {
@@ -177,7 +151,7 @@ public class NBTReflectionUtil {
         Method method;
         try {
             method = clazz.getMethod("save", ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz());
-            Object answer = method.invoke(nmsitem, getNewNBTTag());
+            Object answer = method.invoke(nmsitem, ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance());
             return new NBTContainer(answer);
         } catch (Exception e) {
             e.printStackTrace();
@@ -218,7 +192,7 @@ public class NBTReflectionUtil {
     public static Object getTileEntityNBTTagCompound(BlockState tile) {
         Method method;
         try {
-            Object pos = getNewBlockPosition(tile.getX(), tile.getY(), tile.getZ());
+            Object pos = ObjectCreator.NMS_BLOCKPOSITION.getInstance(tile.getX(), tile.getY(), tile.getZ());
             Object cworld = ClassWrapper.CRAFT_WORLD.getClazz().cast(tile.getWorld());
             Object nmsworld = cworld.getClass().getMethod("getHandle").invoke(cworld);
             Object o = nmsworld.getClass().getMethod("getTileEntity", pos.getClass()).invoke(nmsworld, pos);
@@ -237,7 +211,7 @@ public class NBTReflectionUtil {
     public static void setTileEntityNBTTagCompound(BlockState tile, Object comp) {
         Method method;
         try {
-            Object pos = getNewBlockPosition(tile.getX(), tile.getY(), tile.getZ());
+            Object pos = ObjectCreator.NMS_BLOCKPOSITION.getInstance(tile.getX(), tile.getY(), tile.getZ());
             Object cworld = ClassWrapper.CRAFT_WORLD.getClazz().cast(tile.getWorld());
             Object nmsworld = cworld.getClass().getMethod("getHandle").invoke(cworld);
             Object o = nmsworld.getClass().getMethod("getTileEntity", pos.getClass()).invoke(nmsworld, pos);
@@ -271,7 +245,7 @@ public class NBTReflectionUtil {
         }
         Object nbttag = comp.getCompound();
         if (nbttag == null) {
-            nbttag = getNewNBTTag();
+            nbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
         }
         if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(nbttag, comp);
@@ -290,7 +264,7 @@ public class NBTReflectionUtil {
     public static Boolean valideCompound(NBTCompound comp) {
         Object root = comp.getCompound();
         if (root == null) {
-            root = getNewNBTTag();
+            root = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
         }
         return (gettoCompount(root, comp)) != null;
     }
@@ -313,7 +287,7 @@ public class NBTReflectionUtil {
     public static void addOtherNBTCompound(NBTCompound comp, NBTCompound nbtcompound) {
         Object rootnbttag = comp.getCompound();
         if (rootnbttag == null) {
-            rootnbttag = getNewNBTTag();
+            rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
         }
         if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
@@ -330,7 +304,7 @@ public class NBTReflectionUtil {
     public static String getContent(NBTCompound comp, String key) {
         Object rootnbttag = comp.getCompound();
         if (rootnbttag == null) {
-            rootnbttag = getNewNBTTag();
+            rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
         }
         if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
@@ -347,7 +321,7 @@ public class NBTReflectionUtil {
     public static byte getType(NBTCompound comp, String key) {
         Object rootnbttag = comp.getCompound();
         if (rootnbttag == null) {
-            rootnbttag = getNewNBTTag();
+            rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
         }
         if (!valideCompound(comp)) return 0;
         Object workingtag = gettoCompount(rootnbttag, comp);
@@ -368,7 +342,7 @@ public class NBTReflectionUtil {
         }
         Object rootnbttag = comp.getCompound();
         if (rootnbttag == null) {
-            rootnbttag = getNewNBTTag();
+            rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
         }
         if (!valideCompound(comp)) {
             new Throwable("InvalideCompound").printStackTrace();
@@ -388,7 +362,7 @@ public class NBTReflectionUtil {
     public static NBTList getList(NBTCompound comp, String key, NBTType type) {
         Object rootnbttag = comp.getCompound();
         if (rootnbttag == null) {
-            rootnbttag = getNewNBTTag();
+            rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
         }
         if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
@@ -424,7 +398,7 @@ public class NBTReflectionUtil {
     public static void remove(NBTCompound comp, String key) {
         Object rootnbttag = comp.getCompound();
         if (rootnbttag == null) {
-            rootnbttag = getNewNBTTag();
+            rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
         }
         if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
@@ -441,7 +415,7 @@ public class NBTReflectionUtil {
     public static Boolean hasKey(NBTCompound comp, String key) {
         Object rootnbttag = comp.getCompound();
         if (rootnbttag == null) {
-            rootnbttag = getNewNBTTag();
+            rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
         }
         if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
@@ -459,7 +433,7 @@ public class NBTReflectionUtil {
     public static Set<String> getKeys(NBTCompound comp) {
         Object rootnbttag = comp.getCompound();
         if (rootnbttag == null) {
-            rootnbttag = getNewNBTTag();
+            rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
         }
         if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
@@ -480,7 +454,7 @@ public class NBTReflectionUtil {
         }
         Object rootnbttag = comp.getCompound();
         if (rootnbttag == null) {
-            rootnbttag = getNewNBTTag();
+            rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
         }
         if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
@@ -491,7 +465,7 @@ public class NBTReflectionUtil {
     public static Object getData(NBTCompound comp, ReflectionMethod type, String key) {
         Object rootnbttag = comp.getCompound();
         if (rootnbttag == null) {
-            rootnbttag = getNewNBTTag();
+            rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
         }
         if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);

@@ -12,7 +12,10 @@ NMS_ITEMSTACK("net.minecraft.server.", ".ItemStack"),
 NMS_NBTTAGCOMPOUND("net.minecraft.server.", ".NBTTagCompound"),
 NMS_NBTCOMPRESSEDSTREAMTOOLS("net.minecraft.server.", ".NBTCompressedStreamTools"),
 NMS_MOJANGSONPARSER("net.minecraft.server.", ".MojangsonParser"),
-NMS_TILEENTITY("net.minecraft.server.", ".TileEntity");
+NMS_TILEENTITY("net.minecraft.server.", ".TileEntity"),
+NMS_BLOCKPOSITION("net.minecraft.server.", ".BlockPosition"),
+
+;
     
     
     

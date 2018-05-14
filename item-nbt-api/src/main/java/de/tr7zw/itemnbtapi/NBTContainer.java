@@ -6,7 +6,7 @@ public class NBTContainer extends NBTCompound{
 
     public NBTContainer() {
         super(null, null);
-        nbt = NBTReflectionUtil.getNewNBTTag();
+        nbt = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
     }
     
     protected NBTContainer(Object nbt){
