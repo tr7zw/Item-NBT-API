@@ -18,33 +18,6 @@ import de.tr7zw.itemnbtapi.utils.MinecraftVersion;
 
 public class NBTReflectionUtil {  
 
-    public static Object setNBTTag(Object NBTTag, Object NMSItem) {
-        try {
-            Method method;
-            method = NMSItem.getClass().getMethod("setTag", NBTTag.getClass());
-            method.invoke(NMSItem, NBTTag);
-            return NMSItem;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
-    @SuppressWarnings("unchecked")
-    public static Object getNMSItemStack(ItemStack item) {
-        @SuppressWarnings("rawtypes")
-        Class clazz = ClassWrapper.CRAFT_ITEMSTACK.getClazz();
-        Method method;
-        try {
-            method = clazz.getMethod("asNMSCopy", ItemStack.class);
-            Object answer = method.invoke(clazz, item);
-            return answer;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     @SuppressWarnings("unchecked")
     public static Object getNMSEntity(Entity entity) {
         @SuppressWarnings("rawtypes")
@@ -53,20 +26,6 @@ public class NBTReflectionUtil {
         try {
             method = clazz.getMethod("getHandle");
             return method.invoke(clazz.cast(entity));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @SuppressWarnings({"unchecked"})
-    public static Object parseNBT(String json) {
-        @SuppressWarnings("rawtypes")
-        Class cis = ClassWrapper.NMS_MOJANGSONPARSER.getClazz();
-        java.lang.reflect.Method method;
-        try {
-            method = cis.getMethod("parse", String.class);
-            return method.invoke(null, json);
         } catch (Exception e) {
             e.printStackTrace();
         }

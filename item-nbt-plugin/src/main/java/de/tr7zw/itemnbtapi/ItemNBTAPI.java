@@ -26,7 +26,11 @@ public class ItemNBTAPI extends JavaPlugin {
     public void onEnable() {
         instance = this;
         new MetricsLite(this);
-        getLogger().info("Checking reflection bindings...");
+        getLogger().info("Checking bindings...");
+        getLogger().info("Minecraft Version:");
+        MinecraftVersion.getVersion();
+        getLogger().info("Gson:");
+        MinecraftVersion.hasGsonSupport();
         getLogger().info("Classes:");
         for(ClassWrapper c : ClassWrapper.values()){
             if(c.getClazz() == null){
