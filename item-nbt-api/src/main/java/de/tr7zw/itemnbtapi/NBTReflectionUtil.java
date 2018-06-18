@@ -10,7 +10,6 @@ import java.util.Stack;
 
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
-import org.bukkit.inventory.ItemStack;
 
 import de.tr7zw.itemnbtapi.utils.GsonWrapper;
 import de.tr7zw.itemnbtapi.utils.MethodNames;
@@ -54,21 +53,6 @@ public class NBTReflectionUtil {
         try {
             method = clazz.getMethod("a", ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), OutputStream.class);
             return method.invoke(clazz, nbt, stream);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @SuppressWarnings({"unchecked"})
-    public static ItemStack getBukkitItemStack(Object item) {
-        @SuppressWarnings("rawtypes")
-        Class clazz = ClassWrapper.CRAFT_ITEMSTACK.getClazz();
-        Method method;
-        try {
-            method = clazz.getMethod("asCraftMirror", item.getClass());
-            Object answer = method.invoke(clazz, item);
-            return (ItemStack) answer;
         } catch (Exception e) {
             e.printStackTrace();
         }
