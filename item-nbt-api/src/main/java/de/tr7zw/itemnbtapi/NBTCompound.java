@@ -132,7 +132,7 @@ public class NBTCompound {
     }
 
     public Boolean hasKey(String key) {
-        return NBTReflectionUtil.hasKey(this, key);
+        return (Boolean) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_HAS_KEY, key);
     }
 
     public void removeKey(String key) {
@@ -160,7 +160,7 @@ public class NBTCompound {
 
     public NBTType getType(String name) {
         if (MinecraftVersion.getVersion() == MinecraftVersion.MC1_7_R4) return NBTType.NBTTagEnd;
-        return NBTType.valueOf(NBTReflectionUtil.getType(this, name));
+        return NBTType.valueOf((byte) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_TYPE, name));
     }
 
     @Override

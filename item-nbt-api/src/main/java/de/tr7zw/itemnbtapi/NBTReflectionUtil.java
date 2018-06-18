@@ -30,7 +30,7 @@ public class NBTReflectionUtil {
         }
         return null;
     }
-    
+
     @SuppressWarnings({"unchecked"})
     public static Object readNBTFile(FileInputStream stream) {
         @SuppressWarnings("rawtypes")
@@ -73,7 +73,7 @@ public class NBTReflectionUtil {
         }
         return null;
     }
-    
+
     @SuppressWarnings({"unchecked"})
     public static Object convertNBTCompoundtoNMSItem(NBTCompound nbtcompound) {
         @SuppressWarnings("rawtypes")
@@ -86,7 +86,7 @@ public class NBTReflectionUtil {
         }
         return null;
     }
-    
+
     @SuppressWarnings({"unchecked"})
     public static NBTContainer convertNMSItemtoNBTCompound(Object nmsitem) {
         @SuppressWarnings("rawtypes")
@@ -226,7 +226,7 @@ public class NBTReflectionUtil {
         }
         return nbttag;
     }
-    
+
     public static void addOtherNBTCompound(NBTCompound comp, NBTCompound nbtcompound) {
         Object rootnbttag = comp.getCompound();
         if (rootnbttag == null) {
@@ -259,23 +259,6 @@ public class NBTReflectionUtil {
             ex.printStackTrace();
         }
         return null;
-    }
-
-    public static byte getType(NBTCompound comp, String key) {
-        Object rootnbttag = comp.getCompound();
-        if (rootnbttag == null) {
-            rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
-        }
-        if (!valideCompound(comp)) return 0;
-        Object workingtag = gettoCompount(rootnbttag, comp);
-        Method method;
-        try {
-            method = workingtag.getClass().getMethod(MethodNames.getTypeMethodName(), String.class);
-            return (byte) method.invoke(workingtag, key);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return 0;
     }
 
     public static void set(NBTCompound comp, String key, Object val) {
@@ -345,31 +328,8 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        Method method;
-        try {
-            method = workingtag.getClass().getMethod("remove", String.class);
-            method.invoke(workingtag, key);
-            comp.setCompound(rootnbttag);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public static Boolean hasKey(NBTCompound comp, String key) {
-        Object rootnbttag = comp.getCompound();
-        if (rootnbttag == null) {
-            rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
-        }
-        if (!valideCompound(comp)) return null;
-        Object workingtag = gettoCompount(rootnbttag, comp);
-        Method method;
-        try {
-            method = workingtag.getClass().getMethod("hasKey", String.class);
-            return (Boolean) method.invoke(workingtag, key);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        ReflectionMethod.COMPOUND_REMOVE_KEY.run(workingtag, key);
+        comp.setCompound(rootnbttag);
     }
 
     @SuppressWarnings("unchecked")
@@ -389,7 +349,7 @@ public class NBTReflectionUtil {
         }
         return null;
     }
-    
+
     public static void setData(NBTCompound comp, ReflectionMethod type, String key, Object data) {
         if (data == null) {
             remove(comp, key);
@@ -404,11 +364,11 @@ public class NBTReflectionUtil {
         type.run(workingtag, key, data);
         comp.setCompound(rootnbttag);
     }
-    
+
     public static Object getData(NBTCompound comp, ReflectionMethod type, String key) {
         Object rootnbttag = comp.getCompound();
         if (rootnbttag == null) {
-            rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
+            return null;
         }
         if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);

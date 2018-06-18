@@ -110,7 +110,7 @@ public class ItemNBTAPI extends JavaPlugin {
             nbtItem.setString(STRING_TEST_KEY, null);
             if (nbtItem.getKeys().size() != 10) {
                 getLogger().warning("Wasn't able to remove a key (Got " + nbtItem.getKeys().size()
-                        + " when expecting 4)! The Item-NBT-API may not work!");
+                        + " when expecting 10)! The Item-NBT-API may not work!");
                 compatible = false;
             }
             comp = nbtItem.getCompound(COMP_TEST_KEY);
