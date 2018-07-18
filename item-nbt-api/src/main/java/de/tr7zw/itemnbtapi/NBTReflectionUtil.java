@@ -340,14 +340,7 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        Method method;
-        try {
-            method = workingtag.getClass().getMethod("c");
-            return (Set<String>) method.invoke(workingtag);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        return (Set<String>) ReflectionMethod.COMPOUND_GET_KEYS.run(workingtag);
     }
 
     public static void setData(NBTCompound comp, ReflectionMethod type, String key, Object data) {

@@ -206,7 +206,7 @@ public class ItemNBTAPI extends JavaPlugin {
             compatible = false;
         }
 
-        String checkMessage = "Plugins that don't check properly, may throw Exeptions, crash or have unexpected behaviors!";
+        String checkMessage = "Plugins that don't check properly may throw Exeptions, crash or have unexpected behaviors!";
         if (compatible) {
             if (jsonCompatible) {
                 getLogger().info("Success! This version of Item-NBT-API is compatible with your server.");
