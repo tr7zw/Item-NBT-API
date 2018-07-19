@@ -36,11 +36,11 @@ public class NBTCompound {
     }
     
     public void setString(String key, String value) {
-        NBTReflectionUtil.setString(this, key, value);
+        NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_STRING, key, value);
     }
 
     public String getString(String key) {
-        return NBTReflectionUtil.getString(this, key);
+        return (String) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_STRING, key);
     }
 
     protected String getContent(String key) {
@@ -48,71 +48,71 @@ public class NBTCompound {
     }
 
     public void setInteger(String key, Integer value) {
-        NBTReflectionUtil.setInt(this, key, value);
+        NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_INT, key, value);
     }
 
     public Integer getInteger(String key) {
-        return NBTReflectionUtil.getInt(this, key);
+        return (Integer) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_INT, key);
     }
 
     public void setDouble(String key, Double value) {
-        NBTReflectionUtil.setDouble(this, key, value);
+        NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_DOUBLE, key, value);
     }
 
     public Double getDouble(String key) {
-        return NBTReflectionUtil.getDouble(this, key);
+        return (Double) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_DOUBLE, key);
     }
 
     public void setByte(String key, Byte value) {
-        NBTReflectionUtil.setByte(this, key, value);
+        NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_BYTE, key, value);
     }
 
     public Byte getByte(String key) {
-        return NBTReflectionUtil.getByte(this, key);
+        return (Byte) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_BYTE, key);
     }
 
     public void setShort(String key, Short value) {
-        NBTReflectionUtil.setShort(this, key, value);
+        NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_SHORT, key, value);
     }
 
     public Short getShort(String key) {
-        return NBTReflectionUtil.getShort(this, key);
+        return (Short) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_SHORT, key);
     }
 
     public void setLong(String key, Long value) {
-        NBTReflectionUtil.setLong(this, key, value);
+        NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_LONG, key, value);
     }
 
     public Long getLong(String key) {
-        return NBTReflectionUtil.getLong(this, key);
+        return (Long) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_LONG, key);
     }
 
     public void setFloat(String key, Float value) {
-        NBTReflectionUtil.setFloat(this, key, value);
+        NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_FLOAT, key, value);
     }
 
     public Float getFloat(String key) {
-        return NBTReflectionUtil.getFloat(this, key);
+        return (Float) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_FLOAT, key);
     }
 
     public void setByteArray(String key, byte[] value) {
-        NBTReflectionUtil.setByteArray(this, key, value);
+        NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_BYTEARRAY, key, value);
     }
 
     public byte[] getByteArray(String key) {
-        return NBTReflectionUtil.getByteArray(this, key);
+        return (byte[]) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_BYTEARRAY, key);
     }
 
     public void setIntArray(String key, int[] value) {
-        NBTReflectionUtil.setIntArray(this, key, value);
+        NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_INTARRAY, key, value);
     }
 
     public int[] getIntArray(String key) {
-        return NBTReflectionUtil.getIntArray(this, key);
+        return (int[]) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_INTARRAY, key);
     }
 
     public void setBoolean(String key, Boolean value) {
-        NBTReflectionUtil.setBoolean(this, key, value);
+        NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_BOOLEAN, key, value);
     }
 
     protected void set(String key, Object val) {
@@ -120,7 +120,7 @@ public class NBTCompound {
     }
 
     public Boolean getBoolean(String key) {
-        return NBTReflectionUtil.getBoolean(this, key);
+        return (Boolean) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_BOOLEAN, key);
     }
 
     public void setObject(String key, Object value) {
@@ -132,7 +132,7 @@ public class NBTCompound {
     }
 
     public Boolean hasKey(String key) {
-        return NBTReflectionUtil.hasKey(this, key);
+        return (Boolean) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_HAS_KEY, key);
     }
 
     public void removeKey(String key) {
@@ -160,7 +160,7 @@ public class NBTCompound {
 
     public NBTType getType(String name) {
         if (MinecraftVersion.getVersion() == MinecraftVersion.MC1_7_R4) return NBTType.NBTTagEnd;
-        return NBTType.valueOf(NBTReflectionUtil.getType(this, name));
+        return NBTType.valueOf((byte) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_TYPE, name));
     }
 
     @Override

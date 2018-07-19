@@ -17,7 +17,7 @@ public class NBTFile extends NBTCompound {
             FileInputStream inputsteam = new FileInputStream(file);
             nbt = NBTReflectionUtil.readNBTFile(inputsteam);
         } else {
-            nbt = NBTReflectionUtil.getNewNBTTag();
+            nbt = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
             save();
         }
     }

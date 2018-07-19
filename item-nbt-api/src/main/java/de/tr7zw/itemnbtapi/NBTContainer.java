@@ -6,7 +6,7 @@ public class NBTContainer extends NBTCompound{
 
     public NBTContainer() {
         super(null, null);
-        nbt = NBTReflectionUtil.getNewNBTTag();
+        nbt = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
     }
     
     protected NBTContainer(Object nbt){
@@ -17,7 +17,7 @@ public class NBTContainer extends NBTCompound{
     public NBTContainer(String nbtString) throws IllegalArgumentException {
         super(null, null);
         try{
-            nbt = NBTReflectionUtil.parseNBT(nbtString);
+            nbt = ReflectionMethod.PARSE_NBT.run(null, nbtString);
         }catch(Exception ex){
             ex.printStackTrace();
             throw new IllegalArgumentException("Malformed Json: " + ex.getMessage());

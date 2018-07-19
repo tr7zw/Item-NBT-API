@@ -26,6 +26,25 @@ public class ItemNBTAPI extends JavaPlugin {
     public void onEnable() {
         instance = this;
         new MetricsLite(this);
+        getLogger().info("Checking bindings...");
+        getLogger().info("Minecraft Version:");
+        MinecraftVersion.getVersion();
+        getLogger().info("Gson:");
+        MinecraftVersion.hasGsonSupport();
+        getLogger().info("Classes:");
+        for(ClassWrapper c : ClassWrapper.values()){
+            if(c.getClazz() == null){
+                getLogger().warning(c.name() + " did not find it's class!");
+                compatible = false;
+            }
+        }
+        getLogger().info("Methods:");
+        for(ReflectionMethod method : ReflectionMethod.values()){
+            if(method.isCompatible() && !method.isLoaded()){
+                getLogger().warning(method.name() + " did not find the method!");
+                compatible = false;
+            }
+        }
         getLogger().info("Running NBT reflection test...");
         try {
             //Item
@@ -91,7 +110,7 @@ public class ItemNBTAPI extends JavaPlugin {
             nbtItem.setString(STRING_TEST_KEY, null);
             if (nbtItem.getKeys().size() != 10) {
                 getLogger().warning("Wasn't able to remove a key (Got " + nbtItem.getKeys().size()
-                        + " when expecting 4)! The Item-NBT-API may not work!");
+                        + " when expecting 10)! The Item-NBT-API may not work!");
                 compatible = false;
             }
             comp = nbtItem.getCompound(COMP_TEST_KEY);
@@ -143,10 +162,15 @@ public class ItemNBTAPI extends JavaPlugin {
         try{
             //File
             NBTFile file = new NBTFile(new File(getDataFolder(), "test.nbt"));
-            file.addCompound("testcomp");
+            file.addCompound("testcomp").setString("test1", "ok");
+            NBTCompound comp = file.getCompound("testcomp");
+            comp.setString("test2", "ok");
             file.setLong("time", System.currentTimeMillis());
             file.setString("test", "test");
             file.save();
+            file = null;
+            file = new NBTFile(new File(getDataFolder(), "test.nbt"));
+            System.out.println(file.asNBTString());
             file.getFile().delete();
             //String
             String str = file.asNBTString();
@@ -160,12 +184,12 @@ public class ItemNBTAPI extends JavaPlugin {
             ItemMeta premeta = preitem.getItemMeta();
             premeta.setDisplayName("test");
             preitem.setItemMeta(premeta);
-            String itemasString = NBTItem.convertItemtoNBT(preitem).asNBTString();
-            ItemStack afteritem = NBTItem.convertNBTtoItem(new NBTContainer(itemasString));
-            if(!preitem.isSimilar(afteritem)){
-                getLogger().warning("Wasn't able to convert an Item to String and back to Item! The Item-NBT-API may not work!");
-                compatible = false;
-            }
+           // String itemasString = NBTItem.convertItemtoNBT(preitem).asNBTString();
+            //ItemStack afteritem = NBTItem.convertNBTtoItem(new NBTContainer(itemasString));
+            //if(!preitem.isSimilar(afteritem)){
+            //    getLogger().warning("Wasn't able to convert an Item to String and back to Item! The Item-NBT-API may not work!");
+             //   compatible = false;
+           //}
             //mergingtags
             NBTContainer test1 = new NBTContainer();
             test1.setString("test1", "test");
@@ -182,7 +206,7 @@ public class ItemNBTAPI extends JavaPlugin {
             compatible = false;
         }
 
-        String checkMessage = "Plugins that don't check properly, may throw Exeptions, crash or have unexpected behaviors!";
+        String checkMessage = "Plugins that don't check properly may throw Exeptions, crash or have unexpected behaviors!";
         if (compatible) {
             if (jsonCompatible) {
                 getLogger().info("Success! This version of Item-NBT-API is compatible with your server.");
