@@ -1,9 +1,5 @@
 package de.tr7zw.itemnbtapi;
 
-import de.tr7zw.itemnbtapi.utils.MethodNames;
-
-import java.lang.reflect.Method;
-
 public class NBTList {
 
     private String listName;
@@ -31,9 +27,8 @@ public class NBTList {
             return null;
         }
         try {
-            Method method = listObject.getClass().getMethod("add", ClassWrapper.NMS_NBTBASE.getClazz());
             Object compound = ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance();
-            method.invoke(listObject, compound);
+            ReflectionMethod.LIST_ADD.run(listObject, compound);
             return new NBTListCompound(this, compound);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -47,8 +42,7 @@ public class NBTList {
             return null;
         }
         try {
-            Method method = listObject.getClass().getMethod("get", int.class);
-            Object compound = method.invoke(listObject, id);
+            Object compound = ReflectionMethod.LIST_GET.run(listObject, id);
             return new NBTListCompound(this, compound);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -62,8 +56,7 @@ public class NBTList {
             return null;
         }
         try {
-            Method method = listObject.getClass().getMethod("getString", int.class);
-            return (String) method.invoke(listObject, i);
+            return (String) ReflectionMethod.LIST_GET_STRING.run(listObject, i);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -76,8 +69,7 @@ public class NBTList {
             return;
         }
         try {
-            Method method = listObject.getClass().getMethod("add", ClassWrapper.NMS_NBTBASE.getClazz());
-            method.invoke(listObject, ClassWrapper.NMS_NBTTAGSTRING.getClazz().getConstructor(String.class).newInstance(s));
+            ReflectionMethod.LIST_ADD.run(listObject, ClassWrapper.NMS_NBTTAGSTRING.getClazz().getConstructor(String.class).newInstance(s));
             save();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -90,8 +82,7 @@ public class NBTList {
             return;
         }
         try {
-            Method method = listObject.getClass().getMethod("a", int.class, ClassWrapper.NMS_NBTBASE.getClazz());
-            method.invoke(listObject, i, ClassWrapper.NMS_NBTTAGSTRING.getClazz().getConstructor(String.class).newInstance(s));
+            ReflectionMethod.LIST_SET.run(listObject, i, ClassWrapper.NMS_NBTTAGSTRING.getClazz().getConstructor(String.class).newInstance(s));
             save();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -100,8 +91,7 @@ public class NBTList {
 
     public void remove(int i) {
         try {
-            Method method = listObject.getClass().getMethod(MethodNames.getRemoveMethodName(), int.class);
-            method.invoke(listObject, i);
+            ReflectionMethod.LIST_REMOVE_KEY.run(listObject, i);
             save();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -110,8 +100,7 @@ public class NBTList {
 
     public int size() {
         try {
-            Method method = listObject.getClass().getMethod("size");
-            return (int) method.invoke(listObject);
+            return (int) ReflectionMethod.LIST_SIZE.run(listObject);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
