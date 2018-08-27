@@ -12,19 +12,13 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 
 import de.tr7zw.itemnbtapi.utils.GsonWrapper;
-import de.tr7zw.itemnbtapi.utils.MethodNames;
 import de.tr7zw.itemnbtapi.utils.MinecraftVersion;
 
 public class NBTReflectionUtil {  
 
-    @SuppressWarnings("unchecked")
     public static Object getNMSEntity(Entity entity) {
-        @SuppressWarnings("rawtypes")
-        Class clazz = ClassWrapper.CRAFT_ENTITY.getClazz();
-        Method method;
         try {
-            method = clazz.getMethod("getHandle");
-            return method.invoke(clazz.cast(entity));
+            return ReflectionMethod.CRAFT_ENTITY_GET_HANDLE.run(ClassWrapper.CRAFT_ENTITY.getClazz().cast(entity));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -102,15 +96,10 @@ public class NBTReflectionUtil {
         return null;
     }
 
-    @SuppressWarnings({"unchecked"})
-    public static Object getEntityNBTTagCompound(Object nmsitem) {
-        @SuppressWarnings("rawtypes")
-        Class c = nmsitem.getClass();
-        Method method;
+    public static Object getEntityNBTTagCompound(Object NMSEntity) {
         try {
-            method = c.getMethod(MethodNames.getEntityNbtGetterMethodName(), ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz());
             Object nbt = ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance();
-            Object answer = method.invoke(nmsitem, nbt);
+            Object answer = ReflectionMethod.NMS_ENTITY_GET_NBT.run(NMSEntity, nbt);
             if (answer == null)
                 answer = nbt;
             return answer;
@@ -120,12 +109,10 @@ public class NBTReflectionUtil {
         return null;
     }
 
-    public static Object setEntityNBTTag(Object NBTTag, Object NMSItem) {
+    public static Object setEntityNBTTag(Object NBTTag, Object NMSEntity) {
         try {
-            Method method;
-            method = NMSItem.getClass().getMethod(MethodNames.getEntityNbtSetterMethodName(), ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz());
-            method.invoke(NMSItem, NBTTag);
-            return NMSItem;
+            ReflectionMethod.NMS_ENTITY_SET_NBT.run(NMSEntity, NBTTag);
+            return NMSEntity;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -133,15 +120,13 @@ public class NBTReflectionUtil {
     }
 
     public static Object getTileEntityNBTTagCompound(BlockState tile) {
-        Method method;
         try {
             Object pos = ObjectCreator.NMS_BLOCKPOSITION.getInstance(tile.getX(), tile.getY(), tile.getZ());
             Object cworld = ClassWrapper.CRAFT_WORLD.getClazz().cast(tile.getWorld());
-            Object nmsworld = cworld.getClass().getMethod("getHandle").invoke(cworld);
-            Object o = nmsworld.getClass().getMethod("getTileEntity", pos.getClass()).invoke(nmsworld, pos);
-            method = ClassWrapper.NMS_TILEENTITY.getClazz().getMethod(MethodNames.getTileDataMethodName(), ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz());
+            Object nmsworld = ReflectionMethod.CRAFT_WORLD_GET_HANDLE.run(cworld);
+            Object o = ReflectionMethod.NMS_WORLD_GET_TILEENTITY.run(nmsworld, pos);
             Object tag = ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance();
-            Object answer = method.invoke(o, tag);
+            Object answer = ReflectionMethod.TILEENTITY_GET_NBT.run(o, tag);
             if (answer == null)
                 answer = tag;
             return answer;
@@ -152,14 +137,12 @@ public class NBTReflectionUtil {
     }
 
     public static void setTileEntityNBTTagCompound(BlockState tile, Object comp) {
-        Method method;
         try {
             Object pos = ObjectCreator.NMS_BLOCKPOSITION.getInstance(tile.getX(), tile.getY(), tile.getZ());
             Object cworld = ClassWrapper.CRAFT_WORLD.getClazz().cast(tile.getWorld());
-            Object nmsworld = cworld.getClass().getMethod("getHandle").invoke(cworld);
-            Object o = nmsworld.getClass().getMethod("getTileEntity", pos.getClass()).invoke(nmsworld, pos);
-            method = ClassWrapper.NMS_TILEENTITY.getClazz().getMethod("a", ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz());
-            method.invoke(o, comp);
+            Object nmsworld = ReflectionMethod.CRAFT_WORLD_GET_HANDLE.run(cworld);
+            Object o = ReflectionMethod.NMS_WORLD_GET_TILEENTITY.run(nmsworld, pos);
+            ReflectionMethod.TILEENTITY_SET_NBT.run(o, comp);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,14 +1,20 @@
 package de.tr7zw.itemnbtapi;
 
-import de.tr7zw.itemnbtapi.utils.MinecraftVersion;
+import java.io.File;
+import java.util.logging.Level;
+
 import org.bstats.bukkit.MetricsLite;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Animals;
+import org.bukkit.entity.Monster;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.util.logging.Level;
+import de.tr7zw.itemnbtapi.utils.MinecraftVersion;
 
 public class ItemNBTAPI extends JavaPlugin {
 
@@ -32,15 +38,15 @@ public class ItemNBTAPI extends JavaPlugin {
         getLogger().info("Gson:");
         MinecraftVersion.hasGsonSupport();
         getLogger().info("Classes:");
-        for(ClassWrapper c : ClassWrapper.values()){
-            if(c.getClazz() == null){
+        for (ClassWrapper c : ClassWrapper.values()) {
+            if (c.getClazz() == null) {
                 getLogger().warning(c.name() + " did not find it's class!");
                 compatible = false;
             }
         }
         getLogger().info("Methods:");
-        for(ReflectionMethod method : ReflectionMethod.values()){
-            if(method.isCompatible() && !method.isLoaded()){
+        for (ReflectionMethod method : ReflectionMethod.values()) {
+            if (method.isCompatible() && !method.isLoaded()) {
                 getLogger().warning(method.name() + " did not find the method!");
                 compatible = false;
             }
@@ -68,7 +74,8 @@ public class ItemNBTAPI extends JavaPlugin {
             comp.setDouble(DOUBLE_TEST_KEY, DOUBLE_TEST_VALUE * 2);
             NBTList list = comp.getList("testlist", NBTType.NBTTagString);
             if (MinecraftVersion.getVersion() == MinecraftVersion.MC1_7_R4) {
-                getLogger().warning("Skipped the NBTList check, because 1.7 doesn't fully support it! The Item-NBT-API may not work!");
+                getLogger().warning(
+                        "Skipped the NBTList check, because 1.7 doesn't fully support it! The Item-NBT-API may not work!");
             } else {
                 list.addString("test1");
                 list.addString("test2");
@@ -88,7 +95,6 @@ public class ItemNBTAPI extends JavaPlugin {
             item = nbtItem.getItem();
             nbtItem = new NBTItem(item);
 
-
             if (!nbtItem.hasKey(STRING_TEST_KEY)) {
                 getLogger().warning("Wasn't able to check a key! The Item-NBT-API may not work!");
                 compatible = false;
@@ -102,8 +108,7 @@ public class ItemNBTAPI extends JavaPlugin {
                     || nbtItem.getLong(LONG_TEST_KEY) != LONG_TEST_VALUE
                     || nbtItem.getIntArray(INTARRAY_TEST_KEY).length != (INTARRAY_TEST_VALUE).length
                     || nbtItem.getByteArray(BYTEARRAY_TEST_KEY).length != (BYTEARRAY_TEST_VALUE).length
-                    || !nbtItem.getBoolean(BOOLEAN_TEST_KEY).equals(BOOLEAN_TEST_VALUE)
-                    ) {
+                    || !nbtItem.getBoolean(BOOLEAN_TEST_KEY).equals(BOOLEAN_TEST_VALUE)) {
                 getLogger().warning("One key does not equal the original value! The Item-NBT-API may not work!");
                 compatible = false;
             }
@@ -126,7 +131,8 @@ public class ItemNBTAPI extends JavaPlugin {
                     || comp.getInteger(INT_TEST_KEY) != INT_TEST_VALUE * 2
                     || comp.getDouble(DOUBLE_TEST_KEY) != DOUBLE_TEST_VALUE * 2
                     || comp.getBoolean(BOOLEAN_TEST_KEY) == BOOLEAN_TEST_VALUE) {
-                getLogger().warning("One key does not equal the original compound value! The Item-NBT-API may not work!");
+                getLogger()
+                        .warning("One key does not equal the original compound value! The Item-NBT-API may not work!");
                 compatible = false;
             }
 
@@ -142,9 +148,11 @@ public class ItemNBTAPI extends JavaPlugin {
             if (taglist.size() == 1) {
                 lcomp = taglist.getCompound(0);
                 if (lcomp.getKeys().size() != 3) {
-                    getLogger().warning("Wrong key amount in Taglist (" + lcomp.getKeys().size() + ")! The Item-NBT-API may not work!");
+                    getLogger().warning("Wrong key amount in Taglist (" + lcomp.getKeys().size()
+                            + ")! The Item-NBT-API may not work!");
                     compatible = false;
-                } else if (!(lcomp.getDouble("double1") == 0.3333 && lcomp.getInteger("int1") == 42 && lcomp.getString("test2").equals("test2") && !lcomp.hasKey("test1"))) {
+                } else if (!(lcomp.getDouble("double1") == 0.3333 && lcomp.getInteger("int1") == 42
+                        && lcomp.getString("test2").equals("test2") && !lcomp.hasKey("test1"))) {
                     getLogger().warning("One key in the Taglist changed! The Item-NBT-API may not work!");
                     compatible = false;
                 }
@@ -159,7 +167,7 @@ public class ItemNBTAPI extends JavaPlugin {
 
         testJson();
 
-        try{
+        try {
             //File
             NBTFile file = new NBTFile(new File(getDataFolder(), "test.nbt"));
             file.addCompound("testcomp").setString("test1", "ok");
@@ -175,7 +183,7 @@ public class ItemNBTAPI extends JavaPlugin {
             //String
             String str = file.asNBTString();
             NBTContainer rebuild = new NBTContainer(str);
-            if(!str.equals(rebuild.asNBTString())){
+            if (!str.equals(rebuild.asNBTString())) {
                 getLogger().warning("Wasn't able to parse NBT from a String! The Item-NBT-API may not work!");
                 compatible = false;
             }
@@ -184,12 +192,12 @@ public class ItemNBTAPI extends JavaPlugin {
             ItemMeta premeta = preitem.getItemMeta();
             premeta.setDisplayName("test");
             preitem.setItemMeta(premeta);
-           // String itemasString = NBTItem.convertItemtoNBT(preitem).asNBTString();
+            // String itemasString = NBTItem.convertItemtoNBT(preitem).asNBTString();
             //ItemStack afteritem = NBTItem.convertNBTtoItem(new NBTContainer(itemasString));
             //if(!preitem.isSimilar(afteritem)){
             //    getLogger().warning("Wasn't able to convert an Item to String and back to Item! The Item-NBT-API may not work!");
-             //   compatible = false;
-           //}
+            //   compatible = false;
+            //}
             //mergingtags
             NBTContainer test1 = new NBTContainer();
             test1.setString("test1", "test");
@@ -197,11 +205,46 @@ public class ItemNBTAPI extends JavaPlugin {
             test2.setString("test2", "test");
             test2.addCompound("test").setLong("time", System.currentTimeMillis());
             test1.mergeCompound(test2);
-            if(!test1.getString("test1").equals(test1.getString("test2"))){
+            if (!test1.getString("test1").equals(test1.getString("test2"))) {
                 getLogger().warning("Wasn't able to merge Compounds! The Item-NBT-API may not work!");
                 compatible = false;
             }
-        }catch(Exception ex){
+
+            if (!Bukkit.getWorlds().isEmpty()) {
+                World world = Bukkit.getWorlds().get(0);
+                try {
+                    if (!world.getEntitiesByClasses(Animals.class, Monster.class).isEmpty()) {
+                        getLogger().info("Testing Entity NBT!");
+                        NBTEntity nbte = new NBTEntity(
+                                world.getEntitiesByClasses(Animals.class, Monster.class).iterator().next());
+                        getLogger().info(nbte.asNBTString());
+                        nbte.setString("INVALIDEKEY", "test");
+                        getLogger().info("Entity NBT seems to work!");
+                    }
+                } catch (Exception ex) {
+                    getLogger().warning("Wasn't able to use NBTEntities! The Item-NBT-API may not work!");
+                    compatible = false;
+                    ex.printStackTrace();
+                }
+                try {
+                    Block block = world.getBlockAt(world.getSpawnLocation().getBlockX(), 255, world.getSpawnLocation().getBlockZ());
+                    if (block.getType() == Material.AIR) {
+                        getLogger().info("Testing Tile NBT!");
+                        block.setType(Material.CHEST);
+                        NBTTileEntity tile = new NBTTileEntity(block.getState());
+                        getLogger().info(tile.asNBTString());
+                        tile.setString("INVALIDEKEY", "test");
+                        block.setType(Material.AIR);
+                        getLogger().info("Tile NBT seems to work!");
+                    }
+                } catch (Exception ex) {
+                    getLogger().warning("Wasn't able to use NBTEntities! The Item-NBT-API may not work!");
+                    compatible = false;
+                    ex.printStackTrace();
+                }
+            }
+
+        } catch (Exception ex) {
             getLogger().log(Level.SEVERE, null, ex);
             compatible = false;
         }
@@ -211,16 +254,21 @@ public class ItemNBTAPI extends JavaPlugin {
             if (jsonCompatible) {
                 getLogger().info("Success! This version of Item-NBT-API is compatible with your server.");
             } else {
-                getLogger().info("General Success! This version of Item-NBT-API is mostly compatible with your server. JSON serialization is not working properly. " + checkMessage);
+                getLogger()
+                        .info("General Success! This version of Item-NBT-API is mostly compatible with your server. JSON serialization is not working properly. "
+                                + checkMessage);
             }
         } else {
-            getLogger().warning("WARNING! This version of Item-NBT-API seems to be broken with your Spigot version! " + checkMessage);
+            getLogger().warning("WARNING! This version of Item-NBT-API seems to be broken with your Spigot version! "
+                    + checkMessage);
         }
+
     }
 
     public void testJson() {
         if (!MinecraftVersion.hasGsonSupport()) {
-            getLogger().warning("Wasn't able to find Gson! The Item-NBT-API may not work with Json serialization/deserialization!");
+            getLogger().warning(
+                    "Wasn't able to find Gson! The Item-NBT-API may not work with Json serialization/deserialization!");
             return;
         }
         try {
@@ -230,18 +278,21 @@ public class ItemNBTAPI extends JavaPlugin {
             nbtItem.setObject(JSON_TEST_KEY, new SimpleJsonTestObject());
 
             if (!nbtItem.hasKey(JSON_TEST_KEY)) {
-                getLogger().warning("Wasn't able to find JSON key! The Item-NBT-API may not work with Json serialization/deserialization!");
+                getLogger().warning(
+                        "Wasn't able to find JSON key! The Item-NBT-API may not work with Json serialization/deserialization!");
                 jsonCompatible = false;
             } else {
                 SimpleJsonTestObject simpleObject = nbtItem.getObject(JSON_TEST_KEY, SimpleJsonTestObject.class);
                 if (simpleObject == null) {
-                    getLogger().warning("Wasn't able to check JSON key! The Item-NBT-API may not work with Json serialization/deserialization!");
+                    getLogger().warning(
+                            "Wasn't able to check JSON key! The Item-NBT-API may not work with Json serialization/deserialization!");
                     jsonCompatible = false;
                 } else if (!(STRING_TEST_VALUE).equals(simpleObject.getTestString())
                         || simpleObject.getTestInteger() != INT_TEST_VALUE
                         || simpleObject.getTestDouble() != DOUBLE_TEST_VALUE
                         || !simpleObject.isTestBoolean() == BOOLEAN_TEST_VALUE) {
-                    getLogger().warning("One key does not equal the original value in JSON! The Item-NBT-API may not work with Json serialization/deserialization!");
+                    getLogger().warning(
+                            "One key does not equal the original value in JSON! The Item-NBT-API may not work with Json serialization/deserialization!");
                     jsonCompatible = false;
                 }
             }
@@ -282,8 +333,8 @@ public class ItemNBTAPI extends JavaPlugin {
     private static final byte BYTE_TEST_VALUE = 7;
     private static final float FLOAT_TEST_VALUE = 13.37f;
     private static final long LONG_TEST_VALUE = (long) Integer.MAX_VALUE + 42L;
-    private static final int[] INTARRAY_TEST_VALUE = new int[]{1337, 42, 69};
-    private static final byte[] BYTEARRAY_TEST_VALUE = new byte[]{8, 7, 3, 2};
+    private static final int[] INTARRAY_TEST_VALUE = new int[] { 1337, 42, 69 };
+    private static final byte[] BYTEARRAY_TEST_VALUE = new byte[] { 8, 7, 3, 2 };
     //end region STATIC FINAL VARIABLES
 
     public static class SimpleJsonTestObject {
