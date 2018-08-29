@@ -2,8 +2,6 @@ package de.tr7zw.itemnbtapi;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.Stack;
@@ -25,28 +23,18 @@ public class NBTReflectionUtil {
         return null;
     }
 
-    @SuppressWarnings({"unchecked"})
     public static Object readNBTFile(FileInputStream stream) {
-        @SuppressWarnings("rawtypes")
-        Class clazz = ClassWrapper.NMS_NBTCOMPRESSEDSTREAMTOOLS.getClazz();
-        Method method;
         try {
-            method = clazz.getMethod("a", InputStream.class);
-            return method.invoke(clazz, stream);
+            return ReflectionMethod.NBTFILE_READ.run(null, stream);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    @SuppressWarnings({"unchecked"})
     public static Object saveNBTFile(Object nbt, FileOutputStream stream) {
-        @SuppressWarnings("rawtypes")
-        Class clazz = ClassWrapper.NMS_NBTCOMPRESSEDSTREAMTOOLS.getClazz();
-        Method method;
         try {
-            method = clazz.getMethod("a", ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), OutputStream.class);
-            return method.invoke(clazz, nbt, stream);
+            return ReflectionMethod.NBTFILE_WRITE.run(null, nbt, stream);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -217,10 +205,8 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        Method method;
         try {
-            method = workingtag.getClass().getMethod("a", ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz());
-            method.invoke(workingtag, nbtcompound.getCompound());
+            ReflectionMethod.COMPOUND_ADD.run(workingtag, nbtcompound.getCompound());
             comp.setCompound(rootnbttag);
         } catch (Exception ex) {
             ex.printStackTrace();

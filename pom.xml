@@ -6,7 +6,7 @@
 
     <groupId>de.tr7zw</groupId>
     <artifactId>item-nbt-parent</artifactId>
-    <version>1.7-SNAPSHOT</version>
+    <version>1.8-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -81,7 +81,7 @@
         <dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.12.2-R0.1-SNAPSHOT</version>
+			<version>1.13.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
 		</dependency>
     </dependencies>

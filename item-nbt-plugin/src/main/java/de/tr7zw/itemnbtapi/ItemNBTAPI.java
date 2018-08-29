@@ -233,7 +233,7 @@ public class ItemNBTAPI extends JavaPlugin {
                         block.setType(Material.CHEST);
                         NBTTileEntity tile = new NBTTileEntity(block.getState());
                         getLogger().info(tile.asNBTString());
-                        tile.setString("INVALIDEKEY", "test");
+                        tile.setString("Lock", "test");
                         block.setType(Material.AIR);
                         getLogger().info("Tile NBT seems to work!");
                     }
