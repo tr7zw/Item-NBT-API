@@ -41,7 +41,7 @@ public enum MinecraftVersion {
         if (version != Unknown) {
             System.out.println("[NBTAPI] NMS support '" + version.name() + "' loaded!");
         } else {
-            System.out.println("[NBTAPI] Wasn't able to find NMS Support! Some functions will not work!");
+            System.out.println("[NBTAPI] Wasn't able to find NMS Support! Some functions may not work!");
         }
         return version;
     }

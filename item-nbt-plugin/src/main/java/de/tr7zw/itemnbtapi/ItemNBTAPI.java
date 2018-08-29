@@ -7,7 +7,6 @@ import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Monster;
 import org.bukkit.inventory.ItemStack;
@@ -226,7 +225,7 @@ public class ItemNBTAPI extends JavaPlugin {
                     compatible = false;
                     ex.printStackTrace();
                 }
-                try {
+              /*  try {
                     Block block = world.getBlockAt(world.getSpawnLocation().getBlockX(), 255, world.getSpawnLocation().getBlockZ());
                     if (block.getType() == Material.AIR) {
                         getLogger().info("Testing Tile NBT!");
@@ -234,14 +233,15 @@ public class ItemNBTAPI extends JavaPlugin {
                         NBTTileEntity tile = new NBTTileEntity(block.getState());
                         getLogger().info(tile.asNBTString());
                         tile.setString("Lock", "test");
+                        getLogger().info(tile.asNBTString());
                         block.setType(Material.AIR);
                         getLogger().info("Tile NBT seems to work!");
                     }
                 } catch (Exception ex) {
-                    getLogger().warning("Wasn't able to use NBTEntities! The Item-NBT-API may not work!");
+                    getLogger().warning("Wasn't able to use NBTTiles! The Item-NBT-API may not work!");
                     compatible = false;
                     ex.printStackTrace();
-                }
+                }*/
             }
 
         } catch (Exception ex) {
