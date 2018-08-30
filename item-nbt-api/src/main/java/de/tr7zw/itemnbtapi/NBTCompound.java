@@ -130,9 +130,11 @@ public class NBTCompound {
     public <T> T getObject(String key, Class<T> type) {
         return NBTReflectionUtil.getObject(this, key, type);
     }
-
+    
     public Boolean hasKey(String key) {
-        return (Boolean) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_HAS_KEY, key);
+        Boolean b =  (Boolean) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_HAS_KEY, key);
+        if(b == null)return false;
+        return b;
     }
 
     public void removeKey(String key) {

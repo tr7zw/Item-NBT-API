@@ -7,7 +7,7 @@
     <parent>
         <groupId>de.tr7zw</groupId>
         <artifactId>item-nbt-parent</artifactId>
-        <version>1.8-SNAPSHOT</version>
+        <version>1.8.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>item-nbt-api-plugin</artifactId>
@@ -59,7 +59,7 @@
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api</artifactId>
-            <version>1.8-SNAPSHOT</version>
+            <version>1.8.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
