@@ -192,7 +192,9 @@ public class NBTCompound {
     }
     
     public String asNBTString(){
-        return NBTReflectionUtil.gettoCompount(getCompound(), this).toString();
+        Object comp = NBTReflectionUtil.gettoCompount(getCompound(), this);
+        if(comp == null)return "{}";
+        return comp.toString();
     }
 
 }
