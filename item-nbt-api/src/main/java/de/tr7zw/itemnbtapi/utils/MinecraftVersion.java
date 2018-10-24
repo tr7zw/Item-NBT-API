@@ -31,7 +31,7 @@ public enum MinecraftVersion {
         if (version != null) {
             return version;
         }
-        final String ver = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+        final String ver = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
         System.out.println("[NBTAPI] Found Spigot: " + ver + "! Trying to find NMS support");
         try {
             version = MinecraftVersion.valueOf(ver.replace("v", "MC"));
