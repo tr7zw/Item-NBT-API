@@ -3,4 +3,4 @@ addons:
   sonarcloud:
     organization: "tr7zw-github"
 script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+- sonar-scanner
