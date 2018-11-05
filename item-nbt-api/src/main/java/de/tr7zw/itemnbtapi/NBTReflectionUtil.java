@@ -2,6 +2,7 @@ package de.tr7zw.itemnbtapi;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.Stack;
@@ -61,8 +62,15 @@ public class NBTReflectionUtil {
         @SuppressWarnings("rawtypes")
         Class clazz = ClassWrapper.NMS_ITEMSTACK.getClazz();
         try {
-            Object nmsstack = clazz.getConstructor(ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz()).newInstance(nbtcompound.getCompound());
-            return nmsstack;
+            if(MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_12_R1.getVersionId()){
+                Constructor<?> constructor = clazz.getConstructor(ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz());
+                constructor.setAccessible(true);
+                return constructor.newInstance(nbtcompound.getCompound());
+            }else{
+                Method method = clazz.getMethod("createStack", ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz());
+                method.setAccessible(true);
+                return method.invoke(null, nbtcompound.getCompound());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
