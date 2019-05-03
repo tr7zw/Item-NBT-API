@@ -24,6 +24,12 @@ public enum MinecraftVersion {
         this.versionId = versionId;
     }
 
+    private static boolean logging = true;
+
+    public static void setLogging(boolean log) {
+        logging = log;
+    }
+
     public int getVersionId() {
         return versionId;
     }
@@ -33,16 +39,20 @@ public enum MinecraftVersion {
             return version;
         }
         final String ver = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-        System.out.println("[NBTAPI] Found Spigot: " + ver + "! Trying to find NMS support");
+
+        if (logging)
+            System.out.println("[NBTAPI] Found Spigot: " + ver + "! Trying to find NMS support");
         try {
             version = MinecraftVersion.valueOf(ver.replace("v", "MC"));
         } catch (IllegalArgumentException ex) {
             version = MinecraftVersion.Unknown;
         }
         if (version != Unknown) {
-            System.out.println("[NBTAPI] NMS support '" + version.name() + "' loaded!");
+            if (logging)
+                System.out.println("[NBTAPI] NMS support '" + version.name() + "' loaded!");
         } else {
-            System.out.println("[NBTAPI] Wasn't able to find NMS Support! Some functions may not work!");
+            if (logging)
+                System.out.println("[NBTAPI] Wasn't able to find NMS Support! Some functions may not work!");
         }
         return version;
     }
