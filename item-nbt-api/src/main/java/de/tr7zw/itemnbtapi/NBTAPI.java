@@ -1,6 +1,6 @@
 package de.tr7zw.itemnbtapi;
 
-public class Logger {
+public class NBTAPI {
 
     private static boolean log;
     public static void setLogging(boolean newLogging) {

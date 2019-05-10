@@ -1,6 +1,6 @@
 package de.tr7zw.itemnbtapi.utils;
 
-import de.tr7zw.itemnbtapi.Logger;
+import de.tr7zw.itemnbtapi.NBTAPI;
 import org.bukkit.Bukkit;
 
 public enum MinecraftVersion {
@@ -35,16 +35,16 @@ public enum MinecraftVersion {
         }
         final String ver = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
 
-        Logger.log("Found Spigot: " + ver + "! Trying to find NMS support");
+        NBTAPI.log("Found Spigot: " + ver + "! Trying to find NMS support");
         try {
             version = MinecraftVersion.valueOf(ver.replace("v", "MC"));
         } catch (IllegalArgumentException ex) {
             version = MinecraftVersion.Unknown;
         }
         if (version != Unknown) {
-            Logger.log("NMS support '" + version.name() + "' loaded!");
+            NBTAPI.log("NMS support '" + version.name() + "' loaded!");
         } else {
-            Logger.log("Wasn't able to find NMS Support! Some functions may not work!");
+            NBTAPI.log("Wasn't able to find NMS Support! Some functions may not work!");
         }
         return version;
     }
@@ -54,7 +54,7 @@ public enum MinecraftVersion {
             return hasGsonSupport;
         }
         try {
-            Logger.log("Found Gson: " + Class.forName("com.google.gson.Gson"));
+            NBTAPI.log("Found Gson: " + Class.forName("com.google.gson.Gson"));
             hasGsonSupport = true;
         } catch (Exception ex) {
             hasGsonSupport = false;
