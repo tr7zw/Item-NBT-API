@@ -3,7 +3,6 @@ package de.tr7zw.itemnbtapi;
 import java.io.File;
 import java.util.logging.Level;
 
-import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -30,7 +29,7 @@ public class ItemNBTAPI extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        new MetricsLite(this);
+        //new MetricsLite(this); The metrics moved into the API
         getLogger().info("Checking bindings...");
         getLogger().info("Minecraft Version:");
         MinecraftVersion.getVersion();

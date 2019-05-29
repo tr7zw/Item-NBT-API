@@ -7,7 +7,7 @@
     <parent>
         <groupId>de.tr7zw</groupId>
         <artifactId>item-nbt-parent</artifactId>
-        <version>1.8.3-SNAPSHOT</version>
+        <version>2.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>item-nbt-api-plugin</artifactId>
@@ -28,12 +28,6 @@
                 <version>3.2.1</version>
                 <configuration>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <relocations>
-                        <relocation>
-                            <pattern>org.bstats</pattern>
-                            <shadedPattern>de.tr7zw.itemnbtapi</shadedPattern>
-                        </relocation>
-                    </relocations>
                 </configuration>
                 <executions>
                     <execution>
@@ -45,27 +39,41 @@
                     </execution>
                 </executions>
             </plugin>
+			<!-- Start and Stop a SpigotMC server automatically before and after the integration-test phase. -->
+            <plugin>
+                <groupId>de.tr7zw.spigotmc.maven</groupId>
+                <artifactId>tr-spigotmc-maven-plugin</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+				<configuration>
+					<versions>1.8.8-R0.1-SNAPSHOT-latest, 1.9.2-R0.1-SNAPSHOT-latest, 1.9.4-R0.1-SNAPSHOT-latest, 1.10.2-R0.1-SNAPSHOT-latest,1.11.2,1.12.2,1.13.2,1.14.1</versions>
+					<works>Success!</works>
+					<error>WARNING!</error>
+					<filename>item-nbt-api-plugin-2.0.0-SNAPSHOT.jar</filename>
+					<foldername>item-nbt-plugin</foldername>
+				</configuration>
+                <executions>
+                    <execution>
+                        <id>start-server</id>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>stop-server</id>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>bstats-repo</id>
-            <url>http://repo.bstats.org/content/repositories/releases/</url>
-        </repository>
-    </repositories>
 
     <dependencies>
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api</artifactId>
-            <version>1.8.3-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.bstats</groupId>
-            <artifactId>bstats-bukkit-lite</artifactId>
-            <version>1.2</version>
+            <version>2.0.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
