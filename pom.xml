@@ -79,6 +79,7 @@
 		<repository>
 			<id>codemc-repo</id>
 			<url>https://repo.codemc.org/repository/maven-public/</url>
+			<layout>default</layout>
 		</repository>
     </repositories>
 
@@ -87,6 +88,12 @@
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
 			<version>1.14.1-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>de.tr7zw.spigotmc.maven</groupId>
+			<artifactId>tr-spigotmc-maven-plugin</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
             <scope>provided</scope>
 		</dependency>
     </dependencies>
