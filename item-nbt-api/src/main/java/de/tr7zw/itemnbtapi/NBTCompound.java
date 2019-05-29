@@ -157,8 +157,12 @@ public class NBTCompound {
         return null;
     }
 
-    public NBTList getList(String name, NBTType type) {
-        return NBTReflectionUtil.getList(this, name, type);
+    public NBTList<String> getStringList(String name) {
+    	return NBTReflectionUtil.getList(this, name, NBTType.NBTTagString, String.class);
+    }
+    
+    public NBTList<NBTListCompound> getCompoundList(String name) {
+    	return (NBTCompoundList) NBTReflectionUtil.getList(this, name, NBTType.NBTTagCompound, NBTListCompound.class);
     }
 
     public NBTType getType(String name) {

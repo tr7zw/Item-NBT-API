@@ -70,20 +70,21 @@ public class ItemNBTAPI extends JavaPlugin {
             comp.setString(STRING_TEST_KEY, STRING_TEST_VALUE + "2");
             comp.setInteger(INT_TEST_KEY, INT_TEST_VALUE * 2);
             comp.setDouble(DOUBLE_TEST_KEY, DOUBLE_TEST_VALUE * 2);
-            NBTList list = comp.getList("testlist", NBTType.NBTTagString);
+            NBTList<String> list = comp.getStringList("testlist");
             if (MinecraftVersion.getVersion() == MinecraftVersion.MC1_7_R4) {
                 getLogger().warning(
                         "Skipped the NBTList check, because 1.7 doesn't fully support it! The Item-NBT-API may not work!");
             } else {
-                list.addString("test1");
-                list.addString("test2");
-                list.addString("test3");
-                list.addString("test4");
-                list.setString(2, "test42");
+                list.add("test1");
+                list.add("test2");
+                list.add("test3");
+                list.add("test4");
+                list.set(2, "test42");
                 list.remove(1);
             }
-            NBTList taglist = comp.getList("complist", NBTType.NBTTagCompound);
-            NBTListCompound lcomp = taglist.addCompound();
+            NBTList<NBTListCompound> taglist = comp.getCompoundList("complist");
+            taglist.add(null);
+            NBTListCompound lcomp = taglist.get(0);
             lcomp.setDouble("double1", 0.3333);
             lcomp.setInteger("int1", 42);
             lcomp.setString("test1", "test1");
@@ -134,17 +135,17 @@ public class ItemNBTAPI extends JavaPlugin {
                 compatible = false;
             }
 
-            list = comp.getList("testlist", NBTType.NBTTagString);
+            list = comp.getStringList("testlist");
             if (comp.getType("testlist") != NBTType.NBTTagList) {
                 getLogger().warning("Wasn't able to get the correct Tag type! The Item-NBT-API may not work!");
                 compatible = false;
             }
-            if (!list.getString(1).equals("test42") || list.size() != 3) {
+            if (!list.get(1).equals("test42") || list.size() != 3) {
                 getLogger().warning("The List support got an error, and may not work!");
             }
-            taglist = comp.getList("complist", NBTType.NBTTagCompound);
+            taglist = comp.getCompoundList("complist");
             if (taglist.size() == 1) {
-                lcomp = taglist.getCompound(0);
+                lcomp = taglist.get(0);
                 if (lcomp.getKeys().size() != 3) {
                     getLogger().warning("Wrong key amount in Taglist (" + lcomp.getKeys().size()
                             + ")! The Item-NBT-API may not work!");

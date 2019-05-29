@@ -262,7 +262,8 @@ public class NBTReflectionUtil {
         }
     }
 
-    public static NBTList getList(NBTCompound comp, String key, NBTType type) {
+    @SuppressWarnings("unchecked")
+	public static <T> NBTList<T> getList(NBTCompound comp, String key, NBTType type, Class<T> clazz) {
         Object rootnbttag = comp.getCompound();
         if (rootnbttag == null) {
             rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
@@ -272,11 +273,17 @@ public class NBTReflectionUtil {
         Method method;
         try {
             method = workingtag.getClass().getMethod("getList", String.class, int.class);
-            return new NBTList(comp, key, type, method.invoke(workingtag, key, type.getId()));
+            Object nbt = method.invoke(workingtag, key, type.getId());
+            if(clazz == String.class) {
+            	return (NBTList<T>) new NBTStringList(comp, key, type, nbt);
+            } else if(clazz == NBTListCompound.class) {
+            	return (NBTList<T>) new NBTCompoundList(comp, key, type, nbt);
+            }else {
+            	return null;
+            }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            throw new NbtApiException(ex);
         }
-        return null;
     }
 
     public static void setObject(NBTCompound comp, String key, Object value) {
