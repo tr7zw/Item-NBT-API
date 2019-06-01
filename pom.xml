@@ -11,6 +11,7 @@
 
     <modules>
         <module>item-nbt-api</module>
+        <module>nbt-injector</module>
         <module>item-nbt-plugin</module>
     </modules>
 

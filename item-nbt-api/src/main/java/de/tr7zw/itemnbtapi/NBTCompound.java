@@ -19,7 +19,7 @@ public class NBTCompound {
         return compundName;
     }
 
-    protected Object getCompound() {
+    public Object getCompound() {
         return parent.getCompound();
     }
 
@@ -161,7 +161,11 @@ public class NBTCompound {
     	return NBTReflectionUtil.getList(this, name, NBTType.NBTTagString, String.class);
     }
     
-    public NBTList<NBTListCompound> getCompoundList(String name) {
+    public NBTList<Integer> getIntegerList(String name) {
+    	return NBTReflectionUtil.getList(this, name, NBTType.NBTTagInt, Integer.class);
+    }
+    
+    public NBTCompoundList getCompoundList(String name) {
     	return (NBTCompoundList) NBTReflectionUtil.getList(this, name, NBTType.NBTTagCompound, NBTListCompound.class);
     }
 

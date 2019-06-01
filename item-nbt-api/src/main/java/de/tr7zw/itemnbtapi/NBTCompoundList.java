@@ -63,7 +63,7 @@ public class NBTCompoundList extends NBTList<NBTListCompound>{
 	@Override
 	public NBTListCompound get(int index) {
 		try {
-			Object compound = ReflectionMethod.LIST_GET.run(listObject, index);
+			Object compound = ReflectionMethod.LIST_GET_COMPOUND.run(listObject, index);
 			return new NBTListCompound(this, compound);
 		} catch (Exception ex) {
 			throw new NbtApiException(ex);

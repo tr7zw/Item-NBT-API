@@ -19,9 +19,6 @@ public abstract class NBTList<T> implements List<T> {
 		listName = name;
 		this.type = type;
 		this.listObject = list;
-		if (!(type == NBTType.NBTTagString || type == NBTType.NBTTagCompound)) {
-			System.err.println("List types != String/Compound are currently not implemented!");
-		}
 	}
 
 	protected void save() {

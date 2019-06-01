@@ -9,7 +9,7 @@ public class NBTContainer extends NBTCompound{
         nbt = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
     }
     
-    protected NBTContainer(Object nbt){
+    public NBTContainer(Object nbt){
         super(null, null);
         this.nbt = nbt;
     }
@@ -24,11 +24,11 @@ public class NBTContainer extends NBTCompound{
         }
     }
 
-    protected Object getCompound() {
+    public Object getCompound() {
         return nbt;
     }
 
-    protected void setCompound(Object tag) {
+    public void setCompound(Object tag) {
         nbt = tag;
     }
 

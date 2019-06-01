@@ -278,6 +278,8 @@ public class NBTReflectionUtil {
             	return (NBTList<T>) new NBTStringList(comp, key, type, nbt);
             } else if(clazz == NBTListCompound.class) {
             	return (NBTList<T>) new NBTCompoundList(comp, key, type, nbt);
+            } else if(clazz == Integer.class) {
+            	return (NBTList<T>) new NBTIntegerList(comp, key, type, nbt);
             }else {
             	return null;
             }

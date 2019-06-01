@@ -11,7 +11,7 @@ public class NBTEntity extends NBTCompound {
         ent = entity;
     }
 
-    protected Object getCompound() {
+    public Object getCompound() {
         return NBTReflectionUtil.getEntityNBTTagCompound(NBTReflectionUtil.getNMSEntity(ent));
     }
 

@@ -14,7 +14,7 @@ public class NBTItem extends NBTCompound {
         bukkitItem = item.clone();
     }
 
-    protected Object getCompound() {
+    public Object getCompound() {
         return NBTReflectionUtil.getItemRootNBTTagCompound(ReflectionMethod.ITEMSTACK_NMSCOPY.run(null, bukkitItem));
     }
 

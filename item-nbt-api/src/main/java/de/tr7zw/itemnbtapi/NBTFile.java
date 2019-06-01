@@ -35,7 +35,7 @@ public class NBTFile extends NBTCompound {
         return file;
     }
 
-    protected Object getCompound() {
+    public Object getCompound() {
         return nbt;
     }
 

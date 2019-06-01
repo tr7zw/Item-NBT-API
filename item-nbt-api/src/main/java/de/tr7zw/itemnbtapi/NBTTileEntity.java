@@ -11,7 +11,7 @@ public class NBTTileEntity extends NBTCompound {
         this.tile = tile;
     }
 
-    protected Object getCompound() {
+    public Object getCompound() {
         return NBTReflectionUtil.getTileEntityNBTTagCompound(tile);
     }
 

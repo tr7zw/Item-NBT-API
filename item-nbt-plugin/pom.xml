@@ -45,7 +45,8 @@
                 <artifactId>tr-spigotmc-maven-plugin</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
 				<configuration>
-					<versions>1.8.8-R0.1-SNAPSHOT-latest, 1.9.2-R0.1-SNAPSHOT-latest, 1.9.4-R0.1-SNAPSHOT-latest, 1.10.2-R0.1-SNAPSHOT-latest,1.11.2,1.12.2,1.13.2,1.14.1</versions>
+				<!-- 1.8.8-R0.1-SNAPSHOT-latest, 1.9.2-R0.1-SNAPSHOT-latest, 1.9.4-R0.1-SNAPSHOT-latest, 1.10.2-R0.1-SNAPSHOT-latest,1.11.2,1.12.2,1.13.2,1.14.1 -->
+					<versions>1.9.4-R0.1-SNAPSHOT-latest</versions>
 					<works>Success!</works>
 					<error>WARNING!</error>
 					<filename>item-nbt-api-plugin-2.0.0-SNAPSHOT.jar</filename>
@@ -73,6 +74,12 @@
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api</artifactId>
+            <version>2.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.tr7zw</groupId>
+            <artifactId>nbt-injector</artifactId>
             <version>2.0.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
