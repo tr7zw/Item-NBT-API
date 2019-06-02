@@ -4,6 +4,7 @@ import javassist.ClassPool;
 import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -74,6 +75,17 @@ public class NBTInjector {
             Object cworld = ClassWrapper.CRAFT_WORLD.getClazz().cast(tile.getWorld());
             Object nmsworld = ReflectionMethod.CRAFT_WORLD_GET_HANDLE.run(cworld);
             Object tileEntity = ReflectionMethod.NMS_WORLD_GET_TILEENTITY.run(nmsworld, pos);
+    		if (!(tileEntity instanceof INBTWrapper)) {
+    			System.out.print("Tile is not custom yet, converting!");
+    			//Loading Updated Tile
+    			Method load = ClassWrapper.NMS_TILEENTITY.getClazz().getDeclaredMethod("c", ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz());
+    			Object tileEntityUpdated = load.invoke(null, new NBTTileEntity(tile).getCompound());
+    			Method setter = nmsworld.getClass().getMethod("setTileEntity", ClassWrapper.NMS_BLOCKPOSITION.getClazz(), ClassWrapper.NMS_TILEENTITY.getClazz());
+    			Method remove = nmsworld.getClass().getMethod("s", ClassWrapper.NMS_BLOCKPOSITION.getClazz());
+    			remove.invoke(nmsworld, pos);
+    			setter.invoke(nmsworld, pos, tileEntityUpdated);
+    			return getNbtData(tileEntityUpdated);
+    		}
 			return getNbtData(tileEntity);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
