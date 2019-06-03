@@ -16,7 +16,8 @@ NMS_NBTCOMPRESSEDSTREAMTOOLS("net.minecraft.server.", ".NBTCompressedStreamTools
 NMS_MOJANGSONPARSER("net.minecraft.server.", ".MojangsonParser"),
 NMS_TILEENTITY("net.minecraft.server.", ".TileEntity"),
 NMS_BLOCKPOSITION("net.minecraft.server.", ".BlockPosition"),
-NMS_WORLD("net.minecraft.server.", ".WorldServer"),
+NMS_WORLDSERVER("net.minecraft.server.", ".WorldServer"),
+NMS_WORLD("net.minecraft.server.", ".World"),
 NMS_ENTITY("net.minecraft.server.", ".Entity"),
 NMS_ENTITYTYPES("net.minecraft.server.", ".EntityTypes"),
 ;

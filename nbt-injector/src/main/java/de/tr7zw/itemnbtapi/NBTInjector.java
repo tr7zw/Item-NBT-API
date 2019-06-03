@@ -1,13 +1,13 @@
 package de.tr7zw.itemnbtapi;
 
-import javassist.ClassPool;
-import org.bukkit.plugin.Plugin;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.logging.Logger;
+
+import javassist.ClassPool;
 
 public class NBTInjector {
 
@@ -59,10 +59,42 @@ public class NBTInjector {
 		return null;
 	}
 
+	public static org.bukkit.entity.Entity patchEntity(org.bukkit.entity.Entity entity){
+		if (entity == null) { return null; }
+		try {
+			Object ent = NBTReflectionUtil.getNMSEntity(entity);
+			if (!(ent instanceof INBTWrapper)) {//Replace Entity with custom one
+				System.out.println("Respawning Entity!");
+				Object cworld = ClassWrapper.CRAFT_WORLD.getClazz().cast(entity.getWorld());
+	            Object nmsworld = ReflectionMethod.CRAFT_WORLD_GET_HANDLE.run(cworld);
+	            NBTContainer oldNBT = new NBTContainer(new NBTEntity(entity).getCompound());
+	            Method create = ClassWrapper.NMS_ENTITYTYPES.getClazz().getMethod("a", ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), ClassWrapper.NMS_WORLD.getClazz());
+	            oldNBT.setString("id", Entity.getBackupMap().get(ent.getClass()));
+	            oldNBT.removeKey("UUIDMost");
+	            oldNBT.removeKey("UUIDLeast");
+	            entity.remove();
+	            Object newEntity = create.invoke(null, oldNBT.getCompound(), nmsworld);
+	            Method spawn = ClassWrapper.NMS_WORLD.getClazz().getMethod("addEntity", ClassWrapper.NMS_ENTITY.getClazz());
+	            spawn.invoke(nmsworld, newEntity);
+	            Method asBukkit = newEntity.getClass().getMethod("getBukkitEntity");
+	            return (org.bukkit.entity.Entity) asBukkit.invoke(newEntity);
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		return entity;
+	}
+	
 	public static NBTCompound getNbtData(org.bukkit.entity.Entity entity) {
 		if (entity == null) { return null; }
 		try {
-			return getNbtData(NBTReflectionUtil.getNMSEntity(entity));
+			Object ent = NBTReflectionUtil.getNMSEntity(entity);
+			if (!(ent instanceof INBTWrapper)) {//Replace Entity with custom one
+				entity = patchEntity(entity);
+				System.out.println("Autopatched Entity: " + entity);
+	            return getNbtData(NBTReflectionUtil.getNMSEntity(entity));
+			}
+			return getNbtData(ent);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -75,6 +107,9 @@ public class NBTInjector {
             Object cworld = ClassWrapper.CRAFT_WORLD.getClazz().cast(tile.getWorld());
             Object nmsworld = ReflectionMethod.CRAFT_WORLD_GET_HANDLE.run(cworld);
             Object tileEntity = ReflectionMethod.NMS_WORLD_GET_TILEENTITY.run(nmsworld, pos);
+            if(tileEntity == null) { // Not a tile block
+            	return null;
+            }
     		if (!(tileEntity instanceof INBTWrapper)) {
     			System.out.print("Tile is not custom yet, converting!");
     			//Loading Updated Tile
@@ -98,6 +133,20 @@ public class NBTInjector {
 	}
 
 	static class Entity {
+		private static Map<Class<?>, String> backupMap = new HashMap<>();
+		
+		static {
+			try {
+				backupMap.putAll(getDMap());
+			} catch (ReflectiveOperationException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		static Map<Class<?>, String> getBackupMap() throws ReflectiveOperationException {
+			return backupMap;
+		}
+		
 		static Map<String, Class<?>> getCMap() throws ReflectiveOperationException {
 			return (Map<String, Class<?>>) getAccessable(ClassWrapper.NMS_ENTITYTYPES.getClazz().getDeclaredField("c")).get(null);
 		}
