@@ -13,6 +13,11 @@ public class NBTInjector {
 
 	static Logger           logger           = Logger.getLogger("NBTInjector");
 
+	/**
+	 * Replaces the vanilla classes with Wrapped classes that support custom NBT.
+	 * This method needs to be called during onLoad so classes are replaced before worlds load.
+	 * If your plugin adds a new Entity(probably during onLoad) recall this method so it's class gets Wrapped.
+	 */
 	public static void inject() {
 		try {
 			ClassPool classPool = ClassPool.getDefault();
@@ -22,7 +27,7 @@ public class NBTInjector {
 					if (INBTWrapper.class.isAssignableFrom(entry.getValue())) { continue; }//Already injected
 					int entityId = Entity.getFMap().get(entry.getValue());
 
-					Class wrapped = ClassGenerator.wrapEntity(classPool, entry.getValue(), "__extraData");
+					Class<?> wrapped = ClassGenerator.wrapEntity(classPool, entry.getValue(), "__extraData");
 					Entity.getCMap().put(entry.getKey(), wrapped);
 					Entity.getDMap().put(wrapped, entry.getKey());
 
@@ -38,7 +43,7 @@ public class NBTInjector {
 				try {
 					if (INBTWrapper.class.isAssignableFrom(entry.getValue())) { continue; }//Already injected
 
-					Class wrapped = ClassGenerator.wrapTileEntity(classPool, entry.getValue(), "__extraData");
+					Class<?> wrapped = ClassGenerator.wrapTileEntity(classPool, entry.getValue(), "__extraData");
 					TileEntity.getFMap().put(entry.getKey(), wrapped);
 					TileEntity.getGMap().put(wrapped, entry.getKey());
 				} catch (Exception e) {
@@ -51,20 +56,31 @@ public class NBTInjector {
 	}
 
 	private static NBTCompound getNbtData(Object object) {
-		System.out.print("Getting from: " + object.getClass().getSimpleName());
 		if (object instanceof INBTWrapper) {
-			System.out.println("Is INBTWrapper");
 			return ((INBTWrapper) object).getNbtData();
 		}
 		return null;
 	}
 
+	/**
+	 * Entities that have just been spawned(from plugins or natually) may use the wrong(Vanilla) class.
+	 * Calling this method removes the wrong entity and respawns it using the correct class. It also tries
+	 * to keep all data of the original entity, but some stuff like passengers will probably cause problems.
+	 * Recalling this method on a patched Entity doesn nothing and returns the Entity instance.
+	 * 
+	 * WARNING: This causes the entity to get a new Bukkit Entity instance. For other plugins the entity will
+	 * be a dead/removed entity, even if it's still kinda there. Bestcase you spawn an Entity and directly replace
+	 * your instance with a patched one.
+	 * Also, for players ingame the entity will quickly flash, since it's respawned.
+	 * 
+	 * @param entity Entity to respawn with the correct class.
+	 * @return Entity The new instance of the entity.
+	 */
 	public static org.bukkit.entity.Entity patchEntity(org.bukkit.entity.Entity entity){
 		if (entity == null) { return null; }
 		try {
 			Object ent = NBTReflectionUtil.getNMSEntity(entity);
 			if (!(ent instanceof INBTWrapper)) {//Replace Entity with custom one
-				System.out.println("Respawning Entity!");
 				Object cworld = ClassWrapper.CRAFT_WORLD.getClazz().cast(entity.getWorld());
 	            Object nmsworld = ReflectionMethod.CRAFT_WORLD_GET_HANDLE.run(cworld);
 	            NBTContainer oldNBT = new NBTContainer(new NBTEntity(entity).getCompound());
@@ -80,26 +96,42 @@ public class NBTInjector {
 	            return (org.bukkit.entity.Entity) asBukkit.invoke(newEntity);
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new NbtApiException("Error while patching an Entity '" + entity + "'", e);
 		}
 		return entity;
 	}
 	
+	/**
+	 * Gets the persistant NBTCompound from a given entity. If the Entity isn't yet patched,
+	 * this method will return null.
+	 * 
+	 * @param entity Entity to get the NBTCompound from
+	 * @return NBTCompound instance
+	 */
 	public static NBTCompound getNbtData(org.bukkit.entity.Entity entity) {
 		if (entity == null) { return null; }
 		try {
 			Object ent = NBTReflectionUtil.getNMSEntity(entity);
-			if (!(ent instanceof INBTWrapper)) {//Replace Entity with custom one
+			/*if (!(ent instanceof INBTWrapper)) {//Replace Entity with custom one
 				entity = patchEntity(entity);
 				System.out.println("Autopatched Entity: " + entity);
 	            return getNbtData(NBTReflectionUtil.getNMSEntity(entity));
-			}
+				return null; // For now don't do anything, just return null.
+			}*/
 			return getNbtData(ent);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new NbtApiException("Error while getting the NBT from an Entity '" + entity + "'.", e);
 		}
 	}
 
+	/**
+	 * Gets the persistant NBTCompound from a given TileEntity. If the Tile isn't yet patched,
+	 * this method will autopatch it. This will unlink the given BlockState, so calling block.getState()
+	 * again may be necessary. This behavior may change in the future.
+	 * 
+	 * @param tile TileEntity to get the NBTCompound from
+	 * @return NBTCompound instance
+	 */
 	public static NBTCompound getNbtData(org.bukkit.block.BlockState tile) {
 		if (tile == null) { return null; }
 		try {
@@ -111,7 +143,6 @@ public class NBTInjector {
             	return null;
             }
     		if (!(tileEntity instanceof INBTWrapper)) {
-    			System.out.print("Tile is not custom yet, converting!");
     			//Loading Updated Tile
     			Method load = ClassWrapper.NMS_TILEENTITY.getClazz().getDeclaredMethod("c", ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz());
     			Object tileEntityUpdated = load.invoke(null, new NBTTileEntity(tile).getCompound());

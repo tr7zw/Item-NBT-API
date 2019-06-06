@@ -8,7 +8,7 @@ import de.tr7zw.itemnbtapi.utils.MinecraftVersion;
 
 public class ClassGenerator {
 
-	public static Class wrapNbtClass(ClassPool classPool, Class<?> originalClass, String writeMethod, String readMethod, String extraDataKey) throws ReflectiveOperationException, NotFoundException, CannotCompileException {
+	public static Class<?> wrapNbtClass(ClassPool classPool, Class<?> originalClass, String writeMethod, String readMethod, String extraDataKey) throws ReflectiveOperationException, NotFoundException, CannotCompileException {
 		classPool.insertClassPath(new LoaderClassPath(ClassGenerator.class.getClassLoader()));
 
 		CtClass generated = classPool.makeClass("de.tr7zw.itemnbtapi.generated." + originalClass.getSimpleName());
@@ -43,11 +43,11 @@ public class ClassGenerator {
 		generated.addMethod(CtMethod.make(readMethod, generated));
 
 		// Overwrite constructors
-		for (Constructor constructor : originalClass.getConstructors()) {
+		for (Constructor<?> constructor : originalClass.getConstructors()) {
 			String paramString = "";
 			String paramNameString = "";
 			int c = 0;
-			for (Class clazz : constructor.getParameterTypes()) {
+			for (Class<?> clazz : constructor.getParameterTypes()) {
 				if (c != 0) {
 					paramString += ",";
 					paramNameString += ",";
@@ -69,7 +69,7 @@ public class ClassGenerator {
 		return generated.toClass(INBTWrapper.class.getClassLoader(), INBTWrapper.class.getProtectionDomain());
 	}
 
-	public static Class wrapEntity(ClassPool classPool, Class<?> originalClass, String extraDataKey) throws ReflectiveOperationException, NotFoundException, CannotCompileException {
+	public static Class<?> wrapEntity(ClassPool classPool, Class<?> originalClass, String extraDataKey) throws ReflectiveOperationException, NotFoundException, CannotCompileException {
 		String writeReturn = MinecraftVersion.getVersion().getVersionId() > MinecraftVersion.MC1_10_R1.getVersionId() ? "NBTTagCompound" : "void";
 		String writeMethod = "public " + writeReturn + " b(NBTTagCompound compound) {\n"
 				+ "  super.b(compound);\n"
@@ -84,18 +84,18 @@ public class ClassGenerator {
 		return wrapNbtClass(classPool, originalClass, writeMethod, readMethod, extraDataKey);
 	}
 
-	public static Class wrapTileEntity(ClassPool classPool, Class<?> originalClass, String extraDataKey) throws ReflectiveOperationException, NotFoundException, CannotCompileException {
+	public static Class<?> wrapTileEntity(ClassPool classPool, Class<?> originalClass, String extraDataKey) throws ReflectiveOperationException, NotFoundException, CannotCompileException {
 		String writeReturn = MinecraftVersion.getVersion().getVersionId() > MinecraftVersion.MC1_9_R1.getVersionId() ? "NBTTagCompound" : "void";
 		String writeName = MinecraftVersion.getVersion().getVersionId() > MinecraftVersion.MC1_9_R1.getVersionId() ? "save" : "b";
 		String writeMethod = "public " + writeReturn + " " + writeName + "(NBTTagCompound compound) {\n"
 				+ "  compound = writeExtraCompound(compound);\n"
-				+ "  System.out.println(\"Save: \" +compound);\n" 
+				//+ "  System.out.println(\"Save: \" +compound);\n" 
 				+ "  " + (!"void".equals(writeReturn) ? "return " : "") + "super." + writeName + "(compound);\n"
 				+ "}";
 		String readMethod = "public void a(NBTTagCompound compound) {\n"
 				+ "  super.a(compound);\n"
 				+ "  readExtraCompound(compound);\n"
-				+ "  System.out.println(\"Read: \" +compound);\n" 
+				//+ "  System.out.println(\"Read: \" +compound);\n" 
 				+ "}";
 		return wrapNbtClass(classPool, originalClass, writeMethod, readMethod, extraDataKey);
 	}
