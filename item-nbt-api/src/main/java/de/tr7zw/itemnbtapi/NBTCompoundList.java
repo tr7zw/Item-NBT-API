@@ -8,7 +8,6 @@ public class NBTCompoundList extends NBTList<NBTListCompound>{
 
 	protected NBTCompoundList(NBTCompound owner, String name, NBTType type, Object list) {
 		super(owner, name, type, list);
-		// TODO Auto-generated constructor stub
 	}
 
 	public NBTListCompound addCompound() {
@@ -73,6 +72,11 @@ public class NBTCompoundList extends NBTList<NBTListCompound>{
 	@Override
 	public NBTListCompound set(int index, NBTListCompound element) {
 		throw new NotImplementedException("This method doesn't work in the ListCompound context.");
+	}
+
+	@Override
+	protected Object asTag(NBTListCompound object) throws Exception {
+		return null;
 	}
 
 }

@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import de.tr7zw.itemnbtapi.utils.MinecraftVersion;
+
 public abstract class NBTList<T> implements List<T> {
 
 	private String listName;
@@ -25,6 +27,49 @@ public abstract class NBTList<T> implements List<T> {
 		parent.set(listName, listObject);
 	}
 
+	abstract protected Object asTag(T object) throws Exception;
+	
+	@Override
+	public boolean add(T element) {
+		try {
+			if (MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_14_R1.getVersionId()) {
+				ReflectionMethod.LIST_ADD.run(listObject, 0, asTag(element));
+			} else {
+				ReflectionMethod.LEGACY_LIST_ADD.run(listObject, asTag(element));
+			}
+			save();
+			return true;
+		} catch (Exception ex) {
+			throw new NbtApiException(ex);
+		}
+	}
+
+	@Override
+	public void add(int index, T element) {
+		try {
+			if (MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_14_R1.getVersionId()) {
+				ReflectionMethod.LIST_ADD.run(listObject, index, asTag(element));
+			} else {
+				ReflectionMethod.LEGACY_LIST_ADD.run(listObject, asTag(element));
+			}
+			save();
+		} catch (Exception ex) {
+			throw new NbtApiException(ex);
+		}
+	}
+	
+	@Override
+	public T set(int index, T element) {
+		T prev = get(index);
+		try {
+			ReflectionMethod.LIST_SET.run(listObject, index, asTag(element));
+			save();
+		} catch (Exception ex) {
+			throw new NbtApiException(ex);
+		}
+		return prev;
+	}
+	
 	public T remove(int i) {
 		try {
 			ReflectionMethod.LIST_REMOVE_KEY.run(listObject, i);
