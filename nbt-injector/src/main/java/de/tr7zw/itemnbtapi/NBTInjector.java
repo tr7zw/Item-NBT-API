@@ -11,7 +11,7 @@ import javassist.ClassPool;
 
 public class NBTInjector {
 
-	static Logger           logger           = Logger.getLogger("NBTInjector");
+	static Logger logger = Logger.getLogger("NBTInjector");
 
 	/**
 	 * Replaces the vanilla classes with Wrapped classes that support custom NBT.
@@ -21,7 +21,7 @@ public class NBTInjector {
 	public static void inject() {
 		try {
 			ClassPool classPool = ClassPool.getDefault();
-			logger.info("Injecting Entity classes...");
+			logger.info("[NBTAPI] Injecting Entity classes...");
 			for (Map.Entry<String, Class<?>> entry : new HashSet<>(Entity.getCMap().entrySet())) {
 				try {
 					if (INBTWrapper.class.isAssignableFrom(entry.getValue())) { continue; }//Already injected
@@ -38,7 +38,7 @@ public class NBTInjector {
 				}
 			}
 
-			logger.info("Injecting Tile Entity classes...");
+			logger.info("[NBTAPI] Injecting Tile Entity classes...");
 			for (Map.Entry<String, Class<?>> entry : new HashSet<>(TileEntity.getFMap().entrySet())) {
 				try {
 					if (INBTWrapper.class.isAssignableFrom(entry.getValue())) { continue; }//Already injected

@@ -1,5 +1,7 @@
 package de.tr7zw.itemnbtapi.utils;
 
+import java.util.logging.Logger;
+
 import org.bukkit.Bukkit;
 
 public enum MinecraftVersion {
@@ -18,6 +20,7 @@ public enum MinecraftVersion {
 	private static MinecraftVersion version;
 	private static Boolean hasGsonSupport;
 	private static boolean bStatsDisabled = false;
+	private static Logger logger = Logger.getLogger("ItemNBTAPI");
 
 	private final int versionId;
 
@@ -34,22 +37,22 @@ public enum MinecraftVersion {
 			return version;
 		}
 		final String ver = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-		System.out.println("[NBTAPI] Found Spigot: " + ver + "! Trying to find NMS support");
+		logger.info("[ItemNBTAPI] Found Spigot: " + ver + "! Trying to find NMS support");
 		try {
 			version = MinecraftVersion.valueOf(ver.replace("v", "MC"));
 		} catch (IllegalArgumentException ex) {
 			version = MinecraftVersion.Unknown;
 		}
 		if (version != Unknown) {
-			System.out.println("[NBTAPI] NMS support '" + version.name() + "' loaded!");
+			logger.info("[ItemNBTAPI] NMS support '" + version.name() + "' loaded!");
 		} else {
-			System.out.println("[NBTAPI] Wasn't able to find NMS Support! Some functions may not work!");
+			logger.warning("[ItemNBTAPI] Wasn't able to find NMS Support! Some functions may not work!");
 		}
 		try {
 			if(!bStatsDisabled)
 				new ApiMetricsLite();
 		}catch(Throwable ex) {
-			System.err.println("[NBTAPI] Error enabeling Metrics!");
+			logger.warning("[ItemNBTAPI] Error enabeling Metrics!");
 			ex.printStackTrace();
 		}
 		return version;
@@ -60,9 +63,10 @@ public enum MinecraftVersion {
 			return hasGsonSupport;
 		}
 		try {
-			System.out.println("Found Gson: " + Class.forName("com.google.gson.Gson"));
+			logger.info("[ItemNBTAPI] Found Gson: " + Class.forName("com.google.gson.Gson"));
 			hasGsonSupport = true;
 		} catch (Exception ex) {
+			logger.info("[ItemNBTAPI] Gson not found! This will not allow the usage of some methods!");
 			hasGsonSupport = false;
 		}
 		return hasGsonSupport;

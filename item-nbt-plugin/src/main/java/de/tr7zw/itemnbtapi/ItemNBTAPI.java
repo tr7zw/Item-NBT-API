@@ -1,6 +1,10 @@
 package de.tr7zw.itemnbtapi;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -12,12 +16,17 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import de.tr7zw.itemnbtapi.tests.compounds.GetterSetterTest;
+import de.tr7zw.itemnbtapi.tests.compounds.ListTest;
+import de.tr7zw.itemnbtapi.tests.compounds.TypeTest;
+import de.tr7zw.itemnbtapi.tests.items.ItemConvertionTest;
 import de.tr7zw.itemnbtapi.utils.MinecraftVersion;
 
 public class ItemNBTAPI extends JavaPlugin {
 
 	private static boolean compatible = true;
 	private static boolean jsonCompatible = true;
+	private static ArrayList<de.tr7zw.itemnbtapi.tests.Test> apiTests = new ArrayList<>();
 
 	@Deprecated
 	public static ItemNBTAPI instance;
@@ -36,13 +45,22 @@ public class ItemNBTAPI extends JavaPlugin {
 			ex.printStackTrace();
 		}
 
+		//NBTCompounds
+		apiTests.add(new GetterSetterTest());
+		apiTests.add(new TypeTest());
+		apiTests.add(new ListTest());
+		
+		//Items
+		apiTests.add(new ItemConvertionTest());
+		
 	}
 
 	@Override
 	public void onEnable() {
 		instance = this;
-		Bukkit.getPluginManager().registerEvents(new Test(), this);
 		//new MetricsLite(this); The metrics moved into the API
+		
+		Bukkit.getPluginManager().registerEvents(new Test(), this);
 		getLogger().info("Checking bindings...");
 		getLogger().info("Minecraft Version:");
 		MinecraftVersion.getVersion();
@@ -63,66 +81,39 @@ public class ItemNBTAPI extends JavaPlugin {
 			}
 		}
 		getLogger().info("Running NBT reflection test...");
+		
+		Map<de.tr7zw.itemnbtapi.tests.Test, Exception> results = new HashMap<>();
+		for(de.tr7zw.itemnbtapi.tests.Test test : apiTests) {
+			try {
+				test.test();
+				results.put(test, null);
+			}catch(Exception ex) {
+				results.put(test, ex);
+				getLogger().log(Level.WARNING, "Error during '" + test.getClass().getSimpleName() + "' test!", ex);
+			}
+		}
+		
+		for(Entry<de.tr7zw.itemnbtapi.tests.Test, Exception> entry : results.entrySet()) {
+			if(entry.getValue() != null)
+				compatible = false;
+			getLogger().info(entry.getKey().getClass().getSimpleName() + ": " + (entry.getValue() == null ? "Ok" : entry.getValue().getMessage()));
+		}
+		
 		try {
 			//Item
 			ItemStack item = new ItemStack(Material.STONE, 1);
 			NBTItem nbtItem = new NBTItem(item);
 
-			nbtItem.setString(STRING_TEST_KEY, STRING_TEST_VALUE);
-			nbtItem.setInteger(INT_TEST_KEY, INT_TEST_VALUE);
-			nbtItem.setDouble(DOUBLE_TEST_KEY, DOUBLE_TEST_VALUE);
-			nbtItem.setBoolean(BOOLEAN_TEST_KEY, BOOLEAN_TEST_VALUE);
-			nbtItem.setByte(BYTE_TEST_KEY, BYTE_TEST_VALUE);
-			nbtItem.setShort(SHORT_TEST_KEY, SHORT_TEST_VALUE);
-			nbtItem.setLong(LONG_TEST_KEY, LONG_TEST_VALUE);
-			nbtItem.setFloat(FLOAT_TEST_KEY, FLOAT_TEST_VALUE);
-			nbtItem.setIntArray(INTARRAY_TEST_KEY, INTARRAY_TEST_VALUE);
-			nbtItem.setByteArray(BYTEARRAY_TEST_KEY, BYTEARRAY_TEST_VALUE);
-			nbtItem.addCompound(COMP_TEST_KEY);
+
 			NBTCompound comp = nbtItem.getCompound(COMP_TEST_KEY);
 			comp.setString(STRING_TEST_KEY, STRING_TEST_VALUE + "2");
 			comp.setInteger(INT_TEST_KEY, INT_TEST_VALUE * 2);
 			comp.setDouble(DOUBLE_TEST_KEY, DOUBLE_TEST_VALUE * 2);
-			NBTList<String> list = comp.getStringList("testlist");
-			if (MinecraftVersion.getVersion() == MinecraftVersion.MC1_7_R4) {
-				getLogger().warning(
-						"Skipped the NBTList check, because 1.7 doesn't fully support it! The Item-NBT-API may not work!");
-			} else {
-				list.add("test1");
-				list.add("test2");
-				list.add("test3");
-				list.add("test4");
-				list.set(2, "test42");
-				list.remove(1);
-			}
-			NBTCompoundList taglist = comp.getCompoundList("complist");
-			NBTListCompound lcomp = taglist.addCompound();
-			lcomp.setDouble("double1", 0.3333);
-			lcomp.setInteger("int1", 42);
-			lcomp.setString("test1", "test1");
-			lcomp.setString("test2", "test2");
-			lcomp.remove("test1");
 
 			item = nbtItem.getItem();
 			nbtItem = new NBTItem(item);
 
-			if (!nbtItem.hasKey(STRING_TEST_KEY)) {
-				getLogger().warning("Wasn't able to check a key! The Item-NBT-API may not work!");
-				compatible = false;
-			}
-			if (!(STRING_TEST_VALUE).equals(nbtItem.getString(STRING_TEST_KEY))
-					|| nbtItem.getInteger(INT_TEST_KEY) != INT_TEST_VALUE
-					|| nbtItem.getDouble(DOUBLE_TEST_KEY) != DOUBLE_TEST_VALUE
-					|| nbtItem.getByte(BYTE_TEST_KEY) != BYTE_TEST_VALUE
-					|| nbtItem.getShort(SHORT_TEST_KEY) != SHORT_TEST_VALUE
-					|| nbtItem.getFloat(FLOAT_TEST_KEY) != FLOAT_TEST_VALUE
-					|| nbtItem.getLong(LONG_TEST_KEY) != LONG_TEST_VALUE
-					|| nbtItem.getIntArray(INTARRAY_TEST_KEY).length != (INTARRAY_TEST_VALUE).length
-					|| nbtItem.getByteArray(BYTEARRAY_TEST_KEY).length != (BYTEARRAY_TEST_VALUE).length
-					|| !nbtItem.getBoolean(BOOLEAN_TEST_KEY).equals(BOOLEAN_TEST_VALUE)) {
-				getLogger().warning("One key does not equal the original value! The Item-NBT-API may not work!");
-				compatible = false;
-			}
+
 			nbtItem.setString(STRING_TEST_KEY, null);
 			if (nbtItem.getKeys().size() != 10) {
 				getLogger().warning("Wasn't able to remove a key (Got " + nbtItem.getKeys().size()
@@ -147,30 +138,7 @@ public class ItemNBTAPI extends JavaPlugin {
 				compatible = false;
 			}
 
-			list = comp.getStringList("testlist");
-			if (comp.getType("testlist") != NBTType.NBTTagList) {
-				getLogger().warning("Wasn't able to get the correct Tag type! The Item-NBT-API may not work!");
-				compatible = false;
-			}
-			if (!list.get(1).equals("test42") || list.size() != 3) {
-				getLogger().warning("The List support got an error, and may not work!");
-			}
-			taglist = comp.getCompoundList("complist");
-			if (taglist.size() == 1) {
-				lcomp = taglist.get(0);
-				if (lcomp.getKeys().size() != 3) {
-					getLogger().warning("Wrong key amount in Taglist (" + lcomp.getKeys().size()
-							+ ")! The Item-NBT-API may not work!");
-					compatible = false;
-				} else if (!(lcomp.getDouble("double1") == 0.3333 && lcomp.getInteger("int1") == 42
-						&& lcomp.getString("test2").equals("test2") && !lcomp.hasKey("test1"))) {
-					getLogger().warning("One key in the Taglist changed! The Item-NBT-API may not work!");
-					compatible = false;
-				}
-			} else {
-				getLogger().warning("Taglist is empty! The Item-NBT-API may not work!");
-				compatible = false;
-			}
+
 			NBTList<Integer> intlist = comp.getIntegerList("inttest");
 			intlist.add(42);
 			intlist.add(69);
@@ -342,23 +310,13 @@ public class ItemNBTAPI extends JavaPlugin {
 	private static final String BOOLEAN_TEST_KEY = "booleanTest";
 	private static final String JSON_TEST_KEY = "jsonTest";
 	private static final String COMP_TEST_KEY = "componentTest";
-	private static final String SHORT_TEST_KEY = "shortTest";
-	private static final String BYTE_TEST_KEY = "byteTest";
-	private static final String FLOAT_TEST_KEY = "floatTest";
-	private static final String LONG_TEST_KEY = "longTest";
-	private static final String INTARRAY_TEST_KEY = "intarrayTest";
-	private static final String BYTEARRAY_TEST_KEY = "bytearrayTest";
+
 
 	private static final String STRING_TEST_VALUE = "TestString";
 	private static final int INT_TEST_VALUE = 42;
 	private static final double DOUBLE_TEST_VALUE = 1.5d;
 	private static final boolean BOOLEAN_TEST_VALUE = true;
-	private static final short SHORT_TEST_VALUE = 64;
-	private static final byte BYTE_TEST_VALUE = 7;
-	private static final float FLOAT_TEST_VALUE = 13.37f;
-	private static final long LONG_TEST_VALUE = (long) Integer.MAX_VALUE + 42L;
-	private static final int[] INTARRAY_TEST_VALUE = new int[] { 1337, 42, 69 };
-	private static final byte[] BYTEARRAY_TEST_VALUE = new byte[] { 8, 7, 3, 2 };
+
 	//end region STATIC FINAL VARIABLES
 
 	public static class SimpleJsonTestObject {

@@ -15,7 +15,6 @@ public class NBTIntegerList extends NBTList<Integer>{
 	public Integer get(int index) {
 		try {
 			Object obj = ReflectionMethod.LIST_GET.run(listObject, index);
-			System.out.println("OBJ: " + obj.getClass() + " " + obj);
 			return Integer.valueOf(obj.toString());
 		}catch(NumberFormatException nf) {
 			return 0;
