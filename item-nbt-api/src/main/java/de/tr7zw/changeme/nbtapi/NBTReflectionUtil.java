@@ -3,7 +3,6 @@ package de.tr7zw.changeme.nbtapi;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.Stack;
 
@@ -45,47 +44,33 @@ public class NBTReflectionUtil {
      * @param nmsitem
      * @return
      */
-    @SuppressWarnings({"unchecked"})
     public static Object getItemRootNBTTagCompound(Object nmsitem) {
-        @SuppressWarnings("rawtypes")
-        Class clazz = nmsitem.getClass();
-        Method method;
         try {
-            method = clazz.getMethod("getTag");
-            Object answer = method.invoke(nmsitem);
+            Object answer = ReflectionMethod.NMSITEM_GETTAG.run(nmsitem);
             return answer != null ? answer : ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
         } catch (Exception e) {
             throw new NbtApiException("Exception while getting an Itemstack's NBTCompound!", e);
         }
     }
 
-    @SuppressWarnings({"unchecked"})
     public static Object convertNBTCompoundtoNMSItem(NBTCompound nbtcompound) {
-        @SuppressWarnings("rawtypes")
-        Class clazz = ClassWrapper.NMS_ITEMSTACK.getClazz();
+        Class<?> clazz = ClassWrapper.NMS_ITEMSTACK.getClazz();
         try {
             if(MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_12_R1.getVersionId()){
                 Constructor<?> constructor = clazz.getConstructor(ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz());
                 constructor.setAccessible(true);
                 return constructor.newInstance(nbtcompound.getCompound());
             }else{
-                Method method = clazz.getMethod("createStack", ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz());
-                method.setAccessible(true);
-                return method.invoke(null, nbtcompound.getCompound());
+                return ReflectionMethod.NMSITEM_CREATESTACK.run(null, nbtcompound.getCompound());
             }
         } catch (Exception e) {
         	throw new NbtApiException("Exception while converting NBTCompound to NMS ItemStack!", e);
         }
     }
 
-    @SuppressWarnings({"unchecked"})
     public static NBTContainer convertNMSItemtoNBTCompound(Object nmsitem) {
-        @SuppressWarnings("rawtypes")
-        Class clazz = nmsitem.getClass();
-        Method method;
         try {
-            method = clazz.getMethod("save", ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz());
-            Object answer = method.invoke(nmsitem, ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance());
+            Object answer = ReflectionMethod.NMSITEM_SAVE.run(nmsitem, ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance());
             return new NBTContainer(answer);
         } catch (Exception e) {
         	throw new NbtApiException("Exception while converting NMS ItemStack to NBTCompound!", e);
@@ -143,14 +128,9 @@ public class NBTReflectionUtil {
     }
 
 
-    @SuppressWarnings("unchecked")
     public static Object getSubNBTTagCompound(Object compound, String name) {
-        @SuppressWarnings("rawtypes")
-        Class c = compound.getClass();
-        Method method;
         try {
-            method = c.getMethod("getCompound", String.class);
-            Object answer = method.invoke(compound, name);
+            Object answer = ReflectionMethod.COMPOUND_GET_COMPOUND.run(compound, name);
             return answer;
         } catch (Exception e) {
         	throw new NbtApiException("Exception while getting NBT subcompounds!", e);
@@ -168,10 +148,8 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(nbttag, comp);
-        Method method;
         try {
-            method = workingtag.getClass().getMethod("set", String.class, ClassWrapper.NMS_NBTBASE.getClazz());
-            method.invoke(workingtag, name, ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance());
+            ReflectionMethod.COMPOUND_SET.run(workingtag, name, ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance());
             comp.setCompound(nbttag);
             return;
         } catch (Exception e) {
@@ -224,10 +202,8 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        Method method;
         try {
-            method = workingtag.getClass().getMethod("get", String.class);
-            return method.invoke(workingtag, key).toString();
+            return ReflectionMethod.COMPOUND_GET.run(workingtag, key).toString();
         } catch (Exception e) {
         	throw new NbtApiException("Exception while getting the Content for key '" + key + "'!", e);
         }
@@ -247,10 +223,8 @@ public class NBTReflectionUtil {
             return;
         }
         Object workingtag = gettoCompount(rootnbttag, comp);
-        Method method;
         try {
-            method = workingtag.getClass().getMethod("set", String.class, ClassWrapper.NMS_NBTBASE.getClazz());
-            method.invoke(workingtag, key, val);
+            ReflectionMethod.COMPOUND_SET.run(workingtag, key, val);
             comp.setCompound(rootnbttag);
         } catch (Exception e) {
         	throw new NbtApiException("Exception while setting key '" + key + "' to '" + val + "'!", e);
@@ -265,10 +239,8 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        Method method;
         try {
-            method = workingtag.getClass().getMethod("getList", String.class, int.class);
-            Object nbt = method.invoke(workingtag, key, type.getId());
+            Object nbt = ReflectionMethod.COMPOUND_GET_LIST.run(workingtag, key, type.getId());
             if(clazz == String.class) {
             	return (NBTList<T>) new NBTStringList(comp, key, type, nbt);
             } else if(clazz == NBTListCompound.class) {
