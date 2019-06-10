@@ -1,4 +1,4 @@
-main: de.tr7zw.itemnbtapi.ItemNBTAPI
-name: ItemNBTAPI
+main: de.tr7zw.nbtapi.plugin.NBTAPI
+name: NBTAPI
 version: ${project.version}
 author: tr7zw
