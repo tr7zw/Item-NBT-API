@@ -157,8 +157,10 @@ public class NBTInjector {
     			Object tileEntityUpdated;
     			if(MinecraftVersion.getVersion() == MinecraftVersion.MC1_9_R1) {
     				tileEntityUpdated = ReflectionMethod.TILEENTITY_LOAD_LEGACY191.run(null, null, new NBTTileEntity(tile).getCompound());
+    			} else if(MinecraftVersion.getVersion() == MinecraftVersion.MC1_8_R3 || MinecraftVersion.getVersion() == MinecraftVersion.MC1_9_R2) {
+    				tileEntityUpdated = ReflectionMethod.TILEENTITY_LOAD_LEGACY183.run(null, new NBTTileEntity(tile).getCompound());
     			} else {
-    				tileEntityUpdated = ReflectionMethod.TILEENTITY_LOAD.run(null, new NBTTileEntity(tile).getCompound());
+    				tileEntityUpdated = ReflectionMethod.TILEENTITY_LOAD.run(null, nmsworld, new NBTTileEntity(tile).getCompound());
     			}
     			ReflectionMethod.NMS_WORLD_REMOVE_TILEENTITY.run(nmsworld, pos);
     			ReflectionMethod.NMS_WORLD_SET_TILEENTITY.run(nmsworld, pos, tileEntityUpdated);
