@@ -19,29 +19,32 @@ public class NBTReflectionUtil {
         try {
             return ReflectionMethod.CRAFT_ENTITY_GET_HANDLE.run(ClassWrapper.CRAFT_ENTITY.getClazz().cast(entity));
         } catch (Exception e) {
-            e.printStackTrace();
+        	throw new NbtApiException("Exception while getting the NMS Entity from a Bukkit Entity!", e);
         }
-        return null;
     }
 
     public static Object readNBTFile(FileInputStream stream) {
         try {
             return ReflectionMethod.NBTFILE_READ.run(null, stream);
         } catch (Exception e) {
-            e.printStackTrace();
+        	throw new NbtApiException("Exception while reading a NBT File!", e);
         }
-        return null;
     }
 
     public static Object saveNBTFile(Object nbt, FileOutputStream stream) {
         try {
             return ReflectionMethod.NBTFILE_WRITE.run(null, nbt, stream);
         } catch (Exception e) {
-            e.printStackTrace();
+        	throw new NbtApiException("Exception while saving a NBT File!", e);
         }
-        return null;
     }
 
+    /**
+     * Simulates getOrCreateTag. If an Item doesn't yet have a Tag, it will return a new empty tag.
+     * 
+     * @param nmsitem
+     * @return
+     */
     @SuppressWarnings({"unchecked"})
     public static Object getItemRootNBTTagCompound(Object nmsitem) {
         @SuppressWarnings("rawtypes")
@@ -50,11 +53,10 @@ public class NBTReflectionUtil {
         try {
             method = clazz.getMethod("getTag");
             Object answer = method.invoke(nmsitem);
-            return answer;
+            return answer != null ? answer : ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new NbtApiException("Exception while getting an Itemstack's NBTCompound!", e);
         }
-        return null;
     }
 
     @SuppressWarnings({"unchecked"})
@@ -72,9 +74,8 @@ public class NBTReflectionUtil {
                 return method.invoke(null, nbtcompound.getCompound());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+        	throw new NbtApiException("Exception while converting NBTCompound to NMS ItemStack!", e);
         }
-        return null;
     }
 
     @SuppressWarnings({"unchecked"})
@@ -87,9 +88,8 @@ public class NBTReflectionUtil {
             Object answer = method.invoke(nmsitem, ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance());
             return new NBTContainer(answer);
         } catch (Exception e) {
-            e.printStackTrace();
+        	throw new NbtApiException("Exception while converting NMS ItemStack to NBTCompound!", e);
         }
-        return null;
     }
 
     public static Object getEntityNBTTagCompound(Object NMSEntity) {
@@ -100,9 +100,8 @@ public class NBTReflectionUtil {
                 answer = nbt;
             return answer;
         } catch (Exception e) {
-            e.printStackTrace();
+        	throw new NbtApiException("Exception while getting NBTCompound from NMS Entity!", e);
         }
-        return null;
     }
 
     public static Object setEntityNBTTag(Object NBTTag, Object NMSEntity) {
@@ -127,9 +126,8 @@ public class NBTReflectionUtil {
                 answer = tag;
             return answer;
         } catch (Exception e) {
-            e.printStackTrace();
+        	throw new NbtApiException("Exception while getting NBTCompound from TileEntity!", e);
         }
-        return null;
     }
 
     public static void setTileEntityNBTTagCompound(BlockState tile, Object comp) {
@@ -140,7 +138,7 @@ public class NBTReflectionUtil {
             Object o = ReflectionMethod.NMS_WORLD_GET_TILEENTITY.run(nmsworld, pos);
             ReflectionMethod.TILEENTITY_SET_NBT.run(o, comp);
         } catch (Exception e) {
-            e.printStackTrace();
+        	throw new NbtApiException("Exception while setting NBTData for a TileEntity!", e);
         }
     }
 
@@ -155,9 +153,8 @@ public class NBTReflectionUtil {
             Object answer = method.invoke(compound, name);
             return answer;
         } catch (Exception e) {
-            e.printStackTrace();
+        	throw new NbtApiException("Exception while getting NBT subcompounds!", e);
         }
-        return null;
     }
 
     public static void addNBTTagCompound(NBTCompound comp, String name) {
@@ -177,10 +174,9 @@ public class NBTReflectionUtil {
             method.invoke(workingtag, name, ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance());
             comp.setCompound(nbttag);
             return;
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+        	throw new NbtApiException("Exception while adding a Compound!", e);
         }
-        return;
     }
 
     public static Boolean valideCompound(NBTCompound comp) {
@@ -216,8 +212,8 @@ public class NBTReflectionUtil {
         try {
             ReflectionMethod.COMPOUND_ADD.run(workingtag, nbtcompound.getCompound());
             comp.setCompound(rootnbttag);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+        	throw new NbtApiException("Exception while merging two NBTCompounds!", e);
         }
     }
 
@@ -232,10 +228,9 @@ public class NBTReflectionUtil {
         try {
             method = workingtag.getClass().getMethod("get", String.class);
             return method.invoke(workingtag, key).toString();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+        	throw new NbtApiException("Exception while getting the Content for key '" + key + "'!", e);
         }
-        return null;
     }
 
     public static void set(NBTCompound comp, String key, Object val) {
@@ -257,8 +252,8 @@ public class NBTReflectionUtil {
             method = workingtag.getClass().getMethod("set", String.class, ClassWrapper.NMS_NBTBASE.getClazz());
             method.invoke(workingtag, key, val);
             comp.setCompound(rootnbttag);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+        	throw new NbtApiException("Exception while setting key '" + key + "' to '" + val + "'!", e);
         }
     }
 
@@ -284,7 +279,7 @@ public class NBTReflectionUtil {
             	return null;
             }
         } catch (Exception ex) {
-            throw new NbtApiException(ex);
+            throw new NbtApiException("Exception while getting a list with the type '" + type + "'!", ex);
         }
     }
 
@@ -293,8 +288,8 @@ public class NBTReflectionUtil {
         try {
             String json = GsonWrapper.getString(value);
             setData(comp, ReflectionMethod.COMPOUND_SET_STRING, key, json);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+        	throw new NbtApiException("Exception while setting the Object '" + value + "'!", e);
         }
     }
 

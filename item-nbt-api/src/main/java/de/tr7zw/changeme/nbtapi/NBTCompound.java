@@ -152,6 +152,7 @@ public class NBTCompound {
     }
 
     public NBTCompound getCompound(String name) {
+    	 if(getType(name) != NBTType.NBTTagCompound)return null;
         NBTCompound next = new NBTCompound(this, name);
         if (NBTReflectionUtil.valideCompound(next)) return next;
         return null;

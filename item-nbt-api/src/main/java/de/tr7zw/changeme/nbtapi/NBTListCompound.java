@@ -5,10 +5,10 @@ import java.util.Set;
 
 public class NBTListCompound {
 
-    private NBTList owner;
+    private NBTList<?> owner;
     private Object compound;
 
-    protected NBTListCompound(NBTList parent, Object obj) {
+    protected NBTListCompound(NBTList<?> parent, Object obj) {
         owner = parent;
         compound = obj;
     }

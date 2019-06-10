@@ -49,6 +49,18 @@ public class ListTest implements Test{
 		} else {
 			throw new NbtApiException("Taglist is empty! The Item-NBT-API may not work!");
 		}
+		
+		//Integer
+		NBTList<Integer> intlist = comp.getIntegerList("inttest");
+		intlist.add(42);
+		intlist.add(69);
+		if(intlist.size() == 2 && intlist.get(0) == 42 && intlist.get(1) == 69) {
+			//ok
+		}else {
+			throw new NbtApiException("IntList is not correct!");
+		}
+		
+		
 	}
 
 }
