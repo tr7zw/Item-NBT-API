@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 
 import de.tr7zw.changeme.nbtapi.NBTCompound;
+import de.tr7zw.changeme.nbtapi.ReflectionMethod;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 
 public class ClassGenerator {
@@ -88,14 +89,15 @@ public class ClassGenerator {
 
 	public static Class<?> wrapTileEntity(ClassPool classPool, Class<?> originalClass, String extraDataKey) throws ReflectiveOperationException, NotFoundException, CannotCompileException {
 		String writeReturn = MinecraftVersion.getVersion().getVersionId() > MinecraftVersion.MC1_9_R1.getVersionId() ? "NBTTagCompound" : "void";
-		String writeName = MinecraftVersion.getVersion().getVersionId() > MinecraftVersion.MC1_9_R1.getVersionId() ? "save" : "b";
+		String writeName = ReflectionMethod.TILEENTITY_GET_NBT.getMethodName();
+		String readName = ReflectionMethod.TILEENTITY_SET_NBT.getMethodName();
 		String writeMethod = "public " + writeReturn + " " + writeName + "(NBTTagCompound compound) {\n"
 				+ "  compound = writeExtraCompound(compound);\n"
 				//+ "  System.out.println(\"Save: \" +compound);\n" 
 				+ "  " + (!"void".equals(writeReturn) ? "return " : "") + "super." + writeName + "(compound);\n"
 				+ "}";
-		String readMethod = "public void a(NBTTagCompound compound) {\n"
-				+ "  super.a(compound);\n"
+		String readMethod = "public void " + readName + "(NBTTagCompound compound) {\n"
+				+ "  super." + readName + "(compound);\n"
 				+ "  readExtraCompound(compound);\n"
 				//+ "  System.out.println(\"Read: \" +compound);\n" 
 				+ "}";

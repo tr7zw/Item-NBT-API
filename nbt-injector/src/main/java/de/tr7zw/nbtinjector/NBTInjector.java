@@ -16,6 +16,7 @@ import de.tr7zw.changeme.nbtapi.NBTTileEntity;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.changeme.nbtapi.ObjectCreator;
 import de.tr7zw.changeme.nbtapi.ReflectionMethod;
+import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import javassist.ClassPool;
 
 public class NBTInjector {
@@ -51,7 +52,6 @@ public class NBTInjector {
 			for (Map.Entry<String, Class<?>> entry : new HashSet<>(TileEntity.getFMap().entrySet())) {
 				try {
 					if (INBTWrapper.class.isAssignableFrom(entry.getValue())) { continue; }//Already injected
-
 					Class<?> wrapped = ClassGenerator.wrapTileEntity(classPool, entry.getValue(), "__extraData");
 					TileEntity.getFMap().put(entry.getKey(), wrapped);
 					TileEntity.getGMap().put(wrapped, entry.getKey());
@@ -153,12 +153,15 @@ public class NBTInjector {
             }
     		if (!(tileEntity instanceof INBTWrapper)) {
     			//Loading Updated Tile
-    			Method load = ClassWrapper.NMS_TILEENTITY.getClazz().getDeclaredMethod("c", ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz());
-    			Object tileEntityUpdated = load.invoke(null, new NBTTileEntity(tile).getCompound());
-    			Method setter = nmsworld.getClass().getMethod("setTileEntity", ClassWrapper.NMS_BLOCKPOSITION.getClazz(), ClassWrapper.NMS_TILEENTITY.getClazz());
-    			Method remove = nmsworld.getClass().getMethod("s", ClassWrapper.NMS_BLOCKPOSITION.getClazz());
-    			remove.invoke(nmsworld, pos);
-    			setter.invoke(nmsworld, pos, tileEntityUpdated);
+
+    			Object tileEntityUpdated;
+    			if(MinecraftVersion.getVersion() == MinecraftVersion.MC1_9_R1) {
+    				tileEntityUpdated = ReflectionMethod.TILEENTITY_LOAD_LEGACY191.run(null, null, new NBTTileEntity(tile).getCompound());
+    			} else {
+    				tileEntityUpdated = ReflectionMethod.TILEENTITY_LOAD.run(null, new NBTTileEntity(tile).getCompound());
+    			}
+    			ReflectionMethod.NMS_WORLD_REMOVE_TILEENTITY.run(nmsworld, pos);
+    			ReflectionMethod.NMS_WORLD_SET_TILEENTITY.run(nmsworld, pos, tileEntityUpdated);
     			return getNbtData(tileEntityUpdated);
     		}
 			return getNbtData(tileEntity);
