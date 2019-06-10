@@ -45,8 +45,9 @@ public class NBTAPI extends JavaPlugin {
 		try {
 			NBTInjector.inject();
 			getLogger().info("Injected!");
-		}catch(Exception ex) {
-			ex.printStackTrace();
+		}catch(Throwable ex) {
+			getLogger().log(Level.SEVERE, "Error while Injecting custom Tile/Entity classes!", ex);
+			compatible = false;
 		}
 
 		//NBTCompounds
@@ -113,6 +114,10 @@ public class NBTAPI extends JavaPlugin {
 			}catch(Exception ex) {
 				results.put(test, ex);
 				getLogger().log(Level.WARNING, "Error during '" + test.getClass().getSimpleName() + "' test!", ex);
+			}catch(Throwable th) {
+				getLogger().log(Level.SEVERE, "Servere error during '" + test.getClass().getSimpleName() + "' test!", th);
+				getLogger().warning("WARNING! This version of Item-NBT-API seems to be broken with your Spigot version! Canceled the other tests!");
+				throw th;
 			}
 		}
 		

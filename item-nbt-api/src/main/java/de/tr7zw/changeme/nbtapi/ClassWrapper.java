@@ -21,6 +21,8 @@ NMS_MINECRAFTSERVER("net.minecraft.server.", ".MinecraftServer"),
 NMS_WORLD("net.minecraft.server.", ".World"),
 NMS_ENTITY("net.minecraft.server.", ".Entity"),
 NMS_ENTITYTYPES("net.minecraft.server.", ".EntityTypes"),
+NMS_REGISTRYSIMPLE("net.minecraft.server.", ".RegistrySimple"),
+NMS_REGISTRYMATERIALS("net.minecraft.server.", ".RegistryMaterials"),
 ;
     
     

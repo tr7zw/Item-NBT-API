@@ -39,7 +39,7 @@ public enum ReflectionMethod {
     
     NMSITEM_GETTAG(ClassWrapper.NMS_ITEMSTACK.getClazz(), new Class[] {}, MinecraftVersion.MC1_7_R4, new Since(MinecraftVersion.MC1_7_R4, "getTag")),
     NMSITEM_SAVE(ClassWrapper.NMS_ITEMSTACK.getClazz(), new Class[] {ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz()}, MinecraftVersion.MC1_7_R4, new Since(MinecraftVersion.MC1_7_R4, "save")),
-    NMSITEM_CREATESTACK(ClassWrapper.NMS_ITEMSTACK.getClazz(), new Class[] {ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz()}, MinecraftVersion.MC1_7_R4, MinecraftVersion.MC1_11_R1, new Since(MinecraftVersion.MC1_7_R4, "createStack")),
+    NMSITEM_CREATESTACK(ClassWrapper.NMS_ITEMSTACK.getClazz(), new Class[] {ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz()}, MinecraftVersion.MC1_7_R4, MinecraftVersion.MC1_10_R1, new Since(MinecraftVersion.MC1_7_R4, "createStack")),
     
     COMPOUND_REMOVE_KEY(ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), new Class[]{String.class}, MinecraftVersion.MC1_7_R4, new Since(MinecraftVersion.MC1_7_R4, "remove")),
     COMPOUND_HAS_KEY(ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), new Class[]{String.class}, MinecraftVersion.MC1_7_R4, new Since(MinecraftVersion.MC1_7_R4, "hasKey")),
@@ -81,7 +81,11 @@ public enum ReflectionMethod {
     
     
     PARSE_NBT(ClassWrapper.NMS_MOJANGSONPARSER.getClazz(), new Class[]{String.class}, MinecraftVersion.MC1_7_R4, new Since(MinecraftVersion.MC1_7_R4, "parse")),
-
+    REGISTRY_KEYSET (ClassWrapper.NMS_REGISTRYSIMPLE.getClazz(), new Class[]{}, MinecraftVersion.MC1_11_R1, new Since(MinecraftVersion.MC1_11_R1, "keySet")),
+    REGISTRY_GET (ClassWrapper.NMS_REGISTRYSIMPLE.getClazz(), new Class[]{Object.class}, MinecraftVersion.MC1_11_R1, new Since(MinecraftVersion.MC1_11_R1, "get")),
+    REGISTRY_SET (ClassWrapper.NMS_REGISTRYSIMPLE.getClazz(), new Class[]{Object.class, Object.class}, MinecraftVersion.MC1_11_R1, new Since(MinecraftVersion.MC1_11_R1, "a")),
+    REGISTRY_GET_INVERSE (ClassWrapper.NMS_REGISTRYMATERIALS.getClazz(), new Class[]{Object.class}, MinecraftVersion.MC1_11_R1, new Since(MinecraftVersion.MC1_11_R1, "b")),
+    
    ;
     
     private MinecraftVersion removedAfter;

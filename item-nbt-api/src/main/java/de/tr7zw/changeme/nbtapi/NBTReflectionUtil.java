@@ -56,7 +56,7 @@ public class NBTReflectionUtil {
     public static Object convertNBTCompoundtoNMSItem(NBTCompound nbtcompound) {
         Class<?> clazz = ClassWrapper.NMS_ITEMSTACK.getClazz();
         try {
-            if(MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_12_R1.getVersionId()){
+            if(MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_11_R1.getVersionId()){
                 Constructor<?> constructor = clazz.getConstructor(ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz());
                 constructor.setAccessible(true);
                 return constructor.newInstance(nbtcompound.getCompound());

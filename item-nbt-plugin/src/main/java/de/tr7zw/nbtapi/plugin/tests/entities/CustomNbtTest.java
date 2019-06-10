@@ -35,7 +35,7 @@ public class CustomNbtTest implements Test{
 					
 				}
 			} catch (Exception ex) {
-				throw new NbtApiException("Wasn't able to use NBTEntities!");
+				throw new NbtApiException("Wasn't able to use NBTEntities!", ex);
 			}
 			try {
 				Block block = world.getBlockAt(world.getSpawnLocation().getBlockX(), 255, world.getSpawnLocation().getBlockZ());
