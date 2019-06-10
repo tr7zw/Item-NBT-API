@@ -71,10 +71,10 @@ public class ApiMetricsLite {
 		// The register method just uses any enabled plugin it can find to register. This *shouldn't* cause any problems, since the plugin isn't used any other way.
 		// Register our service
 		for(Plugin plug : Bukkit.getPluginManager().getPlugins()) {
-			if(plug.isEnabled()) {
+			//if(plug.isEnabled()) {
 				plugin = plug;
 				break;
-			}
+			//}
 		}
 		if(plugin == null) {
 			return;// Didn't find any plugin that could work
@@ -134,7 +134,7 @@ public class ApiMetricsLite {
 			// Register our service
 			Bukkit.getServicesManager().register(ApiMetricsLite.class, this, plugin, ServicePriority.Normal);
 			if (!found) {
-				System.out.println("[NBT-API] Using the plugin '" + plugin.getName() + "' to create a bStats instance!");
+				System.out.println("[NBTAPI] Using the plugin '" + plugin.getName() + "' to create a bStats instance!");
 				// We are the first!
 				startSubmitting();
 			}
@@ -265,7 +265,7 @@ public class ApiMetricsLite {
 							} catch (ClassNotFoundException e) {
 								// minecraft version 1.14+
 								if (logFailedRequests) {
-									System.out.println("[NBT-API][BSTATS] Encountered unexpected exception: " + e.getMessage());
+									System.out.println("[NBTAPI][BSTATS] Encountered unexpected exception: " + e.getMessage());
 									// Not using the plugins logger since the plugin isn't the plugin containing the NBT-Api most of the time
 									//this.plugin.getLogger().log(Level.SEVERE, "Encountered unexpected exception ", e); 
 								}
@@ -290,7 +290,7 @@ public class ApiMetricsLite {
 				} catch (Exception e) {
 					// Something went wrong! :(
 					if (logFailedRequests) {
-						System.out.println("[NBT-API][BSTATS] Could not submit plugin stats of " + plugin.getName() + ": " + e.getMessage());
+						System.out.println("[NBTAPI][BSTATS] Could not submit plugin stats of " + plugin.getName() + ": " + e.getMessage());
 						// Not using the plugins logger since the plugin isn't the plugin containing the NBT-Api most of the time
 						//plugin.getLogger().log(Level.WARNING, "Could not submit plugin stats of " + plugin.getName(), e);
 					}
@@ -314,7 +314,7 @@ public class ApiMetricsLite {
 			throw new IllegalAccessException("This method must not be called from the main thread!");
 		}
 		if (logSentData) {
-			System.out.println("[NBT-API][BSTATS] Sending data to bStats: " + data.toString());
+			System.out.println("[NBTAPI][BSTATS] Sending data to bStats: " + data.toString());
 			// Not using the plugins logger since the plugin isn't the plugin containing the NBT-Api most of the time
 			//plugin.getLogger().info("Sending data to bStats: " + data.toString());
 		}
@@ -349,7 +349,7 @@ public class ApiMetricsLite {
 		}
 		bufferedReader.close();
 		if (logResponseStatusText) {
-			System.out.println("[NBT-API][BSTATS] Sent data to bStats and received response: " + builder.toString());
+			System.out.println("[NBTAPI][BSTATS] Sent data to bStats and received response: " + builder.toString());
 			// Not using the plugins logger since the plugin isn't the plugin containing the NBT-Api most of the time
 			//plugin.getLogger().info("Sent data to bStats and received response: " + builder.toString());
 		}

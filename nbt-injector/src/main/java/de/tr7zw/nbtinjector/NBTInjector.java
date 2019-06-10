@@ -48,7 +48,7 @@ public class NBTInjector {
 				}
 			}
 
-			logger.info("[ItemNBTAPI] Injecting Tile Entity classes...");
+			logger.info("[NBTINJECTOR] Injecting Tile Entity classes...");
 			for (Map.Entry<String, Class<?>> entry : new HashSet<>(TileEntity.getFMap().entrySet())) {
 				try {
 					if (INBTWrapper.class.isAssignableFrom(entry.getValue())) { continue; }//Already injected
