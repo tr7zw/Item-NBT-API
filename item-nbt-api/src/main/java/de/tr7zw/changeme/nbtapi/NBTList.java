@@ -33,7 +33,7 @@ public abstract class NBTList<T> implements List<T> {
 	public boolean add(T element) {
 		try {
 			if (MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_14_R1.getVersionId()) {
-				ReflectionMethod.LIST_ADD.run(listObject, 0, asTag(element));
+				ReflectionMethod.LIST_ADD.run(listObject, size(), asTag(element));
 			} else {
 				ReflectionMethod.LEGACY_LIST_ADD.run(listObject, asTag(element));
 			}

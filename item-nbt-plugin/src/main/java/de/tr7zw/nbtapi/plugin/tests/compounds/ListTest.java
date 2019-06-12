@@ -1,5 +1,7 @@
 package de.tr7zw.nbtapi.plugin.tests.compounds;
 
+import java.util.Arrays;
+
 import de.tr7zw.changeme.nbtapi.NBTCompoundList;
 import de.tr7zw.changeme.nbtapi.NBTContainer;
 import de.tr7zw.changeme.nbtapi.NBTList;
@@ -57,7 +59,7 @@ public class ListTest implements Test{
 		if(intlist.size() == 2 && intlist.get(0) == 42 && intlist.get(1) == 69) {
 			//ok
 		}else {
-			throw new NbtApiException("IntList is not correct!");
+			throw new NbtApiException("IntList is not correct! " + Arrays.toString(intlist.toArray(new Integer[0])));
 		}
 		
 		

@@ -139,7 +139,10 @@ public class NBTInjector {
 				Set<?> registryentries = new HashSet<>((Set<?>) ReflectionMethod.REGISTRYMATERIALS_KEYSET.run(tileRegistry));
 				for(Object mckey : registryentries) {
 					Object tileEntityTypesObj = ReflectionMethod.REGISTRYMATERIALS_GET.run(tileRegistry, mckey);
-					Field supplierField = tileEntityTypesObj.getClass().getDeclaredField("A");
+					String supplierFieldName = "A";
+					if(MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_14_R1.getVersionId())
+						supplierFieldName = "H";
+					Field supplierField = tileEntityTypesObj.getClass().getDeclaredField(supplierFieldName);
 					supplierField.setAccessible(true);
 					Supplier<Object> supplier = (Supplier<Object>) supplierField.get(tileEntityTypesObj);
 					Class<?> nmsclass = supplier.get().getClass();

@@ -52,7 +52,7 @@
                 <version>0.0.1-SNAPSHOT</version>
 				<configuration>
 				<!-- 1.8.8-R0.1-SNAPSHOT-latest, 1.9.2-R0.1-SNAPSHOT-latest, 1.9.4-R0.1-SNAPSHOT-latest, 1.10.2-R0.1-SNAPSHOT-latest,1.11.2,1.12.2,1.13.2,1.14.1 -->
-					<versions>1.8.8-R0.1-SNAPSHOT-latest, 1.9.2-R0.1-SNAPSHOT-latest, 1.9.4-R0.1-SNAPSHOT-latest, 1.10.2-R0.1-SNAPSHOT-latest,1.11.2,1.12.2,1.13.2</versions>
+					<versions>1.8.8-R0.1-SNAPSHOT-latest, 1.9.2-R0.1-SNAPSHOT-latest, 1.9.4-R0.1-SNAPSHOT-latest, 1.10.2-R0.1-SNAPSHOT-latest,1.11.2,1.12.2,1.13.2,1.14.1</versions>
 					<works>Success! This version of NBT-API</works>
 					<error>WARNING! This version of NBT-API</error>
 					<filename>item-nbt-api-plugin-2.0.0-SNAPSHOT.jar</filename>
