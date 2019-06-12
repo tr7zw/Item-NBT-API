@@ -21,10 +21,11 @@ import de.tr7zw.nbtapi.plugin.tests.compounds.MergeTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.RemovingKeys;
 import de.tr7zw.nbtapi.plugin.tests.compounds.SubCompoundsTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.TypeTest;
-import de.tr7zw.nbtapi.plugin.tests.entities.CustomNbtTest;
+import de.tr7zw.nbtapi.plugin.tests.entities.EntityCustomNbtTest;
 import de.tr7zw.nbtapi.plugin.tests.entities.EntityTest;
 import de.tr7zw.nbtapi.plugin.tests.items.EmptyItemTest;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemConvertionTest;
+import de.tr7zw.nbtapi.plugin.tests.tiles.TilesCustomNBTTest;
 import de.tr7zw.nbtinjector.NBTInjector;
 
 public class NBTAPI extends JavaPlugin {
@@ -64,7 +65,10 @@ public class NBTAPI extends JavaPlugin {
 		
 		//Entity
 		apiTests.add(new EntityTest());
-		apiTests.add(new CustomNbtTest());
+		apiTests.add(new EntityCustomNbtTest());
+		
+		//Tiles
+		apiTests.add(new TilesCustomNBTTest());
 		
 		//Files
 		apiTests.add(new NBTFileTest());
@@ -84,7 +88,7 @@ public class NBTAPI extends JavaPlugin {
 		getLogger().info("Classes:");
 		boolean classUnlinked = false;
 		for (ClassWrapper c : ClassWrapper.values()) {
-			if (c.getClazz() == null) {
+			if (c.isEnabled() && c.getClazz() == null) {
 				getLogger().warning(c.name() + " did not find it's class!");
 				compatible = false;
 				classUnlinked = true;
@@ -129,9 +133,9 @@ public class NBTAPI extends JavaPlugin {
 
 		String checkMessage = "Plugins that don't check properly may throw Exeptions, crash or have unexpected behaviors!";
 		if (compatible) {
-				getLogger().info("Success! This version of Item-NBT-API is compatible with your server.");
+				getLogger().info("Success! This version of NBT-API is compatible with your server.");
 		} else {
-			getLogger().warning("WARNING! This version of Item-NBT-API seems to be broken with your Spigot version! "
+			getLogger().warning("WARNING! This version of NBT-API seems to be broken with your Spigot version! "
 					+ checkMessage);
 		}
 

@@ -57,7 +57,7 @@ public class NBTReflectionUtil {
         Class<?> clazz = ClassWrapper.NMS_ITEMSTACK.getClazz();
         try {
             if(MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_11_R1.getVersionId()){
-                Constructor<?> constructor = clazz.getConstructor(ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz());
+                Constructor<?> constructor = clazz.getDeclaredConstructor(ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz());
                 constructor.setAccessible(true);
                 return constructor.newInstance(nbtcompound.getCompound());
             }else{
