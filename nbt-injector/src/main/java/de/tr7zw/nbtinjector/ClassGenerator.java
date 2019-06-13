@@ -4,6 +4,7 @@ import javassist.*;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 
+import de.tr7zw.changeme.nbtapi.ClassWrapper;
 import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.ReflectionMethod;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
@@ -71,7 +72,31 @@ public class ClassGenerator {
 		}
 		return generated.toClass(INBTWrapper.class.getClassLoader(), INBTWrapper.class.getProtectionDomain());
 	}
+	
+	public static Class<?> createEntityTypeWrapper(ClassPool classPool, Class<?> targetClass) throws ReflectiveOperationException, NotFoundException, CannotCompileException {
+		classPool.insertClassPath(new LoaderClassPath(ClassGenerator.class.getClassLoader()));
 
+		CtClass generated = classPool.makeClass("de.tr7zw.nbtinjector.generated.entityCreator." + targetClass.getSimpleName());
+
+		CtClass wrapperInterface = classPool.get(ClassWrapper.NMS_ENTITYTYPES.getClazz().getName() + "$b");
+		generated.setInterfaces(new CtClass[] { wrapperInterface });
+
+		classPool.importPackage("net.minecraft.server." + MinecraftVersion.getVersion().name().replace("MC", "v"));
+		classPool.importPackage("de.tr7zw.nbtinjector.generated");
+		classPool.importPackage("de.tr7zw.nbtinjector.generated");
+		
+		generated.addMethod(CtMethod.make("public Entity create(EntityTypes var1, World var2) {\n"
+				+ "  return new " + targetClass.getName() + "(var1, var2);\n"
+				+ "}", generated));
+
+		try {
+			generated.writeFile("nbtinjector_generated");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return generated.toClass(INBTWrapper.class.getClassLoader(), INBTWrapper.class.getProtectionDomain());
+	}
+	
 	public static Class<?> wrapEntity(ClassPool classPool, Class<?> originalClass, String extraDataKey) throws ReflectiveOperationException, NotFoundException, CannotCompileException {
 		String writeReturn = MinecraftVersion.getVersion().getVersionId() > MinecraftVersion.MC1_10_R1.getVersionId() ? "NBTTagCompound" : "void";
 		String writeName = ReflectionMethod.NMS_ENTITY_GET_NBT.getMethodName();

@@ -6,6 +6,7 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -71,7 +72,7 @@ public class NBTInjector {
 				}
 				Field inverseField = registry.getClass().getDeclaredField("b");
 				setFinal(registry, inverseField, inverse);
-			} else {// 1.13+
+			} else if (MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_13_R2.getVersionId()) {
 				Object entityRegistry = ClassWrapper.NMS_IREGISTRY.getClazz().getField("ENTITY_TYPE").get(null);
 				Set<?> registryentries = new HashSet<>((Set<?>) ReflectionMethod.REGISTRYMATERIALS_KEYSET.run(entityRegistry));
 				for(Object mckey : registryentries) {
@@ -98,6 +99,34 @@ public class NBTInjector {
 								}
 							}
 						});
+					} catch (Exception e) {
+						throw new RuntimeException("Exception while injecting " + mckey, e);
+					}
+				}
+			} else { //1.14+
+				Object entityRegistry = ClassWrapper.NMS_IREGISTRY.getClazz().getField("ENTITY_TYPE").get(null);
+				Set<?> registryentries = new HashSet<>((Set<?>) ReflectionMethod.REGISTRYMATERIALS_KEYSET.run(entityRegistry));
+				for(Object mckey : registryentries) {
+					Object entityTypesObj = ReflectionMethod.REGISTRYMATERIALS_GET.run(entityRegistry, mckey);
+					Field creatorField = entityTypesObj.getClass().getDeclaredField("aZ");
+					creatorField.setAccessible(true);
+					Object creator = creatorField.get(entityTypesObj);
+					Method createEntityMethod = creator.getClass().getMethod("create", ClassWrapper.NMS_ENTITYTYPES.getClazz(), ClassWrapper.NMS_WORLD.getClazz());
+					createEntityMethod.setAccessible(true);
+					Object entityInstance = null;
+					try {
+						entityInstance = createEntityMethod.invoke(creator, entityTypesObj, null);
+						if(entityInstance == null)
+							throw new NullPointerException();
+					}catch(Throwable npe) {
+						logger.info("Wasn't able to create an Entity instace, won't be able add NBT to '" + entityTypesObj.getClass().getMethod("g").invoke(entityTypesObj) + "' entity Type!");
+						continue;
+					}
+					Class<?> nmsclass = entityInstance.getClass();
+					try {
+						if (INBTWrapper.class.isAssignableFrom(nmsclass)) { continue; }//Already injected
+						Class<?> wrapped = ClassGenerator.wrapEntity(classPool, nmsclass, "__extraData");
+						setFinal(entityTypesObj, creatorField, ClassGenerator.createEntityTypeWrapper(classPool, wrapped).newInstance());
 					} catch (Exception e) {
 						throw new RuntimeException("Exception while injecting " + mckey, e);
 					}
@@ -203,16 +232,21 @@ public class NBTInjector {
 				String id = "";
 				if(MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_10_R1.getVersionId()) {
 					id = Entity.getBackupMap().get(ent.getClass());
-				}else {
+				} else if(MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_13_R1.getVersionId()){
 					id = ReflectionMethod.REGISTRY_GET_INVERSE.run(Entity.getRegistry(), ent.getClass()).toString();
+				} else {
+					id = (String) ReflectionMethod.NMS_ENTITY_GETSAVEID.run(ent);
 				}
 				oldNBT.setString("id", id);
 				oldNBT.removeKey("UUIDMost");
 				oldNBT.removeKey("UUIDLeast");
 				entity.remove();
 				Object newEntity = create.invoke(null, oldNBT.getCompound(), nmsworld);
+				if(newEntity instanceof Optional<?>)
+					newEntity = ((Optional<?>)newEntity).get();
 				Method spawn = ClassWrapper.NMS_WORLD.getClazz().getMethod("addEntity", ClassWrapper.NMS_ENTITY.getClazz());
 				spawn.invoke(nmsworld, newEntity);
+				logger.info("Created patched instance: " + newEntity.getClass().getName());
 				Method asBukkit = newEntity.getClass().getMethod("getBukkitEntity");
 				return (org.bukkit.entity.Entity) asBukkit.invoke(newEntity);
 			}
@@ -233,6 +267,9 @@ public class NBTInjector {
 		if (entity == null) { return null; }
 		try {
 			Object ent = NBTReflectionUtil.getNMSEntity(entity);
+			if (!(ent instanceof INBTWrapper)) {
+				logger.info("Entity wasn't the correct class! '" + ent.getClass().getName() + "'");
+			}
 			/*if (!(ent instanceof INBTWrapper)) {//Replace Entity with custom one
 				entity = patchEntity(entity);
 				System.out.println("Autopatched Entity: " + entity);
