@@ -3,8 +3,10 @@ package de.tr7zw.nbtinjector;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -12,6 +14,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.bukkit.Bukkit;
 
 import de.tr7zw.changeme.nbtapi.ClassWrapper;
 import de.tr7zw.changeme.nbtapi.NBTCompound;
@@ -28,6 +32,21 @@ import javassist.ClassPool;
 public class NBTInjector {
 
 	static Logger logger = Logger.getLogger("NBTInjector");
+	private static final List<String> skippingEntities = Arrays.asList(new String[]{"minecraft:player", "minecraft:fishing_bobber", "minecraft:lightning_bolt"});  //These are broken/won't work
+	private static final Map<String, String> classMappings = new HashMap<>();
+	
+	static {
+		classMappings.put("minecraft:wandering_trader", "VillagerTrader");
+		classMappings.put("minecraft:trader_llama", "LlamaTrader");
+		classMappings.put("minecraft:area_effect_cloud", "AreaEffectCloud");
+		classMappings.put("minecraft:donkey", "HorseDonkey");
+		classMappings.put("minecraft:ender_dragon", "EnderDragon");
+		classMappings.put("minecraft:skeleton_horse", "HorseSkeleton");
+		classMappings.put("minecraft:fireball", "LargeFireball");
+		classMappings.put("minecraft:mule", "HorseMule");
+		classMappings.put("minecraft:zombie_horse", "HorseZombie");
+		classMappings.put("minecraft:mooshroom", "MushroomCow");
+	}
 
 	/**
 	 * Replaces the vanilla classes with Wrapped classes that support custom NBT.
@@ -107,22 +126,40 @@ public class NBTInjector {
 				Object entityRegistry = ClassWrapper.NMS_IREGISTRY.getClazz().getField("ENTITY_TYPE").get(null);
 				Set<?> registryentries = new HashSet<>((Set<?>) ReflectionMethod.REGISTRYMATERIALS_KEYSET.run(entityRegistry));
 				for(Object mckey : registryentries) {
+					if(skippingEntities.contains(mckey.toString())) {
+						logger.info("Skipping, won't be able add NBT to '" + mckey + "' entities!");
+						continue;
+					}
 					Object entityTypesObj = ReflectionMethod.REGISTRYMATERIALS_GET.run(entityRegistry, mckey);
 					Field creatorField = entityTypesObj.getClass().getDeclaredField("aZ");
 					creatorField.setAccessible(true);
 					Object creator = creatorField.get(entityTypesObj);
 					Method createEntityMethod = creator.getClass().getMethod("create", ClassWrapper.NMS_ENTITYTYPES.getClazz(), ClassWrapper.NMS_WORLD.getClazz());
 					createEntityMethod.setAccessible(true);
-					Object entityInstance = null;
+					Class<?> nmsclass = null;
 					try {
-						entityInstance = createEntityMethod.invoke(creator, entityTypesObj, null);
-						if(entityInstance == null)
-							throw new NullPointerException();
-					}catch(Throwable npe) {
-						logger.info("Wasn't able to create an Entity instace, won't be able add NBT to '" + entityTypesObj.getClass().getMethod("g").invoke(entityTypesObj) + "' entity Type!");
+						nmsclass = createEntityMethod.invoke(creator, entityTypesObj, null).getClass();
+					}catch(Exception ignore) {
+						// ignore
+					}
+					if(nmsclass == null) {
+						String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+						String name = mckey.toString().replace("minecraft:", "");
+						name = name.substring(0, 1).toUpperCase() + name.substring(1);
+						name = "Entity" + name;
+						if(classMappings.containsKey(mckey.toString()))
+							name = "Entity" + classMappings.get(mckey.toString());
+						try {
+							nmsclass = Class.forName("net.minecraft.server." + version + "." + name);
+						}catch(Exception ignore) {
+							logger.info("Not found: " + "net.minecraft.server." + version + "." + name);
+							// ignore
+						}
+					}
+					if(nmsclass == null) {
+						logger.info("Wasn't able to create an Entity instace, won't be able add NBT to '" + mckey + "' entities!");
 						continue;
 					}
-					Class<?> nmsclass = entityInstance.getClass();
 					try {
 						if (INBTWrapper.class.isAssignableFrom(nmsclass)) { continue; }//Already injected
 						Class<?> wrapped = ClassGenerator.wrapEntity(classPool, nmsclass, "__extraData");
