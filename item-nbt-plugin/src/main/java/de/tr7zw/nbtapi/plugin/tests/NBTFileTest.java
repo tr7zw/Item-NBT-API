@@ -1,6 +1,7 @@
 package de.tr7zw.nbtapi.plugin.tests;
 
 import java.io.File;
+import java.nio.file.Files;
 
 import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTContainer;
@@ -20,14 +21,14 @@ public class NBTFileTest implements Test{
 		file.setLong("time", System.currentTimeMillis());
 		file.setString("test", "test");
 		file.save();
-		file = null;
-		file = new NBTFile(new File(NBTAPI.getInstance().getDataFolder(), "test.nbt"));
-		if(!file.getString("test").equals("test")) {
+		
+		NBTFile fileLoaded = new NBTFile(new File(NBTAPI.getInstance().getDataFolder(), "test.nbt"));
+		if(!fileLoaded.getString("test").equals("test")) {
 			throw new NbtApiException("Wasn't able to load NBT File with the correct content!");
 		}
-		file.getFile().delete();
+		Files.deleteIfExists(fileLoaded.getFile().toPath());
 		//String
-		String str = file.asNBTString();
+		String str = fileLoaded.asNBTString();
 		NBTContainer rebuild = new NBTContainer(str);
 		if (!str.equals(rebuild.asNBTString())) {
 			throw new NbtApiException("Wasn't able to parse NBT from a String!");

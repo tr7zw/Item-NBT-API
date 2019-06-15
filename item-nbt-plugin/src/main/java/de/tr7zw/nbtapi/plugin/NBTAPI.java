@@ -6,14 +6,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 
-import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import de.tr7zw.changeme.nbtapi.ClassWrapper;
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import de.tr7zw.changeme.nbtapi.ReflectionMethod;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 import de.tr7zw.nbtapi.plugin.tests.NBTFileTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.GetterSetterTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.ListTest;
@@ -30,11 +29,10 @@ import de.tr7zw.nbtinjector.NBTInjector;
 
 public class NBTAPI extends JavaPlugin {
 
-	private static boolean compatible = true;
-	private static ArrayList<de.tr7zw.nbtapi.plugin.tests.Test> apiTests = new ArrayList<>();
+	private boolean compatible = true;
+	private ArrayList<de.tr7zw.nbtapi.plugin.tests.Test> apiTests = new ArrayList<>();
 
-	@Deprecated
-	public static NBTAPI instance;
+	private static NBTAPI instance;
 
 	public static NBTAPI getInstance() {
 		return instance;
@@ -46,7 +44,7 @@ public class NBTAPI extends JavaPlugin {
 		try {
 			NBTInjector.inject();
 			getLogger().info("Injected!");
-		}catch(Throwable ex) {
+		}catch(Throwable ex) { // NOSONAR
 			getLogger().log(Level.SEVERE, "Error while Injecting custom Tile/Entity classes!", ex);
 			compatible = false;
 		}
@@ -77,10 +75,9 @@ public class NBTAPI extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		instance = this;
+		instance = this; // NOSONAR
 		//new MetricsLite(this); The metrics moved into the API
 		
-		Bukkit.getPluginManager().registerEvents(new Test(), this);
 		getLogger().info("Checking bindings...");
 		MinecraftVersion.getVersion();
 		getLogger().info("Gson:");
@@ -118,8 +115,8 @@ public class NBTAPI extends JavaPlugin {
 			}catch(Exception ex) {
 				results.put(test, ex);
 				getLogger().log(Level.WARNING, "Error during '" + test.getClass().getSimpleName() + "' test!", ex);
-			}catch(Throwable th) {
-				getLogger().log(Level.SEVERE, "Servere error during '" + test.getClass().getSimpleName() + "' test!", th);
+			}catch(Throwable th) { // NOSONAR
+				getLogger().log(Level.SEVERE, "Servere error during '" + test.getClass().getSimpleName() + "' test!");
 				getLogger().warning("WARNING! This version of Item-NBT-API seems to be broken with your Spigot version! Canceled the other tests!");
 				throw th;
 			}

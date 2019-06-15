@@ -56,9 +56,6 @@ public class GsonTest implements Test{
 		private double testDouble = DOUBLE_TEST_VALUE;
 		private boolean testBoolean = BOOLEAN_TEST_VALUE;
 
-		public SimpleJsonTestObject() {
-		}
-
 		public String getTestString() {
 			return testString;
 		}

@@ -1,5 +1,8 @@
 package de.tr7zw.changeme.nbtapi;
 
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ObjectCreator;
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
+
 public class NBTContainer extends NBTCompound{
 
     private Object nbt;
@@ -14,20 +17,21 @@ public class NBTContainer extends NBTCompound{
         this.nbt = nbt;
     }
 
-    public NBTContainer(String nbtString) throws IllegalArgumentException {
+    public NBTContainer(String nbtString) throws NbtApiException {
         super(null, null);
         try{
             nbt = ReflectionMethod.PARSE_NBT.run(null, nbtString);
         }catch(Exception ex){
-            ex.printStackTrace();
-            throw new IllegalArgumentException("Malformed Json: " + ex.getMessage());
+            throw new NbtApiException("Unable to parse Malformed Json!", ex);
         }
     }
 
+    @Override
     public Object getCompound() {
         return nbt;
     }
 
+    @Override
     public void setCompound(Object tag) {
         nbt = tag;
     }

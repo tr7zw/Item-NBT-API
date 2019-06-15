@@ -11,10 +11,12 @@ public class NBTTileEntity extends NBTCompound {
         this.tile = tile;
     }
 
+    @Override
     public Object getCompound() {
         return NBTReflectionUtil.getTileEntityNBTTagCompound(tile);
     }
 
+    @Override
     protected void setCompound(Object compound) {
         NBTReflectionUtil.setTileEntityNBTTagCompound(tile, compound);
     }

@@ -1,15 +1,19 @@
 package de.tr7zw.changeme.nbtapi.utils;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 
 /**
+ * This class acts as the "Brain" of the NBTApi. It contains the main logger for other classes,registers bStats and checks
+ * rather Maven shading was done correctly.
+ * 
  * @author tr7zw
  *
  */
 public enum MinecraftVersion {
-	Unknown(Integer.MAX_VALUE),//Use the newest known mappings
+	UNKNOWN(Integer.MAX_VALUE),//Use the newest known mappings
 	MC1_7_R4(174),
 	MC1_8_R3(183),
 	MC1_9_R1(191),
@@ -25,7 +29,7 @@ public enum MinecraftVersion {
 	private static Boolean hasGsonSupport;
 	private static boolean bStatsDisabled = false;
 	private static boolean disablePackageWarning = false;
-	private static Logger logger = Logger.getLogger("NBTAPI");
+	public static Logger logger = Logger.getLogger("NBTAPI");
 
 	private final int versionId;
 
@@ -46,9 +50,9 @@ public enum MinecraftVersion {
 		try {
 			version = MinecraftVersion.valueOf(ver.replace("v", "MC"));
 		} catch (IllegalArgumentException ex) {
-			version = MinecraftVersion.Unknown;
+			version = MinecraftVersion.UNKNOWN;
 		}
-		if (version != Unknown) {
+		if (version != UNKNOWN) {
 			logger.info("[NBTAPI] NMS support '" + version.name() + "' loaded!");
 		} else {
 			logger.warning("[NBTAPI] Wasn't able to find NMS Support! Some functions may not work!");
@@ -56,27 +60,24 @@ public enum MinecraftVersion {
 		init();
 		return version;
 	}
-	
+
 	private static void init() {
 		try {
 			if(!bStatsDisabled)
 				new ApiMetricsLite();
-		}catch(Throwable ex) {
-			logger.warning("[NBTAPI] Error enabeling Metrics!");
-			ex.printStackTrace();
+		}catch(Exception ex) {
+			logger.log(Level.WARNING, "[NBTAPI] Error enabeling Metrics!", ex);
 		}
 		// Maven's Relocate is clever and changes strings, too. So we have to use this little "trick" ... :D (from bStats)
-        final String defaultPackage = new String(new byte[]{'d', 'e', '.', 't', 'r', '7', 'z', 'w', '.', 'c', 'h', 'a', 'n', 'g', 'e', 'm', 'e', '.', 'n', 'b', 't', 'a', 'p', 'i', '.', 'u', 't', 'i', 'l', 's'});
-        if(!disablePackageWarning) {
-        	if(MinecraftVersion.class.getPackage().getName().equals(defaultPackage)) {
-        		logger.warning("#########################################- NBTAPI -#########################################");
-        		logger.warning("The NBT-API package has not been moved! This *will* cause problems with other plugins containing");
-        		logger.warning("a different version of the api! Please read the guide on the plugin page on how to get the");
-        		logger.warning("Maven Shade plugin to relocate the api to your personal location! If you are not the developer,");
-        		logger.warning("please check your plugins and contact their developer, so he can fix this issue.");
-        		logger.warning("#########################################- NBTAPI -#########################################");
-        	}
-        }
+		final String defaultPackage = new String(new byte[]{'d', 'e', '.', 't', 'r', '7', 'z', 'w', '.', 'c', 'h', 'a', 'n', 'g', 'e', 'm', 'e', '.', 'n', 'b', 't', 'a', 'p', 'i', '.', 'u', 't', 'i', 'l', 's'});
+		if(!disablePackageWarning && MinecraftVersion.class.getPackage().getName().equals(defaultPackage)) {
+			logger.warning("#########################################- NBTAPI -#########################################");
+			logger.warning("The NBT-API package has not been moved! This *will* cause problems with other plugins containing");
+			logger.warning("a different version of the api! Please read the guide on the plugin page on how to get the");
+			logger.warning("Maven Shade plugin to relocate the api to your personal location! If you are not the developer,");
+			logger.warning("please check your plugins and contact their developer, so he can fix this issue.");
+			logger.warning("#########################################- NBTAPI -#########################################");
+		}
 	}
 
 	public static boolean hasGsonSupport() {
@@ -101,7 +102,7 @@ public enum MinecraftVersion {
 		bStatsDisabled = true;
 	}
 
-	
+
 	/**
 	 * Forcefully disables the log message for plugins not shading the API to another location.
 	 * This may be helpful for networks or development environments, but please don't use it for
@@ -110,5 +111,5 @@ public enum MinecraftVersion {
 	public static void disablePackageWarning() {
 		disablePackageWarning = true;
 	}
-	
+
 }

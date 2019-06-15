@@ -20,7 +20,9 @@ import java.util.Collection;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.zip.GZIPOutputStream;
+import static de.tr7zw.changeme.nbtapi.utils.MinecraftVersion.logger;
 
 /**
  * bStats collects some data for plugin authors.
@@ -31,8 +33,8 @@ import java.util.zip.GZIPOutputStream;
  */
 public class ApiMetricsLite {
 
-	private final static String pluginName = "ItemNBTAPI"; // DO NOT CHANGE THE NAME! else it won't link the data on bStats
-	private final static String pluginVersion = "2.0.0"; // In case you fork the nbt-api for internal use in your network, plugins and so on, you *may* add that to the version here. (2.x.x-Timolia or something like that?)
+	private static final String PLUGINNAME = "ItemNBTAPI"; // DO NOT CHANGE THE NAME! else it won't link the data on bStats
+	private static final String PLUGINVERSION = "2.0.0"; // In case you fork the nbt-api for internal use in your network, plugins and so on, you *may* add that to the version here. (2.x.x-Timolia or something like that?)
 	// Not sure how good of an idea that is, so maybe just leave it as is ¯\_(ツ)_/¯
 
 	// The version of this bStats class
@@ -71,10 +73,9 @@ public class ApiMetricsLite {
 		// The register method just uses any enabled plugin it can find to register. This *shouldn't* cause any problems, since the plugin isn't used any other way.
 		// Register our service
 		for(Plugin plug : Bukkit.getPluginManager().getPlugins()) {
-			//if(plug.isEnabled()) {
 				plugin = plug;
-				break;
-			//}
+				if(plugin != null)
+					break;
 		}
 		if(plugin == null) {
 			return;// Didn't find any plugin that could work
@@ -134,7 +135,7 @@ public class ApiMetricsLite {
 			// Register our service
 			Bukkit.getServicesManager().register(ApiMetricsLite.class, this, plugin, ServicePriority.Normal);
 			if (!found) {
-				System.out.println("[NBTAPI] Using the plugin '" + plugin.getName() + "' to create a bStats instance!");
+				logger.info("[NBTAPI] Using the plugin '" + plugin.getName() + "' to create a bStats instance!");
 				// We are the first!
 				startSubmitting();
 			}
@@ -181,8 +182,8 @@ public class ApiMetricsLite {
 	public JsonObject getPluginData() {
 		JsonObject data = new JsonObject();
 
-		data.addProperty("pluginName", pluginName); // Append the name of the plugin
-		data.addProperty("pluginVersion", pluginVersion); // Append the version of the plugin
+		data.addProperty("pluginName", PLUGINNAME); // Append the name of the plugin
+		data.addProperty("pluginVersion", PLUGINVERSION); // Append the version of the plugin
 		data.add("customCharts", new JsonArray());
 
 		return data;
@@ -265,7 +266,7 @@ public class ApiMetricsLite {
 							} catch (ClassNotFoundException e) {
 								// minecraft version 1.14+
 								if (logFailedRequests) {
-									System.out.println("[NBTAPI][BSTATS] Encountered unexpected exception: " + e.getMessage());
+									logger.log(Level.WARNING, "[NBTAPI][BSTATS] Encountered exception while posting request!", e);
 									// Not using the plugins logger since the plugin isn't the plugin containing the NBT-Api most of the time
 									//this.plugin.getLogger().log(Level.SEVERE, "Encountered unexpected exception ", e); 
 								}
@@ -290,7 +291,7 @@ public class ApiMetricsLite {
 				} catch (Exception e) {
 					// Something went wrong! :(
 					if (logFailedRequests) {
-						System.out.println("[NBTAPI][BSTATS] Could not submit plugin stats of " + plugin.getName() + ": " + e.getMessage());
+						logger.log(Level.WARNING, "[NBTAPI][BSTATS] Could not submit plugin stats of " + plugin.getName(), e);
 						// Not using the plugins logger since the plugin isn't the plugin containing the NBT-Api most of the time
 						//plugin.getLogger().log(Level.WARNING, "Could not submit plugin stats of " + plugin.getName(), e);
 					}
@@ -349,7 +350,7 @@ public class ApiMetricsLite {
 		}
 		bufferedReader.close();
 		if (logResponseStatusText) {
-			System.out.println("[NBTAPI][BSTATS] Sent data to bStats and received response: " + builder.toString());
+			logger.info("[NBTAPI][BSTATS] Sent data to bStats and received response: " + builder.toString());
 			// Not using the plugins logger since the plugin isn't the plugin containing the NBT-Api most of the time
 			//plugin.getLogger().info("Sent data to bStats and received response: " + builder.toString());
 		}
@@ -364,7 +365,7 @@ public class ApiMetricsLite {
 	 */
 	private static byte[] compress(final String str) throws IOException {
 		if (str == null) {
-			return null;
+			return new byte[0];
 		}
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		GZIPOutputStream gzip = new GZIPOutputStream(outputStream);

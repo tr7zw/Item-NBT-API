@@ -17,22 +17,29 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 
-import de.tr7zw.changeme.nbtapi.ClassWrapper;
 import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTContainer;
 import de.tr7zw.changeme.nbtapi.NBTEntity;
 import de.tr7zw.changeme.nbtapi.NBTReflectionUtil;
 import de.tr7zw.changeme.nbtapi.NBTTileEntity;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
-import de.tr7zw.changeme.nbtapi.ObjectCreator;
-import de.tr7zw.changeme.nbtapi.ReflectionMethod;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ObjectCreator;
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 import javassist.ClassPool;
 
 public class NBTInjector {
 
+	/**
+	 * Hidden Constructor
+	 */
+	private NBTInjector() {
+		
+	}
+	
 	static Logger logger = Logger.getLogger("NBTInjector");
-	private static final List<String> skippingEntities = Arrays.asList(new String[]{"minecraft:player", "minecraft:fishing_bobber", "minecraft:lightning_bolt"});  //These are broken/won't work
+	private static final List<String> skippingEntities = Arrays.asList("minecraft:player", "minecraft:fishing_bobber", "minecraft:lightning_bolt");  //These are broken/won't work
 	private static final Map<String, String> classMappings = new HashMap<>();
 	
 	static {
@@ -53,6 +60,7 @@ public class NBTInjector {
 	 * This method needs to be called during onLoad so classes are replaced before worlds load.
 	 * If your plugin adds a new Entity(probably during onLoad) recall this method so it's class gets Wrapped.
 	 */
+	@SuppressWarnings("unchecked")
 	public static void inject() {
 		try {
 			ClassPool classPool = ClassPool.getDefault();
@@ -70,7 +78,7 @@ public class NBTInjector {
 						Entity.getEMap().put(entityId, wrapped);
 						Entity.getFMap().put(wrapped, entityId);
 					} catch (Exception e) {
-						throw new RuntimeException("Exception while injecting " + entry.getKey(), e);
+						throw new NbtApiException("Exception while injecting " + entry.getKey(), e);
 					}
 				}
 			} else if (MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_12_R1.getVersionId()){
@@ -86,7 +94,7 @@ public class NBTInjector {
 						ReflectionMethod.REGISTRY_SET.run(registry, mckey, wrapped);
 						inverse.put(wrapped, mckey);
 					} catch (Exception e) {
-						throw new RuntimeException("Exception while injecting " + mckey, e);
+						throw new NbtApiException("Exception while injecting " + mckey, e);
 					}
 				}
 				Field inverseField = registry.getClass().getDeclaredField("b");
@@ -119,7 +127,7 @@ public class NBTInjector {
 							}
 						});
 					} catch (Exception e) {
-						throw new RuntimeException("Exception while injecting " + mckey, e);
+						throw new NbtApiException("Exception while injecting " + mckey, e);
 					}
 				}
 			} else { //1.14+
@@ -195,7 +203,7 @@ public class NBTInjector {
 						ReflectionMethod.REGISTRY_SET.run(registry, mckey, wrapped);
 						inverse.put(wrapped, mckey);
 					} catch (Exception e) {
-						throw new RuntimeException("Exception while injecting " + mckey, e);
+						throw new NbtApiException("Exception while injecting " + mckey, e);
 					}
 				}
 				Field inverseField = registry.getClass().getDeclaredField("b");
@@ -227,12 +235,12 @@ public class NBTInjector {
 							}
 						});
 					} catch (Exception e) {
-						throw new RuntimeException("Exception while injecting " + mckey, e);
+						throw new NbtApiException("Exception while injecting " + mckey, e);
 					}
 				}
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new NbtApiException(e);
 		}
 	}
 
@@ -307,12 +315,6 @@ public class NBTInjector {
 			if (!(ent instanceof INBTWrapper)) {
 				logger.info("Entity wasn't the correct class! '" + ent.getClass().getName() + "'");
 			}
-			/*if (!(ent instanceof INBTWrapper)) {//Replace Entity with custom one
-				entity = patchEntity(entity);
-				System.out.println("Autopatched Entity: " + entity);
-	            return getNbtData(NBTReflectionUtil.getNMSEntity(entity));
-				return null; // For now don't do anything, just return null.
-			}*/
 			return getNbtData(ent);
 		} catch (Exception e) {
 			throw new NbtApiException("Error while getting the NBT from an Entity '" + entity + "'.", e);
@@ -356,7 +358,7 @@ public class NBTInjector {
 			}
 			return getNbtData(tileEntity);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new NbtApiException(e);
 		}
 	}
 
@@ -375,7 +377,13 @@ public class NBTInjector {
 		return field;
 	}
 
+	@SuppressWarnings("unchecked")
 	static class Entity {
+		
+		/**
+		 * Hidden Constructor
+		 */
+		private Entity() {}
 		private static Map<Class<?>, String> backupMap = new HashMap<>();
 
 		static {
@@ -384,7 +392,7 @@ public class NBTInjector {
 					backupMap.putAll(getDMap());
 				}
 			} catch (ReflectiveOperationException e) {
-				e.printStackTrace();
+				throw new NbtApiException(e);
 			}
 		}
 
@@ -413,8 +421,13 @@ public class NBTInjector {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	static class TileEntity {
-
+		/**
+		 * Hidden Constructor
+		 */
+		private TileEntity() {}
+		
 		static Object getRegistry() throws ReflectiveOperationException {
 			return getAccessable(ClassWrapper.NMS_TILEENTITY.getClazz().getDeclaredField("f")).get(null);
 		}

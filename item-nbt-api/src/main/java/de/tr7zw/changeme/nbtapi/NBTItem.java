@@ -2,6 +2,8 @@ package de.tr7zw.changeme.nbtapi;
 
 import org.bukkit.inventory.ItemStack;
 
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
+
 public class NBTItem extends NBTCompound {
 
     private ItemStack bukkitItem;
@@ -14,10 +16,12 @@ public class NBTItem extends NBTCompound {
         bukkitItem = item.clone();
     }
 
+    @Override
     public Object getCompound() {
         return NBTReflectionUtil.getItemRootNBTTagCompound(ReflectionMethod.ITEMSTACK_NMSCOPY.run(null, bukkitItem));
     }
 
+    @Override
     protected void setCompound(Object compound) {
         Object stack = ReflectionMethod.ITEMSTACK_NMSCOPY.run(null, bukkitItem);
         ReflectionMethod.ITEMSTACK_SET_TAG.run(stack, compound);

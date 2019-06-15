@@ -1,7 +1,8 @@
 package de.tr7zw.changeme.nbtapi;
 
-import java.util.HashSet;
 import java.util.Set;
+
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 
 public class NBTListCompound {
 
@@ -22,7 +23,7 @@ public class NBTListCompound {
             compound.getClass().getMethod("setString", String.class, String.class).invoke(compound, key, value);
             owner.save();
         } catch (Exception ex) {
-            ex.printStackTrace();
+        	throw new NbtApiException(ex);
         }
     }
 
@@ -31,7 +32,7 @@ public class NBTListCompound {
             compound.getClass().getMethod("setInt", String.class, int.class).invoke(compound, key, value);
             owner.save();
         } catch (Exception ex) {
-            ex.printStackTrace();
+        	throw new NbtApiException(ex);
         }
     }
 
@@ -39,9 +40,8 @@ public class NBTListCompound {
         try {
             return (int) compound.getClass().getMethod("getInt", String.class).invoke(compound, value);
         } catch (Exception ex) {
-            ex.printStackTrace();
+        	throw new NbtApiException(ex);
         }
-        return 0;
     }
 
     public void setDouble(String key, double value) {
@@ -49,7 +49,7 @@ public class NBTListCompound {
             compound.getClass().getMethod("setDouble", String.class, double.class).invoke(compound, key, value);
             owner.save();
         } catch (Exception ex) {
-            ex.printStackTrace();
+        	throw new NbtApiException(ex);
         }
     }
 
@@ -57,9 +57,8 @@ public class NBTListCompound {
         try {
             return (double) compound.getClass().getMethod("getDouble", String.class).invoke(compound, key);
         } catch (Exception ex) {
-            ex.printStackTrace();
+        	throw new NbtApiException(ex);
         }
-        return 0;
     }
 
 
@@ -67,18 +66,16 @@ public class NBTListCompound {
         try {
             return (String) compound.getClass().getMethod("getString", String.class).invoke(compound, key);
         } catch (Exception ex) {
-            ex.printStackTrace();
+        	throw new NbtApiException(ex);
         }
-        return "";
     }
 
     public boolean hasKey(String key) {
         try {
             return (boolean) compound.getClass().getMethod("hasKey", String.class).invoke(compound, key);
         } catch (Exception ex) {
-            ex.printStackTrace();
+        	throw new NbtApiException(ex);
         }
-        return false;
     }
 
     @SuppressWarnings("unchecked")
@@ -86,16 +83,15 @@ public class NBTListCompound {
         try {
             return (Set<String>) ReflectionMethod.LISTCOMPOUND_GET_KEYS.run(compound);
         } catch (Exception ex) {
-            ex.printStackTrace();
+        	throw new NbtApiException(ex);
         }
-        return new HashSet<>();
     }
 
     public void remove(String key) {
         try {
             compound.getClass().getMethod("remove", String.class).invoke(compound, key);
         } catch (Exception ex) {
-            ex.printStackTrace();
+        	throw new NbtApiException(ex);
         }
     }
 

@@ -3,6 +3,7 @@ package de.tr7zw.changeme.nbtapi;
 import java.util.Set;
 
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 
 
 public class NBTCompound {
@@ -133,7 +134,8 @@ public class NBTCompound {
     
     public Boolean hasKey(String key) {
         Boolean b =  (Boolean) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_HAS_KEY, key);
-        if(b == null)return false;
+        if(b == null)
+        	return false;
         return b;
     }
 
@@ -146,13 +148,15 @@ public class NBTCompound {
     }
 
     public NBTCompound addCompound(String name) {
-        if(getType(name) == NBTType.NBTTagCompound)return getCompound(name);
+        if(getType(name) == NBTType.NBTTagCompound)
+        	return getCompound(name);
         NBTReflectionUtil.addNBTTagCompound(this, name);
         return getCompound(name);
     }
 
     public NBTCompound getCompound(String name) {
-    	 if(getType(name) != NBTType.NBTTagCompound)return null;
+    	 if(getType(name) != NBTType.NBTTagCompound)
+    		 return null;
         NBTCompound next = new NBTCompound(this, name);
         if (NBTReflectionUtil.valideCompound(next)) return next;
         return null;
@@ -171,9 +175,11 @@ public class NBTCompound {
     }
 
     public NBTType getType(String name) {
-        if (MinecraftVersion.getVersion() == MinecraftVersion.MC1_7_R4) return null;
+        if (MinecraftVersion.getVersion() == MinecraftVersion.MC1_7_R4) 
+        	return null;
         Object o = NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_TYPE, name);
-        if(o == null)return null;
+        if(o == null)
+        	return null;
         return NBTType.valueOf((byte) o);
     }
 

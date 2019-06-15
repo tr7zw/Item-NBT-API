@@ -6,8 +6,10 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 
 public abstract class NBTList<T> implements List<T> {
 
@@ -27,7 +29,7 @@ public abstract class NBTList<T> implements List<T> {
 		parent.set(listName, listObject);
 	}
 
-	abstract protected Object asTag(T object) throws Exception;
+	protected abstract Object asTag(T object);
 	
 	@Override
 	public boolean add(T element) {
@@ -60,33 +62,33 @@ public abstract class NBTList<T> implements List<T> {
 	
 	@Override
 	public T set(int index, T element) {
-		T prev = get(index);
 		try {
+			T prev = get(index);
 			ReflectionMethod.LIST_SET.run(listObject, index, asTag(element));
 			save();
+			return prev;
 		} catch (Exception ex) {
 			throw new NbtApiException(ex);
 		}
-		return prev;
 	}
 	
 	public T remove(int i) {
 		try {
+			T old = get(i);
 			ReflectionMethod.LIST_REMOVE_KEY.run(listObject, i);
 			save();
+			return old;
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			throw new NbtApiException(ex);
 		}
-		return null;
 	}
 
 	public int size() {
 		try {
 			return (int) ReflectionMethod.LIST_SIZE.run(listObject);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			throw new NbtApiException(ex);
 		}
-		return -1;
 	}
 
 	public NBTType getType() {
@@ -204,7 +206,9 @@ public abstract class NBTList<T> implements List<T> {
 			}
 
 			@Override
-			public T next() {
+			public T next() throws NoSuchElementException{
+				if(!hasNext())
+					throw new NoSuchElementException();
 				return get(++index);
 			}
 		};
@@ -238,7 +242,9 @@ public abstract class NBTList<T> implements List<T> {
 			}
 
 			@Override
-			public T next() {
+			public T next() throws NoSuchElementException {
+				if(!hasNext())
+					throw new NoSuchElementException();
 				return get(++index);
 			}
 

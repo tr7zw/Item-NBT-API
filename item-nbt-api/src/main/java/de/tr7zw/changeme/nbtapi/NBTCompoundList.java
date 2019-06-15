@@ -3,6 +3,8 @@ package de.tr7zw.changeme.nbtapi;
 import org.apache.commons.lang.NotImplementedException;
 
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 
 public class NBTCompoundList extends NBTList<NBTListCompound>{
 
@@ -75,7 +77,7 @@ public class NBTCompoundList extends NBTList<NBTListCompound>{
 	}
 
 	@Override
-	protected Object asTag(NBTListCompound object) throws Exception {
+	protected Object asTag(NBTListCompound object) {
 		return null;
 	}
 

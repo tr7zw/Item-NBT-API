@@ -1,17 +1,33 @@
 package de.tr7zw.nbtinjector;
 
-import javassist.*;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 
-import de.tr7zw.changeme.nbtapi.ClassWrapper;
 import de.tr7zw.changeme.nbtapi.NBTCompound;
-import de.tr7zw.changeme.nbtapi.ReflectionMethod;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
+import javassist.CannotCompileException;
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtField;
+import javassist.CtMethod;
+import javassist.CtNewConstructor;
+import javassist.LoaderClassPath;
+import javassist.NotFoundException;
 
 public class ClassGenerator {
 
-	public static Class<?> wrapNbtClass(ClassPool classPool, Class<?> originalClass, String writeMethod, String readMethod, String extraDataKey) throws ReflectiveOperationException, NotFoundException, CannotCompileException {
+	/**
+	 * Hidden Constructor
+	 */
+	private ClassGenerator() {
+		
+	}
+	
+	private static final String GENERATOR_PACKAGE = "de.tr7zw.nbtinjector.generated";
+	
+	public static Class<?> wrapNbtClass(ClassPool classPool, Class<?> originalClass, String writeMethod, String readMethod, String extraDataKey) throws NotFoundException, CannotCompileException, IOException {
 		classPool.insertClassPath(new LoaderClassPath(ClassGenerator.class.getClassLoader()));
 
 		CtClass generated = classPool.makeClass("de.tr7zw.nbtinjector.generated." + originalClass.getSimpleName());
@@ -23,7 +39,7 @@ public class ClassGenerator {
 
 		classPool.importPackage("net.minecraft.server." + MinecraftVersion.getVersion().name().replace("MC", "v"));
 		classPool.importPackage(NBTCompound.class.getPackage().getName());
-		classPool.importPackage("de.tr7zw.nbtinjector.generated");
+		classPool.importPackage(GENERATOR_PACKAGE);
 
 		generated.addField(CtField.make("public NBTCompound $extraCompound = new NBTContainer();", generated));
 		generated.addMethod(CtMethod.make("public NBTCompound getNbtData() {\n"
@@ -65,39 +81,30 @@ public class ClassGenerator {
 					+ "}", generated));
 		}
 
-		try {
-			generated.writeFile("nbtinjector_generated");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		generated.writeFile("nbtinjector_generated");
 		return generated.toClass(INBTWrapper.class.getClassLoader(), INBTWrapper.class.getProtectionDomain());
 	}
 	
-	public static Class<?> createEntityTypeWrapper(ClassPool classPool, Class<?> targetClass) throws ReflectiveOperationException, NotFoundException, CannotCompileException {
+	public static Class<?> createEntityTypeWrapper(ClassPool classPool, Class<?> targetClass) throws NotFoundException, CannotCompileException, IOException {
 		classPool.insertClassPath(new LoaderClassPath(ClassGenerator.class.getClassLoader()));
 
-		CtClass generated = classPool.makeClass("de.tr7zw.nbtinjector.generated.entityCreator." + targetClass.getSimpleName());
+		CtClass generated = classPool.makeClass(GENERATOR_PACKAGE + ".entityCreator." + targetClass.getSimpleName());
 
 		CtClass wrapperInterface = classPool.get(ClassWrapper.NMS_ENTITYTYPES.getClazz().getName() + "$b");
 		generated.setInterfaces(new CtClass[] { wrapperInterface });
 
 		classPool.importPackage("net.minecraft.server." + MinecraftVersion.getVersion().name().replace("MC", "v"));
-		classPool.importPackage("de.tr7zw.nbtinjector.generated");
-		classPool.importPackage("de.tr7zw.nbtinjector.generated");
+		classPool.importPackage(GENERATOR_PACKAGE);
 		
 		generated.addMethod(CtMethod.make("public Entity create(EntityTypes var1, World var2) {\n"
 				+ "  return new " + targetClass.getName() + "(var1, var2);\n"
 				+ "}", generated));
 
-		try {
-			generated.writeFile("nbtinjector_generated");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		generated.writeFile("nbtinjector_generated");
 		return generated.toClass(INBTWrapper.class.getClassLoader(), INBTWrapper.class.getProtectionDomain());
 	}
 	
-	public static Class<?> wrapEntity(ClassPool classPool, Class<?> originalClass, String extraDataKey) throws ReflectiveOperationException, NotFoundException, CannotCompileException {
+	public static Class<?> wrapEntity(ClassPool classPool, Class<?> originalClass, String extraDataKey) throws NotFoundException, CannotCompileException, IOException {
 		String writeReturn = MinecraftVersion.getVersion().getVersionId() > MinecraftVersion.MC1_10_R1.getVersionId() ? "NBTTagCompound" : "void";
 		String writeName = ReflectionMethod.NMS_ENTITY_GET_NBT.getMethodName();
 		String readName = ReflectionMethod.NMS_ENTITY_SET_NBT.getMethodName();
@@ -119,7 +126,7 @@ public class ClassGenerator {
 		return wrapNbtClass(classPool, originalClass, writeMethod, readMethod, extraDataKey);
 	}
 
-	public static Class<?> wrapTileEntity(ClassPool classPool, Class<?> originalClass, String extraDataKey) throws ReflectiveOperationException, NotFoundException, CannotCompileException {
+	public static Class<?> wrapTileEntity(ClassPool classPool, Class<?> originalClass, String extraDataKey) throws NotFoundException, CannotCompileException, IOException {
 		String writeReturn = MinecraftVersion.getVersion().getVersionId() > MinecraftVersion.MC1_9_R1.getVersionId() ? "NBTTagCompound" : "void";
 		String writeName = ReflectionMethod.TILEENTITY_GET_NBT.getMethodName();
 		String readName = ReflectionMethod.TILEENTITY_SET_NBT.getMethodName();
