@@ -5,7 +5,7 @@ import de.tr7zw.changeme.nbtapi.NBTContainer;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.nbtapi.plugin.tests.Test;
 
-public class SubCompoundsTest implements Test{
+public class SubCompoundsTest implements Test {
 
 	private static final String COMP_TEST_KEY = "componentTest";
 	private static final String STRING_TEST_KEY = "stringTest";
@@ -16,23 +16,22 @@ public class SubCompoundsTest implements Test{
 	private static final int INT_TEST_VALUE = 42;
 	private static final double DOUBLE_TEST_VALUE = 1.5d;
 	private static final boolean BOOLEAN_TEST_VALUE = true;
-	
+
 	@Override
 	public void test() throws Exception {
 		NBTContainer cont = new NBTContainer();
-
 
 		NBTCompound comp = cont.addCompound(COMP_TEST_KEY);
 		comp.setString(STRING_TEST_KEY, STRING_TEST_VALUE + "2");
 		comp.setInteger(INT_TEST_KEY, INT_TEST_VALUE * 2);
 		comp.setDouble(DOUBLE_TEST_KEY, DOUBLE_TEST_VALUE * 2);
-		
-		if(cont.getCompound("invalide") != null) {
+
+		if (cont.getCompound("invalide") != null) {
 			throw new NbtApiException("An invalide compound did not return null!");
 		}
-		
+
 		comp = null;
-		
+
 		comp = cont.getCompound(COMP_TEST_KEY);
 		if (comp == null) {
 			throw new NbtApiException("Wasn't able to get the NBTCompound!");

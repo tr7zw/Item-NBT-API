@@ -4,7 +4,7 @@ import de.tr7zw.changeme.nbtapi.NBTContainer;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.nbtapi.plugin.tests.Test;
 
-public class MergeTest implements Test{
+public class MergeTest implements Test {
 
 	@Override
 	public void test() throws Exception {

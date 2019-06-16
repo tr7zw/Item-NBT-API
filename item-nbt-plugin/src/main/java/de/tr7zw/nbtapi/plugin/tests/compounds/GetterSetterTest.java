@@ -4,7 +4,7 @@ import de.tr7zw.changeme.nbtapi.NBTContainer;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.nbtapi.plugin.tests.Test;
 
-public class GetterSetterTest implements Test{
+public class GetterSetterTest implements Test {
 
 	private static final String STRING_TEST_KEY = "stringTest";
 	private static final String INT_TEST_KEY = "intTest";
@@ -27,7 +27,7 @@ public class GetterSetterTest implements Test{
 	private static final long LONG_TEST_VALUE = (long) Integer.MAX_VALUE + 42L;
 	private static final int[] INTARRAY_TEST_VALUE = new int[] { 1337, 42, 69 };
 	private static final byte[] BYTEARRAY_TEST_VALUE = new byte[] { 8, 7, 3, 2 };
-	
+
 	@Override
 	public void test() throws Exception {
 		NBTContainer comp = new NBTContainer();
@@ -42,17 +42,15 @@ public class GetterSetterTest implements Test{
 		comp.setFloat(FLOAT_TEST_KEY, FLOAT_TEST_VALUE);
 		comp.setIntArray(INTARRAY_TEST_KEY, INTARRAY_TEST_VALUE);
 		comp.setByteArray(BYTEARRAY_TEST_KEY, BYTEARRAY_TEST_VALUE);
-				
+
 		if (!comp.hasKey(STRING_TEST_KEY)) {
 			throw new NbtApiException("Wasn't able to check a key! The Item-NBT-API may not work!");
 		}
 		if (!(STRING_TEST_VALUE).equals(comp.getString(STRING_TEST_KEY))
 				|| comp.getInteger(INT_TEST_KEY) != INT_TEST_VALUE
 				|| comp.getDouble(DOUBLE_TEST_KEY) != DOUBLE_TEST_VALUE
-				|| comp.getByte(BYTE_TEST_KEY) != BYTE_TEST_VALUE
-				|| comp.getShort(SHORT_TEST_KEY) != SHORT_TEST_VALUE
-				|| comp.getFloat(FLOAT_TEST_KEY) != FLOAT_TEST_VALUE
-				|| comp.getLong(LONG_TEST_KEY) != LONG_TEST_VALUE
+				|| comp.getByte(BYTE_TEST_KEY) != BYTE_TEST_VALUE || comp.getShort(SHORT_TEST_KEY) != SHORT_TEST_VALUE
+				|| comp.getFloat(FLOAT_TEST_KEY) != FLOAT_TEST_VALUE || comp.getLong(LONG_TEST_KEY) != LONG_TEST_VALUE
 				|| comp.getIntArray(INTARRAY_TEST_KEY).length != (INTARRAY_TEST_VALUE).length
 				|| comp.getByteArray(BYTEARRAY_TEST_KEY).length != (BYTEARRAY_TEST_VALUE).length
 				|| !comp.getBoolean(BOOLEAN_TEST_KEY).equals(BOOLEAN_TEST_VALUE)) {

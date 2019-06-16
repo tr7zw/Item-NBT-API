@@ -8,7 +8,7 @@ import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import de.tr7zw.nbtapi.plugin.tests.Test;
 
-public class GsonTest implements Test{
+public class GsonTest implements Test {
 
 	@Override
 	public void test() throws Exception {
@@ -22,16 +22,19 @@ public class GsonTest implements Test{
 			nbtItem.setObject(JSON_TEST_KEY, new SimpleJsonTestObject());
 
 			if (!nbtItem.hasKey(JSON_TEST_KEY)) {
-				throw new NbtApiException("Wasn't able to find JSON key! The Item-NBT-API may not work with Json serialization/deserialization!");
+				throw new NbtApiException(
+						"Wasn't able to find JSON key! The Item-NBT-API may not work with Json serialization/deserialization!");
 			} else {
 				SimpleJsonTestObject simpleObject = nbtItem.getObject(JSON_TEST_KEY, SimpleJsonTestObject.class);
 				if (simpleObject == null) {
-					throw new NbtApiException("Wasn't able to check JSON key! The Item-NBT-API may not work with Json serialization/deserialization!");
+					throw new NbtApiException(
+							"Wasn't able to check JSON key! The Item-NBT-API may not work with Json serialization/deserialization!");
 				} else if (!(STRING_TEST_VALUE).equals(simpleObject.getTestString())
 						|| simpleObject.getTestInteger() != INT_TEST_VALUE
 						|| simpleObject.getTestDouble() != DOUBLE_TEST_VALUE
 						|| !simpleObject.isTestBoolean() == BOOLEAN_TEST_VALUE) {
-					throw new NbtApiException("One key does not equal the original value in JSON! The Item-NBT-API may not work with Json serialization/deserialization!");
+					throw new NbtApiException(
+							"One key does not equal the original value in JSON! The Item-NBT-API may not work with Json serialization/deserialization!");
 				}
 			}
 		} catch (Exception ex) {
@@ -39,16 +42,15 @@ public class GsonTest implements Test{
 		}
 	}
 
-	//region STATIC FINAL VARIABLES
+	// region STATIC FINAL VARIABLES
 	private static final String JSON_TEST_KEY = "jsonTest";
-
 
 	private static final String STRING_TEST_VALUE = "TestString";
 	private static final int INT_TEST_VALUE = 42;
 	private static final double DOUBLE_TEST_VALUE = 1.5d;
 	private static final boolean BOOLEAN_TEST_VALUE = true;
 
-	//end region STATIC FINAL VARIABLES
+	// end region STATIC FINAL VARIABLES
 
 	public static class SimpleJsonTestObject {
 		private String testString = STRING_TEST_VALUE;
@@ -88,5 +90,5 @@ public class GsonTest implements Test{
 			this.testBoolean = testBoolean;
 		}
 	}
-	
+
 }

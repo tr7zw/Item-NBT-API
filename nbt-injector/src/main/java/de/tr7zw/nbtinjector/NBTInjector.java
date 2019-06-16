@@ -32,35 +32,35 @@ public class NBTInjector {
 	 * Hidden Constructor
 	 */
 	private NBTInjector() {
-		
-	}
-	
-	static Logger logger = Logger.getLogger("NBTInjector");
 
+	}
+
+	static Logger logger = Logger.getLogger("NBTInjector");
 
 	/**
 	 * Replaces the vanilla classes with Wrapped classes that support custom NBT.
-	 * This method needs to be called during onLoad so classes are replaced before worlds load.
-	 * If your plugin adds a new Entity(probably during onLoad) recall this method so it's class gets Wrapped.
+	 * This method needs to be called during onLoad so classes are replaced before
+	 * worlds load. If your plugin adds a new Entity(probably during onLoad) recall
+	 * this method so it's class gets Wrapped.
 	 */
 	public static void inject() {
 		try {
 			ClassPool classPool = ClassPool.getDefault();
 			logger.info("[NBTINJECTOR] Injecting Entity classes...");
-			if(MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_10_R1.getVersionId()) {
+			if (MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_10_R1.getVersionId()) {
 				InternalInjectors.entity1v10Below(classPool);
-			} else if (MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_12_R1.getVersionId()){
+			} else if (MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_12_R1.getVersionId()) {
 				InternalInjectors.entity1v12Below(classPool);
 			} else if (MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_13_R2.getVersionId()) {
 				InternalInjectors.entity1v13Below(classPool);
-			} else { //1.14+
+			} else { // 1.14+
 				InternalInjectors.entity1v14(classPool);
 			}
 
 			logger.info("[NBTINJECTOR] Injecting Tile Entity classes...");
-			if(MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_10_R1.getVersionId()) {
+			if (MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_10_R1.getVersionId()) {
 				InternalInjectors.tile1v10Below(classPool);
-			} else if (MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_12_R1.getVersionId()){
+			} else if (MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_12_R1.getVersionId()) {
 				InternalInjectors.tile1v12Below(classPool);
 			} else { // 1.13+
 				InternalInjectors.tile1v13(classPool);
@@ -78,32 +78,38 @@ public class NBTInjector {
 	}
 
 	/**
-	 * Entities that have just been spawned(from plugins or natually) may use the wrong(Vanilla) class.
-	 * Calling this method removes the wrong entity and respawns it using the correct class. It also tries
-	 * to keep all data of the original entity, but some stuff like passengers will probably cause problems.
-	 * Recalling this method on a patched Entity doesn nothing and returns the Entity instance.
+	 * Entities that have just been spawned(from plugins or natually) may use the
+	 * wrong(Vanilla) class. Calling this method removes the wrong entity and
+	 * respawns it using the correct class. It also tries to keep all data of the
+	 * original entity, but some stuff like passengers will probably cause problems.
+	 * Recalling this method on a patched Entity doesn nothing and returns the
+	 * Entity instance.
 	 * 
-	 * WARNING: This causes the entity to get a new Bukkit Entity instance. For other plugins the entity will
-	 * be a dead/removed entity, even if it's still kinda there. Bestcase you spawn an Entity and directly replace
-	 * your instance with a patched one.
-	 * Also, for players ingame the entity will quickly flash, since it's respawned.
+	 * WARNING: This causes the entity to get a new Bukkit Entity instance. For
+	 * other plugins the entity will be a dead/removed entity, even if it's still
+	 * kinda there. Bestcase you spawn an Entity and directly replace your instance
+	 * with a patched one. Also, for players ingame the entity will quickly flash,
+	 * since it's respawned.
 	 * 
 	 * @param entity Entity to respawn with the correct class.
 	 * @return Entity The new instance of the entity.
 	 */
-	public static org.bukkit.entity.Entity patchEntity(org.bukkit.entity.Entity entity){
-		if (entity == null) { return null; }
+	public static org.bukkit.entity.Entity patchEntity(org.bukkit.entity.Entity entity) {
+		if (entity == null) {
+			return null;
+		}
 		try {
 			Object ent = NBTReflectionUtil.getNMSEntity(entity);
-			if (!(ent instanceof INBTWrapper)) {//Replace Entity with custom one
+			if (!(ent instanceof INBTWrapper)) {// Replace Entity with custom one
 				Object cworld = ClassWrapper.CRAFT_WORLD.getClazz().cast(entity.getWorld());
 				Object nmsworld = ReflectionMethod.CRAFT_WORLD_GET_HANDLE.run(cworld);
 				NBTContainer oldNBT = new NBTContainer(new NBTEntity(entity).getCompound());
-				Method create = ClassWrapper.NMS_ENTITYTYPES.getClazz().getMethod("a", ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), ClassWrapper.NMS_WORLD.getClazz());
+				Method create = ClassWrapper.NMS_ENTITYTYPES.getClazz().getMethod("a",
+						ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), ClassWrapper.NMS_WORLD.getClazz());
 				String id = "";
-				if(MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_10_R1.getVersionId()) {
+				if (MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_10_R1.getVersionId()) {
 					id = Entity.getBackupMap().get(ent.getClass());
-				} else if(MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_13_R1.getVersionId()){
+				} else if (MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_13_R1.getVersionId()) {
 					id = ReflectionMethod.REGISTRY_GET_INVERSE.run(Entity.getRegistry(), ent.getClass()).toString();
 				} else {
 					id = (String) ReflectionMethod.NMS_ENTITY_GETSAVEID.run(ent);
@@ -113,9 +119,10 @@ public class NBTInjector {
 				oldNBT.removeKey("UUIDLeast");
 				entity.remove();
 				Object newEntity = create.invoke(null, oldNBT.getCompound(), nmsworld);
-				if(newEntity instanceof Optional<?> && ((Optional<?>)newEntity).isPresent())
-					newEntity = ((Optional<?>)newEntity).get();
-				Method spawn = ClassWrapper.NMS_WORLD.getClazz().getMethod("addEntity", ClassWrapper.NMS_ENTITY.getClazz());
+				if (newEntity instanceof Optional<?> && ((Optional<?>) newEntity).isPresent())
+					newEntity = ((Optional<?>) newEntity).get();
+				Method spawn = ClassWrapper.NMS_WORLD.getClazz().getMethod("addEntity",
+						ClassWrapper.NMS_ENTITY.getClazz());
 				spawn.invoke(nmsworld, newEntity);
 				logger.info("Created patched instance: " + newEntity.getClass().getName());
 				Method asBukkit = newEntity.getClass().getMethod("getBukkitEntity");
@@ -128,14 +135,16 @@ public class NBTInjector {
 	}
 
 	/**
-	 * Gets the persistant NBTCompound from a given entity. If the Entity isn't yet patched,
-	 * this method will return null.
+	 * Gets the persistant NBTCompound from a given entity. If the Entity isn't yet
+	 * patched, this method will return null.
 	 * 
 	 * @param entity Entity to get the NBTCompound from
 	 * @return NBTCompound instance
 	 */
 	public static NBTCompound getNbtData(org.bukkit.entity.Entity entity) {
-		if (entity == null) { return null; }
+		if (entity == null) {
+			return null;
+		}
 		try {
 			Object ent = NBTReflectionUtil.getNMSEntity(entity);
 			if (!(ent instanceof INBTWrapper)) {
@@ -148,35 +157,43 @@ public class NBTInjector {
 	}
 
 	/**
-	 * Gets the persistant NBTCompound from a given TileEntity. If the Tile isn't yet patched,
-	 * this method will autopatch it. This will unlink the given BlockState, so calling block.getState()
-	 * again may be necessary. This behavior may change in the future.
+	 * Gets the persistant NBTCompound from a given TileEntity. If the Tile isn't
+	 * yet patched, this method will autopatch it. This will unlink the given
+	 * BlockState, so calling block.getState() again may be necessary. This behavior
+	 * may change in the future.
 	 * 
 	 * @param tile TileEntity to get the NBTCompound from
 	 * @return NBTCompound instance
 	 */
 	public static NBTCompound getNbtData(org.bukkit.block.BlockState tile) {
-		if (tile == null) { return null; }
+		if (tile == null) {
+			return null;
+		}
 		try {
 			Object pos = ObjectCreator.NMS_BLOCKPOSITION.getInstance(tile.getX(), tile.getY(), tile.getZ());
 			Object cworld = ClassWrapper.CRAFT_WORLD.getClazz().cast(tile.getWorld());
 			Object nmsworld = ReflectionMethod.CRAFT_WORLD_GET_HANDLE.run(cworld);
 			Object tileEntity = ReflectionMethod.NMS_WORLD_GET_TILEENTITY.run(nmsworld, pos);
-			if(tileEntity == null) { // Not a tile block
+			if (tileEntity == null) { // Not a tile block
 				return null;
 			}
 			if (!(tileEntity instanceof INBTWrapper)) {
-				//Loading Updated Tile
+				// Loading Updated Tile
 
 				Object tileEntityUpdated;
-				if(MinecraftVersion.getVersion() == MinecraftVersion.MC1_9_R1) {
-					tileEntityUpdated = ReflectionMethod.TILEENTITY_LOAD_LEGACY191.run(null, null, new NBTTileEntity(tile).getCompound());
-				} else if(MinecraftVersion.getVersion() == MinecraftVersion.MC1_8_R3 || MinecraftVersion.getVersion() == MinecraftVersion.MC1_9_R2) {
-					tileEntityUpdated = ReflectionMethod.TILEENTITY_LOAD_LEGACY183.run(null, new NBTTileEntity(tile).getCompound());
-				} else if(MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_12_R1.getVersionId()){
-					tileEntityUpdated = ReflectionMethod.TILEENTITY_LOAD_LEGACY1121.run(null, nmsworld, new NBTTileEntity(tile).getCompound());
+				if (MinecraftVersion.getVersion() == MinecraftVersion.MC1_9_R1) {
+					tileEntityUpdated = ReflectionMethod.TILEENTITY_LOAD_LEGACY191.run(null, null,
+							new NBTTileEntity(tile).getCompound());
+				} else if (MinecraftVersion.getVersion() == MinecraftVersion.MC1_8_R3
+						|| MinecraftVersion.getVersion() == MinecraftVersion.MC1_9_R2) {
+					tileEntityUpdated = ReflectionMethod.TILEENTITY_LOAD_LEGACY183.run(null,
+							new NBTTileEntity(tile).getCompound());
+				} else if (MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_12_R1.getVersionId()) {
+					tileEntityUpdated = ReflectionMethod.TILEENTITY_LOAD_LEGACY1121.run(null, nmsworld,
+							new NBTTileEntity(tile).getCompound());
 				} else {
-					tileEntityUpdated = ReflectionMethod.TILEENTITY_LOAD.run(null, new NBTTileEntity(tile).getCompound());
+					tileEntityUpdated = ReflectionMethod.TILEENTITY_LOAD.run(null,
+							new NBTTileEntity(tile).getCompound());
 				}
 				ReflectionMethod.NMS_WORLD_REMOVE_TILEENTITY.run(nmsworld, pos);
 				ReflectionMethod.NMS_WORLD_SET_TILEENTITY.run(nmsworld, pos, tileEntityUpdated);
@@ -188,7 +205,8 @@ public class NBTInjector {
 		}
 	}
 
-	protected static void setFinal(Object obj, Field field, Object newValue) throws NoSuchFieldException, IllegalAccessException {
+	protected static void setFinal(Object obj, Field field, Object newValue)
+			throws NoSuchFieldException, IllegalAccessException {
 		field.setAccessible(true);
 
 		Field modifiersField = Field.class.getDeclaredField("modifiers");
@@ -205,16 +223,18 @@ public class NBTInjector {
 
 	@SuppressWarnings("unchecked")
 	static class Entity {
-		
+
 		/**
 		 * Hidden Constructor
 		 */
-		private Entity() {}
+		private Entity() {
+		}
+
 		private static Map<Class<?>, String> backupMap = new HashMap<>();
 
 		static {
 			try {
-				if(MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_10_R1.getVersionId()) {
+				if (MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_10_R1.getVersionId()) {
 					backupMap.putAll(getDMap());
 				}
 			} catch (ReflectiveOperationException e) {
@@ -231,19 +251,23 @@ public class NBTInjector {
 		}
 
 		static Map<String, Class<?>> getCMap() throws ReflectiveOperationException {
-			return (Map<String, Class<?>>) getAccessable(ClassWrapper.NMS_ENTITYTYPES.getClazz().getDeclaredField("c")).get(null);
+			return (Map<String, Class<?>>) getAccessable(ClassWrapper.NMS_ENTITYTYPES.getClazz().getDeclaredField("c"))
+					.get(null);
 		}
 
 		static Map<Class<?>, String> getDMap() throws ReflectiveOperationException {
-			return (Map<Class<?>, String>) getAccessable(ClassWrapper.NMS_ENTITYTYPES.getClazz().getDeclaredField("d")).get(null);
+			return (Map<Class<?>, String>) getAccessable(ClassWrapper.NMS_ENTITYTYPES.getClazz().getDeclaredField("d"))
+					.get(null);
 		}
 
 		static Map<Integer, Class<?>> getEMap() throws ReflectiveOperationException {
-			return (Map<Integer, Class<?>>) getAccessable(ClassWrapper.NMS_ENTITYTYPES.getClazz().getDeclaredField("e")).get(null);
+			return (Map<Integer, Class<?>>) getAccessable(ClassWrapper.NMS_ENTITYTYPES.getClazz().getDeclaredField("e"))
+					.get(null);
 		}
 
 		static Map<Class<?>, Integer> getFMap() throws ReflectiveOperationException {
-			return (Map<Class<?>, Integer>) getAccessable(ClassWrapper.NMS_ENTITYTYPES.getClazz().getDeclaredField("f")).get(null);
+			return (Map<Class<?>, Integer>) getAccessable(ClassWrapper.NMS_ENTITYTYPES.getClazz().getDeclaredField("f"))
+					.get(null);
 		}
 	}
 
@@ -252,18 +276,21 @@ public class NBTInjector {
 		/**
 		 * Hidden Constructor
 		 */
-		private TileEntity() {}
-		
+		private TileEntity() {
+		}
+
 		static Object getRegistry() throws ReflectiveOperationException {
 			return getAccessable(ClassWrapper.NMS_TILEENTITY.getClazz().getDeclaredField("f")).get(null);
 		}
 
 		static Map<String, Class<?>> getFMap() throws ReflectiveOperationException {
-			return (Map<String, Class<?>>) getAccessable(ClassWrapper.NMS_TILEENTITY.getClazz().getDeclaredField("f")).get(null);
+			return (Map<String, Class<?>>) getAccessable(ClassWrapper.NMS_TILEENTITY.getClazz().getDeclaredField("f"))
+					.get(null);
 		}
 
 		static Map<Class<?>, String> getGMap() throws ReflectiveOperationException {
-			return (Map<Class<?>, String>) getAccessable(ClassWrapper.NMS_TILEENTITY.getClazz().getDeclaredField("g")).get(null);
+			return (Map<Class<?>, String>) getAccessable(ClassWrapper.NMS_TILEENTITY.getClazz().getDeclaredField("g"))
+					.get(null);
 		}
 	}
 }

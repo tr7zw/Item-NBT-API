@@ -11,7 +11,7 @@ import de.tr7zw.changeme.nbtapi.NBTItem;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.nbtapi.plugin.tests.Test;
 
-public class ItemConvertionTest implements Test{
+public class ItemConvertionTest implements Test {
 
 	@Override
 	public void test() throws Exception {
@@ -20,10 +20,10 @@ public class ItemConvertionTest implements Test{
 		meta.setLore(Lists.newArrayList("Firest Line", "Second Line"));
 		item.setItemMeta(meta);
 		String nbt = NBTItem.convertItemtoNBT(item).asNBTString();
-		if(!nbt.contains("Firest Line") || !nbt.contains("Second Line"))
+		if (!nbt.contains("Firest Line") || !nbt.contains("Second Line"))
 			throw new NbtApiException("The Item nbt '" + nbt + "' didn't contain the lore");
 		ItemStack rebuild = NBTItem.convertNBTtoItem(new NBTContainer(nbt));
-		if(!item.isSimilar(rebuild))
+		if (!item.isSimilar(rebuild))
 			throw new NbtApiException("Rebuilt item did not match the original!");
 	}
 

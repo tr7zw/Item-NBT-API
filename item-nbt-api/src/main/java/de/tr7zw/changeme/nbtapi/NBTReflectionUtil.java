@@ -17,18 +17,18 @@ import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ObjectCreator;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 
 /**
- * Utility class for translating NBTApi calls to reflections into NMS code
- * All methods are allowed to throw {@link NbtApiException}
+ * Utility class for translating NBTApi calls to reflections into NMS code All
+ * methods are allowed to throw {@link NbtApiException}
  * 
  * @author tr7zw
  *
  */
-public class NBTReflectionUtil {  
+public class NBTReflectionUtil {
 
 	/**
 	 * Hidden constructor
 	 */
-	private NBTReflectionUtil(){
+	private NBTReflectionUtil() {
 
 	}
 
@@ -63,7 +63,7 @@ public class NBTReflectionUtil {
 	/**
 	 * Writes a NMS Compound to a FileOutputStream
 	 * 
-	 * @param nbt NMS Compound
+	 * @param nbt    NMS Compound
 	 * @param stream Stream to write to
 	 * @return ???
 	 */
@@ -76,7 +76,8 @@ public class NBTReflectionUtil {
 	}
 
 	/**
-	 * Simulates getOrCreateTag. If an Item doesn't yet have a Tag, it will return a new empty tag.
+	 * Simulates getOrCreateTag. If an Item doesn't yet have a Tag, it will return a
+	 * new empty tag.
 	 * 
 	 * @param nmsitem
 	 * @return NMS Compound
@@ -98,9 +99,9 @@ public class NBTReflectionUtil {
 	 */
 	public static Object convertNBTCompoundtoNMSItem(NBTCompound nbtcompound) {
 		try {
-			if(MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_11_R1.getVersionId()){
+			if (MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_11_R1.getVersionId()) {
 				return ObjectCreator.NMS_COMPOUNDFROMITEM.getInstance(nbtcompound.getCompound());
-			}else{
+			} else {
 				return ReflectionMethod.NMSITEM_CREATESTACK.run(null, nbtcompound.getCompound());
 			}
 		} catch (Exception e) {
@@ -126,7 +127,7 @@ public class NBTReflectionUtil {
 	/**
 	 * Gets the Vanilla NBT Compound from a given NMS Entity
 	 * 
-	 * @param nmsEntity 
+	 * @param nmsEntity
 	 * @return NMS NBT Compound
 	 */
 	public static Object getEntityNBTTagCompound(Object nmsEntity) {
@@ -197,7 +198,6 @@ public class NBTReflectionUtil {
 		}
 	}
 
-
 	/**
 	 * Gets the subCompound with a given name from a NMS Compound
 	 * 
@@ -228,10 +228,12 @@ public class NBTReflectionUtil {
 		if (nbttag == null) {
 			nbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
 		}
-		if (!valideCompound(comp)) return;
+		if (!valideCompound(comp))
+			return;
 		Object workingtag = gettoCompount(nbttag, comp);
 		try {
-			ReflectionMethod.COMPOUND_SET.run(workingtag, name, ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance());
+			ReflectionMethod.COMPOUND_SET.run(workingtag, name,
+					ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance());
 			comp.setCompound(nbttag);
 		} catch (Exception e) {
 			throw new NbtApiException("Exception while adding a Compound!", e);
@@ -270,7 +272,7 @@ public class NBTReflectionUtil {
 	/**
 	 * Merges the second {@link NBTCompound} into the first one
 	 * 
-	 * @param comp Target for the merge
+	 * @param comp        Target for the merge
 	 * @param nbtcompound Data to merge
 	 */
 	public static void addOtherNBTCompound(NBTCompound comp, NBTCompound nbtcompound) {
@@ -278,7 +280,8 @@ public class NBTReflectionUtil {
 		if (rootnbttag == null) {
 			rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
 		}
-		if (!valideCompound(comp)) return;
+		if (!valideCompound(comp))
+			return;
 		Object workingtag = gettoCompount(rootnbttag, comp);
 		try {
 			ReflectionMethod.COMPOUND_ADD.run(workingtag, nbtcompound.getCompound());
@@ -353,17 +356,18 @@ public class NBTReflectionUtil {
 		if (rootnbttag == null) {
 			rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
 		}
-		if (!valideCompound(comp)) return null;
+		if (!valideCompound(comp))
+			return null;
 		Object workingtag = gettoCompount(rootnbttag, comp);
 		try {
 			Object nbt = ReflectionMethod.COMPOUND_GET_LIST.run(workingtag, key, type.getId());
-			if(clazz == String.class) {
+			if (clazz == String.class) {
 				return (NBTList<T>) new NBTStringList(comp, key, type, nbt);
-			} else if(clazz == NBTListCompound.class) {
+			} else if (clazz == NBTListCompound.class) {
 				return (NBTList<T>) new NBTCompoundList(comp, key, type, nbt);
-			} else if(clazz == Integer.class) {
+			} else if (clazz == Integer.class) {
 				return (NBTList<T>) new NBTIntegerList(comp, key, type, nbt);
-			}else {
+			} else {
 				return null;
 			}
 		} catch (Exception ex) {
@@ -379,7 +383,8 @@ public class NBTReflectionUtil {
 	 * @param value
 	 */
 	public static void setObject(NBTCompound comp, String key, Object value) {
-		if (!MinecraftVersion.hasGsonSupport()) return;
+		if (!MinecraftVersion.hasGsonSupport())
+			return;
 		try {
 			String json = GsonWrapper.getString(value);
 			setData(comp, ReflectionMethod.COMPOUND_SET_STRING, key, json);
@@ -397,7 +402,8 @@ public class NBTReflectionUtil {
 	 * @return The loaded Object or null, if not found
 	 */
 	public static <T> T getObject(NBTCompound comp, String key, Class<T> type) {
-		if (!MinecraftVersion.hasGsonSupport()) return null;
+		if (!MinecraftVersion.hasGsonSupport())
+			return null;
 		String json = (String) getData(comp, ReflectionMethod.COMPOUND_GET_STRING, key);
 		if (json == null) {
 			return null;
@@ -416,7 +422,8 @@ public class NBTReflectionUtil {
 		if (rootnbttag == null) {
 			rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
 		}
-		if (!valideCompound(comp)) return;
+		if (!valideCompound(comp))
+			return;
 		Object workingtag = gettoCompount(rootnbttag, comp);
 		ReflectionMethod.COMPOUND_REMOVE_KEY.run(workingtag, key);
 		comp.setCompound(rootnbttag);

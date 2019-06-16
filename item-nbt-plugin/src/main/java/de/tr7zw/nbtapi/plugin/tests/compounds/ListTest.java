@@ -9,13 +9,13 @@ import de.tr7zw.changeme.nbtapi.NBTListCompound;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.nbtapi.plugin.tests.Test;
 
-public class ListTest implements Test{
+public class ListTest implements Test {
 
 	@Override
 	public void test() throws Exception {
 		NBTContainer comp = new NBTContainer();
 
-		//Strings
+		// Strings
 		NBTList<String> list = comp.getStringList("testlist");
 		list.add("test1");
 		list.add("test2");
@@ -27,7 +27,7 @@ public class ListTest implements Test{
 			throw new NbtApiException("The String-list did not match what it should have looked like.");
 		}
 
-		//Compound
+		// Compound
 		NBTCompoundList taglist = comp.getCompoundList("complist");
 		NBTListCompound lcomp = taglist.addCompound();
 		lcomp.setDouble("double1", 0.3333);
@@ -43,7 +43,7 @@ public class ListTest implements Test{
 		if (taglist.size() == 1) {
 			lcomp = taglist.get(0);
 			if (lcomp.getKeys().size() != 3) {
-				throw new NbtApiException("Wrong key amount in Taglist (" + lcomp.getKeys().size()+ ")!");
+				throw new NbtApiException("Wrong key amount in Taglist (" + lcomp.getKeys().size() + ")!");
 			} else if (!(lcomp.getDouble("double1") == 0.3333 && lcomp.getInteger("int1") == 42
 					&& lcomp.getString("test2").equals("test2") && !lcomp.hasKey("test1"))) {
 				throw new NbtApiException("One key in the Taglist changed! The Item-NBT-API may not work!");
@@ -51,18 +51,17 @@ public class ListTest implements Test{
 		} else {
 			throw new NbtApiException("Taglist is empty! The Item-NBT-API may not work!");
 		}
-		
-		//Integer
+
+		// Integer
 		NBTList<Integer> intlist = comp.getIntegerList("inttest");
 		intlist.add(42);
 		intlist.add(69);
-		if(intlist.size() == 2 && intlist.get(0) == 42 && intlist.get(1) == 69) {
-			//ok
-		}else {
+		if (intlist.size() == 2 && intlist.get(0) == 42 && intlist.get(1) == 69) {
+			// ok
+		} else {
 			throw new NbtApiException("IntList is not correct! " + Arrays.toString(intlist.toArray(new Integer[0])));
 		}
-		
-		
+
 	}
 
 }

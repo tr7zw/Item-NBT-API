@@ -1,12 +1,13 @@
 package de.tr7zw.changeme.nbtapi;
 
 /**
- * A generic {@link RuntimeException} that can be thrown by most methods in the NBTAPI.
+ * A generic {@link RuntimeException} that can be thrown by most methods in the
+ * NBTAPI.
  * 
  * @author tr7zw
  *
  */
-public class NbtApiException extends RuntimeException{
+public class NbtApiException extends RuntimeException {
 
 	/**
 	 * 
@@ -51,5 +52,5 @@ public class NbtApiException extends RuntimeException{
 	public NbtApiException(Throwable cause) {
 		super(cause);
 	}
-	
+
 }

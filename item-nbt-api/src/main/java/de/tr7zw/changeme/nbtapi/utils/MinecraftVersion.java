@@ -6,15 +6,16 @@ import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 
 /**
- * This class acts as the "Brain" of the NBTApi. It contains the main logger for other classes,registers bStats and checks
- * rather Maven shading was done correctly.
+ * This class acts as the "Brain" of the NBTApi. It contains the main logger for
+ * other classes,registers bStats and checks rather Maven shading was done
+ * correctly.
  * 
  * @author tr7zw
  *
  */
 @SuppressWarnings("javadoc")
 public enum MinecraftVersion {
-	UNKNOWN(Integer.MAX_VALUE),//Use the newest known mappings
+	UNKNOWN(Integer.MAX_VALUE), // Use the newest known mappings
 	MC1_7_R4(174),
 	MC1_8_R3(183),
 	MC1_9_R1(191),
@@ -49,7 +50,8 @@ public enum MinecraftVersion {
 	}
 
 	/**
-	 * Getter for this servers MinecraftVersion. Also init's bStats and checks the shading.
+	 * Getter for this servers MinecraftVersion. Also init's bStats and checks the
+	 * shading.
 	 * 
 	 * @return The enum for the MinecraftVersion this server is running
 	 */
@@ -75,20 +77,27 @@ public enum MinecraftVersion {
 
 	private static void init() {
 		try {
-			if(!bStatsDisabled)
+			if (!bStatsDisabled)
 				new ApiMetricsLite();
-		}catch(Exception ex) {
+		} catch (Exception ex) {
 			logger.log(Level.WARNING, "[NBTAPI] Error enabeling Metrics!", ex);
 		}
-		// Maven's Relocate is clever and changes strings, too. So we have to use this little "trick" ... :D (from bStats)
-		final String defaultPackage = new String(new byte[]{'d', 'e', '.', 't', 'r', '7', 'z', 'w', '.', 'c', 'h', 'a', 'n', 'g', 'e', 'm', 'e', '.', 'n', 'b', 't', 'a', 'p', 'i', '.', 'u', 't', 'i', 'l', 's'});
-		if(!disablePackageWarning && MinecraftVersion.class.getPackage().getName().equals(defaultPackage)) {
-			logger.warning("#########################################- NBTAPI -#########################################");
-			logger.warning("The NBT-API package has not been moved! This *will* cause problems with other plugins containing");
-			logger.warning("a different version of the api! Please read the guide on the plugin page on how to get the");
-			logger.warning("Maven Shade plugin to relocate the api to your personal location! If you are not the developer,");
+		// Maven's Relocate is clever and changes strings, too. So we have to use this
+		// little "trick" ... :D (from bStats)
+		final String defaultPackage = new String(new byte[] { 'd', 'e', '.', 't', 'r', '7', 'z', 'w', '.', 'c', 'h',
+				'a', 'n', 'g', 'e', 'm', 'e', '.', 'n', 'b', 't', 'a', 'p', 'i', '.', 'u', 't', 'i', 'l', 's' });
+		if (!disablePackageWarning && MinecraftVersion.class.getPackage().getName().equals(defaultPackage)) {
+			logger.warning(
+					"#########################################- NBTAPI -#########################################");
+			logger.warning(
+					"The NBT-API package has not been moved! This *will* cause problems with other plugins containing");
+			logger.warning(
+					"a different version of the api! Please read the guide on the plugin page on how to get the");
+			logger.warning(
+					"Maven Shade plugin to relocate the api to your personal location! If you are not the developer,");
 			logger.warning("please check your plugins and contact their developer, so he can fix this issue.");
-			logger.warning("#########################################- NBTAPI -#########################################");
+			logger.warning(
+					"#########################################- NBTAPI -#########################################");
 		}
 	}
 
@@ -110,18 +119,19 @@ public enum MinecraftVersion {
 	}
 
 	/**
-	 * Calling this function before the NBT-Api is used will disable bStats stats collection.
-	 * Please consider not to do that, since it won't affect your plugin and helps the NBT-Api developer to see api's demand.
+	 * Calling this function before the NBT-Api is used will disable bStats stats
+	 * collection. Please consider not to do that, since it won't affect your plugin
+	 * and helps the NBT-Api developer to see api's demand.
 	 */
 	public static void disableBStats() {
 		bStatsDisabled = true;
 	}
 
-
 	/**
-	 * Forcefully disables the log message for plugins not shading the API to another location.
-	 * This may be helpful for networks or development environments, but please don't use it for
-	 * plugins that are uploaded to Spigotmc.
+	 * Forcefully disables the log message for plugins not shading the API to
+	 * another location. This may be helpful for networks or development
+	 * environments, but please don't use it for plugins that are uploaded to
+	 * Spigotmc.
 	 */
 	public static void disablePackageWarning() {
 		disablePackageWarning = true;

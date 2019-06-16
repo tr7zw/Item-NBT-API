@@ -11,7 +11,7 @@ import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
  * @author tr7zw
  *
  */
-public class NBTIntegerList extends NBTList<Integer>{
+public class NBTIntegerList extends NBTList<Integer> {
 
 	protected NBTIntegerList(NBTCompound owner, String name, NBTType type, Object list) {
 		super(owner, name, type, list);
@@ -32,7 +32,7 @@ public class NBTIntegerList extends NBTList<Integer>{
 		try {
 			Object obj = ReflectionMethod.LIST_GET.run(listObject, index);
 			return Integer.valueOf(obj.toString());
-		}catch(NumberFormatException nf) {
+		} catch (NumberFormatException nf) {
 			return 0;
 		} catch (Exception ex) {
 			throw new NbtApiException(ex);

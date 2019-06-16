@@ -12,7 +12,7 @@ import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.nbtapi.plugin.tests.Test;
 import de.tr7zw.nbtinjector.NBTInjector;
 
-public class EntityCustomNbtTest implements Test{
+public class EntityCustomNbtTest implements Test {
 
 	@Override
 	public void test() throws Exception {
@@ -25,11 +25,11 @@ public class EntityCustomNbtTest implements Test{
 					NBTCompound comp = NBTInjector.getNbtData(ent);
 					comp.setString("Hello", "World");
 					NBTEntity nbtent = new NBTEntity(ent);
-					if(!nbtent.asNBTString().contains("__extraData:{Hello:\"World\"}")) {
+					if (!nbtent.asNBTString().contains("__extraData:{Hello:\"World\"}")) {
 						throw new NbtApiException("Custom Data did not save to the Entity!");
 					}
 					comp.removeKey("Hello");
-					
+
 				}
 			} catch (Exception ex) {
 				throw new NbtApiException("Wasn't able to use NBTEntities!", ex);

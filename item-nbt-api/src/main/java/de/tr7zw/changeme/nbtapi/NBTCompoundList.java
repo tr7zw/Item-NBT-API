@@ -12,7 +12,7 @@ import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
  * @author tr7zw
  *
  */
-public class NBTCompoundList extends NBTList<NBTListCompound>{
+public class NBTCompoundList extends NBTList<NBTListCompound> {
 
 	protected NBTCompoundList(NBTCompound owner, String name, NBTType type, Object list) {
 		super(owner, name, type, list);
@@ -36,7 +36,7 @@ public class NBTCompoundList extends NBTList<NBTListCompound>{
 			throw new NbtApiException(ex);
 		}
 	}
-	
+
 	/**
 	 * Adds a new Compound to the end of the List.
 	 * 
@@ -45,7 +45,7 @@ public class NBTCompoundList extends NBTList<NBTListCompound>{
 	 */
 	@Override
 	public boolean add(NBTListCompound empty) {
-		if(empty != null) {
+		if (empty != null) {
 			throw new NotImplementedException("You need to pass null! ListCompounds from other lists won't work.");
 		}
 		try {
@@ -63,7 +63,7 @@ public class NBTCompoundList extends NBTList<NBTListCompound>{
 
 	@Override
 	public void add(int index, NBTListCompound element) {
-		if(element != null) {
+		if (element != null) {
 			throw new NotImplementedException("You need to pass null! ListCompounds from other lists won't work.");
 		}
 		try {

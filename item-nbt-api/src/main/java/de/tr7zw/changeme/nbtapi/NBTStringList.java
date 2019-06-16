@@ -11,7 +11,7 @@ import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
  * @author tr7zw
  *
  */
-public class NBTStringList extends NBTList<String>{
+public class NBTStringList extends NBTList<String> {
 
 	protected NBTStringList(NBTCompound owner, String name, NBTType type, Object list) {
 		super(owner, name, type, list);

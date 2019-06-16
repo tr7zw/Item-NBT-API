@@ -37,7 +37,7 @@ public abstract class NBTList<T> implements List<T> {
 	}
 
 	protected abstract Object asTag(T object);
-	
+
 	@Override
 	public boolean add(T element) {
 		try {
@@ -66,7 +66,7 @@ public abstract class NBTList<T> implements List<T> {
 			throw new NbtApiException(ex);
 		}
 	}
-	
+
 	@Override
 	public T set(int index, T element) {
 		try {
@@ -78,7 +78,7 @@ public abstract class NBTList<T> implements List<T> {
 			throw new NbtApiException(ex);
 		}
 	}
-	
+
 	public T remove(int i) {
 		try {
 			T old = get(i);
@@ -104,7 +104,7 @@ public abstract class NBTList<T> implements List<T> {
 	public NBTType getType() {
 		return type;
 	}
-	
+
 	@Override
 	public boolean isEmpty() {
 		return size() == 0;
@@ -112,33 +112,33 @@ public abstract class NBTList<T> implements List<T> {
 
 	@Override
 	public void clear() {
-		while(!isEmpty()) {
+		while (!isEmpty()) {
 			remove(0);
 		}
 	}
-	
+
 	@Override
 	public boolean contains(Object o) {
-		for(int i = 0; i < size(); i++) {
-			if(o.equals(get(i)))
+		for (int i = 0; i < size(); i++) {
+			if (o.equals(get(i)))
 				return true;
 		}
 		return false;
 	}
-	
+
 	@Override
 	public int indexOf(Object o) {
-		for(int i = 0; i < size(); i++) {
-			if(o.equals(get(i)))
+		for (int i = 0; i < size(); i++) {
+			if (o.equals(get(i)))
 				return i;
 		}
 		return -1;
 	}
-	
+
 	@Override
 	public boolean addAll(Collection<? extends T> c) {
 		int size = size();
-		for(T ele : c) {
+		for (T ele : c) {
 			add(ele);
 		}
 		return size != size();
@@ -147,7 +147,7 @@ public abstract class NBTList<T> implements List<T> {
 	@Override
 	public boolean addAll(int index, Collection<? extends T> c) {
 		int size = size();
-		for(T ele : c) {
+		for (T ele : c) {
 			add(index++, ele);
 		}
 		return size != size();
@@ -155,27 +155,27 @@ public abstract class NBTList<T> implements List<T> {
 
 	@Override
 	public boolean containsAll(Collection<?> c) {
-		for(Object ele : c) {
-			if(!contains(ele))
+		for (Object ele : c) {
+			if (!contains(ele))
 				return false;
 		}
 		return true;
 	}
-	
+
 	@Override
 	public int lastIndexOf(Object o) {
 		int index = -1;
-		for(int i = 0; i < size(); i++) {
-			if(o.equals(get(i)))
+		for (int i = 0; i < size(); i++) {
+			if (o.equals(get(i)))
 				index = i;
 		}
 		return index;
 	}
-	
+
 	@Override
 	public boolean removeAll(Collection<?> c) {
 		int size = size();
-		for(Object obj : c) {
+		for (Object obj : c) {
 			remove(obj);
 		}
 		return size != size();
@@ -184,46 +184,46 @@ public abstract class NBTList<T> implements List<T> {
 	@Override
 	public boolean retainAll(Collection<?> c) {
 		int size = size();
-		for(Object obj : c) {
-			for(int i = 0; i < size(); i++) {
-				if(!obj.equals(get(i))) {
+		for (Object obj : c) {
+			for (int i = 0; i < size(); i++) {
+				if (!obj.equals(get(i))) {
 					remove(i--);
 				}
 			}
 		}
 		return size != size();
 	}
-	
+
 	@Override
 	public boolean remove(Object o) {
 		int size = size();
 		int id = -1;
-		while((id = indexOf(o)) != -1) {
+		while ((id = indexOf(o)) != -1) {
 			remove(id);
 		}
 		return size != size();
 	}
-	
+
 	@Override
 	public Iterator<T> iterator() {
 		return new Iterator<T>() {
 
 			private int index = 0;
-			
+
 			@Override
 			public boolean hasNext() {
 				return size() > index + 1;
 			}
 
 			@Override
-			public T next(){
-				if(!hasNext())
+			public T next() {
+				if (!hasNext())
 					throw new NoSuchElementException();
 				return get(++index);
 			}
 		};
 	}
-	
+
 	@Override
 	public ListIterator<T> listIterator() {
 		return listIterator(0);
@@ -235,7 +235,7 @@ public abstract class NBTList<T> implements List<T> {
 		return new ListIterator<T>() {
 
 			int index = startIndex;
-			
+
 			@Override
 			public void add(T e) {
 				list.add(index, e);
@@ -253,7 +253,7 @@ public abstract class NBTList<T> implements List<T> {
 
 			@Override
 			public T next() {
-				if(!hasNext())
+				if (!hasNext())
 					throw new NoSuchElementException();
 				return get(++index);
 			}
@@ -285,11 +285,10 @@ public abstract class NBTList<T> implements List<T> {
 		};
 	}
 
-
 	@Override
 	public Object[] toArray() {
 		Object[] ar = new Object[size()];
-		for(int i = 0; i < size(); i++)
+		for (int i = 0; i < size(); i++)
 			ar[i] = get(i);
 		return ar;
 	}
@@ -300,23 +299,23 @@ public abstract class NBTList<T> implements List<T> {
 		E[] ar = Arrays.copyOf(a, size());
 		Arrays.fill(ar, null);
 		Class<?> arrayclass = a.getClass().getComponentType();
-		for(int i = 0; i < size(); i++) {
+		for (int i = 0; i < size(); i++) {
 			T obj = get(i);
-			if(arrayclass.isInstance(obj)) {
+			if (arrayclass.isInstance(obj)) {
 				ar[i] = (E) get(i);
-			}else {
+			} else {
 				throw new ArrayStoreException("The array does not match the objects stored in the List.");
 			}
 		}
 		return ar;
 	}
-	
+
 	@Override
 	public List<T> subList(int fromIndex, int toIndex) {
 		ArrayList<T> list = new ArrayList<>();
-		for(int i = fromIndex; i < toIndex; i++)
+		for (int i = fromIndex; i < toIndex; i++)
 			list.add(get(i));
 		return list;
 	}
-	
+
 }

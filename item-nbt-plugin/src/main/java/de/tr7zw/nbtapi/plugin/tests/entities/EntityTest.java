@@ -12,7 +12,7 @@ import de.tr7zw.changeme.nbtapi.NBTTileEntity;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.nbtapi.plugin.tests.Test;
 
-public class EntityTest implements Test{
+public class EntityTest implements Test {
 
 	@Override
 	public void test() throws Exception {
@@ -28,12 +28,13 @@ public class EntityTest implements Test{
 				throw new NbtApiException("Wasn't able to use NBTEntities!");
 			}
 			try {
-				Block block = world.getBlockAt(world.getSpawnLocation().getBlockX(), 255, world.getSpawnLocation().getBlockZ());
+				Block block = world.getBlockAt(world.getSpawnLocation().getBlockX(), 255,
+						world.getSpawnLocation().getBlockZ());
 				if (block.getType() == Material.AIR) {
 					block.setType(Material.CHEST);
 					NBTTileEntity tile = new NBTTileEntity(block.getState());
 					tile.setString("Lock", "test");
-					if(!tile.asNBTString().contains("Lock:\"test\"")) {
+					if (!tile.asNBTString().contains("Lock:\"test\"")) {
 						block.setType(Material.AIR);
 						throw new NbtApiException("The Lock wasn't successfully set.");
 					}
