@@ -287,7 +287,7 @@ public class NBTInjector {
 				oldNBT.removeKey("UUIDLeast");
 				entity.remove();
 				Object newEntity = create.invoke(null, oldNBT.getCompound(), nmsworld);
-				if(newEntity instanceof Optional<?>)
+				if(newEntity instanceof Optional<?> && ((Optional<?>)newEntity).isPresent())
 					newEntity = ((Optional<?>)newEntity).get();
 				Method spawn = ClassWrapper.NMS_WORLD.getClazz().getMethod("addEntity", ClassWrapper.NMS_ENTITY.getClazz());
 				spawn.invoke(nmsworld, newEntity);

@@ -29,7 +29,7 @@ public enum MinecraftVersion {
 	private static Boolean hasGsonSupport;
 	private static boolean bStatsDisabled = false;
 	private static boolean disablePackageWarning = false;
-	public static Logger logger = Logger.getLogger("NBTAPI");
+	public static final Logger logger = Logger.getLogger("NBTAPI");
 
 	private final int versionId;
 

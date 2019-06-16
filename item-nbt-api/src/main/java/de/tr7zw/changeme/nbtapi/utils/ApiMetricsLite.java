@@ -167,7 +167,7 @@ public class ApiMetricsLite {
 				// Don't be afraid! The connection to the bStats server is still async, only the stats collection is sync ;)
 				Bukkit.getScheduler().runTask(plugin, () -> submitData());
 			}
-		}, 1000 * 60 * 5, 1000 * 60 * 30);
+		}, 1000l * 60l * 5l, 1000l * 60l * 30l);
 		// Submit the data every 30 minutes, first time after 5 minutes to give other plugins enough time to start
 		// WARNING: Changing the frequency has no effect but your plugin WILL be blocked/deleted!
 		// WARNING: Just don't do it!
