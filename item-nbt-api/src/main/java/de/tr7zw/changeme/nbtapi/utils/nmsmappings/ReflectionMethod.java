@@ -3,11 +3,13 @@ package de.tr7zw.changeme.nbtapi.utils.nmsmappings;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.util.logging.Level;
 
 import org.bukkit.inventory.ItemStack;
 
 import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
+import static de.tr7zw.changeme.nbtapi.utils.MinecraftVersion.logger;
 
 public enum ReflectionMethod {
 
@@ -118,7 +120,7 @@ public enum ReflectionMethod {
             loaded = true;
             methodName = targetVersion.name;
         }catch(NullPointerException | NoSuchMethodException | SecurityException ex){
-            ex.printStackTrace();
+            logger.log(Level.SEVERE, "Unable to find the method '" + targetVersion.name + "' in '" + targetClass.getSimpleName() + "'", ex);
         }
     }
     

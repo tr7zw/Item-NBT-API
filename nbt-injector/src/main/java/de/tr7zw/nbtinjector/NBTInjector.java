@@ -39,205 +39,34 @@ public class NBTInjector {
 	}
 	
 	static Logger logger = Logger.getLogger("NBTInjector");
-	private static final List<String> skippingEntities = Arrays.asList("minecraft:player", "minecraft:fishing_bobber", "minecraft:lightning_bolt");  //These are broken/won't work
-	private static final Map<String, String> classMappings = new HashMap<>();
-	
-	static {
-		classMappings.put("minecraft:wandering_trader", "VillagerTrader");
-		classMappings.put("minecraft:trader_llama", "LlamaTrader");
-		classMappings.put("minecraft:area_effect_cloud", "AreaEffectCloud");
-		classMappings.put("minecraft:donkey", "HorseDonkey");
-		classMappings.put("minecraft:ender_dragon", "EnderDragon");
-		classMappings.put("minecraft:skeleton_horse", "HorseSkeleton");
-		classMappings.put("minecraft:fireball", "LargeFireball");
-		classMappings.put("minecraft:mule", "HorseMule");
-		classMappings.put("minecraft:zombie_horse", "HorseZombie");
-		classMappings.put("minecraft:mooshroom", "MushroomCow");
-	}
+
 
 	/**
 	 * Replaces the vanilla classes with Wrapped classes that support custom NBT.
 	 * This method needs to be called during onLoad so classes are replaced before worlds load.
 	 * If your plugin adds a new Entity(probably during onLoad) recall this method so it's class gets Wrapped.
 	 */
-	@SuppressWarnings("unchecked")
 	public static void inject() {
 		try {
 			ClassPool classPool = ClassPool.getDefault();
 			logger.info("[NBTINJECTOR] Injecting Entity classes...");
 			if(MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_10_R1.getVersionId()) {
-				for (Map.Entry<String, Class<?>> entry : new HashSet<>(Entity.getCMap().entrySet())) {
-					try {
-						if (INBTWrapper.class.isAssignableFrom(entry.getValue())) { continue; }//Already injected
-						int entityId = Entity.getFMap().get(entry.getValue());
-
-						Class<?> wrapped = ClassGenerator.wrapEntity(classPool, entry.getValue(), "__extraData");
-						Entity.getCMap().put(entry.getKey(), wrapped);
-						Entity.getDMap().put(wrapped, entry.getKey());
-
-						Entity.getEMap().put(entityId, wrapped);
-						Entity.getFMap().put(wrapped, entityId);
-					} catch (Exception e) {
-						throw new NbtApiException("Exception while injecting " + entry.getKey(), e);
-					}
-				}
+				InternalInjectors.entity1v10Below(classPool);
 			} else if (MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_12_R1.getVersionId()){
-				Object registry = Entity.getRegistry();
-				Map<Object, Object> inverse = new HashMap<>();
-				Set<?> it = new HashSet<>((Set<?>) ReflectionMethod.REGISTRY_KEYSET.run(registry));
-				for(Object mckey : it) {
-					Class<?> tileclass = (Class<?>) ReflectionMethod.REGISTRY_GET.run(registry, mckey);
-					inverse.put(tileclass, mckey);
-					try {
-						if (INBTWrapper.class.isAssignableFrom(tileclass)) { continue; }//Already injected
-						Class<?> wrapped = ClassGenerator.wrapEntity(classPool, tileclass, "__extraData");
-						ReflectionMethod.REGISTRY_SET.run(registry, mckey, wrapped);
-						inverse.put(wrapped, mckey);
-					} catch (Exception e) {
-						throw new NbtApiException("Exception while injecting " + mckey, e);
-					}
-				}
-				Field inverseField = registry.getClass().getDeclaredField("b");
-				setFinal(registry, inverseField, inverse);
+				InternalInjectors.entity1v12Below(classPool);
 			} else if (MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_13_R2.getVersionId()) {
-				Object entityRegistry = ClassWrapper.NMS_IREGISTRY.getClazz().getField("ENTITY_TYPE").get(null);
-				Set<?> registryentries = new HashSet<>((Set<?>) ReflectionMethod.REGISTRYMATERIALS_KEYSET.run(entityRegistry));
-				for(Object mckey : registryentries) {
-					Object entityTypesObj = ReflectionMethod.REGISTRYMATERIALS_GET.run(entityRegistry, mckey);
-					Field supplierField = entityTypesObj.getClass().getDeclaredField("aT");
-					Field classField = entityTypesObj.getClass().getDeclaredField("aS");
-					classField.setAccessible(true);
-					supplierField.setAccessible(true);
-					Function<Object,Object> function = (Function<Object,Object>) supplierField.get(entityTypesObj);
-					Class<?> nmsclass = (Class<?>) classField.get(entityTypesObj);
-					try {
-						if (INBTWrapper.class.isAssignableFrom(nmsclass)) { continue; }//Already injected
-						Class<?> wrapped = ClassGenerator.wrapEntity(classPool, nmsclass, "__extraData");
-						setFinal(entityTypesObj, classField, wrapped);
-						setFinal(entityTypesObj, supplierField, new Function<Object, Object>() {
-
-							@Override
-							public Object apply(Object t) {
-								try {
-									return wrapped.getConstructor(ClassWrapper.NMS_WORLD.getClazz()).newInstance(t);
-								}catch(Exception ex) {
-									logger.log(Level.SEVERE, "Error while creating custom entity instance! ",ex);
-									return function.apply(t);//Fallback to the original one
-								}
-							}
-						});
-					} catch (Exception e) {
-						throw new NbtApiException("Exception while injecting " + mckey, e);
-					}
-				}
+				InternalInjectors.entity1v13Below(classPool);
 			} else { //1.14+
-				Object entityRegistry = ClassWrapper.NMS_IREGISTRY.getClazz().getField("ENTITY_TYPE").get(null);
-				Set<?> registryentries = new HashSet<>((Set<?>) ReflectionMethod.REGISTRYMATERIALS_KEYSET.run(entityRegistry));
-				for(Object mckey : registryentries) {
-					if(skippingEntities.contains(mckey.toString())) {
-						logger.info("Skipping, won't be able add NBT to '" + mckey + "' entities!");
-						continue;
-					}
-					Object entityTypesObj = ReflectionMethod.REGISTRYMATERIALS_GET.run(entityRegistry, mckey);
-					Field creatorField = entityTypesObj.getClass().getDeclaredField("aZ");
-					creatorField.setAccessible(true);
-					Object creator = creatorField.get(entityTypesObj);
-					Method createEntityMethod = creator.getClass().getMethod("create", ClassWrapper.NMS_ENTITYTYPES.getClazz(), ClassWrapper.NMS_WORLD.getClazz());
-					createEntityMethod.setAccessible(true);
-					Class<?> nmsclass = null;
-					try {
-						nmsclass = createEntityMethod.invoke(creator, entityTypesObj, null).getClass();
-					}catch(Exception ignore) {
-						// ignore
-					}
-					if(nmsclass == null) {
-						String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-						String name = mckey.toString().replace("minecraft:", "");
-						name = name.substring(0, 1).toUpperCase() + name.substring(1);
-						name = "Entity" + name;
-						if(classMappings.containsKey(mckey.toString()))
-							name = "Entity" + classMappings.get(mckey.toString());
-						try {
-							nmsclass = Class.forName("net.minecraft.server." + version + "." + name);
-						}catch(Exception ignore) {
-							logger.info("Not found: " + "net.minecraft.server." + version + "." + name);
-							// ignore
-						}
-					}
-					if(nmsclass == null) {
-						logger.info("Wasn't able to create an Entity instace, won't be able add NBT to '" + mckey + "' entities!");
-						continue;
-					}
-					try {
-						if (INBTWrapper.class.isAssignableFrom(nmsclass)) { continue; }//Already injected
-						Class<?> wrapped = ClassGenerator.wrapEntity(classPool, nmsclass, "__extraData");
-						setFinal(entityTypesObj, creatorField, ClassGenerator.createEntityTypeWrapper(classPool, wrapped).newInstance());
-					} catch (Exception e) {
-						throw new RuntimeException("Exception while injecting " + mckey, e);
-					}
-				}
+				InternalInjectors.entity1v14(classPool);
 			}
 
 			logger.info("[NBTINJECTOR] Injecting Tile Entity classes...");
 			if(MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_10_R1.getVersionId()) {
-				for (Map.Entry<String, Class<?>> entry : new HashSet<>(TileEntity.getFMap().entrySet())) {
-					try {
-						if (INBTWrapper.class.isAssignableFrom(entry.getValue())) { continue; }//Already injected
-						Class<?> wrapped = ClassGenerator.wrapTileEntity(classPool, entry.getValue(), "__extraData");
-						TileEntity.getFMap().put(entry.getKey(), wrapped);
-						TileEntity.getGMap().put(wrapped, entry.getKey());
-					} catch (Exception e) {
-						throw new RuntimeException("Exception while injecting " + entry.getKey(), e);
-					}
-				}
+				InternalInjectors.tile1v10Below(classPool);
 			} else if (MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_12_R1.getVersionId()){
-				Object registry = TileEntity.getRegistry();
-				Map<Object, Object> inverse = new HashMap<>();
-				Set<?> it = new HashSet<>((Set<?>) ReflectionMethod.REGISTRY_KEYSET.run(registry));
-				for(Object mckey : it) {
-					Class<?> tileclass = (Class<?>) ReflectionMethod.REGISTRY_GET.run(registry, mckey);
-					inverse.put(tileclass, mckey);
-					try {
-						if (INBTWrapper.class.isAssignableFrom(tileclass)) { continue; }//Already injected
-						Class<?> wrapped = ClassGenerator.wrapTileEntity(classPool, tileclass, "__extraData");
-						ReflectionMethod.REGISTRY_SET.run(registry, mckey, wrapped);
-						inverse.put(wrapped, mckey);
-					} catch (Exception e) {
-						throw new NbtApiException("Exception while injecting " + mckey, e);
-					}
-				}
-				Field inverseField = registry.getClass().getDeclaredField("b");
-				setFinal(registry, inverseField, inverse);
+				InternalInjectors.tile1v12Below(classPool);
 			} else { // 1.13+
-				Object tileRegistry = ClassWrapper.NMS_IREGISTRY.getClazz().getField("BLOCK_ENTITY_TYPE").get(null);
-				Set<?> registryentries = new HashSet<>((Set<?>) ReflectionMethod.REGISTRYMATERIALS_KEYSET.run(tileRegistry));
-				for(Object mckey : registryentries) {
-					Object tileEntityTypesObj = ReflectionMethod.REGISTRYMATERIALS_GET.run(tileRegistry, mckey);
-					String supplierFieldName = "A";
-					if(MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_14_R1.getVersionId())
-						supplierFieldName = "H";
-					Field supplierField = tileEntityTypesObj.getClass().getDeclaredField(supplierFieldName);
-					supplierField.setAccessible(true);
-					Supplier<Object> supplier = (Supplier<Object>) supplierField.get(tileEntityTypesObj);
-					Class<?> nmsclass = supplier.get().getClass();
-					try {
-						if (INBTWrapper.class.isAssignableFrom(nmsclass)) { continue; }//Already injected
-						Class<?> wrapped = ClassGenerator.wrapTileEntity(classPool, nmsclass, "__extraData");
-						setFinal(tileEntityTypesObj, supplierField, new Supplier<Object>() {
-							@Override
-							public Object get() {
-								try {
-									return wrapped.newInstance();
-								} catch (InstantiationException | IllegalAccessException e) {
-									logger.log(Level.SEVERE, "Error while creating custom tile instance! ",e);
-									return supplier.get(); //Use the original one as fallback
-								}
-							}
-						});
-					} catch (Exception e) {
-						throw new NbtApiException("Exception while injecting " + mckey, e);
-					}
-				}
+				InternalInjectors.tile1v13(classPool);
 			}
 		} catch (Exception e) {
 			throw new NbtApiException(e);
@@ -362,7 +191,7 @@ public class NBTInjector {
 		}
 	}
 
-	private static void setFinal(Object obj, Field field, Object newValue) throws Exception {
+	protected static void setFinal(Object obj, Field field, Object newValue) throws NoSuchFieldException, IllegalAccessException {
 		field.setAccessible(true);
 
 		Field modifiersField = Field.class.getDeclaredField("modifiers");
