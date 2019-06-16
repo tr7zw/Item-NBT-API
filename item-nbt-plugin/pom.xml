@@ -1,94 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
-    <parent>
-        <groupId>de.tr7zw</groupId>
-        <artifactId>item-nbt-parent</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
-    </parent>
-
-    <artifactId>item-nbt-api-plugin</artifactId>
-    <packaging>jar</packaging>
-
-    <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
-
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.1</version>
-                <configuration>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <relocations>
-                        <relocation>
-                            <pattern>de.tr7zw.changeme.nbtapi</pattern>
-                            <shadedPattern>de.tr7zw.nbtapi</shadedPattern>
-                        </relocation>
-                    </relocations>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>shade</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-			<!-- Start and Stop a SpigotMC server automatically before and after the integration-test phase. -->
-            <plugin>
-                <groupId>de.tr7zw.spigotmc.maven</groupId>
-                <artifactId>tr-spigotmc-maven-plugin</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
-				<configuration>
-				<!-- 1.8.8-R0.1-SNAPSHOT-latest, 1.9.2-R0.1-SNAPSHOT-latest, 1.9.4-R0.1-SNAPSHOT-latest, 1.10.2-R0.1-SNAPSHOT-latest,1.11.2,1.12.2,1.13.2,1.14.1 -->
-					<versions>1.8.8-R0.1-SNAPSHOT-latest, 1.9.2-R0.1-SNAPSHOT-latest, 1.9.4-R0.1-SNAPSHOT-latest, 1.10.2-R0.1-SNAPSHOT-latest,1.11.2,1.12.2,1.13.2,1.14.1</versions>
-					<works>Success! This version of NBT-API</works>
-					<error>WARNING! This version of NBT-API</error>
-					<filename>item-nbt-api-plugin-2.0.0-SNAPSHOT.jar</filename>
-					<foldername>item-nbt-plugin</foldername>
-				</configuration>
-                <executions>
-                    <execution>
-                        <id>start-server</id>
-                        <goals>
-                            <goal>start</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>stop-server</id>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
-    <dependencies>
-        <dependency>
-            <groupId>de.tr7zw</groupId>
-            <artifactId>item-nbt-api</artifactId>
-            <version>2.0.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.tr7zw</groupId>
-            <artifactId>nbt-injector</artifactId>
-            <version>2.0.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>de.tr7zw</groupId>
+    <artifactId>item-nbt-parent</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>item-nbt-api-plugin</artifactId>
+  <packaging>jar</packaging>
+  <dependencies>
+    <dependency>
+      <groupId>de.tr7zw</groupId>
+      <artifactId>item-nbt-api</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>de.tr7zw</groupId>
+      <artifactId>nbt-injector</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+  <build>
+    <resources>
+      <resource>
+        <filtering>true</filtering>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.1</version>
+        <executions>
+          <execution>
+            <id>shade</id>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <createDependencyReducedPom>false</createDependencyReducedPom>
+          <relocations>
+            <relocation>
+              <pattern>de.tr7zw.changeme.nbtapi</pattern>
+              <shadedPattern>de.tr7zw.nbtapi</shadedPattern>
+            </relocation>
+          </relocations>
+        </configuration>
+      </plugin>
+      <!-- Start and Stop a SpigotMC server automatically before and after the integration-test phase. -->
+      <plugin>
+        <groupId>de.tr7zw.spigotmc.maven</groupId>
+        <artifactId>tr-spigotmc-maven-plugin</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <id>start-server</id>
+            <goals>
+              <goal>start</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>stop-server</id>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <!-- 1.8.8-R0.1-SNAPSHOT-latest, 1.9.2-R0.1-SNAPSHOT-latest, 1.9.4-R0.1-SNAPSHOT-latest, 1.10.2-R0.1-SNAPSHOT-latest,1.11.2,1.12.2,1.13.2,1.14.1 -->
+          <versions>1.8.8-R0.1-SNAPSHOT-latest, 1.9.2-R0.1-SNAPSHOT-latest, 1.9.4-R0.1-SNAPSHOT-latest, 1.10.2-R0.1-SNAPSHOT-latest,1.11.2,1.12.2,1.13.2,1.14.1</versions>
+          <works>Success! This version of NBT-API</works>
+          <error>WARNING! This version of NBT-API</error>
+          <filename>item-nbt-api-plugin-2.0.0-SNAPSHOT.jar</filename>
+          <foldername>item-nbt-plugin</foldername>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
