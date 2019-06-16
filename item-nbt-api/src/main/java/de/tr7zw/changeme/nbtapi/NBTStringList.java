@@ -5,6 +5,12 @@ import java.lang.reflect.InvocationTargetException;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 
+/**
+ * String implementation for NBTLists
+ * 
+ * @author tr7zw
+ *
+ */
 public class NBTStringList extends NBTList<String>{
 
 	protected NBTStringList(NBTCompound owner, String name, NBTType type, Object list) {

@@ -11,6 +11,13 @@ import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import static de.tr7zw.changeme.nbtapi.utils.MinecraftVersion.logger;
 
+/**
+ * This class caches method reflections, keeps track of method name changes between versions and allows early checking for problems
+ * 
+ * @author tr7zw
+ *
+ */
+@SuppressWarnings("javadoc")
 public enum ReflectionMethod {
 
     COMPOUND_SET_FLOAT(ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), new Class[]{String.class, float.class}, MinecraftVersion.MC1_7_R4, new Since(MinecraftVersion.MC1_7_R4, "setFloat")),
@@ -128,6 +135,13 @@ public enum ReflectionMethod {
     	this(targetClass, args, addedSince, null, methodnames);
     }
     
+    /**
+     * Runs the method on a given target object using the given args.
+     * 
+     * @param target
+     * @param args
+     * @return Value returned by the method
+     */
     public Object run(Object target, Object... args){
         try{
             return method.invoke(target, args);
@@ -136,19 +150,28 @@ public enum ReflectionMethod {
         }
     }
     
+    /**
+     * @return The MethodName, used in this Minecraft Version
+     */
     public String getMethodName() {
     	return methodName;
     }
     
+    /**
+     * @return Has this method been linked
+     */
     public boolean isLoaded() {
         return loaded;
     }
 
+    /**
+     * @return Is this method available in this Minecraft Version
+     */
     public boolean isCompatible() {
         return compatible;
     }
 
-    public static class Since{
+    protected static class Since{
         public final MinecraftVersion version;
         public final String name;
         public Since(MinecraftVersion version, String name) {

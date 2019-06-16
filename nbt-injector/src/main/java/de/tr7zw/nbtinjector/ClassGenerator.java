@@ -16,6 +16,12 @@ import javassist.CtNewConstructor;
 import javassist.LoaderClassPath;
 import javassist.NotFoundException;
 
+/**
+ * This class uses Javassist to create wrapped Entity/Tile classes during the runtime
+ * 
+ * @author tr7zw
+ *
+ */
 public class ClassGenerator {
 
 	/**
@@ -27,7 +33,20 @@ public class ClassGenerator {
 	
 	private static final String GENERATOR_PACKAGE = "de.tr7zw.nbtinjector.generated";
 	
-	public static Class<?> wrapNbtClass(ClassPool classPool, Class<?> originalClass, String writeMethod, String readMethod, String extraDataKey) throws NotFoundException, CannotCompileException, IOException {
+	/**
+	 * Wrappes a given class with the INBTWrapper interface
+	 * 
+	 * @param classPool The Javassist classpool
+	 * @param originalClass The NMS Tile/Entity class
+	 * @param writeMethod String of the saving method
+	 * @param readMethod String of the loading method
+	 * @param extraDataKey Key used to save the custom nbt
+	 * @return Class reference to the generated class
+	 * @throws NotFoundException
+	 * @throws CannotCompileException
+	 * @throws IOException
+	 */
+	protected static Class<?> wrapNbtClass(ClassPool classPool, Class<?> originalClass, String writeMethod, String readMethod, String extraDataKey) throws NotFoundException, CannotCompileException, IOException {
 		classPool.insertClassPath(new LoaderClassPath(ClassGenerator.class.getClassLoader()));
 
 		CtClass generated = classPool.makeClass("de.tr7zw.nbtinjector.generated." + originalClass.getSimpleName());
@@ -85,7 +104,17 @@ public class ClassGenerator {
 		return generated.toClass(INBTWrapper.class.getClassLoader(), INBTWrapper.class.getProtectionDomain());
 	}
 	
-	public static Class<?> createEntityTypeWrapper(ClassPool classPool, Class<?> targetClass) throws NotFoundException, CannotCompileException, IOException {
+	/**
+	 * Creates a class for the EntityTypes getter for a given entity
+	 * 
+	 * @param classPool The Javassist classpool
+	 * @param targetClass The NMS Entity class
+	 * @return Class reference to the generated class
+	 * @throws NotFoundException
+	 * @throws CannotCompileException
+	 * @throws IOException
+	 */
+	protected static Class<?> createEntityTypeWrapper(ClassPool classPool, Class<?> targetClass) throws NotFoundException, CannotCompileException, IOException {
 		classPool.insertClassPath(new LoaderClassPath(ClassGenerator.class.getClassLoader()));
 
 		CtClass generated = classPool.makeClass(GENERATOR_PACKAGE + ".entityCreator." + targetClass.getSimpleName());
@@ -104,7 +133,18 @@ public class ClassGenerator {
 		return generated.toClass(INBTWrapper.class.getClassLoader(), INBTWrapper.class.getProtectionDomain());
 	}
 	
-	public static Class<?> wrapEntity(ClassPool classPool, Class<?> originalClass, String extraDataKey) throws NotFoundException, CannotCompileException, IOException {
+	/**
+	 * Wrappes a given Entity class with the INBTWrapper interface
+	 * 
+	 * @param classPool The Javassist classpool
+	 * @param originalClass The NMS Entity class
+	 * @param extraDataKey
+	 * @return Class reference to the generated class
+	 * @throws NotFoundException
+	 * @throws CannotCompileException
+	 * @throws IOException
+	 */
+	protected static Class<?> wrapEntity(ClassPool classPool, Class<?> originalClass, String extraDataKey) throws NotFoundException, CannotCompileException, IOException {
 		String writeReturn = MinecraftVersion.getVersion().getVersionId() > MinecraftVersion.MC1_10_R1.getVersionId() ? "NBTTagCompound" : "void";
 		String writeName = ReflectionMethod.NMS_ENTITY_GET_NBT.getMethodName();
 		String readName = ReflectionMethod.NMS_ENTITY_SET_NBT.getMethodName();
@@ -126,7 +166,18 @@ public class ClassGenerator {
 		return wrapNbtClass(classPool, originalClass, writeMethod, readMethod, extraDataKey);
 	}
 
-	public static Class<?> wrapTileEntity(ClassPool classPool, Class<?> originalClass, String extraDataKey) throws NotFoundException, CannotCompileException, IOException {
+	/**
+	 * Wrappes a given Tile class with the INBTWrapper interface
+	 * 
+	 * @param classPool The Javassist classpool
+	 * @param originalClass The NMS Tile class
+	 * @param extraDataKey
+	 * @return Class reference to the generated class
+	 * @throws NotFoundException
+	 * @throws CannotCompileException
+	 * @throws IOException
+	 */
+	protected static Class<?> wrapTileEntity(ClassPool classPool, Class<?> originalClass, String extraDataKey) throws NotFoundException, CannotCompileException, IOException {
 		String writeReturn = MinecraftVersion.getVersion().getVersionId() > MinecraftVersion.MC1_9_R1.getVersionId() ? "NBTTagCompound" : "void";
 		String writeName = ReflectionMethod.TILEENTITY_GET_NBT.getMethodName();
 		String readName = ReflectionMethod.TILEENTITY_SET_NBT.getMethodName();

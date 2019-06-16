@@ -11,6 +11,13 @@ import java.util.NoSuchElementException;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 
+/**
+ * Abstract List implementation for ListCompounds
+ * 
+ * @author tr7zw
+ *
+ * @param <T>
+ */
 public abstract class NBTList<T> implements List<T> {
 
 	private String listName;
@@ -91,6 +98,9 @@ public abstract class NBTList<T> implements List<T> {
 		}
 	}
 
+	/**
+	 * @return The type that this list contains
+	 */
 	public NBTType getType() {
 		return type;
 	}
@@ -206,7 +216,7 @@ public abstract class NBTList<T> implements List<T> {
 			}
 
 			@Override
-			public T next() throws NoSuchElementException{
+			public T next(){
 				if(!hasNext())
 					throw new NoSuchElementException();
 				return get(++index);
@@ -242,7 +252,7 @@ public abstract class NBTList<T> implements List<T> {
 			}
 
 			@Override
-			public T next() throws NoSuchElementException {
+			public T next() {
 				if(!hasNext())
 					throw new NoSuchElementException();
 				return get(++index);

@@ -4,6 +4,14 @@ import java.util.Set;
 
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 
+/**
+ * Cut down version of the {@link NBTCompound} for inside {@link NBTCompoundList}
+ * This Compound implementation is missing the ability for further subCompounds and Lists.
+ * This class probably will change in the future
+ * 
+ * @author tr7zw
+ *
+ */
 public class NBTListCompound {
 
     private NBTList<?> owner;
@@ -14,6 +22,12 @@ public class NBTListCompound {
         compound = obj;
     }
 
+    /**
+     * String setter
+     * 
+     * @param key
+     * @param value
+     */
     public void setString(String key, String value) {
         if (value == null) {
             remove(key);
@@ -27,6 +41,12 @@ public class NBTListCompound {
         }
     }
 
+    /**
+     * int setter
+     * 
+     * @param key
+     * @param value
+     */
     public void setInteger(String key, int value) {
         try {
             compound.getClass().getMethod("setInt", String.class, int.class).invoke(compound, key, value);
@@ -36,6 +56,12 @@ public class NBTListCompound {
         }
     }
 
+    /**
+     * int getter
+     * 
+     * @param value
+     * @return Saved value or NMS fallback
+     */
     public int getInteger(String value) {
         try {
             return (int) compound.getClass().getMethod("getInt", String.class).invoke(compound, value);
@@ -44,6 +70,12 @@ public class NBTListCompound {
         }
     }
 
+    /**
+     * double setter
+     * 
+     * @param key
+     * @param value
+     */
     public void setDouble(String key, double value) {
         try {
             compound.getClass().getMethod("setDouble", String.class, double.class).invoke(compound, key, value);
@@ -53,6 +85,12 @@ public class NBTListCompound {
         }
     }
 
+    /**
+     * double getter
+     * 
+     * @param key
+     * @return Saved value or NMS fallback
+     */
     public double getDouble(String key) {
         try {
             return (double) compound.getClass().getMethod("getDouble", String.class).invoke(compound, key);
@@ -62,6 +100,12 @@ public class NBTListCompound {
     }
 
 
+    /**
+     * String getter
+     * 
+     * @param key
+     * @return Saved value or NMS fallback
+     */
     public String getString(String key) {
         try {
             return (String) compound.getClass().getMethod("getString", String.class).invoke(compound, key);
@@ -70,6 +114,12 @@ public class NBTListCompound {
         }
     }
 
+    /**
+     * Checks for a given key
+     * 
+     * @param key
+     * @return true if the Compound has this key, else false
+     */
     public boolean hasKey(String key) {
         try {
             return (boolean) compound.getClass().getMethod("hasKey", String.class).invoke(compound, key);
@@ -78,6 +128,9 @@ public class NBTListCompound {
         }
     }
 
+    /**
+     * @return Set containing all keys
+     */
     @SuppressWarnings("unchecked")
     public Set<String> getKeys() {
         try {
@@ -87,6 +140,11 @@ public class NBTListCompound {
         }
     }
 
+    /**
+     * Removes a key from the Compound
+     * 
+     * @param key
+     */
     public void remove(String key) {
         try {
             compound.getClass().getMethod("remove", String.class).invoke(compound, key);

@@ -8,6 +8,13 @@ import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 
 import static de.tr7zw.changeme.nbtapi.utils.MinecraftVersion.logger;
 
+/**
+ * This Enum wraps Constructors for NMS classes
+ * 
+ * @author tr7zw
+ *
+ */
+@SuppressWarnings("javadoc")
 public enum ObjectCreator {
     NMS_NBTTAGCOMPOUND(null, null, ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz()),
     NMS_BLOCKPOSITION(null, null, ClassWrapper.NMS_BLOCKPOSITION.getClazz(), int.class, int.class, int.class),
@@ -31,6 +38,12 @@ public enum ObjectCreator {
         }
     }
     
+    /**
+     * Creates an Object instance with given args
+     * 
+     * @param args
+     * @return Object created
+     */
     public Object getInstance(Object... args){
         try{
             return construct.newInstance(args);

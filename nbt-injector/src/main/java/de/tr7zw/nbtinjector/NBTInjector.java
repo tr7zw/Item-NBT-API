@@ -3,19 +3,10 @@ package de.tr7zw.nbtinjector;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.bukkit.Bukkit;
 
 import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTContainer;
@@ -29,6 +20,12 @@ import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ObjectCreator;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 import javassist.ClassPool;
 
+/**
+ * Main class to interact with custom NBT on Tiles and Entities
+ * 
+ * @author tr7zw
+ *
+ */
 public class NBTInjector {
 
 	/**

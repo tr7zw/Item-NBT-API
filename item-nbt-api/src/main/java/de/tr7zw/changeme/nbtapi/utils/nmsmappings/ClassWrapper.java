@@ -6,6 +6,13 @@ import org.bukkit.Bukkit;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import static de.tr7zw.changeme.nbtapi.utils.MinecraftVersion.logger;
 
+/**
+ * Wraps NMS and CRAFT classes
+ * 
+ * @author tr7zw
+ *
+ */
+@SuppressWarnings("javadoc")
 public enum ClassWrapper {
 CRAFT_ITEMSTACK(PackageWrapper.CRAFTBUKKIT, "inventory.CraftItemStack"),
 CRAFT_ENTITY(PackageWrapper.CRAFTBUKKIT, "entity.CraftEntity"),
@@ -55,10 +62,16 @@ NMS_MINECRAFTKEY(PackageWrapper.NMS, "MinecraftKey"),
         }
     }
     
+    /**
+     * @return The wrapped class
+     */
     public Class<?> getClazz(){
         return clazz;
     }
     
+    /**
+     * @return Is this class available in this Version
+     */
     public boolean isEnabled() {
     	return enabled;
     }

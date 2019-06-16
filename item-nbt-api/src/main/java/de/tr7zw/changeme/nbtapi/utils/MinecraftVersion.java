@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
  * @author tr7zw
  *
  */
+@SuppressWarnings("javadoc")
 public enum MinecraftVersion {
 	UNKNOWN(Integer.MAX_VALUE),//Use the newest known mappings
 	MC1_7_R4(174),
@@ -29,6 +30,9 @@ public enum MinecraftVersion {
 	private static Boolean hasGsonSupport;
 	private static boolean bStatsDisabled = false;
 	private static boolean disablePackageWarning = false;
+	/**
+	 * Logger used by the api
+	 */
 	public static final Logger logger = Logger.getLogger("NBTAPI");
 
 	private final int versionId;
@@ -37,10 +41,18 @@ public enum MinecraftVersion {
 		this.versionId = versionId;
 	}
 
+	/**
+	 * @return A simple comparable Integer, representing the version.
+	 */
 	public int getVersionId() {
 		return versionId;
 	}
 
+	/**
+	 * Getter for this servers MinecraftVersion. Also init's bStats and checks the shading.
+	 * 
+	 * @return The enum for the MinecraftVersion this server is running
+	 */
 	public static MinecraftVersion getVersion() {
 		if (version != null) {
 			return version;
@@ -80,6 +92,9 @@ public enum MinecraftVersion {
 		}
 	}
 
+	/**
+	 * @return True, if Gson is usable
+	 */
 	public static boolean hasGsonSupport() {
 		if (hasGsonSupport != null) {
 			return hasGsonSupport;
