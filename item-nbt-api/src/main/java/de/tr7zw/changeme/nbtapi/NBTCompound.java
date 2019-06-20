@@ -55,7 +55,7 @@ public class NBTCompound {
 	 * @param comp
 	 */
 	public void mergeCompound(NBTCompound comp) {
-		NBTReflectionUtil.addOtherNBTCompound(this, comp);
+		NBTReflectionUtil.mergeOtherNBTCompound(this, comp);
 	}
 
 	/**
@@ -322,7 +322,10 @@ public class NBTCompound {
 		if (getType(name) == NBTType.NBTTagCompound)
 			return getCompound(name);
 		NBTReflectionUtil.addNBTTagCompound(this, name);
-		return getCompound(name);
+		NBTCompound comp = getCompound(name);
+		if(comp == null)
+			throw new NbtApiException("Error while adding Compound, got null!");
+		return comp;
 	}
 
 	/**

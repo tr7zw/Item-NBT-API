@@ -20,7 +20,15 @@ public class NBTFileTest implements Test {
 		comp.setString("test2", "ok");
 		file.setLong("time", System.currentTimeMillis());
 		file.setString("test", "test");
+		NBTCompound chunks = file.addCompound("chunks");
+		NBTCompound chunk = chunks.addCompound("somechunk");
+		NBTCompound block = chunk.addCompound("someblock");
+		block.setString("type", "wool");
 		file.save();
+		
+		if(!"wool".equals(block.getString("type"))) {
+			throw new NbtApiException("SubCompounds did not work!");
+		}
 
 		NBTFile fileLoaded = new NBTFile(new File(NBTAPI.getInstance().getDataFolder(), "test.nbt"));
 		if (!fileLoaded.getString("test").equals("test")) {

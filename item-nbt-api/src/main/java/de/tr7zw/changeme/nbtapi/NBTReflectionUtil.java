@@ -207,7 +207,11 @@ public class NBTReflectionUtil {
 	 */
 	public static Object getSubNBTTagCompound(Object compound, String name) {
 		try {
-			return ReflectionMethod.COMPOUND_GET_COMPOUND.run(compound, name);
+			if ((boolean) ReflectionMethod.COMPOUND_HAS_KEY.run(compound, name)) {
+				return ReflectionMethod.COMPOUND_GET_COMPOUND.run(compound, name);
+			} else {
+				throw new NbtApiException("Tried getting invalide compound '" + name + "' from '" + compound + "'!");
+			}
 		} catch (Exception e) {
 			throw new NbtApiException("Exception while getting NBT subcompounds!", e);
 		}
@@ -261,9 +265,10 @@ public class NBTReflectionUtil {
 			comp = comp.getParent();
 		}
 		while (!structure.isEmpty()) {
-			nbttag = getSubNBTTagCompound(nbttag, structure.pop());
+			String target = structure.pollLast();
+			nbttag = getSubNBTTagCompound(nbttag, target);
 			if (nbttag == null) {
-				return null;
+				throw new NbtApiException("Unable to find tag '" + target + "' in " + nbttag);
 			}
 		}
 		return nbttag;
@@ -275,16 +280,16 @@ public class NBTReflectionUtil {
 	 * @param comp        Target for the merge
 	 * @param nbtcompound Data to merge
 	 */
-	public static void addOtherNBTCompound(NBTCompound comp, NBTCompound nbtcompound) {
+	public static void mergeOtherNBTCompound(NBTCompound comp, NBTCompound nbtcompound) {
 		Object rootnbttag = comp.getCompound();
 		if (rootnbttag == null) {
 			rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
 		}
 		if (!valideCompound(comp))
-			return;
+			throw new NbtApiException("The Compound wasn't able to be linked back to the root!");
 		Object workingtag = gettoCompount(rootnbttag, comp);
 		try {
-			ReflectionMethod.COMPOUND_ADD.run(workingtag, nbtcompound.getCompound());
+			ReflectionMethod.COMPOUND_MERGE.run(workingtag, nbtcompound.getCompound());
 			comp.setCompound(rootnbttag);
 		} catch (Exception e) {
 			throw new NbtApiException("Exception while merging two NBTCompounds!", e);
