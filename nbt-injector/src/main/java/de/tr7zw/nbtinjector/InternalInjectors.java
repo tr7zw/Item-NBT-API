@@ -48,6 +48,22 @@ public class InternalInjectors {
 		classMappings.put("minecraft:mule", "HorseMule");
 		classMappings.put("minecraft:zombie_horse", "HorseZombie");
 		classMappings.put("minecraft:mooshroom", "MushroomCow");
+		classMappings.put("minecraft:wither_skeleton", "SkeletonWither");
+		classMappings.put("minecraft:snow_golem", "Snowman");
+		classMappings.put("minecraft:polar_bear", "PolarBear");
+		classMappings.put("minecraft:magma_cube", "MagmaCube");
+		classMappings.put("minecraft:armor_stand", "ArmorStand");
+		classMappings.put("minecraft:elder_guardian", "GuardianElder");
+		classMappings.put("minecraft:zombie_pigman", "PigZombie");
+		classMappings.put("minecraft:giant", "GiantZombie");
+		classMappings.put("minecraft:zombie_villager", "ZombieVillager");
+		classMappings.put("minecraft:husk", "ZombieHusk");
+		classMappings.put("minecraft:iron_golem", "IronGolem");
+		classMappings.put("minecraft:tropical_fish", "TropicalFish");
+		classMappings.put("minecraft:stray", "SkeletonStray");
+		classMappings.put("minecraft:illusioner", "IllagerIllusioner");
+		classMappings.put("minecraft:pufferfish", "PufferFish");
+		classMappings.put("minecraft:cave_spider", "CaveSpider");
 	}
 
 	/**
