@@ -124,7 +124,7 @@ public class NBTInjector {
 				Method spawn = ClassWrapper.NMS_WORLD.getClazz().getMethod("addEntity",
 						ClassWrapper.NMS_ENTITY.getClazz());
 				spawn.invoke(nmsworld, newEntity);
-				logger.info("Created patched instance: " + newEntity.getClass().getName());
+				//logger.info("Created patched instance: " + newEntity.getClass().getName());
 				Method asBukkit = newEntity.getClass().getMethod("getBukkitEntity");
 				return (org.bukkit.entity.Entity) asBukkit.invoke(newEntity);
 			}
