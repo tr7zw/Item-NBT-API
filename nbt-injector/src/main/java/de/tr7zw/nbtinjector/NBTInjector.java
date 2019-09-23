@@ -36,6 +36,7 @@ public class NBTInjector {
 	}
 
 	static Logger logger = Logger.getLogger("NBTInjector");
+	private static boolean isInjected = false;
 
 	/**
 	 * Replaces the vanilla classes with Wrapped classes that support custom NBT.
@@ -44,6 +45,8 @@ public class NBTInjector {
 	 * this method so it's class gets Wrapped.
 	 */
 	public static void inject() {
+		if(isInjected)return;
+		isInjected = true;
 		try {
 			ClassPool classPool = ClassPool.getDefault();
 			logger.info("[NBTINJECTOR] Injecting Entity classes...");
@@ -68,6 +71,10 @@ public class NBTInjector {
 		} catch (Exception e) {
 			throw new NbtApiException(e);
 		}
+	}
+
+	public static boolean isInjected() {
+		return isInjected;
 	}
 
 	private static NBTCompound getNbtData(Object object) {
@@ -109,7 +116,7 @@ public class NBTInjector {
 				String id = "";
 				if (MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_10_R1.getVersionId()) {
 					id = Entity.getBackupMap().get(ent.getClass());
-				} else if (MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_13_R1.getVersionId()) {
+				} else if (MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_13_R2.getVersionId()) {
 					id = ReflectionMethod.REGISTRY_GET_INVERSE.run(Entity.getRegistry(), ent.getClass()).toString();
 				} else {
 					id = (String) ReflectionMethod.NMS_ENTITY_GETSAVEID.run(ent);
@@ -244,6 +251,10 @@ public class NBTInjector {
 
 		static Object getRegistry() throws ReflectiveOperationException {
 			return getAccessable(ClassWrapper.NMS_ENTITYTYPES.getClazz().getDeclaredField("b")).get(null);
+		}
+		
+		static Object getRegistryId(Object reg) throws ReflectiveOperationException {
+			return getAccessable(reg.getClass().getDeclaredField("a")).get(reg);
 		}
 
 		static Map<Class<?>, String> getBackupMap() throws ReflectiveOperationException {

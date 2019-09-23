@@ -15,6 +15,7 @@ public class TilesCustomNBTTest implements Test {
 
 	@Override
 	public void test() throws Exception {
+		if(!NBTInjector.isInjected())return;
 		if (!Bukkit.getWorlds().isEmpty()) {
 			World world = Bukkit.getWorlds().get(0);
 			try {

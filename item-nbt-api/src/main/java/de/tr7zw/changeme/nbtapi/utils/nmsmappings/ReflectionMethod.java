@@ -127,7 +127,7 @@ public enum ReflectionMethod {
             loaded = true;
             methodName = targetVersion.name;
         }catch(NullPointerException | NoSuchMethodException | SecurityException ex){
-            logger.log(Level.SEVERE, "Unable to find the method '" + targetVersion.name + "' in '" + targetClass.getSimpleName() + "'", ex);
+            System.out.println("[NBTAPI] Unable to find the method '" + targetVersion.name + "' in '" + targetClass.getSimpleName() + "'"); //NOSONAR This gets loaded before the logger is loaded
         }
     }
     

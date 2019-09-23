@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
@@ -38,14 +39,16 @@ public class NBTAPI extends JavaPlugin {
 
 	@Override
 	public void onLoad() {
-		getLogger().info("Injecting custom NBT");
+		
+		//Disabled by default since 2.1. Enable it yourself by calling NBTInjector.inject(); during onLoad.
+		/*getLogger().info("Injecting custom NBT");
 		try {
 			NBTInjector.inject();
 			getLogger().info("Injected!");
 		} catch (Throwable ex) { // NOSONAR
 			getLogger().log(Level.SEVERE, "Error while Injecting custom Tile/Entity classes!", ex);
 			compatible = false;
-		}
+		}*/
 
 		// NBTCompounds
 		apiTests.add(new GetterSetterTest());
@@ -76,6 +79,8 @@ public class NBTAPI extends JavaPlugin {
 		instance = this; // NOSONAR
 		// new MetricsLite(this); The metrics moved into the API
 
+		getLogger().info("Adding listeners...");
+		Bukkit.getPluginManager().registerEvents(new ReloadListener(), this);
 		getLogger().info("Checking bindings...");
 		MinecraftVersion.getVersion();
 		getLogger().info("Gson:");

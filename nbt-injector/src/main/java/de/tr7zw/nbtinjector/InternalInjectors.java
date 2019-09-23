@@ -97,16 +97,19 @@ public class InternalInjectors {
 		Object registry = Entity.getRegistry();
 		Map<Object, Object> inverse = new HashMap<>();
 		Set<?> it = new HashSet<>((Set<?>) ReflectionMethod.REGISTRY_KEYSET.run(registry));
+		Object registryId = Entity.getRegistryId(registry);
 		for (Object mckey : it) {
-			Class<?> tileclass = (Class<?>) ReflectionMethod.REGISTRY_GET.run(registry, mckey);
-			inverse.put(tileclass, mckey);
+			Class<?> entclass = (Class<?>) ReflectionMethod.REGISTRY_GET.run(registry, mckey);
+			inverse.put(entclass, mckey);
 			try {
-				if (INBTWrapper.class.isAssignableFrom(tileclass)) {
+				if (INBTWrapper.class.isAssignableFrom(entclass)) {
 					continue;
 				} // Already injected
-				Class<?> wrapped = ClassGenerator.wrapEntity(classPool, tileclass, "__extraData");
+				Class<?> wrapped = ClassGenerator.wrapEntity(classPool, entclass, "__extraData");
 				ReflectionMethod.REGISTRY_SET.run(registry, mckey, wrapped);
 				inverse.put(wrapped, mckey);
+				int id = (int) registryId.getClass().getMethod("getId", new Class[] {Object.class}).invoke(registryId, entclass);
+				registryId.getClass().getMethod("a", new Class[] {Object.class, int.class}).invoke(registryId, wrapped, id);
 			} catch (Exception e) {
 				throw new NbtApiException("Exception while injecting " + mckey, e);
 			}
