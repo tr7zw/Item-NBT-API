@@ -64,6 +64,8 @@ public class InternalInjectors {
 		classMappings.put("minecraft:illusioner", "IllagerIllusioner");
 		classMappings.put("minecraft:pufferfish", "PufferFish");
 		classMappings.put("minecraft:cave_spider", "CaveSpider");
+		classMappings.put("minecraft:item_frame", "ItemFrame");
+		classMappings.put("minecraft:leash_knot", "Leash");
 	}
 
 	/**
