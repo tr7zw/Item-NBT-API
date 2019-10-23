@@ -5,8 +5,7 @@ import org.bukkit.inventory.ItemStack;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 
 /**
- * NBT class to access vanilla/custom tags on ItemStacks. This class doesn't
- * autosave to the Itemstack, use getItem to get the changed ItemStack
+ * NBT class to access vanilla/custom tags on ItemStacks.
  * 
  * @author tr7zw
  *
@@ -16,18 +15,29 @@ public class NBTItem extends NBTCompound {
 	private ItemStack bukkitItem;
 
 	/**
-	 * Constructor for NBTItems. The ItemStack will be cloned!
+	 * Constructor for NBTItems. The ItemStack will be cloned!<br/>
+	 * Use {@link NBTItem#getItem()} to get the changed ItemStack
 	 * 
 	 * @param item
 	 */
 	public NBTItem(ItemStack item) {
+		this(item, true);
+	}
+	
+	/**
+	 * Constructor for NBTItems. The ItemStack will be cloned if copy is true.
+	 * 
+	 * @param item
+	 * @param copy
+	 */
+	public NBTItem(ItemStack item, boolean copy) {
 		super(null, null);
 		if (item == null) {
 			throw new NullPointerException("ItemStack can't be null!");
 		}
-		bukkitItem = item.clone();
+		bukkitItem = (copy ? item.clone() : item);
 	}
-
+	
 	@Override
 	public Object getCompound() {
 		return NBTReflectionUtil.getItemRootNBTTagCompound(ReflectionMethod.ITEMSTACK_NMSCOPY.run(null, bukkitItem));
