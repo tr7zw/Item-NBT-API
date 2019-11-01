@@ -1,6 +1,6 @@
 name: Java CI
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   build:
@@ -16,4 +16,4 @@ jobs:
     - name: Build with Maven
       run: mvn --file pom.xml
     - name: Maven Github Deploy
-      run: mvn deploy -Dregistry=https://maven.pkg.github.com/tr7zw -Dtoken=${{ secrets.GITHUB_TOKEN }}
+      run: mvn deploy -Dregistry=https://maven.pkg.github.com/tr7zw -Dtoken=${{ secrets.GITHUB_TOKEN }} -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/tr7zw -Drelease=false
