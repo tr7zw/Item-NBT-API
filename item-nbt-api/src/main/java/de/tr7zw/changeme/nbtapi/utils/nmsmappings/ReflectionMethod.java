@@ -53,7 +53,7 @@ public enum ReflectionMethod {
     
     COMPOUND_REMOVE_KEY(ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), new Class[]{String.class}, MinecraftVersion.MC1_7_R4, new Since(MinecraftVersion.MC1_7_R4, "remove")),
     COMPOUND_HAS_KEY(ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), new Class[]{String.class}, MinecraftVersion.MC1_7_R4, new Since(MinecraftVersion.MC1_7_R4, "hasKey")),
-    COMPOUND_GET_TYPE(ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), new Class[]{String.class}, MinecraftVersion.MC1_8_R3, new Since(MinecraftVersion.MC1_8_R3, "b"), new Since(MinecraftVersion.MC1_9_R1, "d")), //FIXME: No Spigot mapping!
+    COMPOUND_GET_TYPE(ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), new Class[]{String.class}, MinecraftVersion.MC1_8_R3, new Since(MinecraftVersion.MC1_8_R3, "b"), new Since(MinecraftVersion.MC1_9_R1, "d"), new Since(MinecraftVersion.MC1_15_R1, "e")), //FIXME: No Spigot mapping!
     COMPOUND_GET_KEYS(ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), new Class[]{}, MinecraftVersion.MC1_7_R4, new Since(MinecraftVersion.MC1_7_R4, "c"), new Since(MinecraftVersion.MC1_13_R1, "getKeys")),
 
     LISTCOMPOUND_GET_KEYS(ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), new Class[]{}, MinecraftVersion.MC1_7_R4, new Since(MinecraftVersion.MC1_7_R4, "c"), new Since(MinecraftVersion.MC1_13_R1, "getKeys")),
@@ -127,7 +127,7 @@ public enum ReflectionMethod {
             loaded = true;
             methodName = targetVersion.name;
         }catch(NullPointerException | NoSuchMethodException | SecurityException ex){
-            System.out.println("[NBTAPI] Unable to find the method '" + targetVersion.name + "' in '" + targetClass.getSimpleName() + "'"); //NOSONAR This gets loaded before the logger is loaded
+            System.out.println("[NBTAPI] Unable to find the method '" + targetVersion.name + "' in '" + targetClass.getSimpleName() + "' Enum: " + this); //NOSONAR This gets loaded before the logger is loaded
         }
     }
     
@@ -143,10 +143,12 @@ public enum ReflectionMethod {
      * @return Value returned by the method
      */
     public Object run(Object target, Object... args){
-        try{
+        if(method == null)
+        	throw new NbtApiException("Method not loaded! '" + this + "'");
+    	try{
             return method.invoke(target, args);
         }catch(Exception ex){
-            throw new NbtApiException("Error while calling the method '" + methodName + "', loaded: " + loaded + ".", ex);
+            throw new NbtApiException("Error while calling the method '" + methodName + "', loaded: " + loaded + ", Enum: " + this, ex);
         }
     }
     

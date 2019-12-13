@@ -34,7 +34,7 @@ import static de.tr7zw.changeme.nbtapi.utils.MinecraftVersion.logger;
 public class ApiMetricsLite {
 
 	private static final String PLUGINNAME = "ItemNBTAPI"; // DO NOT CHANGE THE NAME! else it won't link the data on bStats
-	private static final String PLUGINVERSION = "2.1.1-SNAPSHOT"; // In case you fork the nbt-api for internal use in your network, plugins and so on, you *may* add that to the version here. (2.x.x-Timolia or something like that?)
+	private static final String PLUGINVERSION = "2.1.1"; // In case you fork the nbt-api for internal use in your network, plugins and so on, you *may* add that to the version here. (2.x.x-Timolia or something like that?)
 	// Not sure how good of an idea that is, so maybe just leave it as is ¯\_(ツ)_/¯
 
 	// The version of this bStats class

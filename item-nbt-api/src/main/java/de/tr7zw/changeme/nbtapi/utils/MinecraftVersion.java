@@ -25,7 +25,8 @@ public enum MinecraftVersion {
 	MC1_12_R1(1121),
 	MC1_13_R1(1131),
 	MC1_13_R2(1132),
-	MC1_14_R1(1141);
+	MC1_14_R1(1141),
+	MC1_15_R1(1151);
 
 	private static MinecraftVersion version;
 	private static Boolean hasGsonSupport;

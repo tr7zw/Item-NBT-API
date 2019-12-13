@@ -1,5 +1,6 @@
 package de.tr7zw.changeme.nbtapi;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
@@ -29,10 +30,12 @@ public class NBTStringList extends NBTList<String> {
 	@Override
 	protected Object asTag(String object) {
 		try {
-			return ClassWrapper.NMS_NBTTAGSTRING.getClazz().getConstructor(String.class).newInstance(object);
+			Constructor<?> con = ClassWrapper.NMS_NBTTAGSTRING.getClazz().getDeclaredConstructor(String.class);
+			con.setAccessible(true);
+			return con.newInstance(object);
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException e) {
-			throw new NbtApiException("Error while wrapping the Oject " + object + " to it's NMS object!", e);
+			throw new NbtApiException("Error while wrapping the Object " + object + " to it's NMS object!", e);
 		}
 	}
 
