@@ -164,7 +164,10 @@ public class InternalInjectors {
 				continue;
 			}
 			Object entityTypesObj = ReflectionMethod.REGISTRYMATERIALS_GET.run(entityRegistry, mckey);
-			Field creatorField = entityTypesObj.getClass().getDeclaredField("aZ");
+			String creatorFieldName = "aZ";
+			if (MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_15_R1.getVersionId())
+				creatorFieldName = "ba";
+			Field creatorField = entityTypesObj.getClass().getDeclaredField(creatorFieldName);
 			creatorField.setAccessible(true);
 			Object creator = creatorField.get(entityTypesObj);
 			Method createEntityMethod = creator.getClass().getMethod("create", ClassWrapper.NMS_ENTITYTYPES.getClazz(),
@@ -251,8 +254,10 @@ public class InternalInjectors {
 		for (Object mckey : registryentries) {
 			Object tileEntityTypesObj = ReflectionMethod.REGISTRYMATERIALS_GET.run(tileRegistry, mckey);
 			String supplierFieldName = "A";
-			if (MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_14_R1.getVersionId())
+			if (MinecraftVersion.getVersion().getVersionId() == MinecraftVersion.MC1_14_R1.getVersionId())
 				supplierFieldName = "H";
+			else if (MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_15_R1.getVersionId())
+				supplierFieldName = "I";
 			Field supplierField = tileEntityTypesObj.getClass().getDeclaredField(supplierFieldName);
 			supplierField.setAccessible(true);
 			Supplier<Object> supplier = (Supplier<Object>) supplierField.get(tileEntityTypesObj);
