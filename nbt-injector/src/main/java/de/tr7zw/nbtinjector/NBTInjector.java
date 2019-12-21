@@ -2,7 +2,6 @@ package de.tr7zw.nbtinjector;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -216,17 +215,6 @@ public class NBTInjector {
 		} catch (Exception e) {
 			throw new NbtApiException(e);
 		}
-	}
-
-	protected static void setFinal(Object obj, Field field, Object newValue)
-			throws NoSuchFieldException, IllegalAccessException {
-		field.setAccessible(true);
-
-		Field modifiersField = Field.class.getDeclaredField("modifiers");
-		modifiersField.setAccessible(true);
-		modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-
-		field.set(obj, newValue);
 	}
 
 	private static Field getAccessable(Field field) {

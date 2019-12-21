@@ -16,6 +16,7 @@ import org.bukkit.Bukkit;
 
 import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
+import de.tr7zw.changeme.nbtapi.utils.ReflectionUtil;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 import de.tr7zw.nbtinjector.NBTInjector.Entity;
@@ -117,7 +118,7 @@ public class InternalInjectors {
 			}
 		}
 		Field inverseField = registry.getClass().getDeclaredField("b");
-		NBTInjector.setFinal(registry, inverseField, inverse);
+		ReflectionUtil.setFinal(registry, inverseField, inverse);
 	}
 
 	protected static void entity1v13Below(ClassPool classPool) throws ReflectiveOperationException {
@@ -136,8 +137,8 @@ public class InternalInjectors {
 					continue;
 				} // Already injected
 				Class<?> wrapped = ClassGenerator.wrapEntity(classPool, nmsclass, "__extraData");
-				NBTInjector.setFinal(entityTypesObj, classField, wrapped);
-				NBTInjector.setFinal(entityTypesObj, supplierField, new Function<Object, Object>() {
+				ReflectionUtil.setFinal(entityTypesObj, classField, wrapped);
+				ReflectionUtil.setFinal(entityTypesObj, supplierField, new Function<Object, Object>() {
 
 					@Override
 					public Object apply(Object t) {
@@ -203,7 +204,7 @@ public class InternalInjectors {
 					continue;
 				} // Already injected
 				Class<?> wrapped = ClassGenerator.wrapEntity(classPool, nmsclass, "__extraData");
-				NBTInjector.setFinal(entityTypesObj, creatorField,
+				ReflectionUtil.setFinal(entityTypesObj, creatorField,
 						ClassGenerator.createEntityTypeWrapper(classPool, wrapped).newInstance());
 			} catch (Exception e) {
 				throw new NbtApiException("Exception while injecting " + mckey, e);
@@ -245,7 +246,7 @@ public class InternalInjectors {
 			}
 		}
 		Field inverseField = registry.getClass().getDeclaredField("b");
-		NBTInjector.setFinal(registry, inverseField, inverse);
+		ReflectionUtil.setFinal(registry, inverseField, inverse);
 	}
 
 	protected static void tile1v13(ClassPool classPool) throws ReflectiveOperationException {
@@ -267,7 +268,7 @@ public class InternalInjectors {
 					continue;
 				} // Already injected
 				Class<?> wrapped = ClassGenerator.wrapTileEntity(classPool, nmsclass, "__extraData");
-				NBTInjector.setFinal(tileEntityTypesObj, supplierField, new Supplier<Object>() {
+				ReflectionUtil.setFinal(tileEntityTypesObj, supplierField, new Supplier<Object>() {
 					@Override
 					public Object get() {
 						try {
