@@ -37,6 +37,9 @@ public class NBTInjector {
 
 	static Logger logger = Logger.getLogger("NBTInjector");
 	private static boolean isInjected = false;
+	private static final String NOT_INJECTED_MESSAGE = "The NBTInjector has not been enabled!\n"
+			+ "You need to call 'NBTInjector.inject()' during the Method 'onLoad' of your Plugin!"
+			+ " Check the Wiki/Pluginpage for more information!";
 
 	/**
 	 * Replaces the vanilla classes with Wrapped classes that support custom NBT.
@@ -105,6 +108,7 @@ public class NBTInjector {
 		if (entity == null) {
 			return null;
 		}
+		if(!isInjected)throw new NbtApiException(NOT_INJECTED_MESSAGE);
 		try {
 			Object ent = NBTReflectionUtil.getNMSEntity(entity);
 			if (!(ent instanceof INBTWrapper)) {// Replace Entity with custom one
@@ -152,6 +156,7 @@ public class NBTInjector {
 		if (entity == null) {
 			return null;
 		}
+		if(!isInjected)throw new NbtApiException(NOT_INJECTED_MESSAGE);
 		try {
 			Object ent = NBTReflectionUtil.getNMSEntity(entity);
 			if (!(ent instanceof INBTWrapper)) {
@@ -176,6 +181,7 @@ public class NBTInjector {
 		if (tile == null) {
 			return null;
 		}
+		if(!isInjected)throw new NbtApiException(NOT_INJECTED_MESSAGE);
 		try {
 			Object pos = ObjectCreator.NMS_BLOCKPOSITION.getInstance(tile.getX(), tile.getY(), tile.getZ());
 			Object cworld = ClassWrapper.CRAFT_WORLD.getClazz().cast(tile.getWorld());
