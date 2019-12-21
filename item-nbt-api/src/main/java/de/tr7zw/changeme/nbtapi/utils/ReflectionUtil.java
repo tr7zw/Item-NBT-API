@@ -13,6 +13,7 @@ public final class ReflectionUtil {
 	static {
 		try {
 			field_modifiers = Field.class.getDeclaredField("modifiers");
+			field_modifiers.setAccessible(true);
 		} catch (NoSuchFieldException ex) {
 			try {
 				// This hacky workaround is for newer jdk versions 11+?
