@@ -23,6 +23,7 @@ public final class ReflectionUtil {
 				for (Field f : fields)
 					if (f.getName().equals("modifiers")) {
 						field_modifiers = f;
+						field_modifiers.setAccessible(true);
 						break;
 					}
 			} catch (Exception e) {
