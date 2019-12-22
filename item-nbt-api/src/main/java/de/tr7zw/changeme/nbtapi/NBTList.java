@@ -31,6 +31,20 @@ public abstract class NBTList<T> implements List<T> {
 		this.type = type;
 		this.listObject = list;
 	}
+	
+	/**
+	 * @return Name of this list-compound
+	 */
+	public String getName(){
+		return listName;
+	}
+	
+	/**
+	 * @returnThe Compound's parent Object
+	 */
+	public NBTCompound getParent() {
+		return parent;
+	}
 
 	protected void save() {
 		parent.set(listName, listObject);

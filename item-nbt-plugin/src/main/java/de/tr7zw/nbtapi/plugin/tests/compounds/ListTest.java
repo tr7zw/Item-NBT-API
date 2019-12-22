@@ -2,6 +2,7 @@ package de.tr7zw.nbtapi.plugin.tests.compounds;
 
 import java.util.Arrays;
 
+import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTCompoundList;
 import de.tr7zw.changeme.nbtapi.NBTContainer;
 import de.tr7zw.changeme.nbtapi.NBTList;
@@ -34,19 +35,24 @@ public class ListTest implements Test {
 		lcomp.setInteger("int1", 42);
 		lcomp.setString("test1", "test1");
 		lcomp.setString("test2", "test2");
-		lcomp.remove("test1");
+		lcomp.removeKey("test1");
+		NBTCompound subsubcomp = lcomp.addCompound("listsubkey");
+		subsubcomp.setString("deep", "String");
 
 		taglist = null;
 		lcomp = null;
+		subsubcomp = null;
 
 		taglist = comp.getCompoundList("complist");
 		if (taglist.size() == 1) {
 			lcomp = taglist.get(0);
-			if (lcomp.getKeys().size() != 3) {
+			if (lcomp.getKeys().size() != 4) {
 				throw new NbtApiException("Wrong key amount in Taglist (" + lcomp.getKeys().size() + ")!");
 			} else if (!(lcomp.getDouble("double1") == 0.3333 && lcomp.getInteger("int1") == 42
 					&& lcomp.getString("test2").equals("test2") && !lcomp.hasKey("test1"))) {
 				throw new NbtApiException("One key in the Taglist changed! The Item-NBT-API may not work!");
+			} else if(lcomp.getCompound("listsubkey") == null || !"String".equals(lcomp.getCompound("listsubkey").getString("deep"))){
+				throw new NbtApiException("The Compound nested in the listcompound was not correct! The Item-NBT-API may not work!");
 			}
 		} else {
 			throw new NbtApiException("Taglist is empty! The Item-NBT-API may not work!");

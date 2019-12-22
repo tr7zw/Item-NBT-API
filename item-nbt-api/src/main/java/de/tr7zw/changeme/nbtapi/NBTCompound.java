@@ -23,6 +23,11 @@ public class NBTCompound {
 		this.parent = owner;
 	}
 
+	protected void saveCompound(){
+		if(parent != null)
+			parent.saveCompound();
+	}
+	
 	/**
 	 * @return The Compound name
 	 */
@@ -56,6 +61,7 @@ public class NBTCompound {
 	 */
 	public void mergeCompound(NBTCompound comp) {
 		NBTReflectionUtil.mergeOtherNBTCompound(this, comp);
+		saveCompound();
 	}
 
 	/**
@@ -66,6 +72,7 @@ public class NBTCompound {
 	 */
 	public void setString(String key, String value) {
 		NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_STRING, key, value);
+		saveCompound();
 	}
 
 	/**
@@ -90,6 +97,7 @@ public class NBTCompound {
 	 */
 	public void setInteger(String key, Integer value) {
 		NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_INT, key, value);
+		saveCompound();
 	}
 
 	/**
@@ -110,6 +118,7 @@ public class NBTCompound {
 	 */
 	public void setDouble(String key, Double value) {
 		NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_DOUBLE, key, value);
+		saveCompound();
 	}
 
 	/**
@@ -130,6 +139,7 @@ public class NBTCompound {
 	 */
 	public void setByte(String key, Byte value) {
 		NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_BYTE, key, value);
+		saveCompound();
 	}
 
 	/**
@@ -150,6 +160,7 @@ public class NBTCompound {
 	 */
 	public void setShort(String key, Short value) {
 		NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_SHORT, key, value);
+		saveCompound();
 	}
 
 	/**
@@ -170,6 +181,7 @@ public class NBTCompound {
 	 */
 	public void setLong(String key, Long value) {
 		NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_LONG, key, value);
+		saveCompound();
 	}
 
 	/**
@@ -190,6 +202,7 @@ public class NBTCompound {
 	 */
 	public void setFloat(String key, Float value) {
 		NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_FLOAT, key, value);
+		saveCompound();
 	}
 
 	/**
@@ -210,6 +223,7 @@ public class NBTCompound {
 	 */
 	public void setByteArray(String key, byte[] value) {
 		NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_BYTEARRAY, key, value);
+		saveCompound();
 	}
 
 	/**
@@ -230,6 +244,7 @@ public class NBTCompound {
 	 */
 	public void setIntArray(String key, int[] value) {
 		NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_INTARRAY, key, value);
+		saveCompound();
 	}
 
 	/**
@@ -250,10 +265,12 @@ public class NBTCompound {
 	 */
 	public void setBoolean(String key, Boolean value) {
 		NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_BOOLEAN, key, value);
+		saveCompound();
 	}
 
 	protected void set(String key, Object val) {
 		NBTReflectionUtil.set(this, key, val);
+		saveCompound();
 	}
 
 	/**
@@ -274,6 +291,7 @@ public class NBTCompound {
 	 */
 	public void setObject(String key, Object value) {
 		NBTReflectionUtil.setObject(this, key, value);
+		saveCompound();
 	}
 
 	/**
@@ -303,6 +321,7 @@ public class NBTCompound {
 	 */
 	public void removeKey(String key) {
 		NBTReflectionUtil.remove(this, key);
+		saveCompound();
 	}
 
 	/**
@@ -325,6 +344,7 @@ public class NBTCompound {
 		NBTCompound comp = getCompound(name);
 		if(comp == null)
 			throw new NbtApiException("Error while adding Compound, got null!");
+		saveCompound();
 		return comp;
 	}
 
@@ -346,7 +366,9 @@ public class NBTCompound {
 	 * @return The retrieved String List
 	 */
 	public NBTList<String> getStringList(String name) {
-		return NBTReflectionUtil.getList(this, name, NBTType.NBTTagString, String.class);
+		NBTList<String> list = NBTReflectionUtil.getList(this, name, NBTType.NBTTagString, String.class);
+		saveCompound();
+		return list;
 	}
 
 	/**
@@ -354,7 +376,9 @@ public class NBTCompound {
 	 * @return The retrieved Integer List
 	 */
 	public NBTList<Integer> getIntegerList(String name) {
-		return NBTReflectionUtil.getList(this, name, NBTType.NBTTagInt, Integer.class);
+		NBTList<Integer> list = NBTReflectionUtil.getList(this, name, NBTType.NBTTagInt, Integer.class);
+		saveCompound();
+		return list;
 	}
 
 	/**
@@ -362,7 +386,9 @@ public class NBTCompound {
 	 * @return The retrieved Compound List
 	 */
 	public NBTCompoundList getCompoundList(String name) {
-		return (NBTCompoundList) NBTReflectionUtil.getList(this, name, NBTType.NBTTagCompound, NBTListCompound.class);
+		NBTCompoundList list = (NBTCompoundList) NBTReflectionUtil.getList(this, name, NBTType.NBTTagCompound, NBTListCompound.class);
+		saveCompound();
+		return list;
 	}
 
 	/**

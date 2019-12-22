@@ -31,6 +31,7 @@ public class NBTCompoundList extends NBTList<NBTListCompound> {
 			} else {
 				ReflectionMethod.LEGACY_LIST_ADD.run(listObject, compound);
 			}
+			getParent().saveCompound();
 			return new NBTListCompound(this, compound);
 		} catch (Exception ex) {
 			throw new NbtApiException(ex);
@@ -55,6 +56,7 @@ public class NBTCompoundList extends NBTList<NBTListCompound> {
 			} else {
 				ReflectionMethod.LEGACY_LIST_ADD.run(listObject, compound);
 			}
+			super.getParent().saveCompound();
 			return true;
 		} catch (Exception ex) {
 			throw new NbtApiException(ex);
@@ -73,6 +75,7 @@ public class NBTCompoundList extends NBTList<NBTListCompound> {
 			} else {
 				ReflectionMethod.LEGACY_LIST_ADD.run(listObject, compound);
 			}
+			super.getParent().saveCompound();
 		} catch (Exception ex) {
 			throw new NbtApiException(ex);
 		}
