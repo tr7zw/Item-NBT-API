@@ -40,7 +40,7 @@ public abstract class NBTList<T> implements List<T> {
 	}
 	
 	/**
-	 * @returnThe Compound's parent Object
+	 * @return The Compound's parent Object
 	 */
 	public NBTCompound getParent() {
 		return parent;

@@ -3,13 +3,10 @@ package de.tr7zw.changeme.nbtapi.utils.nmsmappings;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
-import java.util.logging.Level;
-
 import org.bukkit.inventory.ItemStack;
 
 import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
-import static de.tr7zw.changeme.nbtapi.utils.MinecraftVersion.logger;
 
 /**
  * This class caches method reflections, keeps track of method name changes between versions and allows early checking for problems
