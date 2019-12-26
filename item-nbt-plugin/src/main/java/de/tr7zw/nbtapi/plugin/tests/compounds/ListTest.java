@@ -64,7 +64,6 @@ public class ListTest implements Test {
 		} else {
 			throw new NbtApiException("Taglist is empty! The Item-NBT-API may not work!");
 		}
-		System.out.println(comp);
 
 		// Integer
 		NBTList<Integer> intlist = comp.getIntegerList("inttest");
