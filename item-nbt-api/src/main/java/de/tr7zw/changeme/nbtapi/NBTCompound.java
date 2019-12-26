@@ -406,19 +406,22 @@ public class NBTCompound {
 
 	@Override
 	public String toString() {
-		StringBuilder result = new StringBuilder();
+		/*StringBuilder result = new StringBuilder();
 		for (String key : getKeys()) {
 			result.append(toString(key));
 		}
-		return result.toString();
+		return result.toString();*/
+		return asNBTString();
 	}
 
 	/**
+	 * @deprecated Just use toString()
 	 * @param key
 	 * @return A string representation of the given key
 	 */
+	@Deprecated
 	public String toString(String key) {
-		StringBuilder result = new StringBuilder();
+		/*StringBuilder result = new StringBuilder();
 		NBTCompound compound = this;
 		while (compound.getParent() != null) {
 			result.append("   ");
@@ -428,12 +431,15 @@ public class NBTCompound {
 			return this.getCompound(key).toString();
 		} else {
 			return result + "-" + key + ": " + getContent(key) + System.lineSeparator();
-		}
+		}*/
+		return asNBTString();
 	}
 
 	/**
+	 * @deprecated Just use toString()
 	 * @return A json valid nbt string for this Compound
 	 */
+	@Deprecated
 	public String asNBTString() {
 		Object comp = NBTReflectionUtil.gettoCompount(getCompound(), this);
 		if (comp == null)

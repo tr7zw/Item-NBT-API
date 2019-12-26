@@ -24,6 +24,17 @@ public class NBTCompoundList extends NBTList<NBTListCompound> {
 	 * @return The added {@link NBTListCompound}
 	 */
 	public NBTListCompound addCompound() {
+		return (NBTListCompound) addCompound(null);
+	}
+	
+	/**
+	 * Adds a copy of the Compound to the end of the List and returns it.
+	 * When null is given, a new Compound will be created
+	 * 
+	 * @param comp
+	 * @return
+	 */
+	public NBTCompound addCompound(NBTCompound comp) {
 		try {
 			Object compound = ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance();
 			if (MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_14_R1.getVersionId()) {
@@ -32,7 +43,11 @@ public class NBTCompoundList extends NBTList<NBTListCompound> {
 				ReflectionMethod.LEGACY_LIST_ADD.run(listObject, compound);
 			}
 			getParent().saveCompound();
-			return new NBTListCompound(this, compound);
+			NBTListCompound listcomp = new NBTListCompound(this, compound);
+			if(comp != null){
+				listcomp.mergeCompound(comp);
+			}
+			return listcomp;
 		} catch (Exception ex) {
 			throw new NbtApiException(ex);
 		}
@@ -41,26 +56,15 @@ public class NBTCompoundList extends NBTList<NBTListCompound> {
 	/**
 	 * Adds a new Compound to the end of the List.
 	 * 
-	 * @param empty This has to be null!
+	 * 
+	 * @deprecated Please use addCompound!
+	 * @param empty
 	 * @return True, if compound was added
 	 */
 	@Override
+	@Deprecated
 	public boolean add(NBTListCompound empty) {
-		if (empty != null) {
-			throw new NotImplementedException("You need to pass null! ListCompounds from other lists won't work.");
-		}
-		try {
-			Object compound = ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance();
-			if (MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_14_R1.getVersionId()) {
-				ReflectionMethod.LIST_ADD.run(listObject, 0, compound);
-			} else {
-				ReflectionMethod.LEGACY_LIST_ADD.run(listObject, compound);
-			}
-			super.getParent().saveCompound();
-			return true;
-		} catch (Exception ex) {
-			throw new NbtApiException(ex);
-		}
+		return addCompound(empty) != null;
 	}
 
 	@Override

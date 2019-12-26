@@ -40,6 +40,7 @@ public class ListTest implements Test {
 		NBTCompound subsubcomp = lcomp.addCompound("listsubkey");
 		subsubcomp.setString("deep", "String");
 		subsubcomp.getCompoundList("deeplist").addCompound().setString("test", "test");
+		subsubcomp.getCompoundList("clonelist").addCompound(comp);
 
 		taglist = null;
 		lcomp = null;
@@ -63,6 +64,7 @@ public class ListTest implements Test {
 		} else {
 			throw new NbtApiException("Taglist is empty! The Item-NBT-API may not work!");
 		}
+		System.out.println(comp);
 
 		// Integer
 		NBTList<Integer> intlist = comp.getIntegerList("inttest");
