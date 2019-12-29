@@ -13,6 +13,7 @@ import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 import de.tr7zw.nbtapi.plugin.tests.NBTFileTest;
+import de.tr7zw.nbtapi.plugin.tests.compounds.ForEachTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.GetterSetterTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.ListTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.MergeTest;
@@ -57,6 +58,7 @@ public class NBTAPI extends JavaPlugin {
 		apiTests.add(new ListTest());
 		apiTests.add(new SubCompoundsTest());
 		apiTests.add(new MergeTest());
+		apiTests.add(new ForEachTest());
 
 		// Items
 		apiTests.add(new ItemConvertionTest());

@@ -222,7 +222,7 @@ public abstract class NBTList<T> implements List<T> {
 	public Iterator<T> iterator() {
 		return new Iterator<T>() {
 
-			private int index = 0;
+			private int index = -1;
 
 			@Override
 			public boolean hasNext() {
@@ -248,7 +248,7 @@ public abstract class NBTList<T> implements List<T> {
 		final NBTList<T> list = this;
 		return new ListIterator<T>() {
 
-			int index = startIndex;
+			int index = startIndex - 1; //Against the off by one problem
 
 			@Override
 			public void add(T e) {
