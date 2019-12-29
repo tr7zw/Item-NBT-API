@@ -248,7 +248,8 @@ public abstract class NBTList<T> implements List<T> {
 		final NBTList<T> list = this;
 		return new ListIterator<T>() {
 
-			int index = startIndex - 1; //Against the off by one problem
+			int index = startIndex;
+			boolean hasIterated = false;
 
 			@Override
 			public void add(T e) {
@@ -257,12 +258,15 @@ public abstract class NBTList<T> implements List<T> {
 
 			@Override
 			public boolean hasNext() {
+				if(!hasIterated){
+					return size() > index;
+				}
 				return size() > index + 1;
 			}
 
 			@Override
 			public boolean hasPrevious() {
-				return index > 0;
+				return index > 0 && index <= size();
 			}
 
 			@Override

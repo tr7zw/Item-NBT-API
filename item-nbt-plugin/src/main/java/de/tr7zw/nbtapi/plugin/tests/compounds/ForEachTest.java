@@ -37,6 +37,13 @@ public class ForEachTest implements Test {
             }
             if(count != compList.size())
             	throw new NbtApiException("ListIterator did not get all Entries!");
+            count = 0;
+            while(lit.hasPrevious()){
+            	lit.previous();
+            	count++;
+            }
+            if(count != compList.size())
+            	throw new NbtApiException("ListIterator previous did not get all Entries!");
         }
 	}
 
