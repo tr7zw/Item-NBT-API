@@ -6,7 +6,9 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.plugin.Plugin;
 
+import de.tr7zw.changeme.nbtapi.NBTFile;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
 
 public class NBTData {
@@ -40,6 +42,25 @@ public class NBTData {
 			}
 		}
 		return null;
+	}
+	
+	public static NBTFile getPlayerData(Plugin plugin, UUID uuid){
+		try{
+			File dataFolder = new File(plugin.getDataFolder(), "nbt-playerdata");
+			dataFolder.mkdirs();
+			return new NBTFile(new File(dataFolder, uuid.toString() + ".dat"));
+		}catch(IOException e){
+			throw new NbtApiException("Error getting Player Plugin data!", e);
+		}
+	}
+	
+	public static NBTFile getPluginData(Plugin plugin){
+		try{
+			plugin.getDataFolder().mkdirs();
+			return new NBTFile(new File(plugin.getDataFolder(), "settings.dat"));
+		}catch(IOException e){
+			throw new NbtApiException("Error getting Plugin data!", e);
+		}
 	}
 
 }
