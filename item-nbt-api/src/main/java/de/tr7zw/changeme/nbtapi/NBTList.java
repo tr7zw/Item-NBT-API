@@ -334,4 +334,10 @@ public abstract class NBTList<T> implements List<T> {
 		return list;
 	}
 
+	@Override
+	public String toString() {
+		return listObject.toString();
+	}
+
+
 }
