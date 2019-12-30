@@ -130,12 +130,24 @@ public class ApiMetricsLite {
 					break;
 				} catch (NoSuchFieldException ignored) { }
 			}
+			boolean fFound = found;
 			// Register our service
-			Bukkit.getServicesManager().register(ApiMetricsLite.class, this, plugin, ServicePriority.Normal);
-			if (!found) {
-				logger.info("[NBTAPI] Using the plugin '" + plugin.getName() + "' to create a bStats instance!");
-				// We are the first!
-				startSubmitting();
+			if(Bukkit.isPrimaryThread()){
+				Bukkit.getServicesManager().register(ApiMetricsLite.class, this, plugin, ServicePriority.Normal);
+				if (!fFound) {
+					logger.info("[NBTAPI] Using the plugin '" + plugin.getName() + "' to create a bStats instance!");
+					// We are the first!
+					startSubmitting();
+				}
+			}else{
+				Bukkit.getScheduler().runTask(plugin, () -> {
+					Bukkit.getServicesManager().register(ApiMetricsLite.class, this, plugin, ServicePriority.Normal);
+					if (!fFound) {
+						logger.info("[NBTAPI] Using the plugin '" + plugin.getName() + "' to create a bStats instance!");
+						// We are the first!
+						startSubmitting();
+					}
+				});
 			}
 		}
 	}
