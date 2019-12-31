@@ -99,10 +99,11 @@ public class NBTReflectionUtil {
 	 */
 	public static Object convertNBTCompoundtoNMSItem(NBTCompound nbtcompound) {
 		try {
+			Object nmsComp = gettoCompount(nbtcompound.getCompound(), nbtcompound);
 			if (MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_11_R1.getVersionId()) {
-				return ObjectCreator.NMS_COMPOUNDFROMITEM.getInstance(nbtcompound.getCompound());
+				return ObjectCreator.NMS_COMPOUNDFROMITEM.getInstance(nmsComp);
 			} else {
-				return ReflectionMethod.NMSITEM_CREATESTACK.run(null, nbtcompound.getCompound());
+				return ReflectionMethod.NMSITEM_CREATESTACK.run(null, nmsComp);
 			}
 		} catch (Exception e) {
 			throw new NbtApiException("Exception while converting NBTCompound to NMS ItemStack!", e);

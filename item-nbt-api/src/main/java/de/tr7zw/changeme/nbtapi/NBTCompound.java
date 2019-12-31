@@ -3,6 +3,8 @@ package de.tr7zw.changeme.nbtapi;
 import java.io.Serializable;
 import java.util.Set;
 
+import org.bukkit.inventory.ItemStack;
+
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 
@@ -303,6 +305,28 @@ public class NBTCompound {
 	 */
 	public <T> T getObject(String key, Class<T> type) {
 		return NBTReflectionUtil.getObject(this, key, type);
+	}
+	
+	/**
+	 * Save an ItemStack as a compound under a given key
+	 * 
+	 * @param key
+	 * @param item
+	 */
+	public void setItemStack(String key, ItemStack item){
+		removeKey(key);
+		addCompound(key).mergeCompound(NBTItem.convertItemtoNBT(item));
+	}
+	
+	/**
+	 * Get an ItemStack that was saved at the given key
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public ItemStack getItemStack(String key){
+		NBTCompound comp = getCompound(key);
+		return NBTItem.convertNBTtoItem(comp);
 	}
 
 	/**
