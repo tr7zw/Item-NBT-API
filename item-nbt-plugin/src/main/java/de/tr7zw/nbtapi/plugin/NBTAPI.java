@@ -21,7 +21,8 @@ import de.tr7zw.nbtapi.plugin.tests.compounds.RemovingKeys;
 import de.tr7zw.nbtapi.plugin.tests.compounds.SubCompoundsTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.TypeTest;
 import de.tr7zw.nbtapi.plugin.tests.data.WorldDataTest;
-import de.tr7zw.nbtapi.plugin.tests.entities.EntityCustomNbtTest;
+import de.tr7zw.nbtapi.plugin.tests.entities.EntityCustomNbtInjectorTest;
+import de.tr7zw.nbtapi.plugin.tests.entities.EntityCustomNbtPersistentTest;
 import de.tr7zw.nbtapi.plugin.tests.entities.EntityTest;
 import de.tr7zw.nbtapi.plugin.tests.items.EmptyItemTest;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemConvertionTest;
@@ -67,7 +68,8 @@ public class NBTAPI extends JavaPlugin {
 
 		// Entity
 		apiTests.add(new EntityTest());
-		apiTests.add(new EntityCustomNbtTest());
+		apiTests.add(new EntityCustomNbtInjectorTest());
+		apiTests.add(new EntityCustomNbtPersistentTest());
 
 		// Tiles
 		apiTests.add(new TilesCustomNBTInjectorTest());
