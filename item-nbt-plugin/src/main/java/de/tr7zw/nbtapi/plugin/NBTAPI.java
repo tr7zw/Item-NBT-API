@@ -25,8 +25,8 @@ import de.tr7zw.nbtapi.plugin.tests.entities.EntityCustomNbtTest;
 import de.tr7zw.nbtapi.plugin.tests.entities.EntityTest;
 import de.tr7zw.nbtapi.plugin.tests.items.EmptyItemTest;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemConvertionTest;
-import de.tr7zw.nbtapi.plugin.tests.tiles.TilesCustomNBTTest;
-import de.tr7zw.nbtinjector.NBTInjector;
+import de.tr7zw.nbtapi.plugin.tests.tiles.TilesCustomNBTInjectorTest;
+import de.tr7zw.nbtapi.plugin.tests.tiles.TilesCustomNBTPersistentTest;
 
 public class NBTAPI extends JavaPlugin {
 
@@ -70,7 +70,8 @@ public class NBTAPI extends JavaPlugin {
 		apiTests.add(new EntityCustomNbtTest());
 
 		// Tiles
-		apiTests.add(new TilesCustomNBTTest());
+		apiTests.add(new TilesCustomNBTInjectorTest());
+		apiTests.add(new TilesCustomNBTPersistentTest());
 
 		// Files
 		apiTests.add(new NBTFileTest());
