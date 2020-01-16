@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
+import de.tr7zw.nbtapi.plugin.tests.GameprofileTest;
 import de.tr7zw.nbtapi.plugin.tests.NBTFileTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.ForEachTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.GetterSetterTest;
@@ -80,6 +81,8 @@ public class NBTAPI extends JavaPlugin {
 		
 		// Data
 		apiTests.add(new WorldDataTest());
+		
+		apiTests.add(new GameprofileTest());
 
 	}
 

@@ -27,6 +27,12 @@
       <version>0.0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>com.mojang</groupId>
+      <artifactId>authlib</artifactId>
+      <version>1.5.25</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
   <repositories>
     <!-- CodeMC -->
@@ -39,6 +45,12 @@
     <repository>
       <id>codemc-nms-repo</id>
       <url>https://repo.codemc.org/repository/nms/</url>
+      <layout>default</layout>
+    </repository>
+    <!-- Mojang -->
+    <repository>
+      <id>mojang-libraries</id>
+      <url>https://libraries.minecraft.net/</url>
       <layout>default</layout>
     </repository>
   </repositories>

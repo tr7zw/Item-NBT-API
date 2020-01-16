@@ -36,7 +36,7 @@ NMS_REGISTRYSIMPLE(PackageWrapper.NMS, "RegistrySimple", MinecraftVersion.MC1_11
 NMS_REGISTRYMATERIALS(PackageWrapper.NMS, "RegistryMaterials"),
 NMS_IREGISTRY(PackageWrapper.NMS, "IRegistry"),
 NMS_MINECRAFTKEY(PackageWrapper.NMS, "MinecraftKey"),
-
+NMS_GAMEPROFILESERIALIZER(PackageWrapper.NMS, "GameProfileSerializer")
 ;
 	
     private Class<?> clazz;
