@@ -29,7 +29,7 @@ public class NBTData {
 		}
 	}
 
-	public static PlayerData getPlayerData(UUID uuid) {
+	public static PlayerData getOfflinePlayerData(UUID uuid) {
 		for (World world : Bukkit.getWorlds()) {
 			File dataFolder = new File(world.getWorldFolder(), "playerdata");
 			File playerFile = new File(dataFolder, uuid.toString() + ".dat");
@@ -43,22 +43,22 @@ public class NBTData {
 		}
 		return null;
 	}
-	
-	public static NBTFile getPlayerData(Plugin plugin, UUID uuid){
-		try{
+
+	public static NBTFile getPluginPlayerData(Plugin plugin, UUID uuid) {
+		try {
 			File dataFolder = new File(plugin.getDataFolder(), "nbt-playerdata");
 			dataFolder.mkdirs();
 			return new NBTFile(new File(dataFolder, uuid.toString() + ".dat"));
-		}catch(IOException e){
+		} catch (IOException e) {
 			throw new NbtApiException("Error getting Player Plugin data!", e);
 		}
 	}
-	
-	public static NBTFile getPluginData(Plugin plugin){
-		try{
+
+	public static NBTFile getPluginData(Plugin plugin) {
+		try {
 			plugin.getDataFolder().mkdirs();
 			return new NBTFile(new File(plugin.getDataFolder(), "settings.dat"));
-		}catch(IOException e){
+		} catch (IOException e) {
 			throw new NbtApiException("Error getting Plugin data!", e);
 		}
 	}

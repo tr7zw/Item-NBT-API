@@ -8,17 +8,16 @@ import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTGameProfile;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
 
-public class GameprofileTest implements Test{
+public class GameprofileTest implements Test {
 
 	@Override
 	public void test() throws Exception {
 		UUID uuid = UUID.randomUUID();
 		GameProfile profile = new GameProfile(uuid, "random");
 		NBTCompound nbt = NBTGameProfile.toNBT(profile);
-		System.out.println(nbt);
 		profile = null;
 		profile = NBTGameProfile.fromNBT(nbt);
-		if(profile == null || !profile.getId().equals(uuid)) {
+		if (profile == null || !profile.getId().equals(uuid)) {
 			throw new NbtApiException("Error when converting a GameProfile from/to NBT!");
 		}
 	}
