@@ -1,0 +1,145 @@
+{
+  "projectName": "Item-NBT-API",
+  "projectOwner": "tr7zw",
+  "imageSize": 100,
+  "contributorsPerLine": 7,
+  "repoHost": "https://github.com",
+  "types": {
+    "discord": {
+      "symbol": "🤝",
+      "description": "Discord help"
+    }
+  },
+  "contributors": [
+    {
+      "login": "sgdc3",
+      "name": "Gabriele C.",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/8779252?s=460&v=4",
+      "profile": "https://github.com/sgdc3",
+      "contributions": [
+        "code",
+        "infra"
+      ],
+      "links": {
+        "infra": "https://codemc.io/"
+      }
+    },
+    {
+      "login": "SoSeDiK",
+      "name": "SoSeDiK",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/19875118?s=460&v=4",
+      "profile": "https://github.com/SoSeDiK",
+      "contributions": [
+        "code",
+        "userTesting"
+      ],
+      "links": {
+        "userTesting": "https://github.com/SoSeDiK?tab=repositories"
+      }
+    },
+    {
+      "login": "e3ndr",
+      "name": "Ender",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/33337309?s=460&v=4",
+      "profile": "https://github.com/e3ndr",
+      "contributions": [
+        "doc",
+        "discord"
+      ],
+      "links": {
+        "doc": "https://github.com/tr7zw/Item-NBT-API/wiki"
+      }
+    },
+    {
+      "login": "inventivetalentdev",
+      "name": "Haylee Schäfer",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/6525296?s=460&v=4",
+      "profile": "https://github.com/inventivetalentdev",
+      "contributions": [
+        "code",
+        "ideas"
+      ],
+      "links": {
+        "code": "https://github.com/tr7zw/Item-NBT-API/tree/master/nbt-injector",
+        "ideas": "https://github.com/InventivetalentDev/NBTInjector"
+      }
+    },
+    {
+      "login": "SpiGet",
+      "name": "SpiGet",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/15632072?s=200&v=4",
+      "profile": "https://spiget.org/",
+      "contributions": [
+        "plugin"
+      ],
+      "links": {
+        "plugin": "https://github.com/tr7zw/Item-NBT-API/blob/master/item-nbt-api/src/main/java/de/tr7zw/changeme/nbtapi/utils/VersionChecker.java"
+      }
+    },
+    {
+      "login": "bStats",
+      "name": "bStats",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/5033001?s=460&v=4",
+      "profile": "https://github.com/Bastian/bStats",
+      "contributions": [
+        "plugin"
+      ],
+      "links": {
+        "plugin": "https://bstats.org/plugin/bukkit/ItemNBTAPI/1058"
+      }
+    },
+    {
+      "login": "MrAxeTv",
+      "name": "MrAxeTv",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/17033332?s=460&v=4",
+      "profile": "https://github.com/MrAxeTv",
+      "contributions": [
+        "financial",
+        "userTesting",
+        "discord"
+      ],
+      "links": {
+        "financial": "https://tr7zw.dev/donate/",
+        "userTesting": "https://www.spigotmc.org/resources/beastwithdraw-multy-withdraw-plugin.13896/"
+      }
+    },
+    {
+      "login": "MrDienns",
+      "name": "Dennis van der Veeke",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/15938901?s=460&v=4",
+      "profile": "https://github.com/MrDienns",
+      "contributions": [
+        "financial"
+      ],
+      "links": {
+        "financial": "https://tr7zw.dev/donate/"
+      }
+    },
+    {
+      "login": "LoneDev",
+      "name": "LoneDev",
+      "avatar_url": "https://www.spigotmc.org/data/avatars/l/88/88296.jpg?1563463602",
+      "profile": "https://www.spigotmc.org/members/lonedev.88296",
+      "contributions": [
+        "ideas",
+        "financial"
+      ],
+      "links": {
+        "ideas": "https://www.spigotmc.org/threads/nbt-api.70503/page-7#post-3652832",
+        "financial": "https://tr7zw.dev/donate/"
+      }
+    },
+    {
+      "login": "GC.",
+      "name": "GC.",
+      "avatar_url": "https://www.spigotmc.org/data/avatars/l/25/25090.jpg?1502396477",
+      "profile": "https://www.spigotmc.org/members/gc.25090",
+      "contributions": [
+        "financial"
+      ],
+      "links": {
+        "financial": "https://tr7zw.dev/donate/"
+      }
+    }
+  ]
+}

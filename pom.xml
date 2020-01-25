@@ -54,6 +54,14 @@
       <layout>default</layout>
     </repository>
   </repositories>
+  <pluginRepositories>
+    <!-- CodeMC -->
+    <pluginRepository>
+      <id>codemc-repo</id>
+      <url>https://repo.codemc.org/repository/maven-public/</url>
+      <layout>default</layout>
+    </pluginRepository>
+  </pluginRepositories>
   <build>
     <defaultGoal>clean install</defaultGoal>
     <resources>
@@ -113,6 +121,19 @@
             <id>sortpom</id>
             <goals>
               <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>de.tr7zw</groupId>
+        <artifactId>allcontributors</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <id>update-contributors</id>
+            <goals>
+              <goal>update</goal>
             </goals>
           </execution>
         </executions>
