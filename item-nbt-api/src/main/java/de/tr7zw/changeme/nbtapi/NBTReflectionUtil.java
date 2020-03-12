@@ -1,7 +1,7 @@
 package de.tr7zw.changeme.nbtapi;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -47,12 +47,12 @@ public class NBTReflectionUtil {
 	}
 
 	/**
-	 * Reads in a FileInputStream as NMS Compound
+	 * Reads in a InputStream as NMS Compound
 	 * 
 	 * @param stream InputStream of any NBT file
 	 * @return NMS Compound
 	 */
-	public static Object readNBTFile(FileInputStream stream) {
+	public static Object readNBT(InputStream stream) {
 		try {
 			return ReflectionMethod.NBTFILE_READ.run(null, stream);
 		} catch (Exception e) {
@@ -61,17 +61,38 @@ public class NBTReflectionUtil {
 	}
 
 	/**
-	 * Writes a NMS Compound to a FileOutputStream
+	 * Writes a NMS Compound to an OutputStream
 	 * 
 	 * @param nbt    NMS Compound
 	 * @param stream Stream to write to
 	 * @return ???
 	 */
-	public static Object saveNBTFile(Object nbt, FileOutputStream stream) {
+	public static Object writeNBT(Object nbt, OutputStream stream) {
 		try {
 			return ReflectionMethod.NBTFILE_WRITE.run(null, nbt, stream);
 		} catch (Exception e) {
-			throw new NbtApiException("Exception while saving a NBT File!", e);
+			throw new NbtApiException("Exception while writing NBT!", e);
+		}
+	}
+	
+	/**
+	 * Writes a Compound to an OutputStream
+	 * 
+	 * @param comp Compound
+	 * @param stream Stream to write to
+	 */
+	public static void writeApiNBT(NBTCompound comp, OutputStream stream) {
+		try {
+			Object nbttag = comp.getCompound();
+			if (nbttag == null) {
+				nbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
+			}
+			if (!valideCompound(comp))
+				return;
+			Object workingtag = gettoCompount(nbttag, comp);
+			ReflectionMethod.NBTFILE_WRITE.run(null, workingtag, stream);
+		} catch (Exception e) {
+			throw new NbtApiException("Exception while writing NBT!", e);
 		}
 	}
 
@@ -278,7 +299,7 @@ public class NBTReflectionUtil {
 	/**
 	 * Merges the second {@link NBTCompound} into the first one
 	 * 
-	 * @param comp        Target for the merge
+	 * @param comp           Target for the merge
 	 * @param nbtcompoundSrc Data to merge
 	 */
 	public static void mergeOtherNBTCompound(NBTCompound comp, NBTCompound nbtcompoundSrc) {

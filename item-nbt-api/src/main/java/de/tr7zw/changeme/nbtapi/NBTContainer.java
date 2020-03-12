@@ -1,5 +1,7 @@
 package de.tr7zw.changeme.nbtapi;
 
+import java.io.InputStream;
+
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ObjectCreator;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 
@@ -30,6 +32,16 @@ public class NBTContainer extends NBTCompound {
 	public NBTContainer(Object nbt) {
 		super(null, null);
 		this.nbt = nbt;
+	}
+	
+	/**
+	 * Reads in a NBT InputStream
+	 * 
+	 * @param inputsteam
+	 */
+	public NBTContainer(InputStream inputsteam) {
+		super(null, null);
+		this.nbt = NBTReflectionUtil.readNBT(inputsteam);
 	}
 
 	/**

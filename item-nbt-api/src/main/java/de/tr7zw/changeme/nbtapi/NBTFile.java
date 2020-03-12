@@ -30,7 +30,7 @@ public class NBTFile extends NBTCompound {
 		this.file = file;
 		if (file.exists()) {
 			FileInputStream inputsteam = new FileInputStream(file);
-			nbt = NBTReflectionUtil.readNBTFile(inputsteam);
+			nbt = NBTReflectionUtil.readNBT(inputsteam);
 		} else {
 			nbt = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
 			save();
@@ -49,7 +49,7 @@ public class NBTFile extends NBTCompound {
 				throw new IOException("Unable to create file at " + file.getAbsolutePath());
 		}
 		FileOutputStream outStream = new FileOutputStream(file);
-		NBTReflectionUtil.saveNBTFile(nbt, outStream);
+		NBTReflectionUtil.writeNBT(nbt, outStream);
 	}
 
 	/**

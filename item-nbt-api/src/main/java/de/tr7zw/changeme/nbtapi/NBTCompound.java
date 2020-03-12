@@ -1,5 +1,6 @@
 package de.tr7zw.changeme.nbtapi;
 
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -426,6 +427,10 @@ public class NBTCompound {
 		if (o == null)
 			return null;
 		return NBTType.valueOf((byte) o);
+	}
+	
+	public void writeCompound(OutputStream stream) {
+		NBTReflectionUtil.writeApiNBT(this, stream);
 	}
 
 	@Override

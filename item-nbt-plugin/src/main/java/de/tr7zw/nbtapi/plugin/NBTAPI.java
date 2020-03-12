@@ -19,6 +19,7 @@ import de.tr7zw.nbtapi.plugin.tests.compounds.GetterSetterTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.ListTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.MergeTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.RemovingKeys;
+import de.tr7zw.nbtapi.plugin.tests.compounds.StreamTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.SubCompoundsTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.TypeTest;
 import de.tr7zw.nbtapi.plugin.tests.data.WorldDataTest;
@@ -65,6 +66,7 @@ public class NBTAPI extends JavaPlugin {
 		apiTests.add(new SubCompoundsTest());
 		apiTests.add(new MergeTest());
 		apiTests.add(new ForEachTest());
+		apiTests.add(new StreamTest());
 
 		// Items
 		apiTests.add(new ItemConvertionTest());
