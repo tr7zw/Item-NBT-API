@@ -99,6 +99,7 @@ public enum ReflectionMethod {
     REGISTRY_GET_INVERSE (ClassWrapper.NMS_REGISTRYMATERIALS.getClazz(), new Class[]{Object.class}, MinecraftVersion.MC1_11_R1, MinecraftVersion.MC1_13_R1, new Since(MinecraftVersion.MC1_11_R1, "b")), //FIXME: No Spigot mapping!
     REGISTRYMATERIALS_KEYSET (ClassWrapper.NMS_REGISTRYMATERIALS.getClazz(), new Class[]{}, MinecraftVersion.MC1_13_R1, new Since(MinecraftVersion.MC1_13_R1, "keySet")),
     REGISTRYMATERIALS_GET (ClassWrapper.NMS_REGISTRYMATERIALS.getClazz(), new Class[]{ClassWrapper.NMS_MINECRAFTKEY.getClazz()}, MinecraftVersion.MC1_13_R1, new Since(MinecraftVersion.MC1_13_R1, "get")),
+    REGISTRYMATERIALS_GETKEY (ClassWrapper.NMS_REGISTRYMATERIALS.getClazz(), new Class[]{Object.class}, MinecraftVersion.MC1_13_R2, new Since(MinecraftVersion.MC1_13_R2, "getKey")),
 
     GAMEPROFILE_DESERIALIZE (ClassWrapper.NMS_GAMEPROFILESERIALIZER.getClazz(), new Class[]{ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz()}, MinecraftVersion.MC1_7_R4, new Since(MinecraftVersion.MC1_7_R4, "deserialize")),
     GAMEPROFILE_SERIALIZE (ClassWrapper.NMS_GAMEPROFILESERIALIZER.getClazz(), new Class[]{ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), GameProfile.class}, MinecraftVersion.MC1_7_R4, new Since(MinecraftVersion.MC1_7_R4, "serialize")),

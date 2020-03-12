@@ -22,13 +22,16 @@ import de.tr7zw.nbtapi.plugin.tests.compounds.RemovingKeys;
 import de.tr7zw.nbtapi.plugin.tests.compounds.SubCompoundsTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.TypeTest;
 import de.tr7zw.nbtapi.plugin.tests.data.WorldDataTest;
-import de.tr7zw.nbtapi.plugin.tests.entities.EntityCustomNbtInjectorTest;
 import de.tr7zw.nbtapi.plugin.tests.entities.EntityCustomNbtPersistentTest;
 import de.tr7zw.nbtapi.plugin.tests.entities.EntityTest;
+import de.tr7zw.nbtapi.plugin.tests.injector.EntityCustomNbtInjectorTest;
+import de.tr7zw.nbtapi.plugin.tests.injector.MergeTileSubCompoundTest;
+import de.tr7zw.nbtapi.plugin.tests.injector.SpawnEntityCustomNbtInjectorTest;
+import de.tr7zw.nbtapi.plugin.tests.injector.TilesCustomNBTInjectorTest;
 import de.tr7zw.nbtapi.plugin.tests.items.EmptyItemTest;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemConvertionTest;
-import de.tr7zw.nbtapi.plugin.tests.tiles.TilesCustomNBTInjectorTest;
 import de.tr7zw.nbtapi.plugin.tests.tiles.TilesCustomNBTPersistentTest;
+import de.tr7zw.nbtinjector.NBTInjector;
 
 public class NBTAPI extends JavaPlugin {
 
@@ -69,11 +72,9 @@ public class NBTAPI extends JavaPlugin {
 
 		// Entity
 		apiTests.add(new EntityTest());
-		apiTests.add(new EntityCustomNbtInjectorTest());
 		apiTests.add(new EntityCustomNbtPersistentTest());
 
 		// Tiles
-		apiTests.add(new TilesCustomNBTInjectorTest());
 		apiTests.add(new TilesCustomNBTPersistentTest());
 
 		// Files
@@ -81,6 +82,12 @@ public class NBTAPI extends JavaPlugin {
 		
 		// Data
 		apiTests.add(new WorldDataTest());
+		
+		// Injector
+		apiTests.add(new TilesCustomNBTInjectorTest());
+		apiTests.add(new MergeTileSubCompoundTest());
+		apiTests.add(new EntityCustomNbtInjectorTest());
+		apiTests.add(new SpawnEntityCustomNbtInjectorTest());
 		
 		apiTests.add(new GameprofileTest());
 

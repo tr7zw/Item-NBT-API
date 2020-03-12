@@ -19,7 +19,7 @@ public class ItemConvertionTest implements Test {
 		ItemMeta meta = item.getItemMeta();
 		meta.setLore(Lists.newArrayList("Firest Line", "Second Line"));
 		item.setItemMeta(meta);
-		String nbt = NBTItem.convertItemtoNBT(item).asNBTString();
+		String nbt = NBTItem.convertItemtoNBT(item).toString();
 		if (!nbt.contains("Firest Line") || !nbt.contains("Second Line"))
 			throw new NbtApiException("The Item nbt '" + nbt + "' didn't contain the lore");
 		ItemStack rebuild = NBTItem.convertNBTtoItem(new NBTContainer(nbt));

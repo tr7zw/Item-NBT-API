@@ -119,8 +119,10 @@ public class NBTInjector {
 				String id = "";
 				if (MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_10_R1.getVersionId()) {
 					id = Entity.getBackupMap().get(ent.getClass());
-				} else if (MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_13_R2.getVersionId()) {
+				} else if (MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_12_R1.getVersionId()) {
 					id = ReflectionMethod.REGISTRY_GET_INVERSE.run(Entity.getRegistry(), ent.getClass()).toString();
+				} else if (MinecraftVersion.getVersion().getVersionId() <= MinecraftVersion.MC1_13_R2.getVersionId()) {
+					id = InternalInjectors.classToMCKey.get(ent.getClass()).toString();
 				} else {
 					id = (String) ReflectionMethod.NMS_ENTITY_GETSAVEID.run(ent);
 				}
@@ -242,11 +244,11 @@ public class NBTInjector {
 				throw new NbtApiException(e);
 			}
 		}
-
+		
 		static Object getRegistry() throws ReflectiveOperationException {
 			return getAccessable(ClassWrapper.NMS_ENTITYTYPES.getClazz().getDeclaredField("b")).get(null);
 		}
-		
+
 		static Object getRegistryId(Object reg) throws ReflectiveOperationException {
 			return getAccessable(reg.getClass().getDeclaredField("a")).get(reg);
 		}

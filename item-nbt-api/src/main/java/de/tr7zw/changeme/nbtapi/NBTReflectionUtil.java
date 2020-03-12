@@ -279,9 +279,9 @@ public class NBTReflectionUtil {
 	 * Merges the second {@link NBTCompound} into the first one
 	 * 
 	 * @param comp        Target for the merge
-	 * @param nbtcompound Data to merge
+	 * @param nbtcompoundSrc Data to merge
 	 */
-	public static void mergeOtherNBTCompound(NBTCompound comp, NBTCompound nbtcompound) {
+	public static void mergeOtherNBTCompound(NBTCompound comp, NBTCompound nbtcompoundSrc) {
 		Object rootnbttag = comp.getCompound();
 		if (rootnbttag == null) {
 			rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
@@ -289,8 +289,15 @@ public class NBTReflectionUtil {
 		if (!valideCompound(comp))
 			throw new NbtApiException("The Compound wasn't able to be linked back to the root!");
 		Object workingtag = gettoCompount(rootnbttag, comp);
+		Object rootnbttagSrc = nbtcompoundSrc.getCompound();
+		if (rootnbttagSrc == null) {
+			rootnbttagSrc = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
+		}
+		if (!valideCompound(nbtcompoundSrc))
+			throw new NbtApiException("The Compound wasn't able to be linked back to the root!");
+		Object workingtagSrc = gettoCompount(rootnbttagSrc, nbtcompoundSrc);
 		try {
-			ReflectionMethod.COMPOUND_MERGE.run(workingtag, nbtcompound.getCompound());
+			ReflectionMethod.COMPOUND_MERGE.run(workingtag, workingtagSrc);
 			comp.setCompound(rootnbttag);
 		} catch (Exception e) {
 			throw new NbtApiException("Exception while merging two NBTCompounds!", e);

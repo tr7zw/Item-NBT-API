@@ -1,4 +1,4 @@
-package de.tr7zw.nbtapi.plugin.tests.entities;
+package de.tr7zw.nbtapi.plugin.tests.injector;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;

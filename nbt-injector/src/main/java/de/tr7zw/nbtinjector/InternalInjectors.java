@@ -37,6 +37,7 @@ public class InternalInjectors {
 	private static final List<String> skippingEntities = Arrays.asList("minecraft:player", "minecraft:fishing_bobber",
 			"minecraft:lightning_bolt"); // These are broken/won't work, used by 1.14+
 	private static final Map<String, String> classMappings = new HashMap<>();
+	protected static final Map<Class<?>, Object> classToMCKey = new HashMap<Class<?>, Object>();
 
 	static {
 		classMappings.put("minecraft:wandering_trader", "VillagerTrader");
@@ -113,6 +114,7 @@ public class InternalInjectors {
 				inverse.put(wrapped, mckey);
 				int id = (int) registryId.getClass().getMethod("getId", new Class[] {Object.class}).invoke(registryId, entclass);
 				registryId.getClass().getMethod("a", new Class[] {Object.class, int.class}).invoke(registryId, wrapped, id);
+				classToMCKey.put(entclass, mckey);
 			} catch (Exception e) {
 				throw new NbtApiException("Exception while injecting " + mckey, e);
 			}
@@ -150,6 +152,7 @@ public class InternalInjectors {
 						}
 					}
 				});
+				classToMCKey.put(nmsclass, mckey);
 			} catch (Exception e) {
 				throw new NbtApiException("Exception while injecting " + mckey, e);
 			}
@@ -199,6 +202,7 @@ public class InternalInjectors {
 						"Wasn't able to create an Entity instace, won't be able add NBT to '" + mckey + "' entities!");
 				continue;
 			}
+			classToMCKey.put(nmsclass, mckey);
 			try {
 				if (INBTWrapper.class.isAssignableFrom(nmsclass)) {
 					continue;
