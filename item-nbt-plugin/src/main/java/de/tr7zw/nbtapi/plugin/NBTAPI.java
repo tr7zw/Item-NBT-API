@@ -14,6 +14,7 @@ import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 import de.tr7zw.nbtapi.plugin.tests.GameprofileTest;
 import de.tr7zw.nbtapi.plugin.tests.NBTFileTest;
+import de.tr7zw.nbtapi.plugin.tests.compounds.EqualsTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.ForEachTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.GetterSetterTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.ListTest;
@@ -67,6 +68,7 @@ public class NBTAPI extends JavaPlugin {
 		apiTests.add(new MergeTest());
 		apiTests.add(new ForEachTest());
 		apiTests.add(new StreamTest());
+		apiTests.add(new EqualsTest());
 
 		// Items
 		apiTests.add(new ItemConvertionTest());
