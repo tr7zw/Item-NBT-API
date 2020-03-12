@@ -476,4 +476,22 @@ public class NBTCompound {
 		return comp.toString();
 	}
 
+	@Override
+	public int hashCode() {
+		return toString().hashCode();
+	}
+
+	/**
+	 * Uses the nbt-string to match this compound with another object.
+	 * This allows two "technically" different Compounds to match, if they have the same content
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		return toString().equals(obj.toString());
+	}
+
 }
