@@ -405,6 +405,36 @@ public class NBTCompound {
 		saveCompound();
 		return list;
 	}
+	
+	/**
+	 * @param name
+	 * @return The retrieved Float List
+	 */
+	public NBTList<Float> getFloatList(String name) {
+		NBTList<Float> list = NBTReflectionUtil.getList(this, name, NBTType.NBTTagFloat, Float.class);
+		saveCompound();
+		return list;
+	}
+	
+	/**
+	 * @param name
+	 * @return The retrieved Double List
+	 */
+	public NBTList<Double> getDoubleList(String name) {
+		NBTList<Double> list = NBTReflectionUtil.getList(this, name, NBTType.NBTTagDouble, Double.class);
+		saveCompound();
+		return list;
+	}
+	
+	/**
+	 * @param name
+	 * @return The retrieved Long List
+	 */
+	public NBTList<Long> getLongList(String name) {
+		NBTList<Long> list = NBTReflectionUtil.getList(this, name, NBTType.NBTTagLong, Long.class);
+		saveCompound();
+		return list;
+	}
 
 	/**
 	 * @param name

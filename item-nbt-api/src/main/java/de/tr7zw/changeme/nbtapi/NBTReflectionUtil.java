@@ -401,6 +401,12 @@ public class NBTReflectionUtil {
 				return (NBTList<T>) new NBTCompoundList(comp, key, type, nbt);
 			} else if (clazz == Integer.class) {
 				return (NBTList<T>) new NBTIntegerList(comp, key, type, nbt);
+			} else if (clazz == Float.class) {
+				return (NBTList<T>) new NBTFloatList(comp, key, type, nbt);
+			} else if (clazz == Double.class) {
+				return (NBTList<T>) new NBTDoubleList(comp, key, type, nbt);
+			} else if (clazz == Long.class) {
+				return (NBTList<T>) new NBTLongList(comp, key, type, nbt);
 			} else {
 				return null;
 			}

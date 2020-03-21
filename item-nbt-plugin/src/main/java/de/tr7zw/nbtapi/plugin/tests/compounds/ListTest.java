@@ -54,12 +54,15 @@ public class ListTest implements Test {
 			} else if (!(lcomp.getDouble("double1") == 0.3333 && lcomp.getInteger("int1") == 42
 					&& lcomp.getString("test2").equals("test2") && !lcomp.hasKey("test1"))) {
 				throw new NbtApiException("One key in the Taglist changed! The Item-NBT-API may not work!");
-			} else if(lcomp.getCompound("listsubkey") == null || !"String".equals(lcomp.getCompound("listsubkey").getString("deep"))){
-				throw new NbtApiException("The Compound nested in the listcompound was not correct! The Item-NBT-API may not work!");
-			} else if(lcomp.getCompound("listsubkey").getType("deep") != NBTType.NBTTagString){
+			} else if (lcomp.getCompound("listsubkey") == null
+					|| !"String".equals(lcomp.getCompound("listsubkey").getString("deep"))) {
+				throw new NbtApiException(
+						"The Compound nested in the listcompound was not correct! The Item-NBT-API may not work!");
+			} else if (lcomp.getCompound("listsubkey").getType("deep") != NBTType.NBTTagString) {
 				throw new NbtApiException("The nested key's type wasn't correct! The Item-NBT-API may not work!");
-			} else if(lcomp.getCompound("listsubkey").getType("deeplist") != NBTType.NBTTagList){
-				throw new NbtApiException("The nested list's type wasn't correct '" + lcomp.getCompound("listsubkey").getType("deeplist") + "'! The Item-NBT-API may not work!");
+			} else if (lcomp.getCompound("listsubkey").getType("deeplist") != NBTType.NBTTagList) {
+				throw new NbtApiException("The nested list's type wasn't correct '"
+						+ lcomp.getCompound("listsubkey").getType("deeplist") + "'! The Item-NBT-API may not work!");
 			}
 		} else {
 			throw new NbtApiException("Taglist is empty! The Item-NBT-API may not work!");
@@ -73,6 +76,36 @@ public class ListTest implements Test {
 			// ok
 		} else {
 			throw new NbtApiException("IntList is not correct! " + Arrays.toString(intlist.toArray(new Integer[0])));
+		}
+
+		// Double
+		NBTList<Double> doublelist = comp.getDoubleList("doubletest");
+		doublelist.add(42.23d);
+		doublelist.add(69.69d);
+		if (doublelist.size() == 2 && doublelist.get(0) == 42.23d && doublelist.get(1) == 69.69d) {
+			// ok
+		} else {
+			throw new NbtApiException("DoubleList is not correct! " + Arrays.toString(doublelist.toArray(new Double[0])));
+		}
+
+		// Float
+		NBTList<Float> floatlist = comp.getFloatList("floattest");
+		floatlist.add(42.23f);
+		floatlist.add(69.69f);
+		if (floatlist.size() == 2 && floatlist.get(0) == 42.23f && floatlist.get(1) == 69.69f) {
+			// ok
+		} else {
+			throw new NbtApiException("FloatList is not correct! " + Arrays.toString(floatlist.toArray(new Float[0])));
+		}
+
+		// Long
+		NBTList<Long> longlist = comp.getLongList("longtest");
+		longlist.add(1241234124124l);
+		longlist.add(1231454321312l);
+		if (longlist.size() == 2 && longlist.get(0) == 1241234124124l && longlist.get(1) == 1231454321312l) {
+			// ok
+		} else {
+			throw new NbtApiException("LongList is not correct! " + Arrays.toString(longlist.toArray(new Long[0])));
 		}
 
 	}
