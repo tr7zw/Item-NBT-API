@@ -27,6 +27,9 @@ public class NBTFile extends NBTCompound {
 	 */
 	public NBTFile(File file) throws IOException {
 		super(null, null);
+		if (file == null) {
+			throw new NullPointerException("File can't be null!");
+		}
 		this.file = file;
 		if (file.exists()) {
 			FileInputStream inputsteam = new FileInputStream(file);

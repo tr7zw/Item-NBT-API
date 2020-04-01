@@ -25,6 +25,9 @@ public class NBTTileEntity extends NBTCompound {
 	 */
 	public NBTTileEntity(BlockState tile) {
 		super(null, null);
+		if (tile == null || !tile.isPlaced()) {
+			throw new NullPointerException("Tile can't be null/not placed!");
+		}
 		this.tile = tile;
 	}
 
@@ -51,7 +54,8 @@ public class NBTTileEntity extends NBTCompound {
 			return getCompound("PublicBukkitValues");
 		} else {
 			NBTContainer container = new NBTContainer();
-			container.addCompound("PublicBukkitValues").setString("__nbtapi", "Marker to make the PersistentDataContainer have content");
+			container.addCompound("PublicBukkitValues").setString("__nbtapi",
+					"Marker to make the PersistentDataContainer have content");
 			mergeCompound(container);
 			return getCompound("PublicBukkitValues");
 		}

@@ -2,6 +2,7 @@ package de.tr7zw.changeme.nbtapi;
 
 import java.io.InputStream;
 
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ObjectCreator;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 
@@ -31,9 +32,15 @@ public class NBTContainer extends NBTCompound {
 	 */
 	public NBTContainer(Object nbt) {
 		super(null, null);
+		if (nbt == null) {
+			throw new NullPointerException("The NBT-Object can't be null!");
+		}
+		if (ClassWrapper.NMS_NBTBASE.getClazz().isAssignableFrom(nbt.getClass())) {
+			throw new NbtApiException("The object '" + nbt.getClass() + "' is not a valid NBT-Object!");
+		}
 		this.nbt = nbt;
 	}
-	
+
 	/**
 	 * Reads in a NBT InputStream
 	 * 
@@ -52,6 +59,9 @@ public class NBTContainer extends NBTCompound {
 	 */
 	public NBTContainer(String nbtString) {
 		super(null, null);
+		if (nbtString == null) {
+			throw new NullPointerException("The String can't be null!");
+		}
 		try {
 			nbt = ReflectionMethod.PARSE_NBT.run(null, nbtString);
 		} catch (Exception ex) {

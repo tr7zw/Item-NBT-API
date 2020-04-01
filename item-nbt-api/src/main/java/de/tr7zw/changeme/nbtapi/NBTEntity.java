@@ -24,6 +24,9 @@ public class NBTEntity extends NBTCompound {
 	 */
 	public NBTEntity(Entity entity) {
 		super(null, null);
+		if (entity == null || entity.isDead()) {
+			throw new NullPointerException("Entity can't be null/dead!");
+		}
 		ent = entity;
 	}
 
@@ -36,7 +39,7 @@ public class NBTEntity extends NBTCompound {
 	protected void setCompound(Object compound) {
 		NBTReflectionUtil.setEntityNBTTag(compound, NBTReflectionUtil.getNMSEntity(ent));
 	}
-	
+
 	/**
 	 * Gets the NBTCompound used by spigots PersistentDataAPI. This method is only
 	 * available for 1.14+!
@@ -50,11 +53,11 @@ public class NBTEntity extends NBTCompound {
 			return getCompound("BukkitValues");
 		} else {
 			NBTContainer container = new NBTContainer();
-			container.addCompound("BukkitValues").setString("__nbtapi", "Marker to make the PersistentDataContainer have content");
+			container.addCompound("BukkitValues").setString("__nbtapi",
+					"Marker to make the PersistentDataContainer have content");
 			mergeCompound(container);
 			return getCompound("BukkitValues");
 		}
 	}
 
-	
 }

@@ -1,5 +1,6 @@
 package de.tr7zw.changeme.nbtapi;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
@@ -22,8 +23,8 @@ public class NBTItem extends NBTCompound {
 	 */
 	public NBTItem(ItemStack item) {
 		super(null, null);
-		if (item == null) {
-			throw new NullPointerException("ItemStack can't be null!");
+		if (item == null || item.getType() == Material.AIR) {
+			throw new NullPointerException("ItemStack can't be null/Air!");
 		}
 		bukkitItem = item.clone();
 	}
