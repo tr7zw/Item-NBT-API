@@ -158,6 +158,18 @@
       "links": {
         "financial": "https://tr7zw.dev/donate/"
       }
+    },
+    {
+      "login": "Peaches_MLG",
+      "name": "Peaches_MLG",
+      "avatar_url": "https://www.spigotmc.org/data/avatars/l/194/194338.jpg?1561235996",
+      "profile": "https://www.spigotmc.org/members/peaches_mlg100.194338/",
+      "contributions": [
+        "financial"
+      ],
+      "links": {
+        "financial": "https://tr7zw.dev/donate/"
+      }
     }
   ]
 }
