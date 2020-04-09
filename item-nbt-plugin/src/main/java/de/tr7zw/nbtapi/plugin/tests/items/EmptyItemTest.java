@@ -15,6 +15,14 @@ public class EmptyItemTest implements Test {
 		NBTItem nbti = new NBTItem(item);
 		if (nbti.getBoolean("test") == null || nbti.getString("test") == null)
 			throw new NbtApiException("Getters return null instead of the default value");
+
+		try {
+			Material barrel = Material.valueOf("BARREL");
+			item = new ItemStack(barrel);
+			nbti = new NBTItem(item);
+		} catch (IllegalArgumentException ex) {
+			// old version
+		}
 	}
 
 }

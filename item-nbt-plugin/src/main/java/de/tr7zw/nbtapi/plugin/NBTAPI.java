@@ -141,7 +141,7 @@ public class NBTAPI extends JavaPlugin {
 			} catch (Exception ex) {
 				results.put(test, ex);
 				getLogger().log(Level.WARNING, "Error during '" + test.getClass().getSimpleName() + "' test!", ex);
-			} catch (Throwable th) { // NOSONAR
+			} catch (NoSuchFieldError th) { // NOSONAR
 				getLogger().log(Level.SEVERE, "Servere error during '" + test.getClass().getSimpleName() + "' test!");
 				getLogger().warning(
 						"WARNING! This version of Item-NBT-API seems to be broken with your Spigot version! Canceled the other tests!");

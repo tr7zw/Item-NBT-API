@@ -16,17 +16,8 @@ import org.bukkit.Bukkit;
 @SuppressWarnings("javadoc")
 public enum MinecraftVersion {
 	UNKNOWN(Integer.MAX_VALUE), // Use the newest known mappings
-	MC1_7_R4(174),
-	MC1_8_R3(183),
-	MC1_9_R1(191),
-	MC1_9_R2(192),
-	MC1_10_R1(1101),
-	MC1_11_R1(1111),
-	MC1_12_R1(1121),
-	MC1_13_R1(1131),
-	MC1_13_R2(1132),
-	MC1_14_R1(1141),
-	MC1_15_R1(1151);
+	MC1_7_R4(174), MC1_8_R3(183), MC1_9_R1(191), MC1_9_R2(192), MC1_10_R1(1101), MC1_11_R1(1111), MC1_12_R1(1121),
+	MC1_13_R1(1131), MC1_13_R2(1132), MC1_14_R1(1141), MC1_15_R1(1151);
 
 	private static MinecraftVersion version;
 	private static Boolean hasGsonSupport;
@@ -37,9 +28,9 @@ public enum MinecraftVersion {
 	 * Logger used by the api
 	 */
 	public static final Logger logger = Logger.getLogger("NBTAPI");
-	
+
 	// NBT-API Version
-	protected static final String VERSION = "2.4.0-SNAPSHOT";
+	protected static final String VERSION = "2.3.1";
 
 	private final int versionId;
 
@@ -87,12 +78,15 @@ public enum MinecraftVersion {
 		} catch (Exception ex) {
 			logger.log(Level.WARNING, "[NBTAPI] Error enabeling Metrics!", ex);
 		}
-		try {
-			if(!updateCheckDisabled)
-				VersionChecker.checkForUpdates();
-		} catch (Exception ex) {
-			logger.log(Level.WARNING, "[NBTAPI] Error while checking for updates!", ex);
-		}
+
+		if (!updateCheckDisabled)
+			new Thread(() -> {
+				try {
+					VersionChecker.checkForUpdates();
+				} catch (Exception ex) {
+					logger.log(Level.WARNING, "[NBTAPI] Error while checking for updates!", ex);
+				}
+			}).start();
 		// Maven's Relocate is clever and changes strings, too. So we have to use this
 		// little "trick" ... :D (from bStats)
 		final String defaultPackage = new String(new byte[] { 'd', 'e', '.', 't', 'r', '7', 'z', 'w', '.', 'c', 'h',
@@ -137,10 +131,10 @@ public enum MinecraftVersion {
 	public static void disableBStats() {
 		bStatsDisabled = true;
 	}
-	
+
 	/**
-	 * Disables the update check. Uses Spiget to get the current version and
-	 * prints a warning when outdated.
+	 * Disables the update check. Uses Spiget to get the current version and prints
+	 * a warning when outdated.
 	 */
 	public static void disableUpdateCheck() {
 		updateCheckDisabled = true;
