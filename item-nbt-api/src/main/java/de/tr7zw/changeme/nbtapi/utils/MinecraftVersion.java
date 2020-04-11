@@ -30,7 +30,7 @@ public enum MinecraftVersion {
 	public static final Logger logger = Logger.getLogger("NBTAPI");
 
 	// NBT-API Version
-	protected static final String VERSION = "2.3.1";
+	protected static final String VERSION = "2.3.2";
 
 	private final int versionId;
 

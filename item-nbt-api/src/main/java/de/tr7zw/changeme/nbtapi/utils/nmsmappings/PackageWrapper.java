@@ -8,8 +8,8 @@ package de.tr7zw.changeme.nbtapi.utils.nmsmappings;
  */
 @SuppressWarnings("javadoc")
 public enum PackageWrapper {
-	NMS("net.minecraft.server"),
-	CRAFTBUKKIT("org.bukkit.craftbukkit"),
+	NMS(new String(new byte[] {'n', 'e', 't', '.', 'm', 'i', 'n', 'e', 'c', 'r', 'a', 'f', 't', '.', 's', 'e', 'r', 'v', 'e', 'r'})),
+	CRAFTBUKKIT(new String(new byte[] {'o', 'r', 'g', '.', 'b', 'u', 'k', 'k', 'i', 't', '.', 'c', 'r', 'a', 'f', 't', 'b', 'u', 'k', 'k', 'i', 't'})),
 	;
 	
 	private final String uri;
