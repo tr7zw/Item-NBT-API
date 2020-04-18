@@ -235,6 +235,11 @@ public abstract class NBTList<T> implements List<T> {
 					throw new NoSuchElementException();
 				return get(++index);
 			}
+
+			@Override
+			public void remove() {
+				NBTList.this.remove(index);
+			}
 		};
 	}
 
