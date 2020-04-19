@@ -239,6 +239,7 @@ public abstract class NBTList<T> implements List<T> {
 			@Override
 			public void remove() {
 				NBTList.this.remove(index);
+				index--;
 			}
 		};
 	}
@@ -297,6 +298,7 @@ public abstract class NBTList<T> implements List<T> {
 			@Override
 			public void remove() {
 				list.remove(index);
+				index--;
 			}
 
 			@Override
