@@ -26,6 +26,8 @@ public class IteratorTest implements Test {
         NBTList<Integer> list = comp.getIntegerList("test");
         list.add(1);
         list.add(2);
+        list.add(3);
+        list.add(4);
         return list;
     }
 
@@ -35,6 +37,10 @@ public class IteratorTest implements Test {
         assertTrue(iterator.hasNext());
         assertTrue(iterator.next() == 2);
         iterator.remove();
+        assertTrue(iterator.hasNext());
+        assertTrue(iterator.next() == 3);
+        assertTrue(iterator.hasNext());
+        assertTrue(iterator.next() == 4);
         testNoMoreElements(iterator);
     }
 
