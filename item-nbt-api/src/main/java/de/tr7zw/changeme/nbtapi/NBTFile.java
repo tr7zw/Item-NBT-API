@@ -46,13 +46,18 @@ public class NBTFile extends NBTCompound {
 	 * @throws IOException
 	 */
 	public void save() throws IOException {
-		if (!file.exists()) {
-			file.getParentFile().mkdirs();
-			if (!file.createNewFile())
-				throw new IOException("Unable to create file at " + file.getAbsolutePath());
+		try {
+			getWriteLock().lock();
+			if (!file.exists()) {
+				file.getParentFile().mkdirs();
+				if (!file.createNewFile())
+					throw new IOException("Unable to create file at " + file.getAbsolutePath());
+			}
+			FileOutputStream outStream = new FileOutputStream(file);
+			NBTReflectionUtil.writeNBT(nbt, outStream);
+		} finally {
+			getWriteLock().unlock();
 		}
-		FileOutputStream outStream = new FileOutputStream(file);
-		NBTReflectionUtil.writeNBT(nbt, outStream);
 	}
 
 	/**
