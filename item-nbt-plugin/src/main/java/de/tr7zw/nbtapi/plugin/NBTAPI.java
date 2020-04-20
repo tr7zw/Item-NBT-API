@@ -17,6 +17,7 @@ import de.tr7zw.nbtapi.plugin.tests.NBTFileTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.EqualsTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.ForEachTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.GetterSetterTest;
+import de.tr7zw.nbtapi.plugin.tests.compounds.IteratorTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.ListTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.MergeTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.RemovingKeys;
@@ -69,6 +70,7 @@ public class NBTAPI extends JavaPlugin {
 		apiTests.add(new ForEachTest());
 		apiTests.add(new StreamTest());
 		apiTests.add(new EqualsTest());
+		apiTests.add(new IteratorTest());
 
 		// Items
 		apiTests.add(new ItemConvertionTest());
