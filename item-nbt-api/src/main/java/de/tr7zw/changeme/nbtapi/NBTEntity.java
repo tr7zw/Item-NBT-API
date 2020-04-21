@@ -24,8 +24,8 @@ public class NBTEntity extends NBTCompound {
 	 */
 	public NBTEntity(Entity entity) {
 		super(null, null);
-		if (entity == null || entity.isDead()) {
-			throw new NullPointerException("Entity can't be null/dead!");
+		if (entity == null) {
+			throw new NullPointerException("Entity can't be null!");
 		}
 		ent = entity;
 	}
