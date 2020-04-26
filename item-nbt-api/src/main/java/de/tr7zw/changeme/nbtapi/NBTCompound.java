@@ -434,7 +434,7 @@ public class NBTCompound {
 			readLock.lock();
 			return NBTReflectionUtil.getObject(this, key, type);
 		} finally {
-			writeLock.unlock();
+			readLock.unlock();
 		}
 	}
 
