@@ -110,29 +110,32 @@ public class NBTAPI extends JavaPlugin {
 		MinecraftVersion.getVersion();
 		getLogger().info("Gson:");
 		MinecraftVersion.hasGsonSupport();
-		getLogger().info("Classes:");
+		
 		boolean classUnlinked = false;
 		for (ClassWrapper c : ClassWrapper.values()) {
 			if (c.isEnabled() && c.getClazz() == null) {
+				if(!classUnlinked)
+					getLogger().info("Classes:");
 				getLogger().warning(c.name() + " did not find it's class!");
 				compatible = false;
 				classUnlinked = true;
 			}
 		}
 		if (!classUnlinked)
-			getLogger().info("All Classes where able to link!");
+			getLogger().info("All Classes were able to link!");
 
-		getLogger().info("Methods:");
 		boolean methodUnlinked = false;
 		for (ReflectionMethod method : ReflectionMethod.values()) {
 			if (method.isCompatible() && !method.isLoaded()) {
+				if(!methodUnlinked)
+					getLogger().info("Methods:");
 				getLogger().warning(method.name() + " did not find the method!");
 				compatible = false;
 				methodUnlinked = true;
 			}
 		}
 		if (!methodUnlinked)
-			getLogger().info("All Methods where able to link!");
+			getLogger().info("All Methods were able to link!");
 		getLogger().info("Running NBT reflection test...");
 
 		Map<de.tr7zw.nbtapi.plugin.tests.Test, Exception> results = new HashMap<>();
