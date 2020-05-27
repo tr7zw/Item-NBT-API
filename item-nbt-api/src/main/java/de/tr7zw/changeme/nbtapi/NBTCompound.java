@@ -697,7 +697,7 @@ public class NBTCompound {
 
 	/**
 	 * @deprecated Just use toString()
-	 * @return A json valid nbt string for this Compound
+	 * @return A {@link String} representation of the NBT in Mojang JSON. This is different from normal JSON!
 	 */
 	@Deprecated
 	public String asNBTString() {
