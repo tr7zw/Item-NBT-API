@@ -76,7 +76,7 @@ public enum MinecraftVersion {
 			if (!bStatsDisabled)
 				new ApiMetricsLite();
 		} catch (Exception ex) {
-			logger.log(Level.WARNING, "[NBTAPI] Error enabeling Metrics!", ex);
+			logger.log(Level.WARNING, "[NBTAPI] Error enabling Metrics!", ex);
 		}
 
 		if (!updateCheckDisabled)
