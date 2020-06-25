@@ -214,10 +214,12 @@ public class NBTReflectionUtil {
 			Object cworld = ClassWrapper.CRAFT_WORLD.getClazz().cast(tile.getWorld());
 			Object nmsworld = ReflectionMethod.CRAFT_WORLD_GET_HANDLE.run(cworld);
 			Object o = ReflectionMethod.NMS_WORLD_GET_TILEENTITY.run(nmsworld, pos);
-			if(MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_16_R1.getVersionId())
-				ReflectionMethod.TILEENTITY_SET_NBT.run(o, comp);
-			else
+			if(MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_16_R1.getVersionId()) {
+				Object blockData = ReflectionMethod.TILEENTITY_GET_BLOCKDATA.run(o);
+				ReflectionMethod.TILEENTITY_SET_NBT.run(o, blockData, comp);
+			}else {
 				ReflectionMethod.TILEENTITY_SET_NBT_LEGACY1151.run(o, comp);
+			}
 		} catch (Exception e) {
 			throw new NbtApiException("Exception while setting NBTData for a TileEntity!", e);
 		}
