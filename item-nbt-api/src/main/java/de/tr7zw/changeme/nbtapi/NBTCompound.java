@@ -3,6 +3,7 @@ package de.tr7zw.changeme.nbtapi;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;

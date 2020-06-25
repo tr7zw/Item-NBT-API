@@ -3,6 +3,7 @@ package de.tr7zw.changeme.nbtapi.utils.nmsmappings;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.util.UUID;
 
 import org.bukkit.inventory.ItemStack;
 
