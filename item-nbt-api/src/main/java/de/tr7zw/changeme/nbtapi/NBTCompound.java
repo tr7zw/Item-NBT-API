@@ -3,6 +3,7 @@ package de.tr7zw.changeme.nbtapi;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -465,6 +466,37 @@ public class NBTCompound {
 			readLock.lock();
 			NBTCompound comp = getCompound(key);
 			return NBTItem.convertNBTtoItem(comp);
+		} finally {
+			readLock.unlock();
+		}
+	}
+	
+		/**
+	 * Setter
+	 *
+	 * @param key
+	 * @param value
+	 */
+	public void setUUID(String key, UUID value) {
+		try {
+			writeLock.lock();
+			NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_UUID, key, value);
+			saveCompound();
+		} finally {
+			writeLock.unlock();
+		}
+	}
+
+	/**
+	 * Getter
+	 *
+	 * @param key
+	 * @return The stored value or NMS fallback
+	 */
+	public UUID getUUID(String key) {
+		try {
+			readLock.lock();
+			return (UUID) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_UUID, key);
 		} finally {
 			readLock.unlock();
 		}
