@@ -469,6 +469,37 @@ public class NBTCompound {
 			readLock.unlock();
 		}
 	}
+	
+		/**
+	 * Setter
+	 *
+	 * @param key
+	 * @param value
+	 */
+	public void setUUID(String key, UUID value) {
+		try {
+			writeLock.lock();
+			NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_UUID, key, value);
+			saveCompound();
+		} finally {
+			writeLock.unlock();
+		}
+	}
+
+	/**
+	 * Getter
+	 *
+	 * @param key
+	 * @return The stored value or NMS fallback
+	 */
+	public UUID getUUID(String key) {
+		try {
+			readLock.lock();
+			return (UUID) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_UUID, key);
+		} finally {
+			readLock.unlock();
+		}
+	}
 
 	/**
 	 * @param key
