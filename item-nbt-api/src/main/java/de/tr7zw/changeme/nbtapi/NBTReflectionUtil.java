@@ -3,12 +3,15 @@ package de.tr7zw.changeme.nbtapi;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import de.tr7zw.changeme.nbtapi.utils.GsonWrapper;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
@@ -24,6 +27,17 @@ import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
  *
  */
 public class NBTReflectionUtil {
+
+	private static Field field_unhandledTags;
+
+	static {
+		try {
+			field_unhandledTags = ClassWrapper.CRAFT_METAITEM.getClazz().getDeclaredField("unhandledTags");
+			field_unhandledTags.setAccessible(true);
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Hidden constructor
@@ -143,6 +157,21 @@ public class NBTReflectionUtil {
 			return new NBTContainer(answer);
 		} catch (Exception e) {
 			throw new NbtApiException("Exception while converting NMS ItemStack to NBTCompound!", e);
+		}
+	}
+
+	/**
+	 * Gets a live copy of non-vanilla NBT tags.
+	 *
+	 * @param meta ItemMeta from which tags should be retrieved
+	 * @return Map containing unhandled (custom) NBT tags
+	 */
+	@SuppressWarnings("unchecked")
+	public static Map<String, Object> getUnhandledNBTTags(ItemMeta meta) {
+		try {
+			return (Map<String, Object>) field_unhandledTags.get(meta);
+		} catch (Exception e) {
+			throw new NbtApiException("Exception while getting unhandled tags from ItemMeta!", e);
 		}
 	}
 
