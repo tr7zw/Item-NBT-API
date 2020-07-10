@@ -681,8 +681,12 @@ public class NBTCompound {
 	public NBTType getType(String name) {
 		try {
 			readLock.lock();
-			if (MinecraftVersion.getVersion() == MinecraftVersion.MC1_7_R4)
-				return null;
+			if (MinecraftVersion.getVersion() == MinecraftVersion.MC1_7_R4) {
+				Object nbtbase = NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET, name);
+				if(nbtbase == null)
+					return null;
+				return NBTType.valueOf((byte)ReflectionMethod.COMPOUND_OWN_TYPE.run(nbtbase));
+			}
 			Object o = NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_TYPE, name);
 			if (o == null)
 				return null;

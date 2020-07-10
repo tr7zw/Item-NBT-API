@@ -48,6 +48,10 @@ public class NBTInjector {
 	 */
 	public static void inject() {
 		if(isInjected)return;
+		if(MinecraftVersion.getVersion() == MinecraftVersion.MC1_7_R4 || MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_16_R1)) {
+			logger.warning("[NBTINJECTOR] The NBT-Injector is not compatibel with this Minecraft Version! For 1.16+ please use the persistent storage API.");
+			return;
+		}
 		isInjected = true;
 		try {
 			ClassPool classPool = ClassPool.getDefault();

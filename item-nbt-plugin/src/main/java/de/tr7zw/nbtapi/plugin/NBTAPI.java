@@ -96,7 +96,7 @@ public class NBTAPI extends JavaPlugin {
 		apiTests.add(new EntityCustomNbtInjectorTest());
 		apiTests.add(new SpawnEntityCustomNbtInjectorTest());
 		
-		if(MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_8_R3.getVersionId())
+		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3))
 			apiTests.add(new GameprofileTest());
 
 	}
@@ -169,6 +169,9 @@ public class NBTAPI extends JavaPlugin {
 		} else {
 			getLogger().warning(
 					"WARNING! This version of NBT-API seems to be broken with your Spigot version! " + checkMessage);
+			if(MinecraftVersion.getVersion() == MinecraftVersion.MC1_7_R4) {
+				getLogger().warning("1.7.10 is only partally supported! Some thing will not work/are not yet avaliable in 1.7.10!");
+			}
 		}
 
 	}

@@ -288,8 +288,9 @@ public class NBTReflectionUtil {
 		if (nbttag == null) {
 			nbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
 		}
-		if (!valideCompound(comp))
+		if (!valideCompound(comp)) {
 			return;
+		}
 		Object workingtag = gettoCompount(nbttag, comp);
 		try {
 			ReflectionMethod.COMPOUND_SET.run(workingtag, name,

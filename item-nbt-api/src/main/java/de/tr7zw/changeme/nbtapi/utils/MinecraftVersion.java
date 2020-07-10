@@ -44,6 +44,16 @@ public enum MinecraftVersion {
 	public int getVersionId() {
 		return versionId;
 	}
+	
+	/**
+	 * Returns true if the current versions is at least the given Version
+	 * 
+	 * @param version The minimum version
+	 * @return
+	 */
+	public static boolean isAtLeastVersion(MinecraftVersion version) {
+		return getVersion().getVersionId() >= version.getVersionId();
+	}
 
 	/**
 	 * Getter for this servers MinecraftVersion. Also init's bStats and checks the
