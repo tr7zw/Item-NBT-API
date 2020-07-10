@@ -96,7 +96,8 @@ public class NBTAPI extends JavaPlugin {
 		apiTests.add(new EntityCustomNbtInjectorTest());
 		apiTests.add(new SpawnEntityCustomNbtInjectorTest());
 		
-		apiTests.add(new GameprofileTest());
+		if(MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_8_R3.getVersionId())
+			apiTests.add(new GameprofileTest());
 
 	}
 
@@ -107,10 +108,10 @@ public class NBTAPI extends JavaPlugin {
 
 		getLogger().info("Adding listeners...");
 		Bukkit.getPluginManager().registerEvents(new ReloadListener(), this);
-		getLogger().info("Checking bindings...");
-		MinecraftVersion.getVersion();
 		getLogger().info("Gson:");
 		MinecraftVersion.hasGsonSupport();
+		getLogger().info("Checking bindings...");
+		MinecraftVersion.getVersion();
 		
 		boolean classUnlinked = false;
 		for (ClassWrapper c : ClassWrapper.values()) {

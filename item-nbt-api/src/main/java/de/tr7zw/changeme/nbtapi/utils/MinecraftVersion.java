@@ -73,7 +73,7 @@ public enum MinecraftVersion {
 
 	private static void init() {
 		try {
-			if (!bStatsDisabled)
+			if (hasGsonSupport() && !bStatsDisabled)
 				new ApiMetricsLite();
 		} catch (Exception ex) {
 			logger.log(Level.WARNING, "[NBTAPI] Error enabling Metrics!", ex);
