@@ -15,6 +15,7 @@ import static de.tr7zw.changeme.nbtapi.utils.MinecraftVersion.logger;
 @SuppressWarnings("javadoc")
 public enum ClassWrapper {
 CRAFT_ITEMSTACK(PackageWrapper.CRAFTBUKKIT, "inventory.CraftItemStack"),
+CRAFT_METAITEM(PackageWrapper.CRAFTBUKKIT, "inventory.CraftMetaItem"),
 CRAFT_ENTITY(PackageWrapper.CRAFTBUKKIT, "entity.CraftEntity"),
 CRAFT_WORLD(PackageWrapper.CRAFTBUKKIT, "CraftWorld"),
 NMS_NBTBASE(PackageWrapper.NMS, "NBTBase"),
