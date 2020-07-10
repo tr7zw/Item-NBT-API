@@ -89,7 +89,7 @@ public enum MinecraftVersion {
 			logger.log(Level.WARNING, "[NBTAPI] Error enabling Metrics!", ex);
 		}
 
-		if (!updateCheckDisabled)
+		if (hasGsonSupport() && !updateCheckDisabled)
 			new Thread(() -> {
 				try {
 					VersionChecker.checkForUpdates();

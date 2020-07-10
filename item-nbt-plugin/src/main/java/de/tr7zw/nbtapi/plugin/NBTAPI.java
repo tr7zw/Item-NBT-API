@@ -33,6 +33,7 @@ import de.tr7zw.nbtapi.plugin.tests.injector.SpawnEntityCustomNbtInjectorTest;
 import de.tr7zw.nbtapi.plugin.tests.injector.TilesCustomNBTInjectorTest;
 import de.tr7zw.nbtapi.plugin.tests.items.EmptyItemTest;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemConvertionTest;
+import de.tr7zw.nbtapi.plugin.tests.tiles.TileTest;
 import de.tr7zw.nbtapi.plugin.tests.tiles.TilesCustomNBTPersistentTest;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemMergingTest;
 
@@ -64,24 +65,30 @@ public class NBTAPI extends JavaPlugin {
 		apiTests.add(new GetterSetterTest());
 		apiTests.add(new TypeTest());
 		apiTests.add(new RemovingKeys());
-		apiTests.add(new ListTest());
+		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) // 1.7.10 list support is not complete at all
+			apiTests.add(new ListTest());
 		apiTests.add(new SubCompoundsTest());
-		apiTests.add(new MergeTest());
+		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) // 1.7.10 not a thing
+			apiTests.add(new MergeTest());
 		apiTests.add(new ForEachTest());
 		apiTests.add(new StreamTest());
 		apiTests.add(new EqualsTest());
-		apiTests.add(new IteratorTest());
+		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) // 1.7.10 list support is not complete at all
+			apiTests.add(new IteratorTest());
 
 		// Items
-		apiTests.add(new ItemConvertionTest());
+		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) // 1.7.10 not a thing
+			apiTests.add(new ItemConvertionTest());
 		apiTests.add(new EmptyItemTest());
-		apiTests.add(new ItemMergingTest());
+		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) // 1.7.10 not a thing
+			apiTests.add(new ItemMergingTest());
 
 		// Entity
 		apiTests.add(new EntityTest());
 		apiTests.add(new EntityCustomNbtPersistentTest());
 
 		// Tiles
+		apiTests.add(new TileTest());
 		apiTests.add(new TilesCustomNBTPersistentTest());
 
 		// Files

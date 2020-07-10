@@ -28,14 +28,14 @@ import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
  */
 public class NBTReflectionUtil {
 
-	private static Field field_unhandledTags;
+	private static Field field_unhandledTags = null;
 
 	static {
 		try {
 			field_unhandledTags = ClassWrapper.CRAFT_METAITEM.getClazz().getDeclaredField("unhandledTags");
 			field_unhandledTags.setAccessible(true);
 		} catch (NoSuchFieldException e) {
-			e.printStackTrace();
+			
 		}
 	}
 
@@ -217,10 +217,15 @@ public class NBTReflectionUtil {
 	 */
 	public static Object getTileEntityNBTTagCompound(BlockState tile) {
 		try {
-			Object pos = ObjectCreator.NMS_BLOCKPOSITION.getInstance(tile.getX(), tile.getY(), tile.getZ());
 			Object cworld = ClassWrapper.CRAFT_WORLD.getClazz().cast(tile.getWorld());
 			Object nmsworld = ReflectionMethod.CRAFT_WORLD_GET_HANDLE.run(cworld);
-			Object o = ReflectionMethod.NMS_WORLD_GET_TILEENTITY.run(nmsworld, pos);
+			Object o = null;
+			if(MinecraftVersion.getVersion() == MinecraftVersion.MC1_7_R4) {
+				o = ReflectionMethod.NMS_WORLD_GET_TILEENTITY_1_7_10.run(nmsworld, tile.getX(), tile.getY(), tile.getZ());
+			}else {
+				Object pos = ObjectCreator.NMS_BLOCKPOSITION.getInstance(tile.getX(), tile.getY(), tile.getZ());
+				o = ReflectionMethod.NMS_WORLD_GET_TILEENTITY.run(nmsworld, pos);
+			}
 			Object tag = ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance();
 			Object answer = ReflectionMethod.TILEENTITY_GET_NBT.run(o, tag);
 			if (answer == null)
@@ -239,10 +244,15 @@ public class NBTReflectionUtil {
 	 */
 	public static void setTileEntityNBTTagCompound(BlockState tile, Object comp) {
 		try {
-			Object pos = ObjectCreator.NMS_BLOCKPOSITION.getInstance(tile.getX(), tile.getY(), tile.getZ());
 			Object cworld = ClassWrapper.CRAFT_WORLD.getClazz().cast(tile.getWorld());
 			Object nmsworld = ReflectionMethod.CRAFT_WORLD_GET_HANDLE.run(cworld);
-			Object o = ReflectionMethod.NMS_WORLD_GET_TILEENTITY.run(nmsworld, pos);
+			Object o = null;
+			if(MinecraftVersion.getVersion() == MinecraftVersion.MC1_7_R4) {
+				o = ReflectionMethod.NMS_WORLD_GET_TILEENTITY_1_7_10.run(nmsworld, tile.getX(), tile.getY(), tile.getZ());
+			}else {
+				Object pos = ObjectCreator.NMS_BLOCKPOSITION.getInstance(tile.getX(), tile.getY(), tile.getZ());
+				o = ReflectionMethod.NMS_WORLD_GET_TILEENTITY.run(nmsworld, pos);
+			}
 			if(MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_16_R1.getVersionId()) {
 				Object blockData = ReflectionMethod.TILEENTITY_GET_BLOCKDATA.run(o);
 				ReflectionMethod.TILEENTITY_SET_NBT.run(o, blockData, comp);
