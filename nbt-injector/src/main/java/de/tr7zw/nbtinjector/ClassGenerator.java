@@ -179,6 +179,10 @@ public class ClassGenerator {
 				: "void";
 		String writeName = ReflectionMethod.TILEENTITY_GET_NBT.getMethodName();
 		String readName = ReflectionMethod.TILEENTITY_SET_NBT.getMethodName();
+		if(MinecraftVersion.getVersion().getVersionId() < MinecraftVersion.MC1_16_R1.getVersionId()) {
+			readName = ReflectionMethod.TILEENTITY_SET_NBT_LEGACY1151.getMethodName();
+		}
+
 		String writeMethod = "public " + writeReturn + " " + writeName + "(NBTTagCompound compound) {\n"
 				+ "  compound = writeExtraCompound(compound);\n"
 				// + " System.out.println(\"Save: \" +compound);\n"
