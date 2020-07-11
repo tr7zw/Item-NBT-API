@@ -35,6 +35,7 @@ import de.tr7zw.nbtapi.plugin.tests.items.EmptyItemTest;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemConvertionTest;
 import de.tr7zw.nbtapi.plugin.tests.tiles.TileTest;
 import de.tr7zw.nbtapi.plugin.tests.tiles.TilesCustomNBTPersistentTest;
+import de.tr7zw.nbtinjector.NBTInjector;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemMergingTest;
 
 public class NBTAPI extends JavaPlugin {
@@ -51,15 +52,33 @@ public class NBTAPI extends JavaPlugin {
 	@Override
 	public void onLoad() {
 		
-		//Disabled by default since 2.1. Enable it yourself by calling NBTInjector.inject(); during onLoad.
-		/*getLogger().info("Injecting custom NBT");
-		try {
-			NBTInjector.inject();
-			getLogger().info("Injected!");
-		} catch (Throwable ex) { // NOSONAR
-			getLogger().log(Level.SEVERE, "Error while Injecting custom Tile/Entity classes!", ex);
-			compatible = false;
-		}*/
+		getConfig().options().copyDefaults(true);
+		getConfig().addDefault("nbtInjector.enabled", false);
+		getConfig().addDefault("bStats.enabled", true);
+		getConfig().addDefault("updateCheck.enabled", true);
+		saveConfig();
+		
+		if(!getConfig().getBoolean("bStats.enabled")) {
+			getLogger().info("bStats disabled");
+			MinecraftVersion.disableBStats();
+		}
+		
+		if(!getConfig().getBoolean("updateCheck.enabled")) {
+			getLogger().info("Update check disabled");
+			MinecraftVersion.disableUpdateCheck();
+		}
+		
+		//Disabled by default since 2.1. Enable it yourself by calling NBTInjector.inject(); during onLoad/config
+		if(getConfig().getBoolean("nbtInjector.enabled")) {
+			getLogger().info("Injecting custom NBT");
+			try {
+				NBTInjector.inject();
+				getLogger().info("Injected!");
+			} catch (Throwable ex) { // NOSONAR
+				getLogger().log(Level.SEVERE, "Error while Injecting custom Tile/Entity classes!", ex);
+				compatible = false;
+			}
+		}
 
 		// NBTCompounds
 		apiTests.add(new GetterSetterTest());
