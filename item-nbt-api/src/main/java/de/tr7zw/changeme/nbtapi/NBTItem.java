@@ -158,7 +158,7 @@ public class NBTItem extends NBTCompound {
 	@Override
 	protected void saveCompound() {
 		if(directApply) {
-			mergeNBT(originalSrcStack);
+			applyNBT(originalSrcStack);
 		}
 	}
 
