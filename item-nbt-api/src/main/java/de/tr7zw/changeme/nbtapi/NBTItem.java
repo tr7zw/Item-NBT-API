@@ -16,6 +16,8 @@ import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 public class NBTItem extends NBTCompound {
 
 	private ItemStack bukkitItem;
+	private boolean directApply;
+	private ItemStack originalSrcStack = null;
 
 	/**
 	 * Constructor for NBTItems. The ItemStack will be cloned!
@@ -23,11 +25,27 @@ public class NBTItem extends NBTCompound {
 	 * @param item
 	 */
 	public NBTItem(ItemStack item) {
+		this(item, false);
+	}
+	
+	/**
+	 * Constructor for NBTItems. The ItemStack will be cloned! If directApply is true,
+	 * all changed will be mapped to the original item. Changes to the NBTItem will overwrite changes done
+	 * to the original item in that case.
+	 * 
+	 * @param item
+	 * @param directApply
+	 */
+	public NBTItem(ItemStack item, boolean directApply) {
 		super(null, null);
 		if (item == null || item.getType() == Material.AIR) {
 			throw new NullPointerException("ItemStack can't be null/Air!");
 		}
+		this.directApply = directApply;
 		bukkitItem = item.clone();
+		if(directApply) {
+			this.originalSrcStack = item;
+		}
 	}
 
 	@Override
@@ -135,6 +153,13 @@ public class NBTItem extends NBTCompound {
 	public static ItemStack convertNBTtoItem(NBTCompound comp) {
 		return (ItemStack) ReflectionMethod.ITEMSTACK_BUKKITMIRROR.run(null,
 				NBTReflectionUtil.convertNBTCompoundtoNMSItem(comp));
+	}
+
+	@Override
+	protected void saveCompound() {
+		if(directApply) {
+			mergeNBT(originalSrcStack);
+		}
 	}
 
 }

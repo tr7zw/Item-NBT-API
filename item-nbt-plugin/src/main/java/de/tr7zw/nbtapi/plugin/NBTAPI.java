@@ -31,6 +31,7 @@ import de.tr7zw.nbtapi.plugin.tests.injector.EntityCustomNbtInjectorTest;
 import de.tr7zw.nbtapi.plugin.tests.injector.MergeTileSubCompoundTest;
 import de.tr7zw.nbtapi.plugin.tests.injector.SpawnEntityCustomNbtInjectorTest;
 import de.tr7zw.nbtapi.plugin.tests.injector.TilesCustomNBTInjectorTest;
+import de.tr7zw.nbtapi.plugin.tests.items.DirectApplyTest;
 import de.tr7zw.nbtapi.plugin.tests.items.EmptyItemTest;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemConvertionTest;
 import de.tr7zw.nbtapi.plugin.tests.tiles.TileTest;
@@ -99,8 +100,10 @@ public class NBTAPI extends JavaPlugin {
 		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) // 1.7.10 not a thing
 			apiTests.add(new ItemConvertionTest());
 		apiTests.add(new EmptyItemTest());
-		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) // 1.7.10 not a thing
+		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) { // 1.7.10 not a thing
 			apiTests.add(new ItemMergingTest());
+			apiTests.add(new DirectApplyTest());
+		}
 
 		// Entity
 		apiTests.add(new EntityTest());
