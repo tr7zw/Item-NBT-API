@@ -63,7 +63,7 @@
       <plugin>
         <groupId>de.tr7zw.spigotmc.maven</groupId>
         <artifactId>tr-spigotmc-maven-plugin</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.2-SNAPSHOT</version>
         <executions>
           <execution>
             <id>start-server</id>
@@ -79,7 +79,7 @@
           </execution>
         </executions>
         <configuration>
-          <!-- 1.8.8-R0.1-SNAPSHOT-latest, 1.9.2-R0.1-SNAPSHOT-latest, 1.9.4-R0.1-SNAPSHOT-latest, 1.10.2-R0.1-SNAPSHOT-latest,1.11.2,1.12.2,1.13.2,1.14.4,1.15.1 -->
+          <!-- 1.8.8-R0.1-SNAPSHOT-latest, 1.9.2-R0.1-SNAPSHOT-latest, 1.9.4-R0.1-SNAPSHOT-latest, 1.10.2-R0.1-SNAPSHOT-latest,1.11.2,1.12.2,1.13.2,1.14.4,1.15.1,1.16.1,1.16.2 -->
           <versions>1.8.8-R0.1-SNAPSHOT-latest, 1.9.2-R0.1-SNAPSHOT-latest, 1.9.4-R0.1-SNAPSHOT-latest, 1.10.2-R0.1-SNAPSHOT-latest,1.11.2,1.12.2,1.13.2,1.14.4,1.15.2,1.16.1,1.16.2</versions>
           <works>Success! This version of NBT-API</works>
           <error>WARNING! This version of NBT-API</error>

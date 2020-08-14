@@ -25,7 +25,7 @@ public class NBTTileEntity extends NBTCompound {
 	 */
 	public NBTTileEntity(BlockState tile) {
 		super(null, null);
-		if (tile == null || !tile.isPlaced()) {
+		if (tile == null || (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3) && !tile.isPlaced())) {
 			throw new NullPointerException("Tile can't be null/not placed!");
 		}
 		this.tile = tile;

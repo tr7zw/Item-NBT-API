@@ -3,12 +3,15 @@ package de.tr7zw.changeme.nbtapi;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import de.tr7zw.changeme.nbtapi.utils.GsonWrapper;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
@@ -24,6 +27,17 @@ import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
  *
  */
 public class NBTReflectionUtil {
+
+	private static Field field_unhandledTags = null;
+
+	static {
+		try {
+			field_unhandledTags = ClassWrapper.CRAFT_METAITEM.getClazz().getDeclaredField("unhandledTags");
+			field_unhandledTags.setAccessible(true);
+		} catch (NoSuchFieldException e) {
+			
+		}
+	}
 
 	/**
 	 * Hidden constructor
@@ -147,6 +161,21 @@ public class NBTReflectionUtil {
 	}
 
 	/**
+	 * Gets a live copy of non-vanilla NBT tags.
+	 *
+	 * @param meta ItemMeta from which tags should be retrieved
+	 * @return Map containing unhandled (custom) NBT tags
+	 */
+	@SuppressWarnings("unchecked")
+	public static Map<String, Object> getUnhandledNBTTags(ItemMeta meta) {
+		try {
+			return (Map<String, Object>) field_unhandledTags.get(meta);
+		} catch (Exception e) {
+			throw new NbtApiException("Exception while getting unhandled tags from ItemMeta!", e);
+		}
+	}
+
+	/**
 	 * Gets the Vanilla NBT Compound from a given NMS Entity
 	 * 
 	 * @param nmsEntity
@@ -188,10 +217,15 @@ public class NBTReflectionUtil {
 	 */
 	public static Object getTileEntityNBTTagCompound(BlockState tile) {
 		try {
-			Object pos = ObjectCreator.NMS_BLOCKPOSITION.getInstance(tile.getX(), tile.getY(), tile.getZ());
 			Object cworld = ClassWrapper.CRAFT_WORLD.getClazz().cast(tile.getWorld());
 			Object nmsworld = ReflectionMethod.CRAFT_WORLD_GET_HANDLE.run(cworld);
-			Object o = ReflectionMethod.NMS_WORLD_GET_TILEENTITY.run(nmsworld, pos);
+			Object o = null;
+			if(MinecraftVersion.getVersion() == MinecraftVersion.MC1_7_R4) {
+				o = ReflectionMethod.NMS_WORLD_GET_TILEENTITY_1_7_10.run(nmsworld, tile.getX(), tile.getY(), tile.getZ());
+			}else {
+				Object pos = ObjectCreator.NMS_BLOCKPOSITION.getInstance(tile.getX(), tile.getY(), tile.getZ());
+				o = ReflectionMethod.NMS_WORLD_GET_TILEENTITY.run(nmsworld, pos);
+			}
 			Object tag = ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance();
 			Object answer = ReflectionMethod.TILEENTITY_GET_NBT.run(o, tag);
 			if (answer == null)
@@ -210,10 +244,15 @@ public class NBTReflectionUtil {
 	 */
 	public static void setTileEntityNBTTagCompound(BlockState tile, Object comp) {
 		try {
-			Object pos = ObjectCreator.NMS_BLOCKPOSITION.getInstance(tile.getX(), tile.getY(), tile.getZ());
 			Object cworld = ClassWrapper.CRAFT_WORLD.getClazz().cast(tile.getWorld());
 			Object nmsworld = ReflectionMethod.CRAFT_WORLD_GET_HANDLE.run(cworld);
-			Object o = ReflectionMethod.NMS_WORLD_GET_TILEENTITY.run(nmsworld, pos);
+			Object o = null;
+			if(MinecraftVersion.getVersion() == MinecraftVersion.MC1_7_R4) {
+				o = ReflectionMethod.NMS_WORLD_GET_TILEENTITY_1_7_10.run(nmsworld, tile.getX(), tile.getY(), tile.getZ());
+			}else {
+				Object pos = ObjectCreator.NMS_BLOCKPOSITION.getInstance(tile.getX(), tile.getY(), tile.getZ());
+				o = ReflectionMethod.NMS_WORLD_GET_TILEENTITY.run(nmsworld, pos);
+			}
 			if(MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_16_R1.getVersionId()) {
 				Object blockData = ReflectionMethod.TILEENTITY_GET_BLOCKDATA.run(o);
 				ReflectionMethod.TILEENTITY_SET_NBT.run(o, blockData, comp);
@@ -259,8 +298,9 @@ public class NBTReflectionUtil {
 		if (nbttag == null) {
 			nbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
 		}
-		if (!valideCompound(comp))
+		if (!valideCompound(comp)) {
 			return;
+		}
 		Object workingtag = gettoCompount(nbttag, comp);
 		try {
 			ReflectionMethod.COMPOUND_SET.run(workingtag, name,

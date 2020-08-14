@@ -15,6 +15,7 @@ import static de.tr7zw.changeme.nbtapi.utils.MinecraftVersion.logger;
 @SuppressWarnings("javadoc")
 public enum ClassWrapper {
 CRAFT_ITEMSTACK(PackageWrapper.CRAFTBUKKIT, "inventory.CraftItemStack"),
+CRAFT_METAITEM(PackageWrapper.CRAFTBUKKIT, "inventory.CraftMetaItem"),
 CRAFT_ENTITY(PackageWrapper.CRAFTBUKKIT, "entity.CraftEntity"),
 CRAFT_WORLD(PackageWrapper.CRAFTBUKKIT, "CraftWorld"),
 NMS_NBTBASE(PackageWrapper.NMS, "NBTBase"),
@@ -29,7 +30,7 @@ NMS_NBTTAGLIST(PackageWrapper.NMS, "NBTTagList"),
 NMS_NBTCOMPRESSEDSTREAMTOOLS(PackageWrapper.NMS, "NBTCompressedStreamTools"),
 NMS_MOJANGSONPARSER(PackageWrapper.NMS, "MojangsonParser"),
 NMS_TILEENTITY(PackageWrapper.NMS, "TileEntity"),
-NMS_BLOCKPOSITION(PackageWrapper.NMS, "BlockPosition"),
+NMS_BLOCKPOSITION(PackageWrapper.NMS, "BlockPosition", MinecraftVersion.MC1_8_R3, null),
 NMS_WORLDSERVER(PackageWrapper.NMS, "WorldServer"),
 NMS_MINECRAFTSERVER(PackageWrapper.NMS, "MinecraftServer"),
 NMS_WORLD(PackageWrapper.NMS, "World"),
@@ -38,9 +39,10 @@ NMS_ENTITYTYPES(PackageWrapper.NMS, "EntityTypes"),
 NMS_REGISTRYSIMPLE(PackageWrapper.NMS, "RegistrySimple", MinecraftVersion.MC1_11_R1, MinecraftVersion.MC1_12_R1),
 NMS_REGISTRYMATERIALS(PackageWrapper.NMS, "RegistryMaterials"),
 NMS_IREGISTRY(PackageWrapper.NMS, "IRegistry"),
-NMS_MINECRAFTKEY(PackageWrapper.NMS, "MinecraftKey"),
+NMS_MINECRAFTKEY(PackageWrapper.NMS, "MinecraftKey", MinecraftVersion.MC1_8_R3, null),
 NMS_GAMEPROFILESERIALIZER(PackageWrapper.NMS, "GameProfileSerializer"),
-NMS_IBLOCKDATA(PackageWrapper.NMS, "IBlockData")
+NMS_IBLOCKDATA(PackageWrapper.NMS, "IBlockData", MinecraftVersion.MC1_8_R3, null),
+GAMEPROFILE("com.mojang.authlib.GameProfile", MinecraftVersion.MC1_8_R3)
 ;
 	
     private Class<?> clazz;
@@ -63,6 +65,18 @@ NMS_IBLOCKDATA(PackageWrapper.NMS, "IBlockData")
             clazz = Class.forName(packageId.getUri() + "." + version + "." + suffix);
         }catch(Exception ex){
             logger.log(Level.WARNING, "[NBTAPI] Error while trying to resolve the class '" + suffix + "'!", ex);
+        }
+    }
+    
+    ClassWrapper(String path, MinecraftVersion from){
+    	if(from != null && MinecraftVersion.getVersion().getVersionId() < from.getVersionId()) {
+    		return;
+    	}
+    	enabled = true;
+        try{
+            clazz = Class.forName(path);
+        }catch(Exception ex){
+            logger.log(Level.WARNING, "[NBTAPI] Error while trying to resolve the class '" + path + "'!", ex);
         }
     }
     

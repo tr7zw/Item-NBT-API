@@ -31,10 +31,13 @@ import de.tr7zw.nbtapi.plugin.tests.injector.EntityCustomNbtInjectorTest;
 import de.tr7zw.nbtapi.plugin.tests.injector.MergeTileSubCompoundTest;
 import de.tr7zw.nbtapi.plugin.tests.injector.SpawnEntityCustomNbtInjectorTest;
 import de.tr7zw.nbtapi.plugin.tests.injector.TilesCustomNBTInjectorTest;
+import de.tr7zw.nbtapi.plugin.tests.items.DirectApplyTest;
 import de.tr7zw.nbtapi.plugin.tests.items.EmptyItemTest;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemConvertionTest;
+import de.tr7zw.nbtapi.plugin.tests.tiles.TileTest;
 import de.tr7zw.nbtapi.plugin.tests.tiles.TilesCustomNBTPersistentTest;
 import de.tr7zw.nbtinjector.NBTInjector;
+import de.tr7zw.nbtapi.plugin.tests.items.ItemMergingTest;
 
 public class NBTAPI extends JavaPlugin {
 
@@ -50,37 +53,64 @@ public class NBTAPI extends JavaPlugin {
 	@Override
 	public void onLoad() {
 		
-		//Disabled by default since 2.1. Enable it yourself by calling NBTInjector.inject(); during onLoad.
-		/*getLogger().info("Injecting custom NBT");
-		try {
-			NBTInjector.inject();
-			getLogger().info("Injected!");
-		} catch (Throwable ex) { // NOSONAR
-			getLogger().log(Level.SEVERE, "Error while Injecting custom Tile/Entity classes!", ex);
-			compatible = false;
-		}*/
+		getConfig().options().copyDefaults(true);
+		getConfig().addDefault("nbtInjector.enabled", false);
+		getConfig().addDefault("bStats.enabled", true);
+		getConfig().addDefault("updateCheck.enabled", true);
+		saveConfig();
+		
+		if(!getConfig().getBoolean("bStats.enabled")) {
+			getLogger().info("bStats disabled");
+			MinecraftVersion.disableBStats();
+		}
+		
+		if(!getConfig().getBoolean("updateCheck.enabled")) {
+			getLogger().info("Update check disabled");
+			MinecraftVersion.disableUpdateCheck();
+		}
+		
+		//Disabled by default since 2.1. Enable it yourself by calling NBTInjector.inject(); during onLoad/config
+		if(getConfig().getBoolean("nbtInjector.enabled")) {
+			getLogger().info("Injecting custom NBT");
+			try {
+				NBTInjector.inject();
+				getLogger().info("Injected!");
+			} catch (Throwable ex) { // NOSONAR
+				getLogger().log(Level.SEVERE, "Error while Injecting custom Tile/Entity classes!", ex);
+				compatible = false;
+			}
+		}
 
 		// NBTCompounds
 		apiTests.add(new GetterSetterTest());
 		apiTests.add(new TypeTest());
 		apiTests.add(new RemovingKeys());
-		apiTests.add(new ListTest());
+		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) // 1.7.10 list support is not complete at all
+			apiTests.add(new ListTest());
 		apiTests.add(new SubCompoundsTest());
-		apiTests.add(new MergeTest());
+		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) // 1.7.10 not a thing
+			apiTests.add(new MergeTest());
 		apiTests.add(new ForEachTest());
 		apiTests.add(new StreamTest());
 		apiTests.add(new EqualsTest());
-		apiTests.add(new IteratorTest());
+		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) // 1.7.10 list support is not complete at all
+			apiTests.add(new IteratorTest());
 
 		// Items
-		apiTests.add(new ItemConvertionTest());
+		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) // 1.7.10 not a thing
+			apiTests.add(new ItemConvertionTest());
 		apiTests.add(new EmptyItemTest());
+		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) { // 1.7.10 not a thing
+			apiTests.add(new ItemMergingTest());
+			apiTests.add(new DirectApplyTest());
+		}
 
 		// Entity
 		apiTests.add(new EntityTest());
 		apiTests.add(new EntityCustomNbtPersistentTest());
 
 		// Tiles
+		apiTests.add(new TileTest());
 		apiTests.add(new TilesCustomNBTPersistentTest());
 
 		// Files
@@ -95,7 +125,8 @@ public class NBTAPI extends JavaPlugin {
 		apiTests.add(new EntityCustomNbtInjectorTest());
 		apiTests.add(new SpawnEntityCustomNbtInjectorTest());
 		
-		apiTests.add(new GameprofileTest());
+		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3))
+			apiTests.add(new GameprofileTest());
 
 	}
 
@@ -106,10 +137,10 @@ public class NBTAPI extends JavaPlugin {
 
 		getLogger().info("Adding listeners...");
 		Bukkit.getPluginManager().registerEvents(new ReloadListener(), this);
-		getLogger().info("Checking bindings...");
-		MinecraftVersion.getVersion();
 		getLogger().info("Gson:");
 		MinecraftVersion.hasGsonSupport();
+		getLogger().info("Checking bindings...");
+		MinecraftVersion.getVersion();
 		
 		boolean classUnlinked = false;
 		for (ClassWrapper c : ClassWrapper.values()) {
@@ -167,6 +198,9 @@ public class NBTAPI extends JavaPlugin {
 		} else {
 			getLogger().warning(
 					"WARNING! This version of NBT-API seems to be broken with your Spigot version! " + checkMessage);
+			if(MinecraftVersion.getVersion() == MinecraftVersion.MC1_7_R4) {
+				getLogger().warning("1.7.10 is only partally supported! Some thing will not work/are not yet avaliable in 1.7.10!");
+			}
 		}
 
 	}
