@@ -12,6 +12,8 @@ Add custom NBT tags to Items/Tiles/Entities without NMS! Modify NBT and store it
 
 [![bStats Stats](https://bstats.org/signatures/bukkit/ItemNBTAPI.svg)](https://bstats.org/plugin/bukkit/ItemNBTAPI)
 
+<img src="https://starchart.cc/tr7zw/Item-NBT-API.svg" alt="stargazers" width="800"/>
+
 ## Getting started
 Import the API [using Maven](https://github.com/tr7zw/Item-NBT-API/wiki/Using-Maven), then check out the [basic usage](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API) or code examples like [working with Skulls](https://github.com/tr7zw/Item-NBT-API/wiki/Set-a-skull's-skin-using-NBT-API).
 
