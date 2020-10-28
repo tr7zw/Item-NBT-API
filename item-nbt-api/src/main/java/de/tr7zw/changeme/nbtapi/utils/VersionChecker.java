@@ -42,24 +42,24 @@ public class VersionChecker {
 			JsonObject latest = (JsonObject) updates.get(updates.size() - 1);
 			int versionDifference = getVersionDifference(latest.get("name").getAsString());
 			if (versionDifference == -1) { // Outdated
-				MinecraftVersion.logger.log(Level.WARNING,
+				MinecraftVersion.getLogger().log(Level.WARNING,
 						"[NBTAPI] The NBT-API at '" + NBTItem.class.getPackage() + "' seems to be outdated!");
-				MinecraftVersion.logger.log(Level.WARNING, "[NBTAPI] Current Version: '" + MinecraftVersion.VERSION
+				MinecraftVersion.getLogger().log(Level.WARNING, "[NBTAPI] Current Version: '" + MinecraftVersion.VERSION
 						+ "' Newest Version: " + latest.get("name").getAsString() + "'");
-				MinecraftVersion.logger.log(Level.WARNING,
+				MinecraftVersion.getLogger().log(Level.WARNING,
 						"[NBTAPI] Please update the nbt-api or the plugin that contains the api!");
 
 			} else if (versionDifference == 0) {
-				MinecraftVersion.logger.log(Level.INFO, "[NBTAPI] The NBT-API seems to be up-to-date!");
+				MinecraftVersion.getLogger().log(Level.INFO, "[NBTAPI] The NBT-API seems to be up-to-date!");
 			} else if (versionDifference == 1) {
-				MinecraftVersion.logger.log(Level.WARNING, "[NBTAPI] The NBT-API at '" + NBTItem.class.getPackage()
+				MinecraftVersion.getLogger().log(Level.WARNING, "[NBTAPI] The NBT-API at '" + NBTItem.class.getPackage()
 						+ "' seems to be a future Version, not yet released on Spigot!");
-				MinecraftVersion.logger.log(Level.WARNING, "[NBTAPI] Current Version: '" + MinecraftVersion.VERSION
+				MinecraftVersion.getLogger().log(Level.WARNING, "[NBTAPI] Current Version: '" + MinecraftVersion.VERSION
 						+ "' Newest Version: " + latest.get("name").getAsString() + "'");
 			}
 		} else {
 			// wut?!
-			MinecraftVersion.logger.log(Level.WARNING,
+			MinecraftVersion.getLogger().log(Level.WARNING,
 					"[NBTAPI] Error when looking for Updates! Got non Json Array: '" + element.toString() + "'");
 		}
 	}

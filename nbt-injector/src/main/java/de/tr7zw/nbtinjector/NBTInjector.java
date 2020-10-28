@@ -34,7 +34,7 @@ public class NBTInjector {
 
 	}
 
-	static Logger logger = Logger.getLogger("NBTInjector");
+	protected static Logger logger = Logger.getLogger("NBTInjector");
 	private static boolean isInjected = false;
 	private static final String NOT_INJECTED_MESSAGE = "The NBTInjector has not been enabled!\n"
 			+ "You need to call 'NBTInjector.inject()' during the Method 'onLoad' of your Plugin!"

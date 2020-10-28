@@ -27,7 +27,7 @@ public enum MinecraftVersion {
 	/**
 	 * Logger used by the api
 	 */
-	public static final Logger logger = Logger.getLogger("NBTAPI");
+	private static Logger logger = Logger.getLogger("NBTAPI");
 
 	// NBT-API Version
 	protected static final String VERSION = "2.6.0-SNAPSHOT";
@@ -158,6 +158,23 @@ public enum MinecraftVersion {
 	 */
 	public static void disablePackageWarning() {
 		disablePackageWarning = true;
+	}
+	
+	/**
+	 * @return Logger used by the NBT-API
+	 */
+	public static Logger getLogger() {
+		return logger;
+	}
+	
+	/**
+	 * Replaces the NBT-API logger with a custom implementation.
+	 * 
+	 * @param logger The new logger(can not be null!)
+	 */
+	public static void replaceLogger(Logger logger) {
+		if(logger == null)throw new NullPointerException("Logger can not be null!");
+		MinecraftVersion.logger = logger;
 	}
 
 }

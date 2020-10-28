@@ -22,7 +22,8 @@ import java.util.TimerTask;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.zip.GZIPOutputStream;
-import static de.tr7zw.changeme.nbtapi.utils.MinecraftVersion.logger;
+
+import static de.tr7zw.changeme.nbtapi.utils.MinecraftVersion.getLogger;
 
 /**
  * bStats collects some data for plugin authors.
@@ -135,7 +136,7 @@ public class ApiMetricsLite {
 			if(Bukkit.isPrimaryThread()){
 				Bukkit.getServicesManager().register(ApiMetricsLite.class, this, plugin, ServicePriority.Normal);
 				if (!fFound) {
-					logger.info("[NBTAPI] Using the plugin '" + plugin.getName() + "' to create a bStats instance!");
+					getLogger().info("[NBTAPI] Using the plugin '" + plugin.getName() + "' to create a bStats instance!");
 					// We are the first!
 					startSubmitting();
 				}
@@ -143,7 +144,7 @@ public class ApiMetricsLite {
 				Bukkit.getScheduler().runTask(plugin, () -> {
 					Bukkit.getServicesManager().register(ApiMetricsLite.class, this, plugin, ServicePriority.Normal);
 					if (!fFound) {
-						logger.info("[NBTAPI] Using the plugin '" + plugin.getName() + "' to create a bStats instance!");
+						getLogger().info("[NBTAPI] Using the plugin '" + plugin.getName() + "' to create a bStats instance!");
 						// We are the first!
 						startSubmitting();
 					}
@@ -276,7 +277,7 @@ public class ApiMetricsLite {
 							} catch (ClassNotFoundException e) {
 								// minecraft version 1.14+
 								if (logFailedRequests) {
-									logger.log(Level.WARNING, "[NBTAPI][BSTATS] Encountered exception while posting request!", e);
+									getLogger().log(Level.WARNING, "[NBTAPI][BSTATS] Encountered exception while posting request!", e);
 									// Not using the plugins logger since the plugin isn't the plugin containing the NBT-Api most of the time
 									//this.plugin.getLogger().log(Level.SEVERE, "Encountered unexpected exception ", e); 
 								}
@@ -301,7 +302,7 @@ public class ApiMetricsLite {
 				} catch (Exception e) {
 					// Something went wrong! :(
 					if (logFailedRequests) {
-						logger.log(Level.WARNING, "[NBTAPI][BSTATS] Could not submit plugin stats of " + plugin.getName(), e);
+						getLogger().log(Level.WARNING, "[NBTAPI][BSTATS] Could not submit plugin stats of " + plugin.getName(), e);
 						// Not using the plugins logger since the plugin isn't the plugin containing the NBT-Api most of the time
 						//plugin.getLogger().log(Level.WARNING, "Could not submit plugin stats of " + plugin.getName(), e);
 					}
@@ -360,7 +361,7 @@ public class ApiMetricsLite {
 		}
 		bufferedReader.close();
 		if (logResponseStatusText) {
-			logger.info("[NBTAPI][BSTATS] Sent data to bStats and received response: " + builder.toString());
+			getLogger().info("[NBTAPI][BSTATS] Sent data to bStats and received response: " + builder.toString());
 			// Not using the plugins logger since the plugin isn't the plugin containing the NBT-Api most of the time
 			//plugin.getLogger().info("Sent data to bStats and received response: " + builder.toString());
 		}

@@ -4,7 +4,7 @@ import java.util.logging.Level;
 import org.bukkit.Bukkit;
 
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
-import static de.tr7zw.changeme.nbtapi.utils.MinecraftVersion.logger;
+import static de.tr7zw.changeme.nbtapi.utils.MinecraftVersion.getLogger;
 
 /**
  * Wraps NMS and CRAFT classes
@@ -64,7 +64,7 @@ GAMEPROFILE("com.mojang.authlib.GameProfile", MinecraftVersion.MC1_8_R3)
             String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
             clazz = Class.forName(packageId.getUri() + "." + version + "." + suffix);
         }catch(Exception ex){
-            logger.log(Level.WARNING, "[NBTAPI] Error while trying to resolve the class '" + suffix + "'!", ex);
+        	getLogger().log(Level.WARNING, "[NBTAPI] Error while trying to resolve the class '" + suffix + "'!", ex);
         }
     }
     
@@ -76,7 +76,7 @@ GAMEPROFILE("com.mojang.authlib.GameProfile", MinecraftVersion.MC1_8_R3)
         try{
             clazz = Class.forName(path);
         }catch(Exception ex){
-            logger.log(Level.WARNING, "[NBTAPI] Error while trying to resolve the class '" + path + "'!", ex);
+        	getLogger().log(Level.WARNING, "[NBTAPI] Error while trying to resolve the class '" + path + "'!", ex);
         }
     }
     

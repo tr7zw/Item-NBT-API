@@ -22,7 +22,7 @@ import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 import de.tr7zw.nbtinjector.NBTInjector.Entity;
 import de.tr7zw.nbtinjector.NBTInjector.TileEntity;
 import javassist.ClassPool;
-import static de.tr7zw.changeme.nbtapi.utils.MinecraftVersion.logger;
+import static de.tr7zw.nbtinjector.NBTInjector.logger;
 
 /**
  * Contains the internal methods for different Minecraft Versions of injecting
