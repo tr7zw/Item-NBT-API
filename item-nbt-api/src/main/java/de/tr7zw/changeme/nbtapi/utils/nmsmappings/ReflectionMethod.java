@@ -119,9 +119,9 @@ public enum ReflectionMethod {
     
     ReflectionMethod(Class<?> targetClass, Class<?>[] args, MinecraftVersion addedSince, MinecraftVersion removedAfter, Since... methodnames){
         this.removedAfter = removedAfter;
-    	MinecraftVersion server = MinecraftVersion.getVersion();
-        if(server.compareTo(addedSince) < 0 || (this.removedAfter != null && server.getVersionId() > this.removedAfter.getVersionId()))return;
+        if(!MinecraftVersion.isAtLeastVersion(addedSince) || (this.removedAfter != null && MinecraftVersion.isAtLeastVersion(removedAfter)))return;
         compatible = true;
+    	MinecraftVersion server = MinecraftVersion.getVersion();
         Since target = methodnames[0];
         for(Since s : methodnames){
             if(s.version.getVersionId() <= server.getVersionId() && target.version.getVersionId() < s.version.getVersionId())
