@@ -10,7 +10,7 @@
         <version>${nbt.version}</version>
     </parent>
 
-    <artifactId>nbt-data-api</artifactId>
+    <artifactId>nbt-crafting</artifactId>
     <packaging>jar</packaging>
   <dependencies>
     <dependency>
