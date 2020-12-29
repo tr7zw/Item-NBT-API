@@ -21,7 +21,7 @@ public class NBTChunk {
 	 * 
 	 * @return NBTCompound containing the data of the PersistentDataAPI
 	 */
-	@AvaliableSince(version = MinecraftVersion.MC1_16_R2)
+	@AvaliableSince(version = MinecraftVersion.MC1_16_R3)
 	public NBTCompound getPersistentDataContainer() {
 		FAUtil.check(this::getPersistentDataContainer, CheckUtil::isAvaliable);
 		return new NBTPersistentDataContainer(chunk.getPersistentDataContainer());

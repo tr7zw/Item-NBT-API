@@ -14,7 +14,7 @@ public class ChunkNBTPersistentTest implements Test {
 
 	@Override
 	public void test() throws Exception {
-		if(MinecraftVersion.getVersion().getVersionId() < MinecraftVersion.MC1_16_R2.getVersionId())return;
+		if(MinecraftVersion.getVersion().getVersionId() < MinecraftVersion.MC1_16_R3.getVersionId())return;
 		if (!Bukkit.getWorlds().isEmpty()) {
 			World world = Bukkit.getWorlds().get(0);
 			try {

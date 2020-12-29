@@ -14,6 +14,7 @@ import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 import de.tr7zw.nbtapi.plugin.tests.GameprofileTest;
 import de.tr7zw.nbtapi.plugin.tests.NBTFileTest;
+import de.tr7zw.nbtapi.plugin.tests.blocks.BlockNBTTest;
 import de.tr7zw.nbtapi.plugin.tests.chunks.ChunkNBTPersistentTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.EqualsTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.ForEachTest;
@@ -116,6 +117,9 @@ public class NBTAPI extends JavaPlugin {
 
 		// Chunks
 		apiTests.add(new ChunkNBTPersistentTest());
+		
+		// Blocks
+		apiTests.add(new BlockNBTTest());
 		
 		// Files
 		apiTests.add(new NBTFileTest());
