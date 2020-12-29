@@ -45,6 +45,12 @@ public class SubCompoundsTest implements Test {
 				|| comp.getBoolean(BOOLEAN_TEST_KEY) == BOOLEAN_TEST_VALUE) {
 			throw new NbtApiException("One key does not equal the original compound value!");
 		}
+		
+		// Using getOrCreateCompound twice
+		comp.getOrCreateCompound("someName").setString("test", "abc");
+		if(!comp.getOrCreateCompound("someName").getString("test").equals("abc")) {
+			throw new NbtApiException("getOrCreateCompound did not return the same compound!");
+		}
 	}
 
 }

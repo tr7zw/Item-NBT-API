@@ -544,7 +544,7 @@ public class NBTCompound {
 	}
 
 	/**
-	 * Creates a subCompound
+	 * Creates a subCompound, or returns it if already provided
 	 * 
 	 * @param name Key to use
 	 * @return The subCompound Object
@@ -581,6 +581,16 @@ public class NBTCompound {
 		} finally {
 			readLock.unlock();
 		}
+	}
+	
+	/**
+	 * The same as addCompound, just with a name that better reflects what it does
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public NBTCompound getOrCreateCompound(String name) {
+		return addCompound(name);
 	}
 
 	/**

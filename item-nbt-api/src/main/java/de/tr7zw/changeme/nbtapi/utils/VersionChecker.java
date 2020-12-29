@@ -53,7 +53,7 @@ public class VersionChecker {
 				MinecraftVersion.getLogger().log(Level.INFO, "[NBTAPI] The NBT-API seems to be up-to-date!");
 			} else if (versionDifference == 1) {
 				MinecraftVersion.getLogger().log(Level.WARNING, "[NBTAPI] The NBT-API at '" + NBTItem.class.getPackage()
-						+ "' seems to be a future Version, not yet released on Spigot!");
+						+ "' seems to be a future Version, not yet released on Spigot/CurseForge!");
 				MinecraftVersion.getLogger().log(Level.WARNING, "[NBTAPI] Current Version: '" + MinecraftVersion.VERSION
 						+ "' Newest Version: " + latest.get("name").getAsString() + "'");
 			}
