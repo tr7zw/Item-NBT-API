@@ -2,6 +2,8 @@ package de.tr7zw.changeme.nbtapi;
 
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.locks.Lock;
@@ -667,6 +669,23 @@ public class NBTCompound {
 			writeLock.unlock();
 		}
 	}
+	
+	/**
+	 * Returns the type of the list, null if not a list
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public NBTType getListType(String name) {
+		try {
+			readLock.lock();
+			if (getType(name) != NBTType.NBTTagList)
+				return null;
+			return NBTReflectionUtil.getListType(this, name);
+		} finally {
+			readLock.unlock();
+		}
+	}
 
 	/**
 	 * @param name
@@ -764,8 +783,7 @@ public class NBTCompound {
 	}
 
 	/**
-	 * Uses the nbt-string to match this compound with another object. This allows
-	 * two "technically" different Compounds to match, if they have the same content
+	 * Does a deep compare to check if everything is the same
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -773,7 +791,49 @@ public class NBTCompound {
 			return true;
 		if (obj == null)
 			return false;
-		return toString().equals(obj.toString());
+		if(obj instanceof NBTCompound) {
+			NBTCompound other = (NBTCompound) obj;
+			if(getKeys().equals(other.getKeys())) {
+				for(String key : getKeys()) {
+					if(!isEqual(this, other, key)) {
+						return false;
+					}
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	protected static boolean isEqual(NBTCompound compA, NBTCompound compB, String key) {
+		if(compA.getType(key) != compB.getType(key))return false;
+		switch(compA.getType(key)) {
+		case NBTTagByte:
+			return compA.getByte(key).equals(compB.getByte(key));
+		case NBTTagByteArray:
+			return Arrays.equals(compA.getByteArray(key), compB.getByteArray(key));
+		case NBTTagCompound:
+			return compA.getCompound(key).equals(compB.getCompound(key));
+		case NBTTagDouble:
+			return compA.getDouble(key).equals(compB.getDouble(key));
+		case NBTTagEnd:
+			return true; //??
+		case NBTTagFloat:
+			return compA.getFloat(key).equals(compB.getFloat(key));
+		case NBTTagInt:
+			return compA.getInteger(key).equals(compB.getInteger(key));
+		case NBTTagIntArray:
+			return Arrays.equals(compA.getIntArray(key), compB.getIntArray(key));
+		case NBTTagList:
+			return NBTReflectionUtil.getEntry(compA, key).toString().equals(NBTReflectionUtil.getEntry(compB, key).toString()); // Just string compare the 2 lists
+		case NBTTagLong:
+			return compA.getLong(key).equals(compB.getLong(key));
+		case NBTTagShort:
+			return compA.getShort(key).equals(compB.getShort(key));
+		case NBTTagString:
+			return compA.getString(key).equals(compB.getString(key));
+		}
+		return false;
 	}
 
 }

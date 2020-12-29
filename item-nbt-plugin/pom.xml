@@ -81,13 +81,13 @@
         <configuration>
           <!-- 1.8.8-R0.1-SNAPSHOT-latest, 1.9.2-R0.1-SNAPSHOT-latest, 1.9.4-R0.1-SNAPSHOT-latest, 1.10.2-R0.1-SNAPSHOT-latest,1.11.2,1.12.2,1.13.2,1.14.4,1.15.1,1.16.1,1.16.2 -->
           <versions>
-          1.8.8-R0.1-SNAPSHOT-latest,
+          https://yivesmirror.com/files/paper/PaperSpigot-1.8.8-R0.1-SNAPSHOT-latest.jar,
           1.9.2-R0.1-SNAPSHOT-latest, 1.9.4-R0.1-SNAPSHOT-latest,
           1.10.2-R0.1-SNAPSHOT-latest,
           1.11.2,
-          1.12.2,
-          1.13.2,
-          1.14.4,
+          https://yivesmirror.com/files/paper/Paper-1.12.2-b1618.jar,
+          https://yivesmirror.com/files/paper/Paper-1.13.2-b655.jar,
+          https://yivesmirror.com/files/paper/Paper-1.14.4-b243.jar,
           1.15.1,
           https://yivesmirror.com/files/paper/Paper-1.16.4-latest.jar
           </versions>

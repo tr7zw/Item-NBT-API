@@ -9,7 +9,6 @@
     <module>item-nbt-api</module>
     <module>nbt-injector</module>
 	  <module>nbt-data-api</module>
-    <module>nbt-crafting</module>
     <module>item-nbt-plugin</module>
   </modules>
   <properties>

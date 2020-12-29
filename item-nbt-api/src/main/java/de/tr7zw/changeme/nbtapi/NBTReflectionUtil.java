@@ -459,6 +459,40 @@ public class NBTReflectionUtil {
 			throw new NbtApiException("Exception while getting a list with the type '" + type + "'!", ex);
 		}
 	}
+	
+	public static NBTType getListType(NBTCompound comp, String key) {
+		Object rootnbttag = comp.getCompound();
+		if (rootnbttag == null) {
+			rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
+		}
+		if (!valideCompound(comp))
+			return null;
+		Object workingtag = gettoCompount(rootnbttag, comp);
+		try {
+			Object nbt = ReflectionMethod.COMPOUND_GET.run(workingtag, key);
+			Field f = nbt.getClass().getDeclaredField("type");
+			f.setAccessible(true);
+			return NBTType.valueOf(f.getByte(nbt));
+		} catch (Exception ex) {
+			throw new NbtApiException("Exception while getting the list type!", ex);
+		}
+	}
+	
+	public static Object getEntry(NBTCompound comp, String key) {
+		Object rootnbttag = comp.getCompound();
+		if (rootnbttag == null) {
+			rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
+		}
+		if (!valideCompound(comp))
+			return null;
+		Object workingtag = gettoCompount(rootnbttag, comp);
+		try {
+			Object nbt = ReflectionMethod.COMPOUND_GET.run(workingtag, key);
+			return nbt;
+		} catch (Exception ex) {
+			throw new NbtApiException("Exception while getting an Entry!", ex);
+		}
+	}
 
 	/**
 	 * Uses Gson to set a {@link Serializable} value in a Compound

@@ -67,6 +67,10 @@ public class ListTest implements Test {
 		} else {
 			throw new NbtApiException("Taglist is empty! The Item-NBT-API may not work!");
 		}
+		
+		if(comp.getListType("complist") != NBTType.NBTTagCompound) {
+			throw new NbtApiException("complist had the wrong type! The Item-NBT-API may not work!");
+		}
 
 		// Integer
 		NBTList<Integer> intlist = comp.getIntegerList("inttest");
@@ -76,6 +80,10 @@ public class ListTest implements Test {
 			// ok
 		} else {
 			throw new NbtApiException("IntList is not correct! " + Arrays.toString(intlist.toArray(new Integer[0])));
+		}
+		
+		if(comp.getListType("inttest") != NBTType.NBTTagInt) {
+			throw new NbtApiException("inttest had the wrong type! The Item-NBT-API may not work!");
 		}
 
 		// Double
@@ -87,6 +95,10 @@ public class ListTest implements Test {
 		} else {
 			throw new NbtApiException("DoubleList is not correct! " + Arrays.toString(doublelist.toArray(new Double[0])));
 		}
+		
+		if(comp.getListType("doubletest") != NBTType.NBTTagDouble) {
+			throw new NbtApiException("doubletest had the wrong type! The Item-NBT-API may not work!");
+		}
 
 		// Float
 		NBTList<Float> floatlist = comp.getFloatList("floattest");
@@ -96,6 +108,10 @@ public class ListTest implements Test {
 			// ok
 		} else {
 			throw new NbtApiException("FloatList is not correct! " + Arrays.toString(floatlist.toArray(new Float[0])));
+		}
+		
+		if(comp.getListType("floattest") != NBTType.NBTTagFloat) {
+			throw new NbtApiException("floattest had the wrong type! The Item-NBT-API may not work!");
 		}
 
 		// Long
@@ -108,6 +124,10 @@ public class ListTest implements Test {
 			throw new NbtApiException("LongList is not correct! " + Arrays.toString(longlist.toArray(new Long[0])));
 		}
 
+		if(comp.getListType("longtest") != NBTType.NBTTagLong) {
+			throw new NbtApiException("longtest had the wrong type! The Item-NBT-API may not work!");
+		}
+		
 	}
 
 }
