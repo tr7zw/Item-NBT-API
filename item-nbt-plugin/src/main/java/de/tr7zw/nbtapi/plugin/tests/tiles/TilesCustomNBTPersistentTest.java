@@ -26,7 +26,7 @@ public class TilesCustomNBTPersistentTest implements Test {
 					NBTTileEntity comp = new NBTTileEntity(block.getState());
 					NBTCompound persistentData = comp.getPersistentDataContainer();
 					persistentData.setString("Foo", "Bar");
-					if (!new NBTTileEntity(block.getState()).getPersistentDataContainer().toString().contains("Foo:\"Bar\"")) {
+					if (!new NBTTileEntity(block.getState()).getPersistentDataContainer().getString("Foo").equals("Bar")) {
 						block.setType(Material.AIR);
 						throw new NbtApiException("Custom Data did not save to the Tile!");
 					}

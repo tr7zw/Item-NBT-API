@@ -49,15 +49,7 @@ public class NBTEntity extends NBTCompound {
 	@AvaliableSince(version = MinecraftVersion.MC1_14_R1)
 	public NBTCompound getPersistentDataContainer() {
 		FAUtil.check(this::getPersistentDataContainer, CheckUtil::isAvaliable);
-		if (hasKey("BukkitValues")) {
-			return getCompound("BukkitValues");
-		} else {
-			NBTContainer container = new NBTContainer();
-			container.addCompound("BukkitValues").setString("__nbtapi",
-					"Marker to make the PersistentDataContainer have content");
-			mergeCompound(container);
-			return getCompound("BukkitValues");
-		}
+		return new NBTPersistentDataContainer(ent.getPersistentDataContainer());
 	}
 
 }

@@ -108,7 +108,12 @@ public enum ReflectionMethod {
     REGISTRYMATERIALS_GETKEY (ClassWrapper.NMS_REGISTRYMATERIALS.getClazz(), new Class[]{Object.class}, MinecraftVersion.MC1_13_R2, new Since(MinecraftVersion.MC1_13_R2, "getKey")),
 
     GAMEPROFILE_DESERIALIZE (ClassWrapper.NMS_GAMEPROFILESERIALIZER.getClazz(), new Class[]{ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz()}, MinecraftVersion.MC1_7_R4, new Since(MinecraftVersion.MC1_7_R4, "deserialize")),
-    GAMEPROFILE_SERIALIZE (ClassWrapper.NMS_GAMEPROFILESERIALIZER.getClazz(), new Class[]{ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), ClassWrapper.GAMEPROFILE.getClazz()}, MinecraftVersion.MC1_8_R3, new Since(MinecraftVersion.MC1_8_R3, "serialize"));
+    GAMEPROFILE_SERIALIZE (ClassWrapper.NMS_GAMEPROFILESERIALIZER.getClazz(), new Class[]{ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), ClassWrapper.GAMEPROFILE.getClazz()}, MinecraftVersion.MC1_8_R3, new Since(MinecraftVersion.MC1_8_R3, "serialize")),
+    
+    CRAFT_PERSISTENT_DATA_CONTAINER_TO_TAG (ClassWrapper.CRAFT_PERSISTENTDATACONTAINER.getClazz(), new Class[]{}, MinecraftVersion.MC1_14_R1, new Since(MinecraftVersion.MC1_14_R1, "toTagCompound")),
+    CRAFT_PERSISTENT_DATA_CONTAINER_GET_MAP (ClassWrapper.CRAFT_PERSISTENTDATACONTAINER.getClazz(), new Class[]{}, MinecraftVersion.MC1_14_R1, new Since(MinecraftVersion.MC1_14_R1, "getRaw")),
+    CRAFT_PERSISTENT_DATA_CONTAINER_PUT_ALL (ClassWrapper.CRAFT_PERSISTENTDATACONTAINER.getClazz(), new Class[]{ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz()}, MinecraftVersion.MC1_14_R1, new Since(MinecraftVersion.MC1_14_R1, "putAll")),
+    ;
     
     private MinecraftVersion removedAfter;
     private Since targetVersion;
