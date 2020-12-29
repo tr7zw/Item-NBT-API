@@ -13,7 +13,7 @@
   </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <nbt.version>2.7.0-SNAPSHOT</nbt.version>
+    <nbt.version>2.7.0</nbt.version>
   </properties>
   <dependencies>
     <dependency>
