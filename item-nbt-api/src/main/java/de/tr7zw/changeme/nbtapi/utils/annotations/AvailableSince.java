@@ -10,7 +10,7 @@ import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 
 @Retention(RUNTIME)
 @Target({ METHOD })
-public @interface AvaliableSince {
+public @interface AvailableSince {
 
 	MinecraftVersion version();
 
