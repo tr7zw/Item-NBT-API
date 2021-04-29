@@ -1,0 +1,14 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: com.github.ekryd.sortpom:sortpom-maven-plugin
+    versions:
+    - 2.13.1
+    - 2.14.0
+    - 2.14.1
+    - 2.15.0
