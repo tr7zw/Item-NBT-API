@@ -17,17 +17,17 @@ public class TileTest implements Test {
 		if (!Bukkit.getWorlds().isEmpty()) {
 			World world = Bukkit.getWorlds().get(0);
 			try {
-				Block block = world.getBlockAt(world.getSpawnLocation().getBlockX(), 255,
+				Block block = world.getBlockAt(world.getSpawnLocation().getBlockX(), 254,
 						world.getSpawnLocation().getBlockZ());
 				if (block.getType() == Material.AIR) {
 					block.setType(Material.CHEST);
 					NBTTileEntity tile = new NBTTileEntity(block.getState());
-					if(tile.getInteger("y") != 255) {
+					if(tile.getInteger("y") != 254) {
 						block.setType(Material.AIR);
 						throw new NbtApiException("The Tile Y pos wasn't correct!");
 					}
 					tile.setString("Lock", "test");
-					if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3) && !tile.hasKey("Lock")) {
+					if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3) && !tile.hasKey("Lock") && !"test".equals(tile.getString("test"))) {
 						block.setType(Material.AIR);
 						throw new NbtApiException("The Lock wasn't successfully set.");
 					}

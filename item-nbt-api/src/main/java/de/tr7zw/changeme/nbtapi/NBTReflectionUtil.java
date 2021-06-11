@@ -253,9 +253,11 @@ public class NBTReflectionUtil {
 				Object pos = ObjectCreator.NMS_BLOCKPOSITION.getInstance(tile.getX(), tile.getY(), tile.getZ());
 				o = ReflectionMethod.NMS_WORLD_GET_TILEENTITY.run(nmsworld, pos);
 			}
-			if(MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_16_R1.getVersionId()) {
+			if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_17_R1)) {
+			    ReflectionMethod.TILEENTITY_SET_NBT.run(o, comp);
+			}else if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_16_R1)) {
 				Object blockData = ReflectionMethod.TILEENTITY_GET_BLOCKDATA.run(o);
-				ReflectionMethod.TILEENTITY_SET_NBT.run(o, blockData, comp);
+				ReflectionMethod.TILEENTITY_SET_NBT_LEGACY1161.run(o, blockData, comp);
 			}else {
 				ReflectionMethod.TILEENTITY_SET_NBT_LEGACY1151.run(o, comp);
 			}
@@ -470,7 +472,11 @@ public class NBTReflectionUtil {
 		Object workingtag = gettoCompount(rootnbttag, comp);
 		try {
 			Object nbt = ReflectionMethod.COMPOUND_GET.run(workingtag, key);
-			Field f = nbt.getClass().getDeclaredField("type");
+			String fieldname = "type";
+			if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_17_R1)) {
+			    fieldname = "w";
+			}
+			Field f = nbt.getClass().getDeclaredField(fieldname);
 			f.setAccessible(true);
 			return NBTType.valueOf(f.getByte(nbt));
 		} catch (Exception ex) {
