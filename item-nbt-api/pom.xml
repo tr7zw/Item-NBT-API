@@ -41,6 +41,11 @@
               <shadedPattern>de.tr7zw.changeme.nbtapi.utils.annotations</shadedPattern>
             </relocation>
           </relocations>
+          <transformers>
+            <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+              <resource>LICENSE</resource>
+            </transformer>
+          </transformers>
         </configuration>
         <executions>
           <execution>

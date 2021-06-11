@@ -52,6 +52,11 @@
               <shadedPattern>de.tr7zw.nbtinjector.javassist</shadedPattern>
             </relocation>
           </relocations>
+          <transformers>
+            <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+              <resource>LICENSE</resource>
+            </transformer>
+          </transformers>
         </configuration>
         <executions>
           <execution>
