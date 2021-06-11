@@ -1,6 +1,0 @@
-language: java
-addons:
-  sonarcloud:
-    organization: "tr7zw-github"
-script:
- - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar

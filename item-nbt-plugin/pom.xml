@@ -40,15 +40,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <version>3.2.4</version>
-        <executions>
-          <execution>
-            <id>shade</id>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-          </execution>
-        </executions>
         <configuration>
           <createDependencyReducedPom>true</createDependencyReducedPom>
           <relocations>
@@ -62,12 +53,39 @@
             </relocation>
           </relocations>
         </configuration>
+        <executions>
+          <execution>
+            <id>shade</id>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <phase>package</phase>
+          </execution>
+        </executions>
       </plugin>
       <!-- Start and Stop a SpigotMC server automatically before and after the integration-test phase. -->
       <plugin>
         <groupId>de.tr7zw.spigotmc.maven</groupId>
         <artifactId>tr-spigotmc-maven-plugin</artifactId>
         <version>0.0.3-SNAPSHOT</version>
+        <configuration>
+          <!-- 1.8.8-R0.1-SNAPSHOT-latest, 1.9.2-R0.1-SNAPSHOT-latest, 1.9.4-R0.1-SNAPSHOT-latest, 1.10.2-R0.1-SNAPSHOT-latest,1.11.2,1.12.2,1.13.2,1.14.4,1.15.1,1.16.1,1.16.2 -->
+          <versions>
+            https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.8.8-R0.1-SNAPSHOT/spigot-1.8.8-R0.1-20190527.160303-7.jar,
+          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.9.4-R0.1-SNAPSHOT/spigot-1.9.4-R0.1-20190527.160755-2.jar,
+          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.10.2-R0.1-SNAPSHOT/spigot-1.10.2-R0.1-20190527.154910-2.jar,
+          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.11.2-R0.1-SNAPSHOT/spigot-1.11.2-R0.1-20191216.091129-1.jar,
+          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.12.2-R0.1-SNAPSHOT/spigot-1.12.2-R0.1-20190527.155359-34.jar,
+            <!--https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.13.2-R0.1-SNAPSHOT/spigot-1.13.2-R0.1-20191113.201242-53.jar,-->
+            https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.14.4-R0.1-SNAPSHOT/spigot-1.14.4-R0.1-20191224.232152-15.jar,
+          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.15.2-R0.1-SNAPSHOT/spigot-1.15.2-R0.1-20200625.172449-18.jar,
+          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.16.5-R0.1-SNAPSHOT/spigot-1.16.5-R0.1-20210514.231722-14.jar
+          </versions>
+          <works>Success! This version of NBT-API</works>
+          <error>WARNING! This version of NBT-API</error>
+          <filename>item-nbt-api-plugin-${project.version}.jar</filename>
+          <foldername>item-nbt-plugin</foldername>
+        </configuration>
         <executions>
           <execution>
             <id>start-server</id>
@@ -82,24 +100,6 @@
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <!-- 1.8.8-R0.1-SNAPSHOT-latest, 1.9.2-R0.1-SNAPSHOT-latest, 1.9.4-R0.1-SNAPSHOT-latest, 1.10.2-R0.1-SNAPSHOT-latest,1.11.2,1.12.2,1.13.2,1.14.4,1.15.1,1.16.1,1.16.2 -->
-          <versions>
-          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.8.8-R0.1-SNAPSHOT/spigot-1.8.8-R0.1-20190527.160303-7.jar,
-          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.9.4-R0.1-SNAPSHOT/spigot-1.9.4-R0.1-20190527.160755-2.jar,
-          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.10.2-R0.1-SNAPSHOT/spigot-1.10.2-R0.1-20190527.154910-2.jar,
-          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.11.2-R0.1-SNAPSHOT/spigot-1.11.2-R0.1-20191216.091129-1.jar,
-          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.12.2-R0.1-SNAPSHOT/spigot-1.12.2-R0.1-20190527.155359-34.jar,
-          <!--https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.13.2-R0.1-SNAPSHOT/spigot-1.13.2-R0.1-20191113.201242-53.jar,-->
-          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.14.4-R0.1-SNAPSHOT/spigot-1.14.4-R0.1-20191224.232152-15.jar,
-          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.15.2-R0.1-SNAPSHOT/spigot-1.15.2-R0.1-20200625.172449-18.jar,
-          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.16.5-R0.1-SNAPSHOT/spigot-1.16.5-R0.1-20210514.231722-14.jar
-          </versions>
-          <works>Success! This version of NBT-API</works>
-          <error>WARNING! This version of NBT-API</error>
-          <filename>item-nbt-api-plugin-${project.version}.jar</filename>
-          <foldername>item-nbt-plugin</foldername>
-        </configuration>
       </plugin>
     </plugins>
   </build>
