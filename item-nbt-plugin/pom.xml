@@ -4,7 +4,7 @@
   <parent>
     <groupId>de.tr7zw</groupId>
     <artifactId>item-nbt-parent</artifactId>
-    <version>2.7.2</version>
+    <version>2.8.0-SNAPSHOT</version>
   </parent>
   <artifactId>item-nbt-api-plugin</artifactId>
   <packaging>jar</packaging>
@@ -12,19 +12,19 @@
     <dependency>
       <groupId>de.tr7zw</groupId>
       <artifactId>item-nbt-api</artifactId>
-      <version>2.7.2</version>
+      <version>2.8.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>de.tr7zw</groupId>
       <artifactId>nbt-injector</artifactId>
-      <version>2.7.2</version>
+      <version>2.8.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>de.tr7zw</groupId>
       <artifactId>nbt-data-api</artifactId>
-      <version>2.7.2</version>
+      <version>2.8.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>
@@ -56,6 +56,10 @@
               <pattern>de.tr7zw.changeme.nbtapi</pattern>
               <shadedPattern>de.tr7zw.nbtapi</shadedPattern>
             </relocation>
+            <relocation>
+              <pattern>javassist</pattern>
+              <shadedPattern>de.tr7zw.nbtinjector.javassist</shadedPattern>
+            </relocation>
           </relocations>
         </configuration>
       </plugin>
@@ -81,15 +85,15 @@
         <configuration>
           <!-- 1.8.8-R0.1-SNAPSHOT-latest, 1.9.2-R0.1-SNAPSHOT-latest, 1.9.4-R0.1-SNAPSHOT-latest, 1.10.2-R0.1-SNAPSHOT-latest,1.11.2,1.12.2,1.13.2,1.14.4,1.15.1,1.16.1,1.16.2 -->
           <versions>
-          1.8.8-R0.1-SNAPSHOT-latest,
-          1.9.2-R0.1-SNAPSHOT-latest, 1.9.4-R0.1-SNAPSHOT-latest,
-          1.10.2-R0.1-SNAPSHOT-latest,
-          1.11.2,
-          1.12.2,
-          1.13.2,
-          1.14.4,
-          1.15.1,
-          1.16.4
+          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.8.8-R0.1-SNAPSHOT/spigot-1.8.8-R0.1-20190527.160303-7.jar,
+          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.9.4-R0.1-SNAPSHOT/spigot-1.9.4-R0.1-20190527.160755-2.jar,
+          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.10.2-R0.1-SNAPSHOT/spigot-1.10.2-R0.1-20190527.154910-2.jar,
+          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.11.2-R0.1-SNAPSHOT/spigot-1.11.2-R0.1-20191216.091129-1.jar,
+          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.12.2-R0.1-SNAPSHOT/spigot-1.12.2-R0.1-20190527.155359-34.jar,
+          <!--https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.13.2-R0.1-SNAPSHOT/spigot-1.13.2-R0.1-20191113.201242-53.jar,-->
+          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.14.4-R0.1-SNAPSHOT/spigot-1.14.4-R0.1-20191224.232152-15.jar,
+          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.15.2-R0.1-SNAPSHOT/spigot-1.15.2-R0.1-20200625.172449-18.jar,
+          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.16.5-R0.1-SNAPSHOT/spigot-1.16.5-R0.1-20210514.231722-14.jar
           </versions>
           <works>Success! This version of NBT-API</works>
           <error>WARNING! This version of NBT-API</error>
