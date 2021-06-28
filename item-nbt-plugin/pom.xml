@@ -88,7 +88,8 @@
             <!--https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.13.2-R0.1-SNAPSHOT/spigot-1.13.2-R0.1-20191113.201242-53.jar,-->
             https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.14.4-R0.1-SNAPSHOT/spigot-1.14.4-R0.1-20191224.232152-15.jar,
           https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.15.2-R0.1-SNAPSHOT/spigot-1.15.2-R0.1-20200625.172449-18.jar,
-          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.16.5-R0.1-SNAPSHOT/spigot-1.16.5-R0.1-20210514.231722-14.jar
+          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.16.5-R0.1-SNAPSHOT/spigot-1.16.5-R0.1-20210611.090701-17.jar,
+          https://repo.codemc.io/repository/nms/org/spigotmc/spigot/1.17-R0.1-SNAPSHOT/spigot-1.17-R0.1-20210622.121905-17.jar
           </versions>
           <works>Success! This version of NBT-API</works>
           <error>WARNING! This version of NBT-API</error>
