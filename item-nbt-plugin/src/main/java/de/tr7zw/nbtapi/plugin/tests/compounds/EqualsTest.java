@@ -31,6 +31,23 @@ public class EqualsTest implements Test{
 		if(!customData.equals(cont)) {
 			throw new NbtApiException("Compounds did not match! " + customData + " " + cont);
 		}
+		
+		// empty test
+		
+		if(!new NBTContainer().equals(new NBTContainer())) {
+		    throw new NbtApiException("Two empty tags did not match!");
+		}
+		
+		// not equal test
+		NBTContainer part1 = new NBTContainer();
+		part1.setString("a", "a");
+		part1.setString("b", "b");
+		NBTContainer part2 = new NBTContainer();
+        part2.setString("a", "a");
+        part2.setString("b", "a");
+        if(part1.equals(part2)) {
+            throw new NbtApiException("Missmatched nbt did match!");
+        }
 	}
 
 }

@@ -798,8 +798,8 @@ public class NBTCompound {
 					if(!isEqual(this, other, key)) {
 						return false;
 					}
-					return true;
 				}
+				return true;
 			}
 		}
 		return false;
