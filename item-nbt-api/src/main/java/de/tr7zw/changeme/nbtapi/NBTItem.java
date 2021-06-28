@@ -103,6 +103,17 @@ public class NBTItem extends NBTCompound {
 		item.setItemMeta(meta);
 	}
 
+	
+	/**
+	 * True, if the item has any tags now known for this item type.
+	 * 
+	 * @return true when custom tags are present
+	 */
+	public boolean hasCustomNbtData() {
+        ItemMeta meta = bukkitItem.getItemMeta();
+        return !NBTReflectionUtil.getUnhandledNBTTags(meta).isEmpty();
+	}
+	
 	/**
 	 * Remove all custom (non-vanilla) NBT tags from the NBTItem.
 	 */
