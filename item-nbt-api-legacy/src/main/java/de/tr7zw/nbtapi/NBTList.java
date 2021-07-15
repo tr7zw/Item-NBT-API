@@ -14,7 +14,7 @@ import org.apache.commons.lang.NotImplementedException;
  *
  * @param <T>
  */
-@Deprecated(forRemoval = false)
+@Deprecated
 public abstract class NBTList<T> implements List<T> {
 
 

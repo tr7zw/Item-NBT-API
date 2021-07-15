@@ -9,7 +9,7 @@ package de.tr7zw.nbtapi;
  * @author tr7zw
  *
  */
-@Deprecated(forRemoval = false)
+@Deprecated
 public class NBTListCompound extends NBTCompound {
 
 	private NBTList<?> owner;

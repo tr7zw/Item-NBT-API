@@ -8,7 +8,7 @@ import org.apache.commons.lang.NotImplementedException;
  * @author tr7zw
  *
  */
-@Deprecated(forRemoval = false)
+@Deprecated
 public class NBTStringList extends NBTList<String> {
 
 	protected NBTStringList(NBTCompound owner, String name, NBTType type, Object list) {

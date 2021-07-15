@@ -11,7 +11,7 @@ import org.apache.commons.lang.NotImplementedException;
  * @author tr7zw
  *
  */
-@Deprecated(forRemoval = false)
+@Deprecated
 public class NBTContainer extends NBTCompound {
 
 	/**

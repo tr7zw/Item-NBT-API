@@ -8,7 +8,7 @@ import org.apache.commons.lang.NotImplementedException;
  * @author tr7zw
  *
  */
-@Deprecated(forRemoval = false)
+@Deprecated
 public class NBTDoubleList extends NBTList<Double> {
 
 	protected NBTDoubleList(NBTCompound owner, String name, NBTType type, Object list) {

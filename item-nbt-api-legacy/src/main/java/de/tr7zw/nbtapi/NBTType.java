@@ -6,7 +6,7 @@ package de.tr7zw.nbtapi;
  * @author tr7zw
  *
  */
-@Deprecated(forRemoval = false)
+@Deprecated
 public enum NBTType {
 	NBTTagEnd(0),
     NBTTagByte(1),

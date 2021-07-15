@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
  * @author tr7zw
  *
  */
-@Deprecated(forRemoval = false)
+@Deprecated
 public class NBTCompound {
 
 	protected NBTCompound(NBTCompound owner, String name) {

@@ -11,7 +11,7 @@ import org.bukkit.inventory.meta.ItemMeta;
  * @author tr7zw
  *
  */
-@Deprecated(forRemoval = false)
+@Deprecated
 public class NBTItem extends NBTCompound {
 
 	/**

@@ -4,7 +4,7 @@ import org.bukkit.block.Block;
 
 import de.tr7zw.nbtapi.utils.MinecraftVersion;
 
-@Deprecated(forRemoval = false)
+@Deprecated
 public class NBTBlock {
 
 	private final Block block;

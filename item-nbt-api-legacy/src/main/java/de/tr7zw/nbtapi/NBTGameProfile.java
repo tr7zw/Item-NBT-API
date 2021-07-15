@@ -4,7 +4,7 @@ import org.apache.commons.lang.NotImplementedException;
 
 import com.mojang.authlib.GameProfile;
 
-@Deprecated(forRemoval = false)
+@Deprecated
 public class NBTGameProfile {
 
 	/**

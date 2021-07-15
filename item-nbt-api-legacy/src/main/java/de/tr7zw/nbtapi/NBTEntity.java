@@ -14,7 +14,7 @@ import de.tr7zw.nbtapi.utils.annotations.AvailableSince;
  * @author tr7zw
  *
  */
-@Deprecated(forRemoval = false)
+@Deprecated
 public class NBTEntity extends NBTCompound {
 
 	private final Entity ent;

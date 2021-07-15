@@ -3,7 +3,7 @@ package de.tr7zw.nbtapi;
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.persistence.PersistentDataContainer;
 
-@Deprecated(forRemoval = false)
+@Deprecated
 public class NBTPersistentDataContainer extends NBTCompound {
 
 	private final PersistentDataContainer container;

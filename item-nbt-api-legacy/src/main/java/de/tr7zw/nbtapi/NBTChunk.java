@@ -7,7 +7,7 @@ import de.tr7zw.nbtapi.utils.MinecraftVersion;
 import de.tr7zw.nbtapi.utils.annotations.AvailableSince;
 import de.tr7zw.nbtapi.utils.annotations.CheckUtil;
 
-@Deprecated(forRemoval = false)
+@Deprecated
 public class NBTChunk {
 
 	private final Chunk chunk;
