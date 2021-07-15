@@ -1,0 +1,5 @@
+main: dev.tr7zw.nbtapi.plugin.NBTAPI
+name: NBTAPI
+version: ${project.version}
+author: tr7zw
+api-version: 1.13

@@ -14,13 +14,13 @@ import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 
-import de.tr7zw.changeme.nbtapi.NbtApiException;
-import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
-import de.tr7zw.changeme.nbtapi.utils.ReflectionUtil;
-import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
-import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 import de.tr7zw.nbtinjector.NBTInjector.Entity;
 import de.tr7zw.nbtinjector.NBTInjector.TileEntity;
+import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.utils.MinecraftVersion;
+import dev.tr7zw.nbtapi.utils.ReflectionUtil;
+import dev.tr7zw.nbtapi.utils.nmsmappings.ClassWrapper;
+import dev.tr7zw.nbtapi.utils.nmsmappings.ReflectionMethod;
 import javassist.ClassPool;
 import static de.tr7zw.nbtinjector.NBTInjector.logger;
 

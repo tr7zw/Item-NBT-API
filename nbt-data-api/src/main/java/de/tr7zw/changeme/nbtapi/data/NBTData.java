@@ -8,8 +8,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 
-import de.tr7zw.changeme.nbtapi.NBTFile;
-import de.tr7zw.changeme.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.NBTFile;
+import dev.tr7zw.nbtapi.NbtApiException;
 
 public class NBTData {
 

@@ -7,16 +7,16 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-import de.tr7zw.changeme.nbtapi.NBTCompound;
-import de.tr7zw.changeme.nbtapi.NBTContainer;
-import de.tr7zw.changeme.nbtapi.NBTEntity;
-import de.tr7zw.changeme.nbtapi.NBTReflectionUtil;
-import de.tr7zw.changeme.nbtapi.NBTTileEntity;
-import de.tr7zw.changeme.nbtapi.NbtApiException;
-import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
-import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
-import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ObjectCreator;
-import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
+import dev.tr7zw.nbtapi.NBTCompound;
+import dev.tr7zw.nbtapi.NBTContainer;
+import dev.tr7zw.nbtapi.NBTEntity;
+import dev.tr7zw.nbtapi.NBTReflectionUtil;
+import dev.tr7zw.nbtapi.NBTTileEntity;
+import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.utils.MinecraftVersion;
+import dev.tr7zw.nbtapi.utils.nmsmappings.ClassWrapper;
+import dev.tr7zw.nbtapi.utils.nmsmappings.ObjectCreator;
+import dev.tr7zw.nbtapi.utils.nmsmappings.ReflectionMethod;
 import javassist.ClassPool;
 
 /**

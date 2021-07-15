@@ -6,9 +6,9 @@ import java.io.IOException;
 
 import org.bukkit.util.Vector;
 
-import de.tr7zw.changeme.nbtapi.NBTCompound;
-import de.tr7zw.changeme.nbtapi.NBTFile;
-import de.tr7zw.changeme.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.NBTCompound;
+import dev.tr7zw.nbtapi.NBTFile;
+import dev.tr7zw.nbtapi.NbtApiException;
 
 public class WorldData {
 

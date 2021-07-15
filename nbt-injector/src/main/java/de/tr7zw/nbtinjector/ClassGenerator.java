@@ -3,10 +3,10 @@ package de.tr7zw.nbtinjector;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 
-import de.tr7zw.changeme.nbtapi.NBTCompound;
-import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
-import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
-import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
+import dev.tr7zw.nbtapi.NBTCompound;
+import dev.tr7zw.nbtapi.utils.MinecraftVersion;
+import dev.tr7zw.nbtapi.utils.nmsmappings.ClassWrapper;
+import dev.tr7zw.nbtapi.utils.nmsmappings.ReflectionMethod;
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
