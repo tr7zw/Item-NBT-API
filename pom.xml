@@ -18,12 +18,14 @@
     </license>
   </licenses>
   <modules>
-    <module>nbt-api</module>
-    <module>nbt-api-spigot</module>
-    <module>nbt-injector</module>
-    <module>nbt-data-api</module>
-    <module>nbt-api-plugin</module>
-    <module>item-nbt-api-legacy</module>
+    <!-- CORE -->
+    <module>core/nbt-api</module>
+    <module>core/nbt-data-api</module>
+    <!-- Spigot -->
+    <module>spigot/nbt-api-spigot</module>
+    <module>spigot/nbt-injector</module>
+    <module>spigot/nbt-api-plugin</module>
+    <module>spigot/item-nbt-api-legacy</module>
   </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

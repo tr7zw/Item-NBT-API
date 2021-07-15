@@ -101,7 +101,7 @@
           <works>Success! This version of NBT-API</works>
           <error>WARNING! This version of NBT-API</error>
           <filename>nbt-api-plugin-${project.version}.jar</filename>
-          <foldername>nbt-api-plugin</foldername>
+          <foldername>spigot/nbt-api-plugin</foldername>
         </configuration>
         <executions>
           <execution>
