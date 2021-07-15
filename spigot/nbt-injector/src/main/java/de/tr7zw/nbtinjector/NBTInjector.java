@@ -159,7 +159,7 @@ public class NBTInjector {
 	 * @param entity Entity to get the NBTCompound from
 	 * @return NBTCompound instance
 	 */
-	public static Writeable getNbtData(org.bukkit.entity.Entity entity) {
+	public static NBTCompound getNbtData(org.bukkit.entity.Entity entity) {
 		if (entity == null) {
 			return null;
 		}

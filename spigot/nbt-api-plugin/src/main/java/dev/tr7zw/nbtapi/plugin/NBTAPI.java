@@ -1,6 +1,10 @@
 package dev.tr7zw.nbtapi.plugin;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -8,38 +12,39 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import de.tr7zw.nbtapi.utils.MinecraftVersion;
 import de.tr7zw.nbtinjector.NBTInjector;
-import dev.tr7zw.nbtapi.plugin.tests.GameprofileTest;
-import dev.tr7zw.nbtapi.plugin.tests.NBTFileTest;
-import dev.tr7zw.nbtapi.plugin.tests.blocks.BlockNBTTest;
-import dev.tr7zw.nbtapi.plugin.tests.chunks.ChunkNBTPersistentTest;
-import dev.tr7zw.nbtapi.plugin.tests.compounds.EqualsTest;
-import dev.tr7zw.nbtapi.plugin.tests.compounds.ForEachTest;
-import dev.tr7zw.nbtapi.plugin.tests.compounds.GetterSetterTest;
-import dev.tr7zw.nbtapi.plugin.tests.compounds.IteratorTest;
-import dev.tr7zw.nbtapi.plugin.tests.compounds.ListTest;
-import dev.tr7zw.nbtapi.plugin.tests.compounds.MergeTest;
-import dev.tr7zw.nbtapi.plugin.tests.compounds.RemovingKeys;
-import dev.tr7zw.nbtapi.plugin.tests.compounds.StreamTest;
-import dev.tr7zw.nbtapi.plugin.tests.compounds.SubCompoundsTest;
-import dev.tr7zw.nbtapi.plugin.tests.compounds.TypeTest;
-import dev.tr7zw.nbtapi.plugin.tests.data.WorldDataTest;
-import dev.tr7zw.nbtapi.plugin.tests.entities.EntityCustomNbtPersistentTest;
-import dev.tr7zw.nbtapi.plugin.tests.entities.EntityTest;
-import dev.tr7zw.nbtapi.plugin.tests.injector.EntityCustomNbtInjectorTest;
-import dev.tr7zw.nbtapi.plugin.tests.injector.MergeTileSubCompoundTest;
-import dev.tr7zw.nbtapi.plugin.tests.injector.SpawnEntityCustomNbtInjectorTest;
-import dev.tr7zw.nbtapi.plugin.tests.injector.TilesCustomNBTInjectorTest;
-import dev.tr7zw.nbtapi.plugin.tests.items.DirectApplyTest;
-import dev.tr7zw.nbtapi.plugin.tests.items.EmptyItemTest;
-import dev.tr7zw.nbtapi.plugin.tests.items.ItemConvertionTest;
-import dev.tr7zw.nbtapi.plugin.tests.items.ItemMergingTest;
-import dev.tr7zw.nbtapi.plugin.tests.tiles.TileTest;
-import dev.tr7zw.nbtapi.plugin.tests.tiles.TilesCustomNBTPersistentTest;
+import dev.tr7zw.nbtapi.plugin.tests.Test;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.GameprofileTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.NBTFileTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.blocks.BlockNBTTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.chunks.ChunkNBTPersistentTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.compounds.EqualsTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.compounds.ForEachTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.compounds.GetterSetterTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.compounds.IteratorTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.compounds.ListTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.compounds.MergeTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.compounds.RemovingKeys;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.compounds.StreamTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.compounds.SubCompoundsTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.compounds.TypeTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.data.WorldDataTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.entities.EntityCustomNbtPersistentTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.entities.EntityTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.injector.EntityCustomNbtInjectorTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.injector.MergeTileSubCompoundTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.injector.SpawnEntityCustomNbtInjectorTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.injector.TilesCustomNBTInjectorTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.items.DirectApplyTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.items.EmptyItemTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.items.ItemConvertionTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.items.ItemMergingTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.tiles.TileTest;
+import dev.tr7zw.nbtapi.plugin.tests.legacy.tiles.TilesCustomNBTPersistentTest;
 
 public class NBTAPI extends JavaPlugin {
 
 	private boolean compatible = true;
-	private ArrayList<dev.tr7zw.nbtapi.plugin.tests.Test> apiTests = new ArrayList<>();
+	private final List<dev.tr7zw.nbtapi.plugin.tests.Test> apiTests = new ArrayList<>();
 
 	private static NBTAPI instance;
 
@@ -78,58 +83,7 @@ public class NBTAPI extends JavaPlugin {
 			}
 		}
 
-		// NBTCompounds
-		apiTests.add(new GetterSetterTest());
-		apiTests.add(new TypeTest());
-		apiTests.add(new RemovingKeys());
-		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) // 1.7.10 list support is not complete at all
-			apiTests.add(new ListTest());
-		apiTests.add(new SubCompoundsTest());
-		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) // 1.7.10 not a thing
-			apiTests.add(new MergeTest());
-		apiTests.add(new ForEachTest());
-		apiTests.add(new StreamTest());
-		apiTests.add(new EqualsTest());
-		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) // 1.7.10 list support is not complete at all
-			apiTests.add(new IteratorTest());
 
-		// Items
-		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) // 1.7.10 not a thing
-			apiTests.add(new ItemConvertionTest());
-		apiTests.add(new EmptyItemTest());
-		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) { // 1.7.10 not a thing
-			apiTests.add(new ItemMergingTest());
-			apiTests.add(new DirectApplyTest());
-		}
-
-		// Entity
-		apiTests.add(new EntityTest());
-		apiTests.add(new EntityCustomNbtPersistentTest());
-
-		// Tiles
-		apiTests.add(new TileTest());
-		apiTests.add(new TilesCustomNBTPersistentTest());
-
-		// Chunks
-		apiTests.add(new ChunkNBTPersistentTest());
-		
-		// Blocks
-		apiTests.add(new BlockNBTTest());
-		
-		// Files
-		apiTests.add(new NBTFileTest());
-		
-		// Data
-		apiTests.add(new WorldDataTest());
-		
-		// Injector
-		apiTests.add(new TilesCustomNBTInjectorTest());
-		apiTests.add(new MergeTileSubCompoundTest());
-		apiTests.add(new EntityCustomNbtInjectorTest());
-		apiTests.add(new SpawnEntityCustomNbtInjectorTest());
-		
-		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3))
-			apiTests.add(new GameprofileTest());
 
 	}
 
@@ -171,11 +125,13 @@ public class NBTAPI extends JavaPlugin {
 			}
 		}
 		if (!methodUnlinked)
-			getLogger().info("All Methods were able to link!");
+			getLogger().info("All Methods were able to link!");*/
 		getLogger().info("Running NBT reflection test...");
 
-		Map<dev.tr7zw.nbtapi.plugin.tests.Test, Exception> results = new HashMap<>();
-		for (dev.tr7zw.nbtapi.plugin.tests.Test test : apiTests) {
+		addLegacyTests();
+		
+		Map<Test, Exception> results = new HashMap<>();
+		for (Test test : apiTests) {
 			try {
 				test.test();
 				results.put(test, null);
@@ -190,7 +146,7 @@ public class NBTAPI extends JavaPlugin {
 			}
 		}
 
-		for (Entry<dev.tr7zw.nbtapi.plugin.tests.Test, Exception> entry : results.entrySet()) {
+		for (Entry<Test, Exception> entry : results.entrySet()) {
 			if (entry.getValue() != null)
 				compatible = false;
 			getLogger().info(entry.getKey().getClass().getSimpleName() + ": "
@@ -206,7 +162,7 @@ public class NBTAPI extends JavaPlugin {
 			if(MinecraftVersion.getVersion() == MinecraftVersion.MC1_7_R4) {
 				getLogger().warning("1.7.10 is only partally supported! Some thing will not work/are not yet avaliable in 1.7.10!");
 			}
-		}*/
+		}
 
 	}
 
@@ -217,4 +173,59 @@ public class NBTAPI extends JavaPlugin {
 		return compatible;
 	}
 
+	private void addLegacyTests() {
+	       // NBTCompounds
+        apiTests.add(new GetterSetterTest());
+        apiTests.add(new TypeTest());
+        apiTests.add(new RemovingKeys());
+        if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) // 1.7.10 list support is not complete at all
+            apiTests.add(new ListTest());
+        apiTests.add(new SubCompoundsTest());
+        if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) // 1.7.10 not a thing
+            apiTests.add(new MergeTest());
+        apiTests.add(new ForEachTest());
+        apiTests.add(new StreamTest());
+        apiTests.add(new EqualsTest());
+        if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) // 1.7.10 list support is not complete at all
+            apiTests.add(new IteratorTest());
+
+        // Items
+        if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) // 1.7.10 not a thing
+            apiTests.add(new ItemConvertionTest());
+        apiTests.add(new EmptyItemTest());
+        if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) { // 1.7.10 not a thing
+            apiTests.add(new ItemMergingTest());
+            apiTests.add(new DirectApplyTest());
+        }
+
+        // Entity
+        apiTests.add(new EntityTest());
+        apiTests.add(new EntityCustomNbtPersistentTest());
+
+        // Tiles
+        apiTests.add(new TileTest());
+        apiTests.add(new TilesCustomNBTPersistentTest());
+
+        // Chunks
+        apiTests.add(new ChunkNBTPersistentTest());
+        
+        // Blocks
+        apiTests.add(new BlockNBTTest());
+        
+        // Files
+        apiTests.add(new NBTFileTest());
+        
+        // Data
+        apiTests.add(new WorldDataTest());
+        
+        // Injector
+        apiTests.add(new TilesCustomNBTInjectorTest());
+        apiTests.add(new MergeTileSubCompoundTest());
+        apiTests.add(new EntityCustomNbtInjectorTest());
+        apiTests.add(new SpawnEntityCustomNbtInjectorTest());
+        
+        if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3))
+            apiTests.add(new GameprofileTest());
+	}
+	
 }
