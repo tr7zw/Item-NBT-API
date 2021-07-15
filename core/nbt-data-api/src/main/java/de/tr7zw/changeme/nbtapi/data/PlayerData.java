@@ -3,9 +3,9 @@ package de.tr7zw.changeme.nbtapi.data;
 import java.io.File;
 import java.io.IOException;
 
-import dev.tr7zw.nbtapi.NBTCompound;
 import dev.tr7zw.nbtapi.NBTFile;
 import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.Readable;
 
 public class PlayerData {
 
@@ -19,7 +19,7 @@ public class PlayerData {
 		return file;
 	}
 
-	public NBTCompound getCompound() {
+	public Readable getCompound() {
 		return file;
 	}
 

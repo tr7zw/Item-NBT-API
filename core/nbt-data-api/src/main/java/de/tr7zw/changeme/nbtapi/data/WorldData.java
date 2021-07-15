@@ -6,9 +6,10 @@ import java.io.IOException;
 
 import org.bukkit.util.Vector;
 
-import dev.tr7zw.nbtapi.NBTCompound;
 import dev.tr7zw.nbtapi.NBTFile;
 import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.Readable;
+import dev.tr7zw.nbtapi.Writeable;
 
 public class WorldData {
 
@@ -23,7 +24,7 @@ public class WorldData {
 		return file;
 	}
 
-	public NBTCompound getCompound() {
+	public Readable getCompound() {
 		return file;
 	}
 
@@ -44,12 +45,12 @@ public class WorldData {
 	}
 	
 	public Vector getSpawnPosition(){
-		NBTCompound data = file.getCompound("Data");
+		Readable data = file.getCompound("Data");
 		return new Vector(data.getInteger("SpawnX"), data.getInteger("SpawnY"), data.getInteger("SpawnZ"));
 	}
 	
 	public void setSpawnPosition(Vector vec){
-		NBTCompound data = file.getCompound("Data");
+		Writeable data = file.getCompound("Data");
 		data.setInteger("SpawnX", vec.getBlockX());
 		data.setInteger("SpawnY", vec.getBlockY());
 		data.setInteger("SpawnZ", vec.getBlockZ());

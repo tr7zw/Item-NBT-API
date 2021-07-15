@@ -13,6 +13,7 @@ import dev.tr7zw.nbtapi.NBTEntity;
 import dev.tr7zw.nbtapi.NBTReflectionUtil;
 import dev.tr7zw.nbtapi.NBTTileEntity;
 import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.Writeable;
 import dev.tr7zw.nbtapi.utils.MinecraftVersion;
 import dev.tr7zw.nbtapi.utils.nmsmappings.ClassWrapper;
 import dev.tr7zw.nbtapi.utils.nmsmappings.ObjectCreator;
@@ -157,7 +158,7 @@ public class NBTInjector {
 	 * @param entity Entity to get the NBTCompound from
 	 * @return NBTCompound instance
 	 */
-	public static NBTCompound getNbtData(org.bukkit.entity.Entity entity) {
+	public static Writeable getNbtData(org.bukkit.entity.Entity entity) {
 		if (entity == null) {
 			return null;
 		}

@@ -6,9 +6,9 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import de.tr7zw.nbtinjector.NBTInjector;
-import dev.tr7zw.nbtapi.NBTCompound;
 import dev.tr7zw.nbtapi.NBTTileEntity;
 import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.Writeable;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 
 public class TilesCustomNBTInjectorTest implements Test {
@@ -23,7 +23,7 @@ public class TilesCustomNBTInjectorTest implements Test {
 						world.getSpawnLocation().getBlockZ());
 				if (block.getType() == Material.AIR) {
 					block.setType(Material.CHEST);
-					NBTCompound comp = NBTInjector.getNbtData(block.getState());
+					Writeable comp = NBTInjector.getNbtData(block.getState());
 					comp.setString("Foo", "Bar");
 					if (!new NBTTileEntity(block.getState()).toString().contains("__extraData:{Foo:\"Bar\"}")) {
 						block.setType(Material.AIR);

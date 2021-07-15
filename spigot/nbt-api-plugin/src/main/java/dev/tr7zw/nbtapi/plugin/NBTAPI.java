@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import de.tr7zw.nbtapi.utils.MinecraftVersion;
 import de.tr7zw.nbtinjector.NBTInjector;
 import dev.tr7zw.nbtapi.plugin.tests.GameprofileTest;
 import dev.tr7zw.nbtapi.plugin.tests.NBTFileTest;
@@ -37,7 +38,6 @@ import dev.tr7zw.nbtapi.plugin.tests.items.ItemConvertionTest;
 import dev.tr7zw.nbtapi.plugin.tests.items.ItemMergingTest;
 import dev.tr7zw.nbtapi.plugin.tests.tiles.TileTest;
 import dev.tr7zw.nbtapi.plugin.tests.tiles.TilesCustomNBTPersistentTest;
-import dev.tr7zw.nbtapi.utils.MinecraftVersion;
 import dev.tr7zw.nbtapi.utils.nmsmappings.ClassWrapper;
 import dev.tr7zw.nbtapi.utils.nmsmappings.ReflectionMethod;
 

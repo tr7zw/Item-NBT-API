@@ -7,6 +7,7 @@ import dev.tr7zw.nbtapi.NBTCompound;
 import dev.tr7zw.nbtapi.NBTContainer;
 import dev.tr7zw.nbtapi.NBTFile;
 import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.Writeable;
 import dev.tr7zw.nbtapi.plugin.NBTAPI;
 
 public class NBTFileTest implements Test {
@@ -18,7 +19,7 @@ public class NBTFileTest implements Test {
 		Files.deleteIfExists(testFile.toPath());
 		NBTFile file = new NBTFile(testFile);
 		file.addCompound("testcomp").setString("test1", "ok");
-		NBTCompound comp = file.getCompound("testcomp");
+		Writeable comp = file.getCompound("testcomp");
 		comp.setString("test2", "ok");
 		file.setLong("time", System.currentTimeMillis());
 		file.setString("test", "test");

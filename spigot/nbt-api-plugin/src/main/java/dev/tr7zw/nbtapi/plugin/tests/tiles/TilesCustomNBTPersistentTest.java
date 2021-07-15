@@ -5,9 +5,9 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
-import dev.tr7zw.nbtapi.NBTCompound;
 import dev.tr7zw.nbtapi.NBTTileEntity;
 import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.Writeable;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 import dev.tr7zw.nbtapi.utils.MinecraftVersion;
 
@@ -24,7 +24,7 @@ public class TilesCustomNBTPersistentTest implements Test {
 				if (block.getType() == Material.AIR) {
 					block.setType(Material.CHEST);
 					NBTTileEntity comp = new NBTTileEntity(block.getState());
-					NBTCompound persistentData = comp.getPersistentDataContainer();
+					Writeable persistentData = comp.getPersistentDataContainer();
 					persistentData.setString("Foo", "Bar");
 					if (!new NBTTileEntity(block.getState()).getPersistentDataContainer().getString("Foo").equals("Bar")) {
 						block.setType(Material.AIR);

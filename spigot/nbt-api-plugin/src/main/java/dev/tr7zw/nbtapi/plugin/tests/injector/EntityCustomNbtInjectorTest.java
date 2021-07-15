@@ -7,9 +7,9 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
 
 import de.tr7zw.nbtinjector.NBTInjector;
-import dev.tr7zw.nbtapi.NBTCompound;
 import dev.tr7zw.nbtapi.NBTEntity;
 import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.Writeable;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 
 public class EntityCustomNbtInjectorTest implements Test {
@@ -23,7 +23,7 @@ public class EntityCustomNbtInjectorTest implements Test {
 				if (!world.getEntitiesByClasses(Animals.class, Monster.class).isEmpty()) {
 					Entity ent = world.getEntitiesByClasses(Animals.class, Monster.class).iterator().next();
 					ent = NBTInjector.patchEntity(ent);
-					NBTCompound comp = NBTInjector.getNbtData(ent);
+					Writeable comp = NBTInjector.getNbtData(ent);
 					comp.setString("Hello", "World");
 					NBTEntity nbtent = new NBTEntity(ent);
 					if (!nbtent.toString().contains("__extraData:{Hello:\"World\"}")) {

@@ -2,7 +2,7 @@ package dev.tr7zw.nbtapi;
 
 /**
  * A generic {@link RuntimeException} that can be thrown by most methods in the
- * NBTAPI.
+ * NBTAPI in case of compatebility/logic issues.
  * 
  * @author tr7zw
  *
