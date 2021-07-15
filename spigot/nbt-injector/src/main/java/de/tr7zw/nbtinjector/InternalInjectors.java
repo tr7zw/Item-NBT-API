@@ -1,5 +1,7 @@
 package de.tr7zw.nbtinjector;
 
+import static de.tr7zw.nbtinjector.NBTInjector.logger;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -14,15 +16,13 @@ import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 
+import de.tr7zw.nbtapi.NbtApiException;
+import de.tr7zw.nbtapi.utils.MinecraftVersion;
 import de.tr7zw.nbtinjector.NBTInjector.Entity;
 import de.tr7zw.nbtinjector.NBTInjector.TileEntity;
-import dev.tr7zw.nbtapi.NbtApiException;
-import dev.tr7zw.nbtapi.utils.MinecraftVersion;
-import dev.tr7zw.nbtapi.utils.ReflectionUtil;
 import dev.tr7zw.nbtapi.utils.nmsmappings.ClassWrapper;
 import dev.tr7zw.nbtapi.utils.nmsmappings.ReflectionMethod;
 import javassist.ClassPool;
-import static de.tr7zw.nbtinjector.NBTInjector.logger;
 
 /**
  * Contains the internal methods for different Minecraft Versions of injecting

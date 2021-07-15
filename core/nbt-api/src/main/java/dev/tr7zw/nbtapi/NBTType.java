@@ -6,7 +6,6 @@ package dev.tr7zw.nbtapi;
  * @author tr7zw
  *
  */
-@SuppressWarnings("javadoc")
 public enum NBTType {
 	NBTTagEnd(0),
     NBTTagByte(1),

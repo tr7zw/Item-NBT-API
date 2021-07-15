@@ -6,8 +6,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.google.common.collect.Lists;
 
-import dev.tr7zw.nbtapi.NBTContainer;
-import dev.tr7zw.nbtapi.NBTItem;
+import de.tr7zw.nbtapi.NBTContainer;
+import de.tr7zw.nbtapi.NBTItem;
 import dev.tr7zw.nbtapi.NbtApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 

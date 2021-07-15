@@ -5,9 +5,9 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
+import de.tr7zw.nbtapi.NBTCompound;
+import de.tr7zw.nbtapi.NBTContainer;
 import de.tr7zw.nbtinjector.NBTInjector;
-import dev.tr7zw.nbtapi.NBTCompound;
-import dev.tr7zw.nbtapi.NBTContainer;
 import dev.tr7zw.nbtapi.NbtApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 

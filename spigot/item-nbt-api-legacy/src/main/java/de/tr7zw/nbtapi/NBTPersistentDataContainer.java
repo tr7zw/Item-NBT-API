@@ -5,12 +5,9 @@ import org.bukkit.persistence.PersistentDataContainer;
 
 @Deprecated
 public class NBTPersistentDataContainer extends NBTCompound {
-
-	private final PersistentDataContainer container;
 	
 	protected NBTPersistentDataContainer(PersistentDataContainer container) {
 		super(null, null);
-		this.container = container;
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package de.tr7zw.nbtapi;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.Chunk;
 
 import de.tr7zw.annotations.FAUtil;
@@ -10,10 +11,9 @@ import de.tr7zw.nbtapi.utils.annotations.CheckUtil;
 @Deprecated
 public class NBTChunk {
 
-	private final Chunk chunk;
 	
 	public NBTChunk(Chunk chunk) {
-		this.chunk = chunk;
+	    throw new NotImplementedException();
 	}
 	
 	/**
@@ -25,7 +25,7 @@ public class NBTChunk {
 	@AvailableSince(version = MinecraftVersion.MC1_16_R3)
 	public NBTCompound getPersistentDataContainer() {
 		FAUtil.check(this::getPersistentDataContainer, CheckUtil::isAvaliable);
-		return new NBTPersistentDataContainer(chunk.getPersistentDataContainer());
+		throw new NotImplementedException();
 	}
 	
 }

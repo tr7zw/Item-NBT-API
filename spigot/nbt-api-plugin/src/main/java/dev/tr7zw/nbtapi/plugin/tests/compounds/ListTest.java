@@ -2,13 +2,13 @@ package dev.tr7zw.nbtapi.plugin.tests.compounds;
 
 import java.util.Arrays;
 
-import dev.tr7zw.nbtapi.NBTCompound;
-import dev.tr7zw.nbtapi.NBTCompoundList;
-import dev.tr7zw.nbtapi.NBTContainer;
-import dev.tr7zw.nbtapi.NBTList;
-import dev.tr7zw.nbtapi.NBTListCompound;
-import dev.tr7zw.nbtapi.NBTType;
-import dev.tr7zw.nbtapi.NbtApiException;
+import de.tr7zw.nbtapi.NBTCompound;
+import de.tr7zw.nbtapi.NBTCompoundList;
+import de.tr7zw.nbtapi.NBTContainer;
+import de.tr7zw.nbtapi.NBTListCompound;
+import de.tr7zw.nbtapi.NBTList;
+import de.tr7zw.nbtapi.NBTType;
+import de.tr7zw.nbtapi.NbtApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 
 public class ListTest implements Test {

@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import com.mojang.authlib.GameProfile;
 
-import dev.tr7zw.nbtapi.NBTCompound;
-import dev.tr7zw.nbtapi.NBTGameProfile;
+import de.tr7zw.nbtapi.NBTCompound;
+import de.tr7zw.nbtapi.NBTGameProfile;
 import dev.tr7zw.nbtapi.NbtApiException;
 
 public class GameprofileTest implements Test {

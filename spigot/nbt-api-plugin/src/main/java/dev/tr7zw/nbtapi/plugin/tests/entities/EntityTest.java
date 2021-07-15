@@ -5,7 +5,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Monster;
 
-import dev.tr7zw.nbtapi.NBTEntity;
+import de.tr7zw.nbtapi.NBTEntity;
 import dev.tr7zw.nbtapi.NbtApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 

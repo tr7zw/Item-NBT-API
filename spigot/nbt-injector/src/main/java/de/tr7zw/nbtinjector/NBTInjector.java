@@ -7,14 +7,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-import dev.tr7zw.nbtapi.NBTCompound;
-import dev.tr7zw.nbtapi.NBTContainer;
-import dev.tr7zw.nbtapi.NBTEntity;
+import de.tr7zw.nbtapi.NBTCompound;
+import de.tr7zw.nbtapi.NBTContainer;
+import de.tr7zw.nbtapi.NBTEntity;
+import de.tr7zw.nbtapi.NBTTileEntity;
+import de.tr7zw.nbtapi.NbtApiException;
+import de.tr7zw.nbtapi.utils.MinecraftVersion;
 import dev.tr7zw.nbtapi.NBTReflectionUtil;
-import dev.tr7zw.nbtapi.NBTTileEntity;
-import dev.tr7zw.nbtapi.NbtApiException;
 import dev.tr7zw.nbtapi.Writeable;
-import dev.tr7zw.nbtapi.utils.MinecraftVersion;
 import dev.tr7zw.nbtapi.utils.nmsmappings.ClassWrapper;
 import dev.tr7zw.nbtapi.utils.nmsmappings.ObjectCreator;
 import dev.tr7zw.nbtapi.utils.nmsmappings.ReflectionMethod;
@@ -26,6 +26,7 @@ import javassist.ClassPool;
  * @author tr7zw
  *
  */
+@Deprecated
 public class NBTInjector {
 
 	/**

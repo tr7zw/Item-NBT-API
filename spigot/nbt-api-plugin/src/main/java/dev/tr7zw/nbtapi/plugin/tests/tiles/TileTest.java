@@ -5,10 +5,10 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
-import dev.tr7zw.nbtapi.NBTTileEntity;
+import de.tr7zw.nbtapi.NBTTileEntity;
+import de.tr7zw.nbtapi.utils.MinecraftVersion;
 import dev.tr7zw.nbtapi.NbtApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
-import dev.tr7zw.nbtapi.utils.MinecraftVersion;
 
 public class TileTest implements Test {
 

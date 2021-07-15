@@ -5,8 +5,8 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
+import de.tr7zw.nbtapi.NBTTileEntity;
 import de.tr7zw.nbtinjector.NBTInjector;
-import dev.tr7zw.nbtapi.NBTTileEntity;
 import dev.tr7zw.nbtapi.NbtApiException;
 import dev.tr7zw.nbtapi.Writeable;
 import dev.tr7zw.nbtapi.plugin.tests.Test;

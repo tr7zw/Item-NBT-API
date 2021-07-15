@@ -1,5 +1,7 @@
 package de.tr7zw.nbtapi;
 
+import org.apache.commons.lang.NotImplementedException;
+
 /**
  * Cut down version of the {@link NBTCompound} for inside
  * {@link NBTCompoundList} This Compound implementation is missing the ability
@@ -12,27 +14,22 @@ package de.tr7zw.nbtapi;
 @Deprecated
 public class NBTListCompound extends NBTCompound {
 
-	private NBTList<?> owner;
-	private Object compound;
-
 	protected NBTListCompound(NBTList<?> parent, Object obj) {
 		super(null, null);
-		owner = parent;
-		compound = obj;
 	}
 	
 	public NBTList<?> getListParent() {
-		return owner;
+	    throw new NotImplementedException();
 	}
 
 	@Override
 	public Object getCompound() {
-		return compound;
+	    throw new NotImplementedException();
 	}
 
 	@Override
 	protected void setCompound(Object compound) {
-		this.compound = compound;
+	    throw new NotImplementedException();
 	}
 
 }

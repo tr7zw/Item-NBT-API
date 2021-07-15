@@ -4,11 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 
-import dev.tr7zw.nbtapi.NBTChunk;
-import dev.tr7zw.nbtapi.NBTCompound;
+import de.tr7zw.nbtapi.NBTChunk;
+import de.tr7zw.nbtapi.NBTCompound;
+import de.tr7zw.nbtapi.utils.MinecraftVersion;
 import dev.tr7zw.nbtapi.NbtApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
-import dev.tr7zw.nbtapi.utils.MinecraftVersion;
 
 public class ChunkNBTPersistentTest implements Test {
 

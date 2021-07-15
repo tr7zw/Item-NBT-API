@@ -1,12 +1,12 @@
 package dev.tr7zw.nbtapi.plugin.tests.compounds;
 
-import dev.tr7zw.nbtapi.NBTContainer;
-import dev.tr7zw.nbtapi.NBTList;
-import dev.tr7zw.nbtapi.NbtApiException;
-import dev.tr7zw.nbtapi.plugin.tests.Test;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
+import de.tr7zw.nbtapi.NBTContainer;
+import de.tr7zw.nbtapi.NBTList;
+import de.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.plugin.tests.Test;
 
 public class IteratorTest implements Test {
 

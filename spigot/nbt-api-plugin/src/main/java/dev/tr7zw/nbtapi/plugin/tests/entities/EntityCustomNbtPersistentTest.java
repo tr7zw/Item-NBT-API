@@ -6,11 +6,11 @@ import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
 
-import dev.tr7zw.nbtapi.NBTEntity;
+import de.tr7zw.nbtapi.NBTCompound;
+import de.tr7zw.nbtapi.NBTEntity;
+import de.tr7zw.nbtapi.utils.MinecraftVersion;
 import dev.tr7zw.nbtapi.NbtApiException;
-import dev.tr7zw.nbtapi.Writeable;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
-import dev.tr7zw.nbtapi.utils.MinecraftVersion;
 
 public class EntityCustomNbtPersistentTest implements Test {
 
@@ -23,7 +23,7 @@ public class EntityCustomNbtPersistentTest implements Test {
 				if (!world.getEntitiesByClasses(Animals.class, Monster.class).isEmpty()) {
 					Entity ent = world.getEntitiesByClasses(Animals.class, Monster.class).iterator().next();
 					NBTEntity nbtEnt = new NBTEntity(ent);
-					Writeable comp = nbtEnt.getPersistentDataContainer();
+					NBTCompound comp = nbtEnt.getPersistentDataContainer();
 					comp.setString("Hello", "World");
 					NBTEntity nbtent = new NBTEntity(ent);
 					if (!nbtent.toString().contains("Hello:\"World\"")) {

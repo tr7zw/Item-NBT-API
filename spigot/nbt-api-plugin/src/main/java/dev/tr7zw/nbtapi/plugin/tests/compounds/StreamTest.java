@@ -3,7 +3,7 @@ package dev.tr7zw.nbtapi.plugin.tests.compounds;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
-import dev.tr7zw.nbtapi.NBTContainer;
+import de.tr7zw.nbtapi.NBTContainer;
 import dev.tr7zw.nbtapi.NbtApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 

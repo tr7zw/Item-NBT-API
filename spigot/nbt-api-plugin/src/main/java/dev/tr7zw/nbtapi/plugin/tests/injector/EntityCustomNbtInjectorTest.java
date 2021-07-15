@@ -6,8 +6,8 @@ import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
 
+import de.tr7zw.nbtapi.NBTEntity;
 import de.tr7zw.nbtinjector.NBTInjector;
-import dev.tr7zw.nbtapi.NBTEntity;
 import dev.tr7zw.nbtapi.NbtApiException;
 import dev.tr7zw.nbtapi.Writeable;
 import dev.tr7zw.nbtapi.plugin.tests.Test;

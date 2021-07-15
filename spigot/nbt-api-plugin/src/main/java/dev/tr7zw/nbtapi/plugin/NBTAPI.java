@@ -1,9 +1,6 @@
 package dev.tr7zw.nbtapi.plugin;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -38,8 +35,6 @@ import dev.tr7zw.nbtapi.plugin.tests.items.ItemConvertionTest;
 import dev.tr7zw.nbtapi.plugin.tests.items.ItemMergingTest;
 import dev.tr7zw.nbtapi.plugin.tests.tiles.TileTest;
 import dev.tr7zw.nbtapi.plugin.tests.tiles.TilesCustomNBTPersistentTest;
-import dev.tr7zw.nbtapi.utils.nmsmappings.ClassWrapper;
-import dev.tr7zw.nbtapi.utils.nmsmappings.ReflectionMethod;
 
 public class NBTAPI extends JavaPlugin {
 
@@ -145,6 +140,8 @@ public class NBTAPI extends JavaPlugin {
 
 		getLogger().info("Adding listeners...");
 		Bukkit.getPluginManager().registerEvents(new ReloadListener(), this);
+		//FIXME all of this should move into some NMS handler
+		/*
 		getLogger().info("Gson:");
 		MinecraftVersion.hasGsonSupport();
 		getLogger().info("Checking bindings...");
@@ -209,7 +206,7 @@ public class NBTAPI extends JavaPlugin {
 			if(MinecraftVersion.getVersion() == MinecraftVersion.MC1_7_R4) {
 				getLogger().warning("1.7.10 is only partally supported! Some thing will not work/are not yet avaliable in 1.7.10!");
 			}
-		}
+		}*/
 
 	}
 

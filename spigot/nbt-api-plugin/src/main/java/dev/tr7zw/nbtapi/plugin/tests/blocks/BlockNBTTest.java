@@ -5,10 +5,10 @@ import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
-import dev.tr7zw.nbtapi.NBTBlock;
+import de.tr7zw.nbtapi.NBTBlock;
+import de.tr7zw.nbtapi.utils.MinecraftVersion;
 import dev.tr7zw.nbtapi.NbtApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
-import dev.tr7zw.nbtapi.utils.MinecraftVersion;
 
 public class BlockNBTTest implements Test {
 

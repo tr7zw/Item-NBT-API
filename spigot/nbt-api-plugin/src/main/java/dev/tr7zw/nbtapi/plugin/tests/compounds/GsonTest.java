@@ -3,10 +3,10 @@ package dev.tr7zw.nbtapi.plugin.tests.compounds;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import dev.tr7zw.nbtapi.NBTItem;
+import de.tr7zw.nbtapi.NBTItem;
+import de.tr7zw.nbtapi.utils.MinecraftVersion;
 import dev.tr7zw.nbtapi.NbtApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
-import dev.tr7zw.nbtapi.utils.MinecraftVersion;
 
 public class GsonTest implements Test {
 

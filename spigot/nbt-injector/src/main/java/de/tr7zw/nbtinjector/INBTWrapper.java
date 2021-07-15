@@ -1,6 +1,6 @@
 package de.tr7zw.nbtinjector;
 
-import dev.tr7zw.nbtapi.NBTCompound;
+import de.tr7zw.nbtapi.NBTCompound;
 
 /**
  * This interface gets placed on Tiles and Entities
