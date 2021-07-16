@@ -1,0 +1,11 @@
+plugins {
+    id 'java-library'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    implementation project(':item-nbt-api-legacy')
+    implementation('org.javassist:javassist:3.28.0-GA')
+}

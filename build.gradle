@@ -1,0 +1,42 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+}
+
+plugins {
+    id 'java'
+}
+
+def version = project.nbtapi_version
+
+allprojects {
+    repositories {
+        mavenLocal()
+        maven {
+            name = 'Spigot'
+            url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+        }
+        maven {
+            name = 'CodeMC'
+            url = 'https://repo.codemc.org/repository/maven-public/'
+        }
+        maven {
+            name = 'CodeMC NMS'
+            url = 'https://repo.codemc.org/repository/nms/'
+        }
+        maven {
+            name = 'Mojang'
+            url = 'https://libraries.minecraft.net/'
+        }
+        mavenCentral()
+    }
+
+    processResources {
+        inputs.property("version", version)
+
+        expand([version: version])
+    }
+}

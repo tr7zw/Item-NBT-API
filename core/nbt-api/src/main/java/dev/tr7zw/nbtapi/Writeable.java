@@ -2,8 +2,6 @@ package dev.tr7zw.nbtapi;
 
 import java.util.UUID;
 
-import org.bukkit.inventory.ItemStack;
-
 public interface Writeable {
 
     /**
@@ -100,7 +98,7 @@ public interface Writeable {
      * @param key
      * @param item
      */
-    void setItemStack(String key, ItemStack item);
+    void setItemStack(String key, Object item);
 
     /**
      * Setter
