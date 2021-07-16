@@ -41,14 +41,14 @@ import dev.tr7zw.nbtapi.plugin.tests.legacy.items.ItemMergingTest;
 import dev.tr7zw.nbtapi.plugin.tests.legacy.tiles.TileTest;
 import dev.tr7zw.nbtapi.plugin.tests.legacy.tiles.TilesCustomNBTPersistentTest;
 
-public class NBTAPI extends JavaPlugin {
+public class NBTAPIPlugin extends JavaPlugin {
 
 	private boolean compatible = true;
 	private final List<dev.tr7zw.nbtapi.plugin.tests.Test> apiTests = new ArrayList<>();
 
-	private static NBTAPI instance;
+	private static NBTAPIPlugin instance;
 
-	public static NBTAPI getInstance() {
+	public static NBTAPIPlugin getInstance() {
 		return instance;
 	}
 

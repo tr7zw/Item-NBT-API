@@ -7,15 +7,15 @@ import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTContainer;
 import de.tr7zw.nbtapi.NBTFile;
 import dev.tr7zw.nbtapi.NBTApiException;
-import dev.tr7zw.nbtapi.plugin.NBTAPI;
+import dev.tr7zw.nbtapi.plugin.NBTAPIPlugin;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 
 public class NBTFileTest implements Test {
 
 	@Override
 	public void test() throws Exception {
-		NBTAPI.getInstance().getDataFolder().mkdirs();
-		File testFile = new File(NBTAPI.getInstance().getDataFolder(), "test.nbt");
+		NBTAPIPlugin.getInstance().getDataFolder().mkdirs();
+		File testFile = new File(NBTAPIPlugin.getInstance().getDataFolder(), "test.nbt");
 		Files.deleteIfExists(testFile.toPath());
 		NBTFile file = new NBTFile(testFile);
 		file.addCompound("testcomp").setString("test1", "ok");

@@ -1,4 +1,4 @@
-main: dev.tr7zw.nbtapi.plugin.NBTAPI
+main: dev.tr7zw.nbtapi.plugin.NBTAPIPlugin
 name: NBTAPI
 version: ${project.version}
 author: tr7zw
