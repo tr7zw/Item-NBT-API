@@ -8,7 +8,7 @@ import org.bukkit.block.Block;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTContainer;
 import de.tr7zw.nbtinjector.NBTInjector;
-import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.NBTApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 
 public class MergeTileSubCompoundTest implements Test {
@@ -34,11 +34,11 @@ public class MergeTileSubCompoundTest implements Test {
 					}
 					block.setType(Material.AIR);
 					if(failed) {
-						throw new NbtApiException("Data was not correct! " + cont);
+						throw new NBTApiException("Data was not correct! " + cont);
 					}
 				}
 			} catch (Exception ex) {
-				throw new NbtApiException("Wasn't able to use NBTTiles!", ex);
+				throw new NBTApiException("Wasn't able to use NBTTiles!", ex);
 			}
 		}
 	}

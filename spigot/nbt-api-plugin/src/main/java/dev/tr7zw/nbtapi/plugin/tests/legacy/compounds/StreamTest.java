@@ -4,7 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 import de.tr7zw.nbtapi.NBTContainer;
-import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.NBTApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 
 public class StreamTest implements Test{
@@ -19,7 +19,7 @@ public class StreamTest implements Test{
 		ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
 		NBTContainer container = new NBTContainer(inputStream);
 		if(!container.toString().equals(base.getCompound("sub").toString())) {
-			throw new NbtApiException("Component content did not match! " + base.getCompound("sub") + " " + container);
+			throw new NBTApiException("Component content did not match! " + base.getCompound("sub") + " " + container);
 		}
 	}
 

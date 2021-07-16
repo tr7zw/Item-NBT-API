@@ -5,7 +5,7 @@ import org.bukkit.inventory.ItemStack;
 
 import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.utils.MinecraftVersion;
-import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.NBTApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 
 public class GsonTest implements Test {
@@ -22,23 +22,23 @@ public class GsonTest implements Test {
 			nbtItem.setObject(JSON_TEST_KEY, new SimpleJsonTestObject());
 
 			if (!nbtItem.hasKey(JSON_TEST_KEY)) {
-				throw new NbtApiException(
+				throw new NBTApiException(
 						"Wasn't able to find JSON key! The Item-NBT-API may not work with Json serialization/deserialization!");
 			} else {
 				SimpleJsonTestObject simpleObject = nbtItem.getObject(JSON_TEST_KEY, SimpleJsonTestObject.class);
 				if (simpleObject == null) {
-					throw new NbtApiException(
+					throw new NBTApiException(
 							"Wasn't able to check JSON key! The Item-NBT-API may not work with Json serialization/deserialization!");
 				} else if (!(STRING_TEST_VALUE).equals(simpleObject.getTestString())
 						|| simpleObject.getTestInteger() != INT_TEST_VALUE
 						|| simpleObject.getTestDouble() != DOUBLE_TEST_VALUE
 						|| !simpleObject.isTestBoolean() == BOOLEAN_TEST_VALUE) {
-					throw new NbtApiException(
+					throw new NBTApiException(
 							"One key does not equal the original value in JSON! The Item-NBT-API may not work with Json serialization/deserialization!");
 				}
 			}
 		} catch (Exception ex) {
-			throw new NbtApiException("Exception during Gson check!", ex);
+			throw new NBTApiException("Exception during Gson check!", ex);
 		}
 	}
 

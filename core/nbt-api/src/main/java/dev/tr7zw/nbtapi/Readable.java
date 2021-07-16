@@ -10,7 +10,7 @@ public interface Readable {
     /**
      * Getter
      * 
-     * @param key
+     * @param key The String key.
      * @return The stored value or NMS fallback
      */
     String getString(String key);
@@ -18,7 +18,7 @@ public interface Readable {
     /**
      * Getter
      * 
-     * @param key
+     * @param key The String key.
      * @return The stored value or NMS fallback
      */
     Integer getInteger(String key);
@@ -26,7 +26,7 @@ public interface Readable {
     /**
      * Getter
      * 
-     * @param key
+     * @param key The String key.
      * @return The stored value or NMS fallback
      */
     Double getDouble(String key);
@@ -34,7 +34,7 @@ public interface Readable {
     /**
      * Getter
      * 
-     * @param key
+     * @param key The String key.
      * @return The stored value or NMS fallback
      */
     Byte getByte(String key);
@@ -42,7 +42,7 @@ public interface Readable {
     /**
      * Getter
      * 
-     * @param key
+     * @param key The String key.
      * @return The stored value or NMS fallback
      */
     Short getShort(String key);
@@ -50,7 +50,7 @@ public interface Readable {
     /**
      * Getter
      * 
-     * @param key
+     * @param key The String key.
      * @return The stored value or NMS fallback
      */
     Long getLong(String key);
@@ -58,7 +58,7 @@ public interface Readable {
     /**
      * Getter
      * 
-     * @param key
+     * @param key The String key.
      * @return The stored value or NMS fallback
      */
     Float getFloat(String key);
@@ -66,7 +66,7 @@ public interface Readable {
     /**
      * Getter
      * 
-     * @param key
+     * @param key The String key.
      * @return The stored value or NMS fallback
      */
     byte[] getByteArray(String key);
@@ -74,7 +74,7 @@ public interface Readable {
     /**
      * Getter
      * 
-     * @param key
+     * @param key The String key.
      * @return The stored value or NMS fallback
      */
     int[] getIntArray(String key);
@@ -82,7 +82,7 @@ public interface Readable {
     /**
      * Getter
      * 
-     * @param key
+     * @param key The String key.
      * @return The stored value or NMS fallback
      */
     Boolean getBoolean(String key);
@@ -90,56 +90,58 @@ public interface Readable {
     /**
      * Get an ItemStack that was saved at the given key
      * 
-     * @param key
-     * @return
+     * @param key The String key.
+     * @return The stored value or NMS fallback
      */
     ItemStack getItemStack(String key);
 
     /**
-     * Getter
+     * Get the UUID at {@code key}.
      *
-     * @param key
+     * @param key The String key.
      * @return The stored value or NMS fallback
      */
     UUID getUUID(String key);
 
     /**
+     * Get all keys of this tag.
+     *
      * @return Set of all stored Keys
      */
     Set<String> getKeys();
 
     /**
-     * @param name
+     * @param name The String key.
      * @return The Compound instance or null
      */
     Readable getCompound(String name);
 
     /**
-     * @param name
+     * @param name The String key.
      * @return The retrieved String List
      */
     NBTList<String> getStringList(String name);
 
     /**
-     * @param name
+     * @param name The String key.
      * @return The retrieved Integer List
      */
     NBTList<Integer> getIntegerList(String name);
 
     /**
-     * @param name
+     * @param name The String key.
      * @return The retrieved Float List
      */
     NBTList<Float> getFloatList(String name);
 
     /**
-     * @param name
+     * @param name The String key.
      * @return The retrieved Double List
      */
     NBTList<Double> getDoubleList(String name);
 
     /**
-     * @param name
+     * @param name The String key.
      * @return The retrieved Long List
      */
     NBTList<Long> getLongList(String name);
@@ -147,26 +149,26 @@ public interface Readable {
     /**
      * Returns the type of the list, null if not a list
      * 
-     * @param name
-     * @return
+     * @param name The String key.
+     * @return The retrieved type.
      */
     NBTType getListType(String name);
 
     /**
-     * @param name
+     * @param name The String key.
      * @return The retrieved Compound List
      */
     //NBTCompoundList getCompoundList(String name); //FIXME
 
     /**
-     * @param name
+     * @param name The String key.
      * @return The type of the given stored key or null
      */
     NBTType getType(String name);
     
     /**
-     * @param name
-     * @return True when this key is avaliable
+     * @param name The String key.
+     * @return True when this key is available
      */
     boolean hasKey(String name);
 

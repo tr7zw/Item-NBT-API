@@ -1,7 +1,7 @@
 package dev.tr7zw.nbtapi.plugin.tests.legacy.compounds;
 
 import de.tr7zw.nbtapi.NBTContainer;
-import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.NBTApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 
 public class GetterSetterTest implements Test {
@@ -44,7 +44,7 @@ public class GetterSetterTest implements Test {
 		comp.setByteArray(BYTEARRAY_TEST_KEY, BYTEARRAY_TEST_VALUE);
 
 		if (!comp.hasKey(STRING_TEST_KEY)) {
-			throw new NbtApiException("Wasn't able to check a key! The Item-NBT-API may not work!");
+			throw new NBTApiException("Wasn't able to check a key! The Item-NBT-API may not work!");
 		}
 		if (!(STRING_TEST_VALUE).equals(comp.getString(STRING_TEST_KEY))
 				|| comp.getInteger(INT_TEST_KEY) != INT_TEST_VALUE
@@ -54,7 +54,7 @@ public class GetterSetterTest implements Test {
 				|| comp.getIntArray(INTARRAY_TEST_KEY).length != (INTARRAY_TEST_VALUE).length
 				|| comp.getByteArray(BYTEARRAY_TEST_KEY).length != (BYTEARRAY_TEST_VALUE).length
 				|| !comp.getBoolean(BOOLEAN_TEST_KEY).equals(BOOLEAN_TEST_VALUE)) {
-			throw new NbtApiException("One key does not equal the original value! The Item-NBT-API may not work!");
+			throw new NBTApiException("One key does not equal the original value! The Item-NBT-API may not work!");
 		}
 	}
 

@@ -8,7 +8,7 @@ import org.bukkit.block.Block;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTTileEntity;
 import de.tr7zw.nbtinjector.NBTInjector;
-import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.NBTApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 
 public class TilesCustomNBTInjectorTest implements Test {
@@ -27,12 +27,12 @@ public class TilesCustomNBTInjectorTest implements Test {
 					comp.setString("Foo", "Bar");
 					if (!new NBTTileEntity(block.getState()).toString().contains("__extraData:{Foo:\"Bar\"}")) {
 						block.setType(Material.AIR);
-						throw new NbtApiException("Custom Data did not save to the Tile!");
+						throw new NBTApiException("Custom Data did not save to the Tile!");
 					}
 					block.setType(Material.AIR);
 				}
 			} catch (Exception ex) {
-				throw new NbtApiException("Wasn't able to use NBTTiles!", ex);
+				throw new NBTApiException("Wasn't able to use NBTTiles!", ex);
 			}
 		}
 	}

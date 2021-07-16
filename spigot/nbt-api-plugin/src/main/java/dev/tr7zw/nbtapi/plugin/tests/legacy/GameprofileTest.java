@@ -6,7 +6,7 @@ import com.mojang.authlib.GameProfile;
 
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTGameProfile;
-import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.NBTApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 
 public class GameprofileTest implements Test {
@@ -19,7 +19,7 @@ public class GameprofileTest implements Test {
 		profile = null;
 		profile = NBTGameProfile.fromNBT(nbt);
 		if (profile == null || !profile.getId().equals(uuid)) {
-			throw new NbtApiException("Error when converting a GameProfile from/to NBT!");
+			throw new NBTApiException("Error when converting a GameProfile from/to NBT!");
 		}
 	}
 

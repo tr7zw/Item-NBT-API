@@ -4,7 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import de.tr7zw.nbtapi.NBTItem;
-import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.NBTApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 
 public class DirectApplyTest implements Test{
@@ -15,7 +15,7 @@ public class DirectApplyTest implements Test{
 		NBTItem nbti = new NBTItem(baseItem, true);
 		nbti.setString("SomeKey", "SomeValue");
 		if(!baseItem.equals(nbti.getItem()) || !new NBTItem(baseItem).hasKey("SomeKey")) {
-			throw new NbtApiException("The item's where not equal!");
+			throw new NBTApiException("The item's where not equal!");
 		}
 	}
 

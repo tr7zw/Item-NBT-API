@@ -17,7 +17,7 @@ public interface Writeable {
     /**
      * Setter
      * 
-     * @param key
+     * @param key The String key.
      * @param value
      */
     void setString(String key, String value);
@@ -25,7 +25,7 @@ public interface Writeable {
     /**
      * Setter
      * 
-     * @param key
+     * @param key The String key.
      * @param value
      */
     void setInteger(String key, Integer value);
@@ -33,7 +33,7 @@ public interface Writeable {
     /**
      * Setter
      * 
-     * @param key
+     * @param key The String key.
      * @param value
      */
     void setDouble(String key, Double value);
@@ -41,7 +41,7 @@ public interface Writeable {
     /**
      * Setter
      * 
-     * @param key
+     * @param key The String key.
      * @param value
      */
     void setByte(String key, Byte value);
@@ -49,7 +49,7 @@ public interface Writeable {
     /**
      * Setter
      * 
-     * @param key
+     * @param key The String key.
      * @param value
      */
     void setShort(String key, Short value);
@@ -57,7 +57,7 @@ public interface Writeable {
     /**
      * Setter
      * 
-     * @param key
+     * @param key The String key.
      * @param value
      */
     void setLong(String key, Long value);
@@ -65,7 +65,7 @@ public interface Writeable {
     /**
      * Setter
      * 
-     * @param key
+     * @param key The String key.
      * @param value
      */
     void setFloat(String key, Float value);
@@ -73,7 +73,7 @@ public interface Writeable {
     /**
      * Setter
      * 
-     * @param key
+     * @param key The String key.
      * @param value
      */
     void setByteArray(String key, byte[] value);
@@ -81,7 +81,7 @@ public interface Writeable {
     /**
      * Setter
      * 
-     * @param key
+     * @param key The String key.
      * @param value
      */
     void setIntArray(String key, int[] value);
@@ -89,7 +89,7 @@ public interface Writeable {
     /**
      * Setter
      * 
-     * @param key
+     * @param key The String key.
      * @param value
      */
     void setBoolean(String key, Boolean value);
@@ -97,29 +97,31 @@ public interface Writeable {
     /**
      * Save an ItemStack as a compound under a given key
      * 
-     * @param key
+     * @param key The String key.
      * @param item
      */
     void setItemStack(String key, ItemStack item);
 
     /**
-     * Setter
+     * Set a UUID.
      *
-     * @param key
-     * @param value
+     * @param key The String key.
+     * @param value The UUID value.
      */
     void setUUID(String key, UUID value);
 
     /**
-     * @param key Deletes the given Key
+     * Removes the given key and its value.
+     *
+     * @param key The key to delete.
      */
     void removeKey(String key);
 
     /**
-     * The same as addCompound, just with a name that better reflects what it does
+     * Gets an existing compound, or creates it if it
+     * doesn't exist yet.
      * 
-     * @param name
-     * @return
+     * @param name The key of the compound.
      */
     Writeable getOrCreateCompound(String name);
 
@@ -130,7 +132,9 @@ public interface Writeable {
     NBTList<String> getStringList(String name);
 
     /**
-     * @param name
+     * Get the type of a key.
+     *
+     * @param name The String key.
      * @return The type of the given stored key or null
      */
     NBTType getType(String name);

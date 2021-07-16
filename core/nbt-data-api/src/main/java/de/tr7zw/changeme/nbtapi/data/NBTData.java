@@ -9,7 +9,7 @@ import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 
 import dev.tr7zw.nbtapi.NBTFile;
-import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.NBTApiException;
 
 public class NBTData {
 
@@ -17,7 +17,7 @@ public class NBTData {
 		try {
 			return new WorldData(world.getWorldFolder());
 		} catch (IOException e) {
-			throw new NbtApiException("Error loading World Data!", e);
+			throw new NBTApiException("Error loading World Data!", e);
 		}
 	}
 
@@ -25,7 +25,7 @@ public class NBTData {
 		try {
 			return new WorldData(worldFolder);
 		} catch (IOException e) {
-			throw new NbtApiException("Error loading World Data!", e);
+			throw new NBTApiException("Error loading World Data!", e);
 		}
 	}
 
@@ -37,7 +37,7 @@ public class NBTData {
 				try {
 					return new PlayerData(playerFile);
 				} catch (IOException e) {
-					throw new NbtApiException("Error loading player data!", e);
+					throw new NBTApiException("Error loading player data!", e);
 				}
 			}
 		}
@@ -50,7 +50,7 @@ public class NBTData {
 			dataFolder.mkdirs();
 			return new NBTFile(new File(dataFolder, uuid.toString() + ".dat"));
 		} catch (IOException e) {
-			throw new NbtApiException("Error getting Player Plugin data!", e);
+			throw new NBTApiException("Error getting Player Plugin data!", e);
 		}
 	}
 
@@ -59,7 +59,7 @@ public class NBTData {
 			plugin.getDataFolder().mkdirs();
 			return new NBTFile(new File(plugin.getDataFolder(), "settings.dat"));
 		} catch (IOException e) {
-			throw new NbtApiException("Error getting Plugin data!", e);
+			throw new NBTApiException("Error getting Plugin data!", e);
 		}
 	}
 

@@ -7,7 +7,7 @@ import org.bukkit.block.Block;
 
 import de.tr7zw.nbtapi.NBTTileEntity;
 import de.tr7zw.nbtapi.utils.MinecraftVersion;
-import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.NBTApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 
 public class TileTest implements Test {
@@ -24,17 +24,17 @@ public class TileTest implements Test {
 					NBTTileEntity tile = new NBTTileEntity(block.getState());
 					if(tile.getInteger("y") != 254) {
 						block.setType(Material.AIR);
-						throw new NbtApiException("The Tile Y pos wasn't correct!");
+						throw new NBTApiException("The Tile Y pos wasn't correct!");
 					}
 					tile.setString("Lock", "test");
 					if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3) && !tile.hasKey("Lock") && !"test".equals(tile.getString("test"))) {
 						block.setType(Material.AIR);
-						throw new NbtApiException("The Lock wasn't successfully set.");
+						throw new NBTApiException("The Lock wasn't successfully set.");
 					}
 					block.setType(Material.AIR);
 				}
 			} catch (Exception ex) {
-				throw new NbtApiException("Wasn't able to use NBTTiles!", ex);
+				throw new NBTApiException("Wasn't able to use NBTTiles!", ex);
 			}
 		}
 	}
