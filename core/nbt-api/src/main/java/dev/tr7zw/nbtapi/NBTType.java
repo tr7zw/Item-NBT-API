@@ -34,14 +34,13 @@ public enum NBTType {
 	}
 
 	/**
-	 * @param id Internal Minecraft id
-	 * @return Enum representing the id, NBTTagEnd for invalide ids
+	 * @param id Internal Minecraft ID
+	 * @return Enum representing the ID, NBTTagEnd for invalid IDs
 	 */
 	public static NBTType valueOf(int id) {
-		for (NBTType t : values())
-			if (t.getId() == id)
-				return t;
-		return NBTType.NBTTagEnd;
+		NBTType[] values = values();
+		if (id >= values.length || id < 0)
+			return NBTTagEnd;
+		return values[id];
 	}
-
 }

@@ -6,8 +6,7 @@ import java.nio.file.Files;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTContainer;
 import de.tr7zw.nbtapi.NBTFile;
-import dev.tr7zw.nbtapi.NbtApiException;
-import dev.tr7zw.nbtapi.Writeable;
+import dev.tr7zw.nbtapi.NBTApiException;
 import dev.tr7zw.nbtapi.plugin.NBTAPI;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 
@@ -31,19 +30,19 @@ public class NBTFileTest implements Test {
 		file.save();
 		
 		if(!"wool".equals(block.getString("type"))) {
-			throw new NbtApiException("SubCompounds did not work!");
+			throw new NBTApiException("SubCompounds did not work!");
 		}
 
 		NBTFile fileLoaded = new NBTFile(testFile);
 		if (!fileLoaded.getString("test").equals("test")) {
-			throw new NbtApiException("Wasn't able to load NBT File with the correct content!");
+			throw new NBTApiException("Wasn't able to load NBT File with the correct content!");
 		}
 		Files.deleteIfExists(fileLoaded.getFile().toPath());
 		// String
 		String str = fileLoaded.asNBTString();
 		NBTContainer rebuild = new NBTContainer(str);
 		if (!str.equals(rebuild.asNBTString())) {
-			throw new NbtApiException("Wasn't able to parse NBT from a String!");
+			throw new NBTApiException("Wasn't able to parse NBT from a String!");
 		}
 	}
 

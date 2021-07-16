@@ -7,7 +7,7 @@ import java.io.IOException;
 import org.bukkit.util.Vector;
 
 import dev.tr7zw.nbtapi.NBTFile;
-import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.NBTApiException;
 import dev.tr7zw.nbtapi.Readable;
 import dev.tr7zw.nbtapi.Writeable;
 
@@ -32,7 +32,7 @@ public class WorldData {
 		try {
 			file.save();
 		} catch (IOException e) {
-			throw new NbtApiException("Error when saving level data!", e);
+			throw new NBTApiException("Error when saving level data!", e);
 		}
 	}
 	

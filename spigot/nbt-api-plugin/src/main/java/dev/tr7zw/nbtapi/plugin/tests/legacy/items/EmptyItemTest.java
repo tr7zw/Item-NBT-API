@@ -4,7 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import de.tr7zw.nbtapi.NBTItem;
-import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.NBTApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 
 public class EmptyItemTest implements Test {
@@ -14,7 +14,7 @@ public class EmptyItemTest implements Test {
 		ItemStack item = new ItemStack(Material.STONE);
 		NBTItem nbti = new NBTItem(item);
 		if (nbti.getBoolean("test") == null || nbti.getString("test") == null)
-			throw new NbtApiException("Getters return null instead of the default value");
+			throw new NBTApiException("Getters return null instead of the default value");
 
 		try {
 			Material barrel = Material.valueOf("BARREL");

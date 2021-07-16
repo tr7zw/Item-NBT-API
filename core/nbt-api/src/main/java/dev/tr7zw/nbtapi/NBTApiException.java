@@ -2,22 +2,18 @@ package dev.tr7zw.nbtapi;
 
 /**
  * A generic {@link RuntimeException} that can be thrown by most methods in the
- * NBTAPI in case of compatebility/logic issues.
+ * NBT-API in case of compatibility or logic issues.
  * 
  * @author tr7zw
- *
  */
-public class NbtApiException extends RuntimeException {
+public class NBTApiException extends RuntimeException {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -993309714559452334L;
 
 	/**
 	 * 
 	 */
-	public NbtApiException() {
+	public NBTApiException() {
 		super();
 	}
 
@@ -27,7 +23,7 @@ public class NbtApiException extends RuntimeException {
 	 * @param enableSuppression
 	 * @param writableStackTrace
 	 */
-	public NbtApiException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+	public NBTApiException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
 
@@ -35,21 +31,21 @@ public class NbtApiException extends RuntimeException {
 	 * @param message
 	 * @param cause
 	 */
-	public NbtApiException(String message, Throwable cause) {
+	public NBTApiException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
 	/**
 	 * @param message
 	 */
-	public NbtApiException(String message) {
+	public NBTApiException(String message) {
 		super(message);
 	}
 
 	/**
 	 * @param cause
 	 */
-	public NbtApiException(Throwable cause) {
+	public NBTApiException(Throwable cause) {
 		super(cause);
 	}
 

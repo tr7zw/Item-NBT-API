@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTContainer;
 import de.tr7zw.nbtapi.NBTItem;
-import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.NBTApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 
 public class EqualsTest implements Test{
@@ -29,13 +29,13 @@ public class EqualsTest implements Test{
 		customData.setString("hello", "world");
 		customData.getStringList("somelist").addAll(Arrays.asList("a", "b", "c"));
 		if(!customData.equals(cont)) {
-			throw new NbtApiException("Compounds did not match! " + customData + " " + cont);
+			throw new NBTApiException("Compounds did not match! " + customData + " " + cont);
 		}
 		
 		// empty test
 		
 		if(!new NBTContainer().equals(new NBTContainer())) {
-		    throw new NbtApiException("Two empty tags did not match!");
+		    throw new NBTApiException("Two empty tags did not match!");
 		}
 		
 		// not equal test
@@ -46,7 +46,7 @@ public class EqualsTest implements Test{
         part2.setString("a", "a");
         part2.setString("b", "a");
         if(part1.equals(part2)) {
-            throw new NbtApiException("Missmatched nbt did match!");
+            throw new NBTApiException("Missmatched nbt did match!");
         }
 	}
 

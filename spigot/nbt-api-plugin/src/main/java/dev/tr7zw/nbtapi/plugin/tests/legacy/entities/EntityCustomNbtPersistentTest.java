@@ -9,7 +9,7 @@ import org.bukkit.entity.Monster;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTEntity;
 import de.tr7zw.nbtapi.utils.MinecraftVersion;
-import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.NBTApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 
 public class EntityCustomNbtPersistentTest implements Test {
@@ -27,13 +27,13 @@ public class EntityCustomNbtPersistentTest implements Test {
 					comp.setString("Hello", "World");
 					NBTEntity nbtent = new NBTEntity(ent);
 					if (!nbtent.toString().contains("Hello:\"World\"")) {
-						throw new NbtApiException("Custom Data did not save to the Entity!");
+						throw new NBTApiException("Custom Data did not save to the Entity!");
 					}
 					comp.removeKey("Hello");
 
 				}
 			} catch (Exception ex) {
-				throw new NbtApiException("Wasn't able to use NBTEntities!", ex);
+				throw new NBTApiException("Wasn't able to use NBTEntities!", ex);
 			}
 		}
 	}

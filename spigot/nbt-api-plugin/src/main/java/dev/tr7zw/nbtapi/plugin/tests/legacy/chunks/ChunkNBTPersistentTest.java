@@ -7,7 +7,7 @@ import org.bukkit.World;
 import de.tr7zw.nbtapi.NBTChunk;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.utils.MinecraftVersion;
-import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.NBTApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 
 public class ChunkNBTPersistentTest implements Test {
@@ -24,15 +24,15 @@ public class ChunkNBTPersistentTest implements Test {
 					NBTCompound persistentData = comp.getPersistentDataContainer();
 					persistentData.removeKey("Foo");
 					if(persistentData.hasKey("Foo")) {
-						throw new NbtApiException("Unable to remove key from Chunk!");
+						throw new NBTApiException("Unable to remove key from Chunk!");
 					}
 					persistentData.setString("Foo", "Bar");
 					if (!new NBTChunk(chunk).getPersistentDataContainer().getString("Foo").equals("Bar")) {
-						throw new NbtApiException("Custom Data did not save to the Chunk!");
+						throw new NBTApiException("Custom Data did not save to the Chunk!");
 					}
 				}
 			} catch (Exception ex) {
-				throw new NbtApiException("Wasn't able to use NBTChunks!", ex);
+				throw new NBTApiException("Wasn't able to use NBTChunks!", ex);
 			}
 		}
 	}

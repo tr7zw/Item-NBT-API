@@ -8,7 +8,7 @@ import com.google.common.collect.Lists;
 
 import de.tr7zw.nbtapi.NBTContainer;
 import de.tr7zw.nbtapi.NBTItem;
-import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.NBTApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 
 public class ItemConvertionTest implements Test {
@@ -21,15 +21,15 @@ public class ItemConvertionTest implements Test {
 		item.setItemMeta(meta);
 		String nbt = NBTItem.convertItemtoNBT(item).toString();
 		if (!nbt.contains("Firest Line") || !nbt.contains("Second Line"))
-			throw new NbtApiException("The Item nbt '" + nbt + "' didn't contain the lore");
+			throw new NBTApiException("The Item nbt '" + nbt + "' didn't contain the lore");
 		ItemStack rebuild = NBTItem.convertNBTtoItem(new NBTContainer(nbt));
 		if (!item.isSimilar(rebuild))
-			throw new NbtApiException("Rebuilt item did not match the original!");
+			throw new NBTApiException("Rebuilt item did not match the original!");
 		
 		NBTContainer cont = new NBTContainer();
 		cont.setItemStack("testItem", item);
 		if(!cont.getItemStack("testItem").isSimilar(item))
-			throw new NbtApiException("Rebuilt item did not match the original!");
+			throw new NBTApiException("Rebuilt item did not match the original!");
 	}
 
 }

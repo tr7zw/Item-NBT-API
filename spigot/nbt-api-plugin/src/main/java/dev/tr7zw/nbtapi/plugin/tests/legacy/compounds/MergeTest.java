@@ -1,7 +1,7 @@
 package dev.tr7zw.nbtapi.plugin.tests.legacy.compounds;
 
 import de.tr7zw.nbtapi.NBTContainer;
-import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.NBTApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 
 public class MergeTest implements Test {
@@ -15,7 +15,7 @@ public class MergeTest implements Test {
 		test2.addCompound("test").setLong("time", System.currentTimeMillis());
 		test1.mergeCompound(test2);
 		if (!test1.getString("test1").equals(test1.getString("test2"))) {
-			throw new NbtApiException("Wasn't able to merge Compounds!");
+			throw new NBTApiException("Wasn't able to merge Compounds!");
 		}
 	}
 

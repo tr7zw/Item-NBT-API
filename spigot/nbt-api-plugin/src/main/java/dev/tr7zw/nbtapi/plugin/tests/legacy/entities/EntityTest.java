@@ -6,7 +6,7 @@ import org.bukkit.entity.Animals;
 import org.bukkit.entity.Monster;
 
 import de.tr7zw.nbtapi.NBTEntity;
-import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.NBTApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 
 public class EntityTest implements Test {
@@ -22,7 +22,7 @@ public class EntityTest implements Test {
 					nbte.setString("INVALIDEKEY", "test");
 				}
 			} catch (Exception ex) {
-				throw new NbtApiException("Wasn't able to use NBTEntities!", ex);
+				throw new NBTApiException("Wasn't able to use NBTEntities!", ex);
 			}
 		}
 	}

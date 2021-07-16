@@ -9,7 +9,7 @@ import org.bukkit.entity.EntityType;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTEntity;
 import de.tr7zw.nbtinjector.NBTInjector;
-import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.NBTApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 
 public class SpawnEntityCustomNbtInjectorTest implements Test {
@@ -27,13 +27,13 @@ public class SpawnEntityCustomNbtInjectorTest implements Test {
 				comp.setString("Hello", "World");
 				NBTEntity nbtent = new NBTEntity(entity);
 				if (!nbtent.toString().contains("__extraData:{Hello:\"World\"}")) {
-					throw new NbtApiException("Custom Data did not save to the Entity!");
+					throw new NBTApiException("Custom Data did not save to the Entity!");
 				}
 				comp.removeKey("Hello");
 				entity.remove();
 
 			} catch (Exception ex) {
-				throw new NbtApiException("Wasn't able to use NBTEntities!", ex);
+				throw new NBTApiException("Wasn't able to use NBTEntities!", ex);
 			}
 		}
 	}

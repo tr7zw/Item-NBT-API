@@ -5,7 +5,7 @@ import java.util.ListIterator;
 import de.tr7zw.nbtapi.NBTCompoundList;
 import de.tr7zw.nbtapi.NBTContainer;
 import de.tr7zw.nbtapi.NBTListCompound;
-import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.NBTApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 
 /**
@@ -28,7 +28,7 @@ public class ForEachTest implements Test {
             	count++;  
             }
             if(count != compList.size())
-            	throw new NbtApiException("For loop did not get all Entries!");
+            	throw new NBTApiException("For loop did not get all Entries!");
             count = 0;
             ListIterator<NBTListCompound> lit = compList.listIterator();
             while(lit.hasNext()){
@@ -36,14 +36,14 @@ public class ForEachTest implements Test {
             	count++;
             }
             if(count != compList.size())
-            	throw new NbtApiException("ListIterator did not get all Entries!");
+            	throw new NBTApiException("ListIterator did not get all Entries!");
             count = 0;
             while(lit.hasPrevious()){
             	lit.previous();
             	count++;
             }
             if(count != compList.size())
-            	throw new NbtApiException("ListIterator previous did not get all Entries!");
+            	throw new NBTApiException("ListIterator previous did not get all Entries!");
         }
 	}
 

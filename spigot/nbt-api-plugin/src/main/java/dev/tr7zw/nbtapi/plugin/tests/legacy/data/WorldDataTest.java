@@ -7,7 +7,7 @@ import org.bukkit.World;
 
 import de.tr7zw.changeme.nbtapi.data.NBTData;
 import de.tr7zw.changeme.nbtapi.data.WorldData;
-import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.NBTApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 
 public class WorldDataTest implements Test{
@@ -17,7 +17,7 @@ public class WorldDataTest implements Test{
 		for(World world : Bukkit.getWorlds()){
 			if(!new File(world.getWorldFolder(), "level.dat").exists())continue;
 			WorldData data = NBTData.getWorldData(world);
-			if(data.getWorldName() == null || data.getSpawnPosition() == null)throw new NbtApiException("Got Null");
+			if(data.getWorldName() == null || data.getSpawnPosition() == null)throw new NBTApiException("Got Null");
 		}
 	}
 

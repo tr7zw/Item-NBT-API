@@ -7,7 +7,7 @@ import org.bukkit.block.Block;
 
 import de.tr7zw.nbtapi.NBTBlock;
 import de.tr7zw.nbtapi.utils.MinecraftVersion;
-import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.NBTApiException;
 import dev.tr7zw.nbtapi.plugin.tests.Test;
 
 public class BlockNBTTest implements Test {
@@ -24,15 +24,15 @@ public class BlockNBTTest implements Test {
 					NBTBlock comp = new NBTBlock(block);
 					comp.getData().removeKey("Too");
 					if(comp.getData().hasKey("Too")) {
-						throw new NbtApiException("Unable to remove key from Block!");
+						throw new NBTApiException("Unable to remove key from Block!");
 					}
 					comp.getData().setString("Too", "Bar");
 					if (!new NBTBlock(block).getData().getString("Too").equals("Bar")) {
-						throw new NbtApiException("Custom Data did not save to a Block!");
+						throw new NBTApiException("Custom Data did not save to a Block!");
 					}
 				}
 			} catch (Exception ex) {
-				throw new NbtApiException("Wasn't able to use NBTBlocks!", ex);
+				throw new NBTApiException("Wasn't able to use NBTBlocks!", ex);
 			}
 		}
 	}

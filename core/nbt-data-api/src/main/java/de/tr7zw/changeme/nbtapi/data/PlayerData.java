@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import dev.tr7zw.nbtapi.NBTFile;
-import dev.tr7zw.nbtapi.NbtApiException;
+import dev.tr7zw.nbtapi.NBTApiException;
 import dev.tr7zw.nbtapi.Readable;
 
 public class PlayerData {
@@ -27,7 +27,7 @@ public class PlayerData {
 		try {
 			file.save();
 		} catch (IOException e) {
-			throw new NbtApiException("Error when saving level data!", e);
+			throw new NBTApiException("Error when saving level data!", e);
 		}
 	}
 	
