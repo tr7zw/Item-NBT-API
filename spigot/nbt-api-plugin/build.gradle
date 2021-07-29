@@ -1,0 +1,15 @@
+plugins {
+    id 'java'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    implementation project(':nbt-api-spigot')
+    implementation project(':item-nbt-api-legacy')
+    //implementation project(':nbt-injector')
+
+    compileOnly 'org.spigotmc:spigot-api:' + spigot_api
+    compileOnly 'com.mojang:authlib:' + authlib_version
+}

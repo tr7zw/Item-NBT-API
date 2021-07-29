@@ -1,0 +1,12 @@
+plugins {
+    id 'java-library'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    implementation 'de.tr7zw:functional-annotations:0.1-SNAPSHOT'
+    implementation 'com.mojang:authlib:' + authlib_version
+    compileOnly 'org.spigotmc:spigot-api:' + spigot_api
+}

@@ -11,7 +11,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.tr7zw.nbtapi.utils.MinecraftVersion;
-import de.tr7zw.nbtinjector.NBTInjector;
 import dev.tr7zw.nbtapi.spigot.plugin.tests.Test;
 import dev.tr7zw.nbtapi.spigot.plugin.tests.legacy.GameprofileTest;
 import dev.tr7zw.nbtapi.spigot.plugin.tests.legacy.NBTFileTest;
@@ -27,13 +26,8 @@ import dev.tr7zw.nbtapi.spigot.plugin.tests.legacy.compounds.RemovingKeys;
 import dev.tr7zw.nbtapi.spigot.plugin.tests.legacy.compounds.StreamTest;
 import dev.tr7zw.nbtapi.spigot.plugin.tests.legacy.compounds.SubCompoundsTest;
 import dev.tr7zw.nbtapi.spigot.plugin.tests.legacy.compounds.TypeTest;
-import dev.tr7zw.nbtapi.spigot.plugin.tests.legacy.data.WorldDataTest;
 import dev.tr7zw.nbtapi.spigot.plugin.tests.legacy.entities.EntityCustomNbtPersistentTest;
 import dev.tr7zw.nbtapi.spigot.plugin.tests.legacy.entities.EntityTest;
-import dev.tr7zw.nbtapi.spigot.plugin.tests.legacy.injector.EntityCustomNbtInjectorTest;
-import dev.tr7zw.nbtapi.spigot.plugin.tests.legacy.injector.MergeTileSubCompoundTest;
-import dev.tr7zw.nbtapi.spigot.plugin.tests.legacy.injector.SpawnEntityCustomNbtInjectorTest;
-import dev.tr7zw.nbtapi.spigot.plugin.tests.legacy.injector.TilesCustomNBTInjectorTest;
 import dev.tr7zw.nbtapi.spigot.plugin.tests.legacy.items.DirectApplyTest;
 import dev.tr7zw.nbtapi.spigot.plugin.tests.legacy.items.EmptyItemTest;
 import dev.tr7zw.nbtapi.spigot.plugin.tests.legacy.items.ItemConvertionTest;
@@ -72,7 +66,7 @@ public class NBTAPIPlugin extends JavaPlugin {
 		}
 		
 		//Disabled by default since 2.1. Enable it yourself by calling NBTInjector.inject(); during onLoad/config
-		if(getConfig().getBoolean("nbtInjector.enabled")) {
+		/*if(getConfig().getBoolean("nbtInjector.enabled")) {
 			getLogger().info("Injecting custom NBT");
 			try {
 				NBTInjector.inject();
@@ -81,7 +75,7 @@ public class NBTAPIPlugin extends JavaPlugin {
 				getLogger().log(Level.SEVERE, "Error while Injecting custom Tile/Entity classes!", ex);
 				compatible = false;
 			}
-		}
+		}*/
 
 
 
@@ -92,8 +86,6 @@ public class NBTAPIPlugin extends JavaPlugin {
 		instance = this; // NOSONAR
 		// new MetricsLite(this); The metrics moved into the API
 
-		getLogger().info("Adding listeners...");
-		Bukkit.getPluginManager().registerEvents(new ReloadListener(), this);
 		//FIXME all of this should move into some NMS handler
 		/*
 		getLogger().info("Gson:");
@@ -215,14 +207,6 @@ public class NBTAPIPlugin extends JavaPlugin {
         // Files
         apiTests.add(new NBTFileTest());
         
-        // Data
-        apiTests.add(new WorldDataTest());
-        
-        // Injector
-        apiTests.add(new TilesCustomNBTInjectorTest());
-        apiTests.add(new MergeTileSubCompoundTest());
-        apiTests.add(new EntityCustomNbtInjectorTest());
-        apiTests.add(new SpawnEntityCustomNbtInjectorTest());
         
         if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3))
             apiTests.add(new GameprofileTest());

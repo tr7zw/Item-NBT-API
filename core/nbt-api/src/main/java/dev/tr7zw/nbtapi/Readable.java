@@ -3,8 +3,6 @@ package dev.tr7zw.nbtapi;
 import java.util.Set;
 import java.util.UUID;
 
-import org.bukkit.inventory.ItemStack;
-
 public interface Readable {
 
     /**
@@ -86,14 +84,6 @@ public interface Readable {
      * @return The stored value or NMS fallback
      */
     Boolean getBoolean(String key);
-
-    /**
-     * Get an ItemStack that was saved at the given key
-     * 
-     * @param key The String key.
-     * @return The stored value or NMS fallback
-     */
-    ItemStack getItemStack(String key);
 
     /**
      * Get the UUID at {@code key}.

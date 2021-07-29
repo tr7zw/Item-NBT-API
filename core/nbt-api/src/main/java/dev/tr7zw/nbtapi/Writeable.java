@@ -2,8 +2,6 @@ package dev.tr7zw.nbtapi;
 
 import java.util.UUID;
 
-import org.bukkit.inventory.ItemStack;
-
 public interface Writeable<W extends Writeable<W>> {
 
     /**
@@ -93,14 +91,6 @@ public interface Writeable<W extends Writeable<W>> {
      * @param value
      */
     W setBoolean(String key, Boolean value);
-
-    /**
-     * Save an ItemStack as a compound under a given key
-     * 
-     * @param key The String key.
-     * @param item
-     */
-    W setItemStack(String key, ItemStack item);
 
     /**
      * Set a UUID.

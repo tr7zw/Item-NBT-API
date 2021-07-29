@@ -1,0 +1,28 @@
+pluginManagement {
+    repositories {
+        maven {
+            name = 'Fabric'
+            url = 'https://maven.fabricmc.net/'
+        }
+        gradlePluginPortal()
+    }
+}
+
+
+// Core
+include 'nbt-api'
+project(':nbt-api').projectDir = file('core/nbt-api')
+
+// Spigot
+def spigotProjects = ['nbt-api-spigot', 'nbt-api-plugin', 'item-nbt-api-legacy']
+spigotProjects.forEach {
+    include it
+    project(":$it").projectDir = file("spigot/$it")
+}
+
+// Fabric
+def fabricProjects = ['fabric1-17']
+fabricProjects.forEach {
+    include it
+    project(":$it").projectDir = file("fabric/$it")
+}
