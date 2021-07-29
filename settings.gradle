@@ -5,6 +5,7 @@ pluginManagement {
             url = 'https://maven.fabricmc.net/'
         }
         gradlePluginPortal()
+        mavenCentral()
     }
 }
 
@@ -25,4 +26,11 @@ def fabricProjects = ['fabric1-17']
 fabricProjects.forEach {
     include it
     project(":$it").projectDir = file("fabric/$it")
+}
+
+// Forge
+def forgeProjects = ['forge1-17']
+forgeProjects.forEach {
+    include it
+    project(":$it").projectDir = file("forge/$it")
 }
