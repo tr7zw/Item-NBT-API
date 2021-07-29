@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import org.bukkit.inventory.ItemStack;
 
-public interface Writeable {
+public interface Writeable<W extends Writeable<W>> {
 
     /**
      * Merges all data from comp into this compound. This is done in one action, so
@@ -20,7 +20,7 @@ public interface Writeable {
      * @param key The String key.
      * @param value
      */
-    void setString(String key, String value);
+    W setString(String key, String value);
 
     /**
      * Setter
@@ -28,7 +28,7 @@ public interface Writeable {
      * @param key The String key.
      * @param value
      */
-    void setInteger(String key, Integer value);
+    W setInteger(String key, Integer value);
 
     /**
      * Setter
@@ -36,7 +36,7 @@ public interface Writeable {
      * @param key The String key.
      * @param value
      */
-    void setDouble(String key, Double value);
+    W setDouble(String key, Double value);
 
     /**
      * Setter
@@ -44,7 +44,7 @@ public interface Writeable {
      * @param key The String key.
      * @param value
      */
-    void setByte(String key, Byte value);
+    W setByte(String key, Byte value);
 
     /**
      * Setter
@@ -52,7 +52,7 @@ public interface Writeable {
      * @param key The String key.
      * @param value
      */
-    void setShort(String key, Short value);
+    W setShort(String key, Short value);
 
     /**
      * Setter
@@ -60,7 +60,7 @@ public interface Writeable {
      * @param key The String key.
      * @param value
      */
-    void setLong(String key, Long value);
+    W setLong(String key, Long value);
 
     /**
      * Setter
@@ -68,7 +68,7 @@ public interface Writeable {
      * @param key The String key.
      * @param value
      */
-    void setFloat(String key, Float value);
+    W setFloat(String key, Float value);
 
     /**
      * Setter
@@ -76,7 +76,7 @@ public interface Writeable {
      * @param key The String key.
      * @param value
      */
-    void setByteArray(String key, byte[] value);
+    W setByteArray(String key, byte[] value);
 
     /**
      * Setter
@@ -84,7 +84,7 @@ public interface Writeable {
      * @param key The String key.
      * @param value
      */
-    void setIntArray(String key, int[] value);
+    W setIntArray(String key, int[] value);
 
     /**
      * Setter
@@ -92,7 +92,7 @@ public interface Writeable {
      * @param key The String key.
      * @param value
      */
-    void setBoolean(String key, Boolean value);
+    W setBoolean(String key, Boolean value);
 
     /**
      * Save an ItemStack as a compound under a given key
@@ -100,7 +100,7 @@ public interface Writeable {
      * @param key The String key.
      * @param item
      */
-    void setItemStack(String key, ItemStack item);
+    W setItemStack(String key, ItemStack item);
 
     /**
      * Set a UUID.
@@ -108,22 +108,14 @@ public interface Writeable {
      * @param key The String key.
      * @param value The UUID value.
      */
-    void setUUID(String key, UUID value);
+    W setUUID(String key, UUID value);
 
     /**
      * Removes the given key and its value.
      *
      * @param key The key to delete.
      */
-    void removeKey(String key);
-
-    /**
-     * Gets an existing compound, or creates it if it
-     * doesn't exist yet.
-     * 
-     * @param name The key of the compound.
-     */
-    Writeable getOrCreateCompound(String name);
+    W removeKey(String key);
 
     /**
      * @param name

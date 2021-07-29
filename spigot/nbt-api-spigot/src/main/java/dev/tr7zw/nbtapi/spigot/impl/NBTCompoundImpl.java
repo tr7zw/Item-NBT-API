@@ -17,85 +17,85 @@ public class NBTCompoundImpl extends NBTCompoundAccessorImpl implements NBTCompo
     }
 
     @Override
-    public void setString(String key, String value) {
+    public NBTCompound setString(String key, String value) {
         // TODO Auto-generated method stub
-        
+        return null;
     }
 
     @Override
-    public void setInteger(String key, Integer value) {
+    public NBTCompound setInteger(String key, Integer value) {
         // TODO Auto-generated method stub
-        
+        return null;
     }
 
     @Override
-    public void setDouble(String key, Double value) {
+    public NBTCompound setDouble(String key, Double value) {
         // TODO Auto-generated method stub
-        
+        return null;
     }
 
     @Override
-    public void setByte(String key, Byte value) {
+    public NBTCompound setByte(String key, Byte value) {
         // TODO Auto-generated method stub
-        
+        return null;
     }
 
     @Override
-    public void setShort(String key, Short value) {
+    public NBTCompound setShort(String key, Short value) {
         // TODO Auto-generated method stub
-        
+        return null;
     }
 
     @Override
-    public void setLong(String key, Long value) {
+    public NBTCompound setLong(String key, Long value) {
         // TODO Auto-generated method stub
-        
+        return null;
     }
 
     @Override
-    public void setFloat(String key, Float value) {
+    public NBTCompound setFloat(String key, Float value) {
         // TODO Auto-generated method stub
-        
+        return null;
     }
 
     @Override
-    public void setByteArray(String key, byte[] value) {
+    public NBTCompound setByteArray(String key, byte[] value) {
         // TODO Auto-generated method stub
-        
+        return null;
     }
 
     @Override
-    public void setIntArray(String key, int[] value) {
+    public NBTCompound setIntArray(String key, int[] value) {
         // TODO Auto-generated method stub
-        
+        return null;
     }
 
     @Override
-    public void setBoolean(String key, Boolean value) {
+    public NBTCompound setBoolean(String key, Boolean value) {
         // TODO Auto-generated method stub
-        
+        return null;
     }
 
     @Override
-    public void setItemStack(String key, ItemStack item) {
+    public NBTCompound setItemStack(String key, ItemStack item) {
         // TODO Auto-generated method stub
-        
+        return null;
     }
 
     @Override
-    public void setUUID(String key, UUID value) {
+    public NBTCompound setUUID(String key, UUID value) {
         // TODO Auto-generated method stub
-        
+        return null;
     }
 
     @Override
-    public void removeKey(String key) {
+    public NBTCompound removeKey(String key) {
         // TODO Auto-generated method stub
-        
+        return null;
     }
 
     @Override
-    public Writeable getOrCreateCompound(String name) {
+    public NBTCompound getOrCreateCompound(String name) {
         // TODO Auto-generated method stub
         return null;
     }
