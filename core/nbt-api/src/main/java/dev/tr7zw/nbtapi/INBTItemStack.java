@@ -1,6 +1,7 @@
 package dev.tr7zw.nbtapi;
 
-public interface INBTItemStack<I> extends INBTItemStackAccessor<I>, NBTCompound {
+public interface INBTItemStack<I> extends NBTCompoundAccessor, NBTCompound {
 
+    public I getItemStack();
     
 }
