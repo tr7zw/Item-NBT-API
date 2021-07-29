@@ -2,11 +2,8 @@ package dev.tr7zw.nbtapi.spigot.impl;
 
 import java.util.UUID;
 
-import org.bukkit.inventory.ItemStack;
-
 import dev.tr7zw.nbtapi.NBTCompound;
 import dev.tr7zw.nbtapi.Readable;
-import dev.tr7zw.nbtapi.Writeable;
 
 public class NBTCompoundImpl extends NBTCompoundAccessorImpl implements NBTCompound{
 
@@ -72,12 +69,6 @@ public class NBTCompoundImpl extends NBTCompoundAccessorImpl implements NBTCompo
 
     @Override
     public NBTCompound setBoolean(String key, Boolean value) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public NBTCompound setItemStack(String key, ItemStack item) {
         // TODO Auto-generated method stub
         return null;
     }

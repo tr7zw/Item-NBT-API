@@ -7,6 +7,6 @@ targetCompatibility = 1.8
 
 dependencies {
     implementation 'de.tr7zw:functional-annotations:0.1-SNAPSHOT'
-    implementation 'com.mojang:authlib:1.5.25'
-    compileOnly 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
+    implementation 'com.mojang:authlib:' + authlib_version
+    compileOnly 'org.spigotmc:spigot-api:' + spigot_api
 }

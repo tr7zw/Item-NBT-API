@@ -1,11 +1,10 @@
-rootProject.name = 'nbtapi'
 
 // Core
 include 'nbt-api'
 project(':nbt-api').projectDir = file('core/nbt-api')
 
 // Spigot
-def spigotProjects = ['nbt-api-spigot', 'nbt-api-plugin', 'nbt-injector', 'item-nbt-api-legacy']
+def spigotProjects = ['nbt-api-spigot', 'nbt-api-plugin', 'item-nbt-api-legacy']
 spigotProjects.forEach {
     include it
     project(":$it").projectDir = file("spigot/$it")

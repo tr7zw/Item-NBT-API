@@ -7,7 +7,8 @@ dependencies {
 
     implementation 'de.tr7zw:functional-annotations:0.1-SNAPSHOT'
 
-    compileOnly 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:' + spigot_api
+    testCompileClasspath 'org.spigotmc:spigot-api:' + spigot_api
 }
 
 sourceCompatibility = 1.8
