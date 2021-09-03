@@ -1,7 +1,5 @@
 package de.tr7zw.changeme.nbtapi;
 
-import org.apache.commons.lang.NotImplementedException;
-
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
@@ -70,7 +68,7 @@ public class NBTCompoundList extends NBTList<NBTListCompound> {
 	@Override
 	public void add(int index, NBTListCompound element) {
 		if (element != null) {
-			throw new NotImplementedException("You need to pass null! ListCompounds from other lists won't work.");
+			throw new NbtApiException("You need to pass null! ListCompounds from other lists won't work.");
 		}
 		try {
 			Object compound = ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance();
@@ -97,7 +95,7 @@ public class NBTCompoundList extends NBTList<NBTListCompound> {
 
 	@Override
 	public NBTListCompound set(int index, NBTListCompound element) {
-		throw new NotImplementedException("This method doesn't work in the ListCompound context.");
+		throw new NbtApiException("This method doesn't work in the ListCompound context.");
 	}
 
 	@Override
