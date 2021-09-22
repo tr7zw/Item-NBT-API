@@ -3,10 +3,13 @@ package dev.tr7zw.nbtapi.spigot.impl;
 import java.util.Set;
 import java.util.UUID;
 
+import dev.tr7zw.nbtapi.NBTCompound;
 import dev.tr7zw.nbtapi.NBTCompoundAccessor;
 import dev.tr7zw.nbtapi.NBTList;
 import dev.tr7zw.nbtapi.NBTType;
 import dev.tr7zw.nbtapi.Readable;
+
+import org.bukkit.util.Vector;
 
 public class NBTCompoundAccessorImpl implements NBTCompoundAccessor {
 
@@ -136,4 +139,8 @@ public class NBTCompoundAccessorImpl implements NBTCompoundAccessor {
         return false;
     }
 
+    public Vector getVector(String name) {
+        Readable compound = getCompound(name);
+        return new Vector(compound.getDouble("x"), compound.getDouble("y"), compound.getDouble("z"));
+    }
 }

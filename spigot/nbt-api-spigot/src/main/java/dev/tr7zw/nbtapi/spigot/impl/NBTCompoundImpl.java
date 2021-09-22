@@ -5,6 +5,8 @@ import java.util.UUID;
 import dev.tr7zw.nbtapi.NBTCompound;
 import dev.tr7zw.nbtapi.Readable;
 
+import org.bukkit.util.Vector;
+
 public class NBTCompoundImpl extends NBTCompoundAccessorImpl implements NBTCompound{
 
     @Override
@@ -91,4 +93,11 @@ public class NBTCompoundImpl extends NBTCompoundAccessorImpl implements NBTCompo
         return null;
     }
 
+    public NBTCompound setVector(String name, Vector vector) {
+        NBTCompound compound = getOrCreateCompound(name);
+        compound.setDouble("x", vector.getX());
+        compound.setDouble("y", vector.getY());
+        compound.setDouble("z", vector.getZ());
+        return this;
+    }
 }
