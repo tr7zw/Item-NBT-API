@@ -1,11 +1,11 @@
 [B][SIZE=6](Item/Entity/Tile) NBT API[/SIZE][/B]
-[URL='https://ci.codemc.io/job/Tr7zw/job/Item-NBT-API/'][IMG]https://ci.codemc.org/buildStatus/icon?job=Tr7zw%2FItem-NBT-API[/IMG][/URL]  [URL='https://sonarcloud.io/dashboard?id=de.tr7zw%3Aitem-nbt-parent'][IMG]https://sonarcloud.io/api/project_badges/measure?project=de.tr7zw%3Aitem-nbt-parent&metric=ncloc[/IMG][/URL] [URL='https://bstats.org/plugin/bukkit/ItemNBTAPI'][IMG]https://img.shields.io/bstats/servers/1058.svg?color=green&label=OnlineServers&style=plastic[/IMG][/URL] [URL='https://bstats.org/plugin/bukkit/ItemNBTAPI'][IMG]https://img.shields.io/bstats/players/1058.svg?color=green&label=OnlinePlayers&style=plastic[/IMG] [/URL][URL='https://discordapp.com/invite/yk4caxM'][IMG]https://img.shields.io/discord/342814924310970398?color=%237289DA&label=Discord&logo=discord&logoColor=white[/IMG][/URL] [IMG]https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dtr7zw%26type%3Dpatrons&style=for-the-badge[/IMG]
+[URL='https://ci.codemc.io/job/Tr7zw/job/Item-NBT-API/'][IMG]https://ci.codemc.org/buildStatus/icon?job=Tr7zw%2FItem-NBT-API[/IMG][/URL]  [URL='https://sonarcloud.io/dashboard?id=de.tr7zw%3Aitem-nbt-parent'][IMG]https://sonarcloud.io/api/project_badges/measure?project=de.tr7zw%3Aitem-nbt-parent&metric=ncloc[/IMG][/URL] [URL='https://bstats.org/plugin/bukkit/ItemNBTAPI'][IMG]https://img.shields.io/bstats/servers/1058.svg?color=green&label=OnlineServers&style=plastic[/IMG][/URL] [URL='https://bstats.org/plugin/bukkit/ItemNBTAPI'][IMG]https://img.shields.io/bstats/players/1058.svg?color=green&label=OnlinePlayers&style=plastic[/IMG] [/URL][URL='https://discordapp.com/invite/yk4caxM'][IMG]https://img.shields.io/discord/342814924310970398?color=%237289DA&label=Discord&logo=discord&logoColor=white[/IMG][/URL]
 The NBT API allows you to add custom NBT tags to Itemstacks, TileEntities and Entities, or modify excisting ones!
 It completely uses reflections to interact with NMS code and works with all the latest versions. On server start the plugin checks all reflections.
 
 Tested on Spigot
 [LIST]
-[*](1.7*)1.8.8-1.16.4
+[*](1.7*)1.8.8-1.17.*
 [*]The NBTInjector will not work with: 1.12.0, 1.12.1, 1.13.0 (Please just update to the final release of your chosen version)
 
 [*]On startup you will get a notification if there is a version problem!
@@ -250,7 +250,8 @@ Output:
 
 [B]This API can't be used for:[/B]
 [LIST]
-[*][I][SIZE=4][S]Adding custom tags to TileEntities/Entities[/S] [/SIZE][/I][SIZE=4]Not true anymore, check the NBTInjector examples above[/SIZE]
+[*][I][SIZE=4][S]Adding custom tags to TileEntities/Entities[/S] [/SIZE][/I][SIZE=4]Not true anymore, check the NBTInjector examples above.*[/SIZE]
+*This only is required for <= 1.13, 1.14+ can just use the getPersistentDataContainer method on NBTEntity/NBTTileEntity to store custom data.
 [/LIST]
 Git: [URL='https://github.com/tr7zw/Item-NBT-API']Github[/URL]
 Maven Repo: [URL='https://repo.codemc.org/#browse/browse:maven-public:de%2Ftr7zw%2Fitem-nbt-api-plugin']CodeMC[/URL]
@@ -262,6 +263,7 @@ Yes you are allowed to integrate the API into your plugin(remember to shade)! (S
 [B][SIZE=5]Projects using the API(That I know of)[/SIZE]
 [U][SIZE=4]Plugins[/SIZE][/U][/B]
 [URL='https://www.spigotmc.org/resources/crazy-enchantments.16470/'][IMG]https://tr7zw.dev/nbtapi/linkedProjects.php?id=16470&[/IMG][/URL]
+[URL='https://www.spigotmc.org/resources/levelledmobs-for-1-16-x-1-17-x.74304/'][IMG]https://tr7zw.dev/nbtapi/linkedProjects.php?id=74304&[/IMG][/URL]
 [URL='https://www.spigotmc.org/resources/backpacks.45622/'][IMG]https://tr7zw.dev/nbtapi/linkedProjects.php?id=45622&[/IMG][/URL]
 [URL='https://www.spigotmc.org/resources/gravy.45288/'][IMG]https://tr7zw.dev/nbtapi/linkedProjects.php?id=45288&[/IMG][/URL]
 [URL='https://www.spigotmc.org/resources/interactivebooks.45604/'][IMG]https://tr7zw.dev/nbtapi/linkedProjects.php?id=45604&[/IMG][/URL]
@@ -270,7 +272,6 @@ Yes you are allowed to integrate the API into your plugin(remember to shade)! (S
 [URL='https://www.spigotmc.org/resources/comparable-hoppers-2.45058/'][IMG]https://tr7zw.dev/nbtapi/linkedProjects.php?id=45058&[/IMG][/URL]
 [URL='https://www.spigotmc.org/resources/nottooexpensive.62680/'][IMG]https://tr7zw.dev/nbtapi/linkedProjects.php?id=62680&[/IMG][/URL]
 [URL='https://www.spigotmc.org/resources/papermoney.70361/'][IMG]https://tr7zw.dev/nbtapi/linkedProjects.php?id=70361&[/IMG][/URL]
-[URL='https://www.spigotmc.org/resources/blockstackerx-plugin-for-askyblock.71514/'][IMG]https://tr7zw.dev/nbtapi/linkedProjects.php?id=71514&[/IMG][/URL]
 [URL='https://www.spigotmc.org/resources/blockstackerx-recoded.73749/'][IMG]https://tr7zw.dev/nbtapi/linkedProjects.php?id=73749[/IMG][/URL]
 [URL='https://www.spigotmc.org/resources/63020/'][IMG]https://tr7zw.dev/nbtapi/linkedProjects.php?id=63020&reload[/IMG][/URL]
 [URL='https://www.spigotmc.org/resources/72810/'][IMG]https://tr7zw.dev/nbtapi/linkedProjects.php?id=72810&reload[/IMG][/URL]
@@ -279,7 +280,6 @@ Yes you are allowed to integrate the API into your plugin(remember to shade)! (S
 [U][B]Other[/B][/U]
 - [URL='https://github.com/LogisticsCraft/Logistics-API']Logistics-API[/URL]
 
-If you like this Resource, donate me a Coffee or become a Patreon for cool perks! [URL='https://tr7zw.dev/donate/']Donating[/URL]
 [SIZE=4][SIZE=4][U][B]Donators[/B][/U]
 [U][B][URL='https://www.spigotmc.org/members/mrdienns.35704/'][IMG]https://tr7zw.dev/nbtapi/spigotPeople.php?id=35704[/IMG][/URL] [/B][/U]
 [U][B][URL='https://www.spigotmc.org/members/mraxetv.27720/'][IMG]https://tr7zw.dev/nbtapi/spigotPeople.php?id=27720[/IMG][/URL] [/B][/U]
