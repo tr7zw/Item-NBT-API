@@ -146,7 +146,16 @@ public enum ReflectionMethod {
             loaded = true;
             methodName = targetVersion.name;
         }catch(NullPointerException | NoSuchMethodException | SecurityException ex){
-            System.out.println("[NBTAPI] Unable to find the method '" + targetMethodName + "' in '" + (targetClass.getClazz() == null ? targetClass.getMojangName() : targetClass.getClazz().getSimpleName()) + "' Args: " + Arrays.toString(args) + " Enum: " + this); //NOSONAR This gets loaded before the logger is loaded
+            try{
+                if(targetVersion.version.isMojangMapping())
+                    targetMethodName = MojangToMapping.getMapping().getOrDefault(targetClass.getMojangName() + "#" + targetVersion.name, "Unmapped" + targetVersion.name);
+                method = targetClass.getClazz().getMethod(targetMethodName, args);
+                method.setAccessible(true);
+                loaded = true;
+                methodName = targetVersion.name;
+            }catch(NullPointerException | NoSuchMethodException | SecurityException ex){
+                System.out.println("[NBTAPI] Unable to find the method '" + targetMethodName + "' in '" + (targetClass.getClazz() == null ? targetClass.getMojangName() : targetClass.getClazz().getSimpleName()) + "' Args: " + Arrays.toString(args) + " Enum: " + this); //NOSONAR This gets loaded before the logger is loaded
+            }
         }
     }
     
