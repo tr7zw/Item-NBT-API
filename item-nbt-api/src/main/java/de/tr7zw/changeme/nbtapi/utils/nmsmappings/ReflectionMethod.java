@@ -153,7 +153,7 @@ public enum ReflectionMethod {
                 method.setAccessible(true);
                 loaded = true;
                 methodName = targetVersion.name;
-            }catch(NullPointerException | NoSuchMethodException | SecurityException ex){
+            }catch(NullPointerException | NoSuchMethodException | SecurityException ex2){
                 System.out.println("[NBTAPI] Unable to find the method '" + targetMethodName + "' in '" + (targetClass.getClazz() == null ? targetClass.getMojangName() : targetClass.getClazz().getSimpleName()) + "' Args: " + Arrays.toString(args) + " Enum: " + this); //NOSONAR This gets loaded before the logger is loaded
             }
         }
