@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Temporary solution to hold Mojang -> unmapped Spigot mappings.
+ * Temporary solution to hold Mojang to unmapped Spigot mappings.
  * 
  * @author tr7zw
  *
