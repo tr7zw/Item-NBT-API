@@ -235,7 +235,7 @@ public class NBTReflectionUtil {
 			    answer = ReflectionMethod.TILEENTITY_GET_NBT.run(o, tag);
 			}
 			if (answer == null) {
-			    throw new NbtApiException("Unable to get NBTCompound from TileEntity!");
+			    answer = ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance();
 			}
 			return answer;
 		} catch (Exception e) {
