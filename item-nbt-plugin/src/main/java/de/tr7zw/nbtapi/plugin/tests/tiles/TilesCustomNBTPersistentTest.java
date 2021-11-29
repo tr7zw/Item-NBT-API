@@ -19,7 +19,7 @@ public class TilesCustomNBTPersistentTest implements Test {
 		if (!Bukkit.getWorlds().isEmpty()) {
 			World world = Bukkit.getWorlds().get(0);
 			try {
-				Block block = world.getBlockAt(world.getSpawnLocation().getBlockX(), 255,
+				Block block = world.getBlockAt(world.getSpawnLocation().getBlockX(), 250,
 						world.getSpawnLocation().getBlockZ());
 				if (block.getType() == Material.AIR) {
 					block.setType(Material.CHEST);

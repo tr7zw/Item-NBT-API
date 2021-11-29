@@ -22,9 +22,11 @@ public class TileTest implements Test {
 				if (block.getType() == Material.AIR) {
 					block.setType(Material.CHEST);
 					NBTTileEntity tile = new NBTTileEntity(block.getState());
-					if(tile.getInteger("y") != 254) {
-						block.setType(Material.AIR);
-						throw new NbtApiException("The Tile Y pos wasn't correct!");
+					if(!MinecraftVersion.isNewerThan(MinecraftVersion.MC1_17_R1)) {
+    					if(tile.getInteger("y") != 254) {
+    						block.setType(Material.AIR);
+    						throw new NbtApiException("The Tile Y pos wasn't correct!");
+    					}
 					}
 					tile.setString("Lock", "test");
 					if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3) && !tile.hasKey("Lock") && !"test".equals(tile.getString("test"))) {

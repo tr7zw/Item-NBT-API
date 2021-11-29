@@ -226,10 +226,17 @@ public class NBTReflectionUtil {
 				Object pos = ObjectCreator.NMS_BLOCKPOSITION.getInstance(tile.getX(), tile.getY(), tile.getZ());
 				o = ReflectionMethod.NMS_WORLD_GET_TILEENTITY.run(nmsworld, pos);
 			}
-			Object tag = ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance();
-			Object answer = ReflectionMethod.TILEENTITY_GET_NBT.run(o, tag);
-			if (answer == null)
-				answer = tag;
+			
+			Object answer = null;
+			if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_18_R1)) {
+			    answer = ReflectionMethod.TILEENTITY_GET_NBT_1181.run(o);
+			} else {
+			    Object tag = ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance();
+			    answer = ReflectionMethod.TILEENTITY_GET_NBT.run(o, tag);
+			}
+			if (answer == null) {
+			    throw new NbtApiException("Unable to get NBTCompound from TileEntity!");
+			}
 			return answer;
 		} catch (Exception e) {
 			throw new NbtApiException("Exception while getting NBTCompound from TileEntity!", e);
