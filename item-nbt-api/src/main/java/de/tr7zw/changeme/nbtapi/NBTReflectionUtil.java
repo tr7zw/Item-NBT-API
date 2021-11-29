@@ -231,11 +231,11 @@ public class NBTReflectionUtil {
 			if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_18_R1)) {
 			    answer = ReflectionMethod.TILEENTITY_GET_NBT_1181.run(o);
 			} else {
-			    Object tag = ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance();
-			    answer = ReflectionMethod.TILEENTITY_GET_NBT.run(o, tag);
+			    answer = ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance();
+			    ReflectionMethod.TILEENTITY_GET_NBT.run(o, answer);
 			}
 			if (answer == null) {
-			    answer = ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance();
+			    throw new NbtApiException("Unable to get NBTCompound from TileEntity! " + tile + " " + o);
 			}
 			return answer;
 		} catch (Exception e) {
