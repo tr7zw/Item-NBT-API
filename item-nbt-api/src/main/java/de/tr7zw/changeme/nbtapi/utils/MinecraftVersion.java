@@ -30,7 +30,7 @@ public enum MinecraftVersion {
 	private static Logger logger = Logger.getLogger("NBTAPI");
 
 	// NBT-API Version
-	protected static final String VERSION = "2.9.0-SNAPSHOT";
+	protected static final String VERSION = "2.9.0";
 
 	private final int versionId;
 	private final boolean mojangMapping;
@@ -105,7 +105,7 @@ public enum MinecraftVersion {
 		if (version != UNKNOWN) {
 			logger.info("[NBTAPI] NMS support '" + version.name() + "' loaded!");
 		} else {
-			logger.warning("[NBTAPI] Wasn't able to find NMS Support! Some functions may not work!");
+			logger.warning("[NBTAPI] This Server-Version(" + ver + ") is not supported by this NBT-API Version(" + VERSION + ") located at " + MinecraftVersion.class.getName() + ". The NBT-API will try to work as good as it can! Some functions may not work!");
 		}
 		init();
 		return version;

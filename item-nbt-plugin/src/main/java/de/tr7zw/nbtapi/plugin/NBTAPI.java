@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
+import de.tr7zw.changeme.nbtapi.utils.VersionChecker;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 import de.tr7zw.nbtapi.plugin.tests.GameprofileTest;
@@ -59,6 +60,7 @@ public class NBTAPI extends JavaPlugin {
 		getConfig().addDefault("nbtInjector.enabled", false);
 		getConfig().addDefault("bStats.enabled", true);
 		getConfig().addDefault("updateCheck.enabled", true);
+		getConfig().addDefault("silentstart", false);
 		saveConfig();
 		
 		if(!getConfig().getBoolean("bStats.enabled")) {
@@ -142,7 +144,11 @@ public class NBTAPI extends JavaPlugin {
 	public void onEnable() {
 		instance = this; // NOSONAR
 		// new MetricsLite(this); The metrics moved into the API
-
+		if(getConfig().getBoolean("nbtInjector.enabled")) {
+		    // we are silent, won't check anything or pre-init
+		    VersionChecker.hideOk = true;
+		    return;
+		}
 		getLogger().info("Adding listeners...");
 		Bukkit.getPluginManager().registerEvents(new ReloadListener(), this);
 		getLogger().info("Gson:");
@@ -194,10 +200,11 @@ public class NBTAPI extends JavaPlugin {
 		}
 
 		for (Entry<de.tr7zw.nbtapi.plugin.tests.Test, Exception> entry : results.entrySet()) {
-			if (entry.getValue() != null)
+			if (entry.getValue() != null) {
 				compatible = false;
-			getLogger().info(entry.getKey().getClass().getSimpleName() + ": "
-					+ (entry.getValue() == null ? "Ok" : entry.getValue().getMessage()));
+	            getLogger().info(entry.getKey().getClass().getSimpleName() + ": "
+	                    + entry.getValue().getMessage());
+			}
 		}
 
 		String checkMessage = "Plugins that don't check properly may throw Exeptions, crash or have unexpected behaviors!";

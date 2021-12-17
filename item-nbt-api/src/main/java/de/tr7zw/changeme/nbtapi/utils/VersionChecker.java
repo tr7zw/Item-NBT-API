@@ -21,6 +21,7 @@ public class VersionChecker {
 
 	private static final String USER_AGENT = "nbt-api Version check";
 	private static final String REQUEST_URL = "https://api.spiget.org/v2/resources/7939/versions?size=100";
+	public static boolean hideOk = false;
 
 	protected static void checkForUpdates() throws Exception {
 		URL url = new URL(REQUEST_URL);
@@ -43,18 +44,19 @@ public class VersionChecker {
 			int versionDifference = getVersionDifference(latest.get("name").getAsString());
 			if (versionDifference == -1) { // Outdated
 				MinecraftVersion.getLogger().log(Level.WARNING,
-						"[NBTAPI] The NBT-API at '" + NBTItem.class.getPackage() + "' seems to be outdated!");
+						"[NBTAPI] The NBT-API located at '" + NBTItem.class.getPackage() + "' seems to be outdated!");
 				MinecraftVersion.getLogger().log(Level.WARNING, "[NBTAPI] Current Version: '" + MinecraftVersion.VERSION
 						+ "' Newest Version: " + latest.get("name").getAsString() + "'");
 				MinecraftVersion.getLogger().log(Level.WARNING,
-						"[NBTAPI] Please update the nbt-api or the plugin that contains the api!");
+						"[NBTAPI] Please update the NBTAPI or the plugin that contains the api(nag the mod author when the newest release has an old version, not the NBTAPI dev)!");
 
 			} else if (versionDifference == 0) {
-				MinecraftVersion.getLogger().log(Level.INFO, "[NBTAPI] The NBT-API seems to be up-to-date!");
+			    if(!hideOk)
+			        MinecraftVersion.getLogger().log(Level.INFO, "[NBTAPI] The NBT-API seems to be up-to-date!");
 			} else if (versionDifference == 1) {
-				MinecraftVersion.getLogger().log(Level.WARNING, "[NBTAPI] The NBT-API at '" + NBTItem.class.getPackage()
-						+ "' seems to be a future Version, not yet released on Spigot/CurseForge!");
-				MinecraftVersion.getLogger().log(Level.WARNING, "[NBTAPI] Current Version: '" + MinecraftVersion.VERSION
+				MinecraftVersion.getLogger().log(Level.INFO, "[NBTAPI] The NBT-API at '" + NBTItem.class.getPackage()
+						+ "' seems to be a future Version, not yet released on Spigot/CurseForge! This is not an error!");
+				MinecraftVersion.getLogger().log(Level.INFO, "[NBTAPI] Current Version: '" + MinecraftVersion.VERSION
 						+ "' Newest Version: " + latest.get("name").getAsString() + "'");
 			}
 		} else {
