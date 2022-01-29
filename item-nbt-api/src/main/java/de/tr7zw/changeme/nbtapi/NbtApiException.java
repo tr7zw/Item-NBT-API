@@ -70,7 +70,7 @@ public class NbtApiException extends RuntimeException {
 	    if(confirmedBroken == null) {
 	        return "[?]"+message;
 	    }
-	    return "[" + MinecraftVersion.getVersion() + "]There were errors detected during the server self-check! Please, make sure that NBT-API is up to date. Error message:  " + message;
+	    return "[" + MinecraftVersion.getVersion() + "]There were errors detected during the server self-check! Please, make sure that NBT-API is up to date. Error message: " + message;
 	}
 
 }
