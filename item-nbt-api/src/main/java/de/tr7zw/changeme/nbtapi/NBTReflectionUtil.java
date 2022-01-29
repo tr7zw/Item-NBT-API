@@ -1,5 +1,6 @@
 package de.tr7zw.changeme.nbtapi;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
@@ -70,7 +71,9 @@ public class NBTReflectionUtil {
 		try {
 			return ReflectionMethod.NBTFILE_READ.run(null, stream);
 		} catch (Exception e) {
-			stream.close();
+			try {
+			    stream.close();
+			}catch(IOException ignore) {}
 			throw new NbtApiException("Exception while reading a NBT File!", e);
 		}
 	}
