@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import de.tr7zw.changeme.nbtapi.utils.VersionChecker;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
@@ -209,8 +210,10 @@ public class NBTAPI extends JavaPlugin {
 
 		String checkMessage = "Plugins that don't check properly may throw Exeptions, crash or have unexpected behaviors!";
 		if (compatible) {
+		    NbtApiException.confirmedBroken = false;
 			getLogger().info("Success! This version of NBT-API is compatible with your server.");
 		} else {
+		    NbtApiException.confirmedBroken = true;
 			getLogger().warning(
 					"WARNING! This version of NBT-API seems to be broken with your Spigot version! " + checkMessage);
 			if(MinecraftVersion.getVersion() == MinecraftVersion.MC1_7_R4) {
