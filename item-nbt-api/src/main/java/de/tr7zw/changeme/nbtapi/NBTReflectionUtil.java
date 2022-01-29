@@ -70,6 +70,7 @@ public class NBTReflectionUtil {
 		try {
 			return ReflectionMethod.NBTFILE_READ.run(null, stream);
 		} catch (Exception e) {
+			stream.close();
 			throw new NbtApiException("Exception while reading a NBT File!", e);
 		}
 	}
