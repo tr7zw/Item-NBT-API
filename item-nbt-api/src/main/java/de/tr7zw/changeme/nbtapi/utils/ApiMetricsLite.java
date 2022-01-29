@@ -326,7 +326,7 @@ public class ApiMetricsLite {
 			throw new IllegalAccessException("This method must not be called from the main thread!");
 		}
 		if (logSentData) {
-			System.out.println("[NBTAPI][BSTATS] Sending data to bStats: " + data.toString());
+		    MinecraftVersion.getLogger().info("[NBTAPI][BSTATS] Sending data to bStats: " + data.toString());
 			// Not using the plugins logger since the plugin isn't the plugin containing the NBT-Api most of the time
 			//plugin.getLogger().info("Sending data to bStats: " + data.toString());
 		}

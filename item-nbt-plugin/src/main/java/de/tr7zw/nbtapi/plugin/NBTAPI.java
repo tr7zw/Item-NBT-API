@@ -60,7 +60,7 @@ public class NBTAPI extends JavaPlugin {
 		getConfig().addDefault("nbtInjector.enabled", false);
 		getConfig().addDefault("bStats.enabled", true);
 		getConfig().addDefault("updateCheck.enabled", true);
-		getConfig().addDefault("silentstart", false);
+		getConfig().addDefault("silentquickstart", false);
 		saveConfig();
 		
 		if(!getConfig().getBoolean("bStats.enabled")) {
@@ -144,7 +144,7 @@ public class NBTAPI extends JavaPlugin {
 	public void onEnable() {
 		instance = this; // NOSONAR
 		// new MetricsLite(this); The metrics moved into the API
-		if(getConfig().getBoolean("nbtInjector.enabled")) {
+		if(getConfig().getBoolean("silentquickstart")) {
 		    // we are silent, won't check anything or pre-init
 		    VersionChecker.hideOk = true;
 		    return;
