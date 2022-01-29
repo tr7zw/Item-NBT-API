@@ -1,5 +1,7 @@
 package de.tr7zw.changeme.nbtapi;
 
+import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
+
 /**
  * A generic {@link RuntimeException} that can be thrown by most methods in the
  * NBTAPI.
@@ -68,7 +70,7 @@ public class NbtApiException extends RuntimeException {
 	    if(confirmedBroken == null) {
 	        return "[?]"+message;
 	    }
-	    return "During the server start selfcheck there where detected errors! Please make sure that the NBTAPI is on it's newest version. Error message: " + message;
+	    return "[" + MinecraftVersion.getVersion() + "]There were errors detected during the server self-check! Please, make sure that NBT-API is up to date. Error message:  " + message;
 	}
 
 }
