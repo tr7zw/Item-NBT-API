@@ -472,7 +472,7 @@ public class NBTCompound {
 		}
 	}
 	
-		/**
+	/**
 	 * Setter
 	 *
 	 * @param key
@@ -623,6 +623,36 @@ public class NBTCompound {
 			writeLock.unlock();
 		}
 	}
+	
+	/**
+     * @param name
+     * @return The retrieved Integer List
+     */
+    public NBTList<int[]> getIntArrayList(String name) {
+        try {
+            writeLock.lock();
+            NBTList<int[]> list = NBTReflectionUtil.getList(this, name, NBTType.NBTTagIntArray, int[].class);
+            saveCompound();
+            return list;
+        } finally {
+            writeLock.unlock();
+        }
+    }
+    
+   /**
+    * @param name
+    * @return The retrieved Integer List
+    */
+   public NBTList<UUID> getUUIDList(String name) {
+       try {
+           writeLock.lock();
+           NBTList<UUID> list = NBTReflectionUtil.getList(this, name, NBTType.NBTTagIntArray, UUID.class);
+           saveCompound();
+           return list;
+       } finally {
+           writeLock.unlock();
+       }
+   }
 
 	/**
 	 * @param name
