@@ -58,9 +58,14 @@ public enum MinecraftVersion {
         return mojangMapping;
     }
 	
+	/**
+	 * This method is required to hot-wire the plugin during mappings generation for newer mc versions thanks to md_5 not used mojmap.
+	 * 
+	 * @return
+	 */
 	public String getPackageName() {
 	    if(this == UNKNOWN) {
-	        return values()[values().length-1].name().replace("MC", "v");
+	        return Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
 	    }
 	    return this.name().replace("MC", "v");
 	}
