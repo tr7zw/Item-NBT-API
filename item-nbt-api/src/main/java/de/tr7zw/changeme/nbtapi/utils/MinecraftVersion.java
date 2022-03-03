@@ -129,7 +129,7 @@ public enum MinecraftVersion {
 				try {
 					VersionChecker.checkForUpdates();
 				} catch (Exception ex) {
-					logger.log(Level.WARNING, "[NBTAPI] Error while checking for updates!", ex);
+					logger.log(Level.WARNING, "[NBTAPI] Error while checking for updates! Error: " + ex.getMessage());
 				}
 			}).start();
 		// Maven's Relocate is clever and changes strings, too. So we have to use this
