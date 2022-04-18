@@ -9,6 +9,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.Forge1710Mappings;
 import org.bukkit.inventory.ItemStack;
 
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
@@ -800,7 +801,11 @@ public class NBTCompound {
 			Object comp = NBTReflectionUtil.gettoCompount(getCompound(), this);
 			if (comp == null)
 				return "{}";
-			return comp.toString();
+			if (MinecraftVersion.isForgePresent() && MinecraftVersion.getVersion() == MinecraftVersion.MC1_7_R4){
+				return Forge1710Mappings.toString(comp);
+			}else {
+				return comp.toString();
+			}
 		} finally {
 			readLock.unlock();
 		}

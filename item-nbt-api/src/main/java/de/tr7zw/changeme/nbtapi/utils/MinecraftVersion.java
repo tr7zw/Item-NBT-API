@@ -21,6 +21,7 @@ public enum MinecraftVersion {
 
 	private static MinecraftVersion version;
 	private static Boolean hasGsonSupport;
+	private static Boolean isForgePresent;
 	private static boolean bStatsDisabled = false;
 	private static boolean disablePackageWarning = false;
 	private static boolean updateCheckDisabled = false;
@@ -166,6 +167,23 @@ public enum MinecraftVersion {
 			hasGsonSupport = false;
 		}
 		return hasGsonSupport;
+	}
+
+	/**
+	 * @return True, if Gson is usable
+	 */
+	public static boolean isForgePresent() {
+		if (isForgePresent != null) {
+			return isForgePresent;
+		}
+		try {
+			logger.info("[NBTAPI] Found Forge: " +
+					(getVersion() == MinecraftVersion.MC1_7_R4 ? Class.forName("cpw.mods.fml.common.Loader") : Class.forName("net.minecraftforge.fml.common.Loader")));
+			isForgePresent = true;
+		} catch (Exception ex) {
+			isForgePresent = false;
+		}
+		return isForgePresent;
 	}
 
 	/**
