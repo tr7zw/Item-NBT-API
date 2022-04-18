@@ -170,7 +170,7 @@ public enum MinecraftVersion {
 	}
 
 	/**
-	 * @return True, if Gson is usable
+	 * @return True, if Forge is present
 	 */
 	public static boolean isForgePresent() {
 		if (isForgePresent != null) {
