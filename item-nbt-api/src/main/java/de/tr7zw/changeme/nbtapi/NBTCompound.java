@@ -791,6 +791,15 @@ public class NBTCompound {
 	}
 
 	/**
+	 * Remove all keys from this compound
+	 */
+	public void clearNBT(){
+		for (String key : getKeys()) {
+			removeKey(key);
+		}
+	}
+
+	/**
 	 * @deprecated Just use toString()
 	 * @return A {@link String} representation of the NBT in Mojang JSON. This is different from normal JSON!
 	 */
