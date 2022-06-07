@@ -5,7 +5,7 @@ It completely uses reflections to interact with NMS code and works with all the 
 
 Tested on Spigot
 [LIST]
-[*](1.7*)1.8.8-1.17.*
+[*](1.7*)1.8.8-1.18.2
 [*]The NBTInjector will not work with: 1.12.0, 1.12.1, 1.13.0 (Please just update to the final release of your chosen version)
 
 [*]On startup you will get a notification if there is a version problem!
@@ -111,7 +111,7 @@ Just use the Plugin as Maven dependency and remember to add "NBTAPI" as dependen
 <dependency>
   <groupId>de.tr7zw</groupId>
   <artifactId>item-nbt-api-plugin</artifactId>
-  <version>2.6.0</version>
+  <version>2.9.2</version>
 </dependency>
 [/CODE]
 [/SPOILER]
@@ -121,7 +121,7 @@ Using this method the API gets copied into your plugin. Server owners don't have
 <dependency>
   <groupId>de.tr7zw</groupId>
   <artifactId>item-nbt-api</artifactId>
-  <version>2.6.0</version>
+  <version>2.9.2</version>
 </dependency>
 ...
     <plugins>
