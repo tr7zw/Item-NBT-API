@@ -1,5 +1,6 @@
 package de.tr7zw.changeme.nbtapi;
 
+import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
 
 import de.tr7zw.annotations.FAUtil;
@@ -33,11 +34,13 @@ public class NBTTileEntity extends NBTCompound {
 
 	@Override
 	public Object getCompound() {
+	    if(!Bukkit.isPrimaryThread())throw new NbtApiException("BlockEntity NBT needs to be accessed sync!");
 		return NBTReflectionUtil.getTileEntityNBTTagCompound(tile);
 	}
 
 	@Override
 	protected void setCompound(Object compound) {
+	    if(!Bukkit.isPrimaryThread())throw new NbtApiException("BlockEntity NBT needs to be accessed sync!");
 		NBTReflectionUtil.setTileEntityNBTTagCompound(tile, compound);
 	}
 

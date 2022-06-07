@@ -1,5 +1,6 @@
 package de.tr7zw.changeme.nbtapi;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 
 import de.tr7zw.annotations.FAUtil;
@@ -32,11 +33,13 @@ public class NBTEntity extends NBTCompound {
 
 	@Override
 	public Object getCompound() {
+	    if(!Bukkit.isPrimaryThread())throw new NbtApiException("Entity NBT needs to be accessed sync!");
 		return NBTReflectionUtil.getEntityNBTTagCompound(NBTReflectionUtil.getNMSEntity(ent));
 	}
 
 	@Override
 	protected void setCompound(Object compound) {
+	    if(!Bukkit.isPrimaryThread())throw new NbtApiException("Entity NBT needs to be accessed sync!");
 		NBTReflectionUtil.setEntityNBTTag(compound, NBTReflectionUtil.getNMSEntity(ent));
 	}
 
