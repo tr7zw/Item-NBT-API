@@ -25,5 +25,14 @@ jobs:
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BRANCH: gh-pages
-        CLEAN: true
+        CLEAN: false
         FOLDER: item-nbt-api/target/apidocs
+        target-folder: v2-api
+    - name: Deploy 🚀
+      uses: JamesIves/github-pages-deploy-action@v4.3.3
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: gh-pages
+        CLEAN: false
+        FOLDER: item-nbt-plugin/target/apidocs
+        target-folder: v2-plugin
