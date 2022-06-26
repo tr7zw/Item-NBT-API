@@ -23,7 +23,7 @@ public class ChunkNBTPersistentTest implements Test {
 					NBTChunk comp = new NBTChunk(chunk);
 					NBTCompound persistentData = comp.getPersistentDataContainer();
 					persistentData.removeKey("Foo");
-					if(persistentData.hasKey("Foo")) {
+					if(persistentData.hasTag("Foo")) {
 						throw new NbtApiException("Unable to remove key from Chunk!");
 					}
 					persistentData.setString("Foo", "Bar");

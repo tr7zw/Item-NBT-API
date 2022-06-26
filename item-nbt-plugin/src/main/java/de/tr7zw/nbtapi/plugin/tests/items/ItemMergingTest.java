@@ -23,7 +23,7 @@ public class ItemMergingTest implements Test {
 		nbti.setString("test", "value");
 
 		nbti.mergeCustomNBT(item);
-		if (!new NBTItem(item).hasKey("test"))
+		if (!new NBTItem(item).hasTag("test"))
 			throw new NbtApiException("Couldn't merge custom NBT tag!");
 		if ("New Author".equals(new NBTItem(item).getString("author")))
 			throw new NbtApiException("Vanilla NBT tag was merged when shouldn't!");
@@ -40,16 +40,16 @@ public class ItemMergingTest implements Test {
 
 		test = new ItemStack(Material.STONE);
 		nbti.applyNBT(test);
-		if (!nbti.hasKey("test"))
+		if (!nbti.hasTag("test"))
 			throw new NbtApiException("Couldn't merge custom NBT tag!");
 		if (!item.getItemMeta().getDisplayName().equals(test.getItemMeta().getDisplayName()))
 			throw new NbtApiException("Couldn't merge vanilla NBT tag!");
 
 		nbti.setBoolean("remove", true);
 		nbti.clearCustomNBT();
-		if (nbti.hasKey("remove"))
+		if (nbti.hasTag("remove"))
 			throw new NbtApiException("Couldn't clear custom NBT tags!");
-		if (!nbti.hasKey("author"))
+		if (!nbti.hasTag("author"))
 			throw new NbtApiException("Vanilla tag was removed!");
 	}
 

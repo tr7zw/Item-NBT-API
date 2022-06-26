@@ -36,7 +36,7 @@ public class SubCompoundsTest implements Test {
 		if (comp == null) {
 			throw new NbtApiException("Wasn't able to get the NBTCompound!");
 		}
-		if (!comp.hasKey(STRING_TEST_KEY)) {
+		if (!comp.hasTag(STRING_TEST_KEY)) {
 			throw new NbtApiException("Wasn't able to check a compound key!");
 		}
 		if (!(STRING_TEST_VALUE + "2").equals(comp.getString(STRING_TEST_KEY))

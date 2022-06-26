@@ -53,7 +53,7 @@ public class ListTest implements Test {
 			if (lcomp.getKeys().size() != 4) {
 				throw new NbtApiException("Wrong key amount in Taglist (" + lcomp.getKeys().size() + ")!");
 			} else if (!(lcomp.getDouble("double1") == 0.3333 && lcomp.getInteger("int1") == 42
-					&& lcomp.getString("test2").equals("test2") && !lcomp.hasKey("test1"))) {
+					&& lcomp.getString("test2").equals("test2") && !lcomp.hasTag("test1"))) {
 				throw new NbtApiException("One key in the Taglist changed! The Item-NBT-API may not work!");
 			} else if (lcomp.getCompound("listsubkey") == null
 					|| !"String".equals(lcomp.getCompound("listsubkey").getString("deep"))) {

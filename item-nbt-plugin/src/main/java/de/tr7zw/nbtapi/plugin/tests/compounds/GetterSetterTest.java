@@ -43,7 +43,7 @@ public class GetterSetterTest implements Test {
 		comp.setIntArray(INTARRAY_TEST_KEY, INTARRAY_TEST_VALUE);
 		comp.setByteArray(BYTEARRAY_TEST_KEY, BYTEARRAY_TEST_VALUE);
 
-		if (!comp.hasKey(STRING_TEST_KEY)) {
+		if (!comp.hasTag(STRING_TEST_KEY)) {
 			throw new NbtApiException("Wasn't able to check a key! The Item-NBT-API may not work!");
 		}
 		if (!(STRING_TEST_VALUE).equals(comp.getString(STRING_TEST_KEY))

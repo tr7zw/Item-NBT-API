@@ -29,7 +29,7 @@ public class MergeTileSubCompoundTest implements Test {
 					comp.addCompound("subcomp").setString("hello", "world");
 					NBTContainer cont = new NBTContainer();
 					cont.mergeCompound(comp.getCompound("subcomp"));
-					if (!(cont.hasKey("hello") && "world".equals(cont.getString("hello")))) {
+					if (!(cont.hasTag("hello") && "world".equals(cont.getString("hello")))) {
 						failed = true;
 					}
 					block.setType(Material.AIR);

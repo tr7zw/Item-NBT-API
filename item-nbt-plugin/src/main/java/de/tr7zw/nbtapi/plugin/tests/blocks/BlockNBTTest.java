@@ -23,7 +23,7 @@ public class BlockNBTTest implements Test {
 					Block block = chunk.getBlock(0, 254, 0);
 					NBTBlock comp = new NBTBlock(block);
 					comp.getData().removeKey("Too");
-					if(comp.getData().hasKey("Too")) {
+					if(comp.getData().hasTag("Too")) {
 						throw new NbtApiException("Unable to remove key from Block!");
 					}
 					comp.getData().setString("Too", "Bar");

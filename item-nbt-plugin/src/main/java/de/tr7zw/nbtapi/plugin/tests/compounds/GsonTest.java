@@ -21,7 +21,7 @@ public class GsonTest implements Test {
 
 			nbtItem.setObject(JSON_TEST_KEY, new SimpleJsonTestObject());
 
-			if (!nbtItem.hasKey(JSON_TEST_KEY)) {
+			if (!nbtItem.hasTag(JSON_TEST_KEY)) {
 				throw new NbtApiException(
 						"Wasn't able to find JSON key! The Item-NBT-API may not work with Json serialization/deserialization!");
 			} else {
