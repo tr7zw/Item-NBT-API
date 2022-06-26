@@ -43,6 +43,18 @@ public class NBTFileTest implements Test {
 		if (!str.equals(rebuild.asNBTString())) {
 			throw new NbtApiException("Wasn't able to parse NBT from a String!");
 		}
+
+		NBTCompound dummy = new NBTContainer();
+		dummy.setString("test1", "key1");
+		NBTFile.saveTo(testFile, dummy);
+		dummy = new NBTContainer();
+		dummy.setString("test2", "key2");
+		NBTFile.saveTo(testFile, dummy);
+		dummy = NBTFile.readFrom(testFile);
+		if (dummy.hasTag("test1") || !dummy.getString("test2").equals("key2")) {
+			throw new NbtApiException("Wasn't able to save NBT File with the correct content!");
+		}
+		Files.deleteIfExists(fileLoaded.getFile().toPath());
 	}
 
 }
