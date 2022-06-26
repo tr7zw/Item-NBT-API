@@ -53,7 +53,7 @@ public class NBTTileEntity extends NBTCompound {
 	@AvailableSince(version = MinecraftVersion.MC1_14_R1)
 	public NBTCompound getPersistentDataContainer() {
 		FAUtil.check(this::getPersistentDataContainer, CheckUtil::isAvaliable);
-		if (hasKey("PublicBukkitValues")) {
+		if (hasTag("PublicBukkitValues")) {
 			return getCompound("PublicBukkitValues");
 		} else {
 			NBTContainer container = new NBTContainer();

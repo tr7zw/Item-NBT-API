@@ -14,7 +14,7 @@ public class DirectApplyTest implements Test{
 		ItemStack baseItem = new ItemStack(Material.STONE);
 		NBTItem nbti = new NBTItem(baseItem, true);
 		nbti.setString("SomeKey", "SomeValue");
-		if(!baseItem.equals(nbti.getItem()) || !new NBTItem(baseItem).hasKey("SomeKey")) {
+		if(!baseItem.equals(nbti.getItem()) || !new NBTItem(baseItem).hasTag("SomeKey")) {
 			throw new NbtApiException("The item's where not equal!");
 		}
 	}

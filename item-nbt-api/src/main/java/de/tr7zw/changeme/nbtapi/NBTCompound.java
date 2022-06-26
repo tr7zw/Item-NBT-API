@@ -505,10 +505,20 @@ public class NBTCompound {
 	}
 
 	/**
-	 * @param key
+	 * @param key String key
 	 * @return True if the key is set
+	 * @deprecated Use {@link #hasTag(String)} instead
 	 */
+	@Deprecated
 	public Boolean hasKey(String key) {
+		return hasTag(key);
+	}
+
+	/**
+	 * @param key String key
+	 * @return true, if the key is set
+	 */
+	public boolean hasTag(String key) {
 		try {
 			readLock.lock();
 			Boolean b = (Boolean) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_HAS_KEY, key);

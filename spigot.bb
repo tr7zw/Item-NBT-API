@@ -33,7 +33,7 @@ nbti.setString("Stringtest", "Teststring");
 nbti.setInteger("Inttest", 42);
 nbti.setDouble("Doubletest", 1.5d);
 nbti.setBoolean("Booleantest", true);
-//More are avaible!
+//More are available!
 //Get
 nbti.getString("Stringtest");
 nbti.getInteger("Inttest");
@@ -41,8 +41,8 @@ nbti.getDouble("Doubletest");
 nbti.getBoolean("Booleantest");
 //Get all Tags
 nbti.getKeys();
-//Check for an tag
-nbti.hasKey("Key");
+//Check for a tag
+nbti.hasTag("Key");
 //Remove a tag
 nbti.removeKey("Key");
 //or

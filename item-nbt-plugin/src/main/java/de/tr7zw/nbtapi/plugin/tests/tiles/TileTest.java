@@ -29,7 +29,7 @@ public class TileTest implements Test {
     					}
 					}
 					tile.setString("Lock", "test");
-					if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3) && !tile.hasKey("Lock") && !"test".equals(tile.getString("test"))) {
+					if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3) && !tile.hasTag("Lock") && !"test".equals(tile.getString("test"))) {
 						block.setType(Material.AIR);
 						throw new NbtApiException("The Lock wasn't successfully set.");
 					}
