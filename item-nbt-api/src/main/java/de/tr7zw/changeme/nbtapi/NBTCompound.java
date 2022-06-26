@@ -744,6 +744,35 @@ public class NBTCompound {
 	}
 
 	/**
+	 * Returns the stored value if exists, or provided value otherwise.
+	 * <p>Supported types: {@code byte/Byte, short/Short, int/Integer, long/Long, float/Float, double/Double, byte[], int[]}, {@link String}, {@link UUID}
+	 *
+	 * @param key key
+	 * @param defaultValue default non-null value
+	 * @param <T> value type
+	 * @return Stored or provided value
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T getOrDefault(String key, T defaultValue) {
+		if (defaultValue == null) throw new NullPointerException("Default type in getOrDefault can't be null!");
+		if (!hasTag(key)) return defaultValue;
+
+		Class<?> clazz = defaultValue.getClass();
+		if (clazz == Byte.class) return (T) getByte(key);
+		if (clazz == Short.class) return (T) getShort(key);
+		if (clazz == Integer.class) return (T) getInteger(key);
+		if (clazz == Long.class) return (T) getLong(key);
+		if (clazz == Float.class) return (T) getFloat(key);
+		if (clazz == Double.class) return (T) getDouble(key);
+		if (clazz == byte[].class) return (T) getByteArray(key);
+		if (clazz == int[].class) return (T) getIntArray(key);
+		if (clazz == String.class) return (T) getString(key);
+		if (clazz == UUID.class) return (T) getUUID(key);
+
+		throw new NbtApiException("Unsupported type for getOrDefault: " + clazz.getName());
+	}
+
+	/**
 	 * @param name
 	 * @return The type of the given stored key or null
 	 */
