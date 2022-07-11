@@ -146,7 +146,7 @@ public enum MinecraftVersion {
 					"a different version of the api! Please read the guide on the plugin page on how to get the");
 			logger.warning(
 					"Maven Shade plugin to relocate the api to your personal location! If you are not the developer,");
-			logger.warning("please check your plugins and contact their developer, so he can fix this issue.");
+			logger.warning("please check your plugins and contact their developer, so they can fix this issue.");
 			logger.warning(
 					"#########################################- NBTAPI -#########################################");
 		}
