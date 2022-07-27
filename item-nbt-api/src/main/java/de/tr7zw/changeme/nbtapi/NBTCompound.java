@@ -486,7 +486,11 @@ public class NBTCompound {
 	public void setUUID(String key, UUID value) {
 		try {
 			writeLock.lock();
-			NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_UUID, key, value);
+			if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_16_R1)) {
+			    NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_UUID, key, value);
+			} else {
+			    setString(key, value.toString());
+			}
 			saveCompound();
 		} finally {
 			writeLock.unlock();
@@ -499,14 +503,18 @@ public class NBTCompound {
 	 * @param key
 	 * @return The stored value or NMS fallback
 	 */
-	public UUID getUUID(String key) {
-		try {
-			readLock.lock();
-			return (UUID) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_UUID, key);
-		} finally {
-			readLock.unlock();
-		}
-	}
+    public UUID getUUID(String key) {
+        try {
+            readLock.lock();
+            if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_16_R1)) {
+                return (UUID) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_UUID, key);
+            } else {
+                return UUID.fromString(getString(key));
+            }
+        } finally {
+            readLock.unlock();
+        }
+    }
 
 	/**
 	 * @param key String key
