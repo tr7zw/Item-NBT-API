@@ -410,11 +410,13 @@ public class NBTCompound {
 	}
 
 	/**
-	 * Uses Gson to store an {@link Serializable} Object
+	 * Uses Gson to store an {@link Serializable} Object.
+	 * Deprecated to clarify that it's probably missused. Preferably do the serializing yourself.
 	 * 
 	 * @param key
 	 * @param value
 	 */
+	@Deprecated
 	public void setObject(String key, Object value) {
 		try {
 			writeLock.lock();
@@ -427,11 +429,13 @@ public class NBTCompound {
 
 	/**
 	 * Uses Gson to retrieve a stored Object
+     * Deprecated to clarify that it's probably missused. Preferably do the serializing yourself.
 	 * 
 	 * @param key
 	 * @param type Class of the Object
 	 * @return The created Object or null if empty
 	 */
+	@Deprecated
 	public <T> T getObject(String key, Class<T> type) {
 		try {
 			readLock.lock();
