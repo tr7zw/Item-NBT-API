@@ -3,7 +3,6 @@ package de.tr7zw.changeme.nbtapi;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -11,10 +10,10 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import de.tr7zw.changeme.nbtapi.utils.nmsmappings.Forge1710Mappings;
 import org.bukkit.inventory.ItemStack;
 
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.Forge1710Mappings;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 
 /**
@@ -821,6 +820,34 @@ public class NBTCompound {
 
 		throw new NbtApiException("Unsupported type for getOrDefault: " + clazz.getName());
 	}
+	
+	/**
+     * Returns the stored value if exists, or null.
+     * <p>Supported types: {@code Byte, Short, Integer, Long, Float, Double, byte[], int[]}, {@link String}, {@link UUID}
+     *
+     * @param key key
+     * @param type data type
+     * @param <T> value type
+     * @return Stored or provided value
+     */
+    @SuppressWarnings("unchecked")
+    public <T> T getOrNull(String key, Class<?> type) {
+        if (type == null) throw new NullPointerException("Default type in getOrNull can't be null!");
+        if (!hasTag(key)) return null;
+
+        if (type == Byte.class) return (T) getByte(key);
+        if (type == Short.class) return (T) getShort(key);
+        if (type == Integer.class) return (T) getInteger(key);
+        if (type == Long.class) return (T) getLong(key);
+        if (type == Float.class) return (T) getFloat(key);
+        if (type == Double.class) return (T) getDouble(key);
+        if (type == byte[].class) return (T) getByteArray(key);
+        if (type == int[].class) return (T) getIntArray(key);
+        if (type == String.class) return (T) getString(key);
+        if (type == UUID.class) return (T) getUUID(key);
+
+        throw new NbtApiException("Unsupported type for getOrNull: " + type.getName());
+    }
 
 	/**
 	 * @param name
