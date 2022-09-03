@@ -7,9 +7,12 @@ import de.tr7zw.changeme.nbtapi.NbtApiException;
 /**
  * Helper class for 1.7 servers without Gson
  * 
+ * Please consider your own Gson/Jackson instance instead of the built in methods.
+ * 
  * @author tr7zw
  *
  */
+@Deprecated
 public class GsonWrapper {
 
 	/**
@@ -19,7 +22,7 @@ public class GsonWrapper {
 
 	}
 
-	private static final Gson gson = new Gson();
+	private static Gson gson = new Gson();
 
 	/**
 	 * Turns Objects into Json Strings
@@ -29,6 +32,10 @@ public class GsonWrapper {
 	 */
 	public static String getString(Object obj) {
 		return gson.toJson(obj);
+	}
+	
+	public static void overwriteGsonInstance(Gson replacement) {
+	    gson = replacement;
 	}
 
 	/**
