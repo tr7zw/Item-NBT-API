@@ -506,10 +506,12 @@ public class NBTCompound {
     public UUID getUUID(String key) {
         try {
             readLock.lock();
-            if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_16_R1)) {
+            if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_16_R1) && getType(key) == NBTType.NBTTagIntArray) {
                 return (UUID) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_UUID, key);
-            } else {
+            } else if (getType(key) == NBTType.NBTTagString) {
                 return UUID.fromString(getString(key));
+            } else {
+                return null;
             }
         } finally {
             readLock.unlock();
