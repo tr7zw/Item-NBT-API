@@ -481,6 +481,39 @@ public class NBTCompound {
 	}
 	
 	/**
+     * Save an ItemStack Array as a compound under a given key
+     * 
+     * @param key
+     * @param items
+     */
+    public void setItemStackArray(String key, ItemStack[] items) {
+        try {
+            writeLock.lock();
+            removeKey(key);
+            addCompound(key).mergeCompound(NBTItem.convertItemArraytoNBT(items));
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
+    /**
+     * Get an ItemStack Array that was saved at the given key
+     * 
+     * @param key
+     * @return
+     */
+    public ItemStack[] getItemStackArray(String key) {
+        try {
+            readLock.lock();
+            NBTCompound comp = getCompound(key);
+            if (comp == null) return null; // NBTReflectionUtil#convertNBTCompoundtoNMSItem doesn't accept null
+            return NBTItem.convertNBTtoItemArray(comp);
+        } finally {
+            readLock.unlock();
+        }
+    }
+	
+	/**
 	 * Setter
 	 *
 	 * @param key

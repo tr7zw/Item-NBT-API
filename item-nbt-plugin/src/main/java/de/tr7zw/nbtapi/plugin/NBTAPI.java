@@ -37,11 +37,12 @@ import de.tr7zw.nbtapi.plugin.tests.injector.SpawnEntityCustomNbtInjectorTest;
 import de.tr7zw.nbtapi.plugin.tests.injector.TilesCustomNBTInjectorTest;
 import de.tr7zw.nbtapi.plugin.tests.items.DirectApplyTest;
 import de.tr7zw.nbtapi.plugin.tests.items.EmptyItemTest;
-import de.tr7zw.nbtapi.plugin.tests.items.ItemConvertionTest;
+import de.tr7zw.nbtapi.plugin.tests.items.ItemConversionTest;
 import de.tr7zw.nbtapi.plugin.tests.tiles.TileTest;
 import de.tr7zw.nbtapi.plugin.tests.tiles.TilesCustomNBTPersistentTest;
 import de.tr7zw.nbtinjector.NBTInjector;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemMergingTest;
+import de.tr7zw.nbtapi.plugin.tests.items.ItemStackConversionTest;
 
 public class NBTAPI extends JavaPlugin {
 
@@ -102,8 +103,10 @@ public class NBTAPI extends JavaPlugin {
 			apiTests.add(new IteratorTest());
 
 		// Items
-		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) // 1.7.10 not a thing
-			apiTests.add(new ItemConvertionTest());
+		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) { // 1.7.10 not a thing
+			apiTests.add(new ItemConversionTest());
+			apiTests.add(new ItemStackConversionTest());
+		}
 		apiTests.add(new EmptyItemTest());
 		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) { // 1.7.10 not a thing
 			apiTests.add(new ItemMergingTest());

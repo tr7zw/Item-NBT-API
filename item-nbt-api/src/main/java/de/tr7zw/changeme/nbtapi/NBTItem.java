@@ -1,5 +1,7 @@
 package de.tr7zw.changeme.nbtapi;
 
+import java.util.Arrays;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -155,7 +157,7 @@ public class NBTItem extends NBTCompound {
 	}
 
 	/**
-	 * Helper method to do the inverse to "convertItemtoNBT". Creates an
+	 * Helper method to do the inverse of "convertItemtoNBT". Creates an
 	 * {@link ItemStack} using the {@link NBTCompound}
 	 * 
 	 * @param comp
@@ -165,6 +167,56 @@ public class NBTItem extends NBTCompound {
 		return (ItemStack) ReflectionMethod.ITEMSTACK_BUKKITMIRROR.run(null,
 				NBTReflectionUtil.convertNBTCompoundtoNMSItem(comp));
 	}
+	
+	 /**
+     * Helper method that converts {@link ItemStack}[] to {@link NBTContainer} with
+     * all it data like Material, Damage, Amount and Tags. This is a custom implementation
+     * and won't work with vanilla code(Shulker content etc).
+     * 
+     * @param items
+     * @return Standalone {@link NBTContainer} with the Item's data
+     */
+    public static NBTContainer convertItemArraytoNBT(ItemStack[] items) {
+        NBTContainer container = new NBTContainer();
+        container.setInteger("size", items.length);
+        NBTCompoundList list = container.getCompoundList("items");
+        for(int i = 0; i < items.length; i++) {
+            ItemStack item = items[i];
+            if(item == null || item.getType() == Material.AIR){
+                continue;
+            }
+            NBTListCompound entry = list.addCompound();
+            entry.setInteger("Slot", i);
+            entry.mergeCompound(convertItemtoNBT(item));
+        }
+        return container;
+    }
+    
+    /**
+     * Helper method to do the inverse of "convertItemArraytoNBT". Creates an
+     * {@link ItemStack}[] using the {@link NBTCompound}. This is a custom implementation
+     * and won't work with vanilla code(Shulker content etc).
+     * 
+     * Will return null for invalid data. Empty slots in the array are filled with AIR Stacks!
+     * 
+     * @param comp
+     * @return ItemStack[] using the {@link NBTCompound}'s data
+     */
+    public static ItemStack[] convertNBTtoItemArray(NBTCompound comp) {
+        if(!comp.hasTag("size") || !comp.hasTag("items")) {
+            return null;
+        }
+        ItemStack[] rebuild = new ItemStack[comp.getInteger("size")];
+        for(int i = 0; i < rebuild.length; i++) { // not using Arrays.fill, since then it's all the same instance
+            rebuild[i] = new ItemStack(Material.AIR);
+        }
+        NBTCompoundList list = comp.getCompoundList("items");
+        for(NBTListCompound lcomp : list) {
+            int slot = lcomp.getInteger("Slot");
+            rebuild[slot] = convertNBTtoItem(lcomp);
+        }
+        return rebuild;
+    }
 
 	@Override
 	protected void saveCompound() {

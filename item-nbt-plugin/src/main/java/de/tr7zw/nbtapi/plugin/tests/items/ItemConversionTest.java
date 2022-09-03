@@ -11,7 +11,7 @@ import de.tr7zw.changeme.nbtapi.NBTItem;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.nbtapi.plugin.tests.Test;
 
-public class ItemConvertionTest implements Test {
+public class ItemConversionTest implements Test {
 
 	@Override
 	public void test() throws Exception {
