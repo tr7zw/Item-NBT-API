@@ -3,6 +3,8 @@ package de.tr7zw.changeme.nbtapi;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.locks.Lock;
@@ -564,7 +566,7 @@ public class NBTCompound {
 	public Set<String> getKeys() {
 		try {
 			readLock.lock();
-			return NBTReflectionUtil.getKeys(this);
+			return new HashSet<>(NBTReflectionUtil.getKeys(this));
 		} finally {
 			readLock.unlock();
 		}
