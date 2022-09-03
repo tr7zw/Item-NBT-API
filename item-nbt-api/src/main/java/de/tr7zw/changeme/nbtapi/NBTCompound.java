@@ -471,6 +471,7 @@ public class NBTCompound {
 		try {
 			readLock.lock();
 			NBTCompound comp = getCompound(key);
+			if (comp == null) return null; // NBTReflectionUtil#convertNBTCompoundtoNMSItem doesn't accept null
 			return NBTItem.convertNBTtoItem(comp);
 		} finally {
 			readLock.unlock();
