@@ -523,7 +523,8 @@ public class NBTReflectionUtil {
 	 * @param key
 	 * @param value
 	 */
-	public static void setObject(NBTCompound comp, String key, Object value) {
+	@SuppressWarnings("deprecation")
+    public static void setObject(NBTCompound comp, String key, Object value) {
 		if (!MinecraftVersion.hasGsonSupport())
 			return;
 		try {
@@ -542,6 +543,7 @@ public class NBTReflectionUtil {
 	 * @param type
 	 * @return The loaded Object or null, if not found
 	 */
+	@SuppressWarnings("deprecation")
 	public static <T> T getObject(NBTCompound comp, String key, Class<T> type) {
 		if (!MinecraftVersion.hasGsonSupport())
 			return null;
