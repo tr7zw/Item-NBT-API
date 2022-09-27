@@ -1,5 +1,7 @@
 package de.tr7zw.changeme.nbtapi;
 
+import java.util.function.Consumer;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -143,6 +145,45 @@ public class NBTItem extends NBTCompound {
 		return getCompound() != null;
 	}
 
+	/**
+	 * Gives save access to the {@link ItemMeta} of the internal {@link ItemStack}.
+	 * Supported operations while inside this scope: 
+	 * - any get/set method of {@link ItemMeta}
+	 * - any getter on {@link NBTItem}
+	 * 
+	 * All changes made to the {@link NBTItem} during this scope will be reverted at the end.
+	 * 
+	 * @param handler
+	 */
+	public void modifyMeta(Consumer<ItemMeta> handler) {
+	    ItemMeta meta = bukkitItem.getItemMeta();
+	    handler.accept(meta);
+	    bukkitItem.setItemMeta(meta);
+        if(directApply) {
+            applyNBT(originalSrcStack);
+        }
+	}
+	
+	/**
+     * Gives save access to the {@link ItemMeta} of the internal {@link ItemStack}.
+     * Supported operations while inside this scope: 
+     * - any get/set method of {@link ItemMeta}
+     * - any getter on {@link NBTItem}
+     * 
+     * All changes made to the {@link NBTItem} during this scope will be reverted at the end.
+     * 
+     * @param handler
+     */
+    public <T extends ItemMeta> void modifyMeta(Class<T> type, Consumer<T> handler) {
+        T meta = (T) bukkitItem.getItemMeta();
+        handler.accept(meta);
+        bukkitItem.setItemMeta(meta);
+        if(directApply) {
+            applyNBT(originalSrcStack);
+        }
+    }
+	
+	
 	/**
 	 * Helper method that converts {@link ItemStack} to {@link NBTContainer} with
 	 * all it's data like Material, Damage, Amount and Tags.

@@ -2,6 +2,7 @@ package de.tr7zw.nbtapi.plugin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -35,6 +36,7 @@ import de.tr7zw.nbtapi.plugin.tests.injector.EntityCustomNbtInjectorTest;
 import de.tr7zw.nbtapi.plugin.tests.injector.MergeTileSubCompoundTest;
 import de.tr7zw.nbtapi.plugin.tests.injector.SpawnEntityCustomNbtInjectorTest;
 import de.tr7zw.nbtapi.plugin.tests.injector.TilesCustomNBTInjectorTest;
+import de.tr7zw.nbtapi.plugin.tests.items.DirectApplyMetaTest;
 import de.tr7zw.nbtapi.plugin.tests.items.DirectApplyTest;
 import de.tr7zw.nbtapi.plugin.tests.items.EmptyItemTest;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemConversionTest;
@@ -47,7 +49,7 @@ import de.tr7zw.nbtapi.plugin.tests.items.ItemStackConversionTest;
 public class NBTAPI extends JavaPlugin {
 
 	private boolean compatible = true;
-	private ArrayList<de.tr7zw.nbtapi.plugin.tests.Test> apiTests = new ArrayList<>();
+	private List<de.tr7zw.nbtapi.plugin.tests.Test> apiTests = new ArrayList<>();
 
 	private static NBTAPI instance;
 
@@ -111,6 +113,7 @@ public class NBTAPI extends JavaPlugin {
 		if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) { // 1.7.10 not a thing
 			apiTests.add(new ItemMergingTest());
 			apiTests.add(new DirectApplyTest());
+			apiTests.add(new DirectApplyMetaTest());
 		}
 
 		// Entity
