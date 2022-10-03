@@ -26,7 +26,7 @@ jobs:
       run: |
         cd wiki
         rm *.md
-        cp ../base-code/wiki ./
+        cp ../base-code/wiki/* ./
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add .
