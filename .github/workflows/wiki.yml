@@ -1,0 +1,33 @@
+name: Wiki CI
+
+on:
+  push:
+    branches:
+      - master
+
+permissions: 
+  contents: write
+jobs:
+  wiki:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout base code
+      uses: actions/checkout@v2
+      with:
+        path: base-code
+    - name: Checkout wiki code
+      uses: actions/checkout@v2
+      with:
+        repository: ${{github.repository}}.wiki
+        path: wiki
+    - name: Push to wiki
+      run: |
+        cd wiki
+        rm *.md
+        cp ../base-code/wiki ./
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "Add changes" && git push
