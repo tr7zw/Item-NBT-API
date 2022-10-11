@@ -242,12 +242,15 @@ public class NBTItem extends NBTCompound {
      * @return ItemStack[] using the {@link NBTCompound}'s data
      */
     public static ItemStack[] convertNBTtoItemArray(NBTCompound comp) {
-        if(!comp.hasTag("size") || !comp.hasTag("items")) {
+        if(!comp.hasTag("size")) {
             return null;
         }
         ItemStack[] rebuild = new ItemStack[comp.getInteger("size")];
         for(int i = 0; i < rebuild.length; i++) { // not using Arrays.fill, since then it's all the same instance
             rebuild[i] = new ItemStack(Material.AIR);
+        }
+        if(!comp.hasTag("items")) {
+            return rebuild;
         }
         NBTCompoundList list = comp.getCompoundList("items");
         for(NBTListCompound lcomp : list) {
