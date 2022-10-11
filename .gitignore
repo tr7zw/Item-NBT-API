@@ -16,7 +16,7 @@ hs_err_pid*
 *.iml
 
 # Ignore IDEA directory
-.idea/*
+.idea/
 
 # File-based project format:
 *.ipr

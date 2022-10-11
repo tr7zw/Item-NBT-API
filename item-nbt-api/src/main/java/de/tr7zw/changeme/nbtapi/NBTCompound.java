@@ -496,10 +496,11 @@ public class NBTCompound {
     }
 
     /**
-     * Get an ItemStack Array that was saved at the given key
+     * Get an {@link ItemStack} array that was saved at the given key,
+     * or null if no stored data was found
      * 
-     * @param key
-     * @return
+     * @param key key
+     * @return The stored {@link ItemStack} array, or null if stored data wasn't found
      */
     public ItemStack[] getItemStackArray(String key) {
         try {
