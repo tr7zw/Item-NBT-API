@@ -40,8 +40,8 @@ public class NBTItem extends NBTCompound {
 	 */
 	public NBTItem(ItemStack item, boolean directApply) {
 		super(null, null);
-		if (item == null || item.getType() == Material.AIR) {
-			throw new NullPointerException("ItemStack can't be null/Air! This is not a NBTAPI bug!");
+		if (item == null || item.getType() == Material.AIR || item.getAmount() <= 0) {
+			throw new NullPointerException("ItemStack can't be null/air/amount of 0! This is not a NBTAPI bug!");
 		}
 		this.directApply = directApply;
 		bukkitItem = item.clone();
