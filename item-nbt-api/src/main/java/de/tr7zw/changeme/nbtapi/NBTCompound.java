@@ -818,7 +818,10 @@ public class NBTCompound {
 		if (clazz == int[].class) return (T) getIntArray(key);
 		if (clazz == String.class) return (T) getString(key);
 		if (clazz == UUID.class) return (T) getUUID(key);
-        if (clazz.isEnum()) return (T) getEnum(key, (Class) defaultValue.getClass());
+        if (clazz.isEnum()) {
+            Object obj = getEnum(key, (Class) defaultValue.getClass());
+            return obj == null ? defaultValue : (T) obj;
+        }
 
 		throw new NbtApiException("Unsupported type for getOrDefault: " + clazz.getName());
 	}
@@ -875,7 +878,6 @@ public class NBTCompound {
      * @param <E>
      * @param key
      * @param type
-     * @throws IllegalArgumentException if the specified enum type has no constant with the name parsed from the NBT
      * @return
      */
     public <E extends Enum<E>> E getEnum(String key, Class<E> type) {
@@ -884,7 +886,11 @@ public class NBTCompound {
         }
         String name = getString(key);
         if(name == null)return null;
-        return Enum.valueOf(type, name);
+        try {
+            return Enum.valueOf(type, name);
+        }catch(IllegalArgumentException ex) {
+            return null;
+        }
     }
 
 	/**
