@@ -817,7 +817,10 @@ public class NBTCompound {
 		if (clazz == byte[].class) return (T) getByteArray(key);
 		if (clazz == int[].class) return (T) getIntArray(key);
 		if (clazz == String.class) return (T) getString(key);
-		if (clazz == UUID.class) return (T) getUUID(key);
+		if (clazz == UUID.class) {
+		    UUID uuid = getUUID(key);
+		    return uuid == null ? defaultValue : (T) uuid;
+		}
         if (clazz.isEnum()) {
             Object obj = getEnum(key, (Class) defaultValue.getClass());
             return obj == null ? defaultValue : (T) obj;
