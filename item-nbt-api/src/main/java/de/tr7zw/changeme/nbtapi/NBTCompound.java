@@ -818,6 +818,7 @@ public class NBTCompound {
 		if (clazz == int[].class) return (T) getIntArray(key);
 		if (clazz == String.class) return (T) getString(key);
 		if (clazz == UUID.class) return (T) getUUID(key);
+        if (clazz.isEnum()) return (T) getEnum(key, (Class) defaultValue.getClass());
 
 		throw new NbtApiException("Unsupported type for getOrDefault: " + clazz.getName());
 	}
@@ -846,8 +847,44 @@ public class NBTCompound {
         if (type == int[].class) return (T) getIntArray(key);
         if (type == String.class) return (T) getString(key);
         if (type == UUID.class) return (T) getUUID(key);
+        if (type.isEnum()) return (T) getEnum(key, (Class) type);
 
         throw new NbtApiException("Unsupported type for getOrNull: " + type.getName());
+    }
+    
+    /**
+     * Set a key to the given Enum value. It gets stored as a String.
+     * Passing null as value will call removeKey(key) instead.
+     * 
+     * @param <E>
+     * @param key
+     * @param value
+     */
+    public <E extends Enum<?>> void setEnum(String key, E value) {
+        if(value == null) {
+            removeKey(key);
+            return;
+        }
+        setString(key, value.name());
+    }
+    
+    /**
+     * Get an Enum value that has been set via setEnum or setString(key, value.name()).
+     * Passing null/invalid keys will return null.
+     * 
+     * @param <E>
+     * @param key
+     * @param type
+     * @throws IllegalArgumentException if the specified enum type has no constant with the name parsed from the NBT
+     * @return
+     */
+    public <E extends Enum<E>> E getEnum(String key, Class<E> type) {
+        if(key == null || type == null) {
+            return null;
+        }
+        String name = getString(key);
+        if(name == null)return null;
+        return Enum.valueOf(type, name);
     }
 
 	/**
