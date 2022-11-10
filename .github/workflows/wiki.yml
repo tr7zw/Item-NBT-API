@@ -30,4 +30,4 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add .
-        git commit -m "Add changes" && git push
+        git diff-index --quiet HEAD || (git commit -m "Add changes" && git push)
