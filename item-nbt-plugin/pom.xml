@@ -110,6 +110,24 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <artifactId>nbtapi-javadoc-plugin</artifactId>
+        <version>3.4.2-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <id>bundle-javadoc</id>
+            <goals>
+              <goal>aggregate-jar</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <detectOfflineLinks>false</detectOfflineLinks>
+              <includeDependencySources>true</includeDependencySources>
+              <sourcepath>src/main/java;${project.parent.basedir}/item-nbt-api/src/main/java;${project.build.directory}/javadoc-relocate;${defines.dir}</sourcepath>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 </project>
