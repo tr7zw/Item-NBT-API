@@ -9,16 +9,17 @@ permissions:
   contents: write
 jobs:
   wiki:
+    if: ${{ github.repository_owner == 'tr7zw' }}
 
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout base code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         path: base-code
     - name: Checkout wiki code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: ${{github.repository}}.wiki
         path: wiki
@@ -30,4 +31,4 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add .
-        git commit -m "Add changes" && git push
+        git diff-index --quiet HEAD || (git commit -m "Add changes" && git push)
