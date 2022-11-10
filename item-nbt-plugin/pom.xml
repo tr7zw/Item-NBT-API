@@ -115,7 +115,7 @@
         <version>3.4.2-SNAPSHOT</version>
         <executions>
           <execution>
-            <id>resource-bundles</id>
+            <id>bundle-javadoc</id>
             <goals>
               <goal>aggregate-jar</goal>
             </goals>
