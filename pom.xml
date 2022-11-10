@@ -174,10 +174,6 @@
               </includes>
               <trimTrailingWhitespace></trimTrailingWhitespace>
               <endWithNewline></endWithNewline>
-              <indent>
-                <spaces>true</spaces>
-                <spacesPerTab>4</spacesPerTab>
-              </indent>
             </format>
           </formats>
           <!-- define a language-specific format -->
