@@ -14,11 +14,11 @@ jobs:
 
     steps:
     - name: Checkout base code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         path: base-code
     - name: Checkout wiki code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: ${{github.repository}}.wiki
         path: wiki
