@@ -11,32 +11,32 @@ package de.tr7zw.changeme.nbtapi;
  */
 public class NBTListCompound extends NBTCompound {
 
-	private NBTList<?> owner;
-	private Object compound;
+    private NBTList<?> owner;
+    private Object compound;
 
-	protected NBTListCompound(NBTList<?> parent, Object obj) {
-		super(null, null);
-		owner = parent;
-		compound = obj;
-	}
-	
-	public NBTList<?> getListParent() {
-		return owner;
-	}
+    protected NBTListCompound(NBTList<?> parent, Object obj) {
+        super(null, null);
+        owner = parent;
+        compound = obj;
+    }
 
-	@Override
-	public Object getCompound() {
-		return compound;
-	}
+    public NBTList<?> getListParent() {
+        return owner;
+    }
 
-	@Override
-	protected void setCompound(Object compound) {
-		this.compound = compound;
-	}
+    @Override
+    public Object getCompound() {
+        return compound;
+    }
 
-	@Override
-	protected void saveCompound() {
-		owner.save();
-	}
+    @Override
+    protected void setCompound(Object compound) {
+        this.compound = compound;
+    }
+
+    @Override
+    protected void saveCompound() {
+        owner.save();
+    }
 
 }

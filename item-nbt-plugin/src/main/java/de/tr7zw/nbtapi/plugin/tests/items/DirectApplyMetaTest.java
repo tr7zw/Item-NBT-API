@@ -17,7 +17,7 @@ public class DirectApplyMetaTest implements Test {
         nbti.modifyMeta(meta -> {
             meta.setDisplayName(nbti.getString("SomeKey"));
         });
-        
+
         if (!new NBTItem(baseItem).hasTag("SomeKey") || !"SomeValue".equals(baseItem.getItemMeta().getDisplayName())) {
             throw new NbtApiException("The item was not modified correctly!");
         }

@@ -8,22 +8,23 @@ package de.tr7zw.changeme.nbtapi.utils.nmsmappings;
  */
 @SuppressWarnings("javadoc")
 public enum PackageWrapper {
-	NMS(new String(new byte[] {'n', 'e', 't', '.', 'm', 'i', 'n', 'e', 'c', 'r', 'a', 'f', 't', '.', 's', 'e', 'r', 'v', 'e', 'r'})),
-	CRAFTBUKKIT(new String(new byte[] {'o', 'r', 'g', '.', 'b', 'u', 'k', 'k', 'i', 't', '.', 'c', 'r', 'a', 'f', 't', 'b', 'u', 'k', 'k', 'i', 't'})),
-	NONE("")
-	;
-	
-	private final String uri;
+    NMS(new String(new byte[] { 'n', 'e', 't', '.', 'm', 'i', 'n', 'e', 'c', 'r', 'a', 'f', 't', '.', 's', 'e', 'r',
+            'v', 'e', 'r' })),
+    CRAFTBUKKIT(new String(new byte[] { 'o', 'r', 'g', '.', 'b', 'u', 'k', 'k', 'i', 't', '.', 'c', 'r', 'a', 'f', 't',
+            'b', 'u', 'k', 'k', 'i', 't' })),
+    NONE("");
 
-	private PackageWrapper(String uri) {
-		this.uri = uri;
-	}
+    private final String uri;
 
-	/**
-	 * @return The Uri for that package
-	 */
-	public String getUri() {
-		return uri;
-	}
+    private PackageWrapper(String uri) {
+        this.uri = uri;
+    }
+
+    /**
+     * @return The Uri for that package
+     */
+    public String getUri() {
+        return uri;
+    }
 
 }

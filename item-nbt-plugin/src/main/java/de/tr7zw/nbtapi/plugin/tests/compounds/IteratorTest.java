@@ -48,16 +48,16 @@ public class IteratorTest implements Test {
         assertTrue(!iterator.hasNext());
         try {
             iterator.next();
-        } catch(NoSuchElementException expected) {
+        } catch (NoSuchElementException expected) {
             return;
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new NbtApiException("iterator threw wrong exception: " + e.toString());
         }
         throw new NbtApiException("iterator did not throw exception");
     }
 
     private static void assertTrue(boolean condition) {
-        if(!condition) {
+        if (!condition) {
             throw new NbtApiException("iterator test failed");
         }
     }

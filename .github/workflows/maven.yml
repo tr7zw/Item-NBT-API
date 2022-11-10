@@ -15,4 +15,4 @@ jobs:
         distribution: zulu
         java-version: 8
     - name: Build with Maven
-      run: mvn --file pom.xml
+      run: mvn install --file pom.xml

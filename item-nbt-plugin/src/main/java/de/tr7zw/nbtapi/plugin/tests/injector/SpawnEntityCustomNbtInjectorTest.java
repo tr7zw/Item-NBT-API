@@ -14,28 +14,28 @@ import de.tr7zw.nbtinjector.NBTInjector;
 
 public class SpawnEntityCustomNbtInjectorTest implements Test {
 
-	@Override
-	public void test() throws Exception {
-		if (!NBTInjector.isInjected())
-			return;
-		if (!Bukkit.getWorlds().isEmpty()) {
-			World world = Bukkit.getWorlds().get(0);
-			try {
-				Entity entity = world.spawnEntity(new Location(world, 0, 0, 0), EntityType.ARMOR_STAND);
-				entity = NBTInjector.patchEntity(entity);
-				NBTCompound comp = NBTInjector.getNbtData(entity);
-				comp.setString("Hello", "World");
-				NBTEntity nbtent = new NBTEntity(entity);
-				if (!nbtent.toString().contains("__extraData:{Hello:\"World\"}")) {
-					throw new NbtApiException("Custom Data did not save to the Entity!");
-				}
-				comp.removeKey("Hello");
-				entity.remove();
+    @Override
+    public void test() throws Exception {
+        if (!NBTInjector.isInjected())
+            return;
+        if (!Bukkit.getWorlds().isEmpty()) {
+            World world = Bukkit.getWorlds().get(0);
+            try {
+                Entity entity = world.spawnEntity(new Location(world, 0, 0, 0), EntityType.ARMOR_STAND);
+                entity = NBTInjector.patchEntity(entity);
+                NBTCompound comp = NBTInjector.getNbtData(entity);
+                comp.setString("Hello", "World");
+                NBTEntity nbtent = new NBTEntity(entity);
+                if (!nbtent.toString().contains("__extraData:{Hello:\"World\"}")) {
+                    throw new NbtApiException("Custom Data did not save to the Entity!");
+                }
+                comp.removeKey("Hello");
+                entity.remove();
 
-			} catch (Exception ex) {
-				throw new NbtApiException("Wasn't able to use NBTEntities!", ex);
-			}
-		}
-	}
+            } catch (Exception ex) {
+                throw new NbtApiException("Wasn't able to use NBTEntities!", ex);
+            }
+        }
+    }
 
 }

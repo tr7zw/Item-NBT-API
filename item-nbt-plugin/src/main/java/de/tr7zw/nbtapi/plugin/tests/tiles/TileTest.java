@@ -12,33 +12,34 @@ import de.tr7zw.nbtapi.plugin.tests.Test;
 
 public class TileTest implements Test {
 
-	@Override
-	public void test() throws Exception {
-		if (!Bukkit.getWorlds().isEmpty()) {
-			World world = Bukkit.getWorlds().get(0);
-			try {
-				Block block = world.getBlockAt(world.getSpawnLocation().getBlockX(), 254,
-						world.getSpawnLocation().getBlockZ());
-				if (block.getType() == Material.AIR) {
-					block.setType(Material.CHEST);
-					NBTTileEntity tile = new NBTTileEntity(block.getState());
-					if(!MinecraftVersion.isNewerThan(MinecraftVersion.MC1_17_R1)) {
-    					if(tile.getInteger("y") != 254) {
-    						block.setType(Material.AIR);
-    						throw new NbtApiException("The Tile Y pos wasn't correct!");
-    					}
-					}
-					tile.setString("Lock", "test");
-					if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3) && !tile.hasTag("Lock") && !"test".equals(tile.getString("test"))) {
-						block.setType(Material.AIR);
-						throw new NbtApiException("The Lock wasn't successfully set.");
-					}
-					block.setType(Material.AIR);
-				}
-			} catch (Exception ex) {
-				throw new NbtApiException("Wasn't able to use NBTTiles!", ex);
-			}
-		}
-	}
+    @Override
+    public void test() throws Exception {
+        if (!Bukkit.getWorlds().isEmpty()) {
+            World world = Bukkit.getWorlds().get(0);
+            try {
+                Block block = world.getBlockAt(world.getSpawnLocation().getBlockX(), 254,
+                        world.getSpawnLocation().getBlockZ());
+                if (block.getType() == Material.AIR) {
+                    block.setType(Material.CHEST);
+                    NBTTileEntity tile = new NBTTileEntity(block.getState());
+                    if (!MinecraftVersion.isNewerThan(MinecraftVersion.MC1_17_R1)) {
+                        if (tile.getInteger("y") != 254) {
+                            block.setType(Material.AIR);
+                            throw new NbtApiException("The Tile Y pos wasn't correct!");
+                        }
+                    }
+                    tile.setString("Lock", "test");
+                    if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3) && !tile.hasTag("Lock")
+                            && !"test".equals(tile.getString("test"))) {
+                        block.setType(Material.AIR);
+                        throw new NbtApiException("The Lock wasn't successfully set.");
+                    }
+                    block.setType(Material.AIR);
+                }
+            } catch (Exception ex) {
+                throw new NbtApiException("Wasn't able to use NBTTiles!", ex);
+            }
+        }
+    }
 
 }

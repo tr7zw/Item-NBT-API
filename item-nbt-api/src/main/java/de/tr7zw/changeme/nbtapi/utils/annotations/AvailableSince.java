@@ -12,6 +12,6 @@ import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 @Target({ METHOD })
 public @interface AvailableSince {
 
-	MinecraftVersion version();
+    MinecraftVersion version();
 
 }

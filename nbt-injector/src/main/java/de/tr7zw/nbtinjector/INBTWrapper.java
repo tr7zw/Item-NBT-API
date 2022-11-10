@@ -10,9 +10,9 @@ import de.tr7zw.changeme.nbtapi.NBTCompound;
  */
 public interface INBTWrapper {
 
-	/**
-	 * @return The custom NBT compound inside this Object
-	 */
-	NBTCompound getNbtData();
+    /**
+     * @return The custom NBT compound inside this Object
+     */
+    NBTCompound getNbtData();
 
 }
