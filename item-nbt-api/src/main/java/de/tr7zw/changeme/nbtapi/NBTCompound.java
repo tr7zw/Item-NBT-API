@@ -545,7 +545,11 @@ public class NBTCompound {
             if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_16_R1) && getType(key) == NBTType.NBTTagIntArray) {
                 return (UUID) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_UUID, key);
             } else if (getType(key) == NBTType.NBTTagString) {
-                return UUID.fromString(getString(key));
+                try {
+                    return UUID.fromString(getString(key));
+                } catch(IllegalArgumentException ex) {
+                    return null;
+                }
             } else {
                 return null;
             }
