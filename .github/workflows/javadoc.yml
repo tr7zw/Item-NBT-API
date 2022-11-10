@@ -22,19 +22,15 @@ jobs:
         java-version: 8
     - name: Build with Maven
       run: mvn package
+    - name: Copy artifacts
+      shell: bash
+      run: |
+        mkdir -p artifacts/v2-api && cp -r item-nbt-api/target/apidocs/* artifacts/v2-api
+        mkdir -p artifacts/v2-plugin && cp -r item-nbt-plugin/target/apidocs/* artifacts/v2-plugin
     - name: Deploy 🚀
       uses: JamesIves/github-pages-deploy-action@v4.4.1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         branch: gh-pages
         clean: false
-        folder: item-nbt-api/target/apidocs
-        target-folder: v2-api
-    - name: Deploy 🚀
-      uses: JamesIves/github-pages-deploy-action@v4.4.1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        branch: gh-pages
-        clean: false
-        folder: item-nbt-plugin/target/apidocs
-        target-folder: v2-plugin
+        folder: artifacts
