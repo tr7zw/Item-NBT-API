@@ -1,3 +1,4 @@
+de.tr7zw.nbtapi
 de.tr7zw.nbtapi.plugin
 de.tr7zw.nbtapi.plugin.tests
 de.tr7zw.nbtapi.plugin.tests.blocks
@@ -8,3 +9,6 @@ de.tr7zw.nbtapi.plugin.tests.entities
 de.tr7zw.nbtapi.plugin.tests.injector
 de.tr7zw.nbtapi.plugin.tests.items
 de.tr7zw.nbtapi.plugin.tests.tiles
+de.tr7zw.nbtapi.utils
+de.tr7zw.nbtapi.utils.annotations
+de.tr7zw.nbtapi.utils.nmsmappings
