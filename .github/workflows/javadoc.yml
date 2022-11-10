@@ -9,6 +9,7 @@ permissions:
   contents: write
 jobs:
   javadoc:
+    if: ${{ github.repository_owner == 'tr7zw' }}
 
     runs-on: ubuntu-latest
 
