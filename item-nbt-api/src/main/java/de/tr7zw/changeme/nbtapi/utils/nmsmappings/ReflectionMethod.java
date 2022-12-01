@@ -355,7 +355,7 @@ public enum ReflectionMethod {
             return method.invoke(target, args);
         } catch (Exception ex) {
             throw new NbtApiException("Error while calling the method '" + methodName + "', loaded: " + loaded
-                    + ", Enum: " + this + " Passed Class: " + target.getClass(), ex);
+                    + ", Enum: " + this + ", Passed Class: " + (target == null ? "null" : target.getClass()), ex);
         }
     }
 
