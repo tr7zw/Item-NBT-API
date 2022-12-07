@@ -1,11 +1,13 @@
 package de.tr7zw.changeme.nbtapi;
 
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
+import de.tr7zw.changeme.nbtapi.iface.ReadableNBT;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 
 /**
@@ -155,9 +157,9 @@ public class NBTItem extends NBTCompound {
      * 
      * @param handler
      */
-    public void modifyMeta(Consumer<ItemMeta> handler) {
+    public void modifyMeta(BiConsumer<ReadableNBT, ItemMeta> handler) {
         ItemMeta meta = bukkitItem.getItemMeta();
-        handler.accept(meta);
+        handler.accept(this, meta);
         bukkitItem.setItemMeta(meta);
         if (directApply) {
             applyNBT(originalSrcStack);
@@ -174,9 +176,10 @@ public class NBTItem extends NBTCompound {
      * 
      * @param handler
      */
-    public <T extends ItemMeta> void modifyMeta(Class<T> type, Consumer<T> handler) {
+    public <T extends ItemMeta> void modifyMeta(Class<T> type, BiConsumer<ReadableNBT, T> handler) {
+        @SuppressWarnings("unchecked")
         T meta = (T) bukkitItem.getItemMeta();
-        handler.accept(meta);
+        handler.accept(this, meta);
         bukkitItem.setItemMeta(meta);
         if (directApply) {
             applyNBT(originalSrcStack);
@@ -253,9 +256,11 @@ public class NBTItem extends NBTCompound {
             return rebuild;
         }
         NBTCompoundList list = comp.getCompoundList("items");
-        for (NBTListCompound lcomp : list) {
-            int slot = lcomp.getInteger("Slot");
-            rebuild[slot] = convertNBTtoItem(lcomp);
+        for (ReadWriteNBT lcomp : list) {
+            if (lcomp instanceof NBTCompound) {
+                int slot = lcomp.getInteger("Slot");
+                rebuild[slot] = convertNBTtoItem((NBTCompound) lcomp);
+            }
         }
         return rebuild;
     }

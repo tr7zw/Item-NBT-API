@@ -97,7 +97,7 @@ public class MojangToMapping {
         }
 
     };
-    
+
     @SuppressWarnings("serial")
     private static Map<String, String> MC1_19R2 = new HashMap<String, String>() {
 

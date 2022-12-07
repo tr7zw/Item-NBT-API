@@ -4,8 +4,8 @@ import java.util.ListIterator;
 
 import de.tr7zw.changeme.nbtapi.NBTCompoundList;
 import de.tr7zw.changeme.nbtapi.NBTContainer;
-import de.tr7zw.changeme.nbtapi.NBTListCompound;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
+import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.nbtapi.plugin.tests.Test;
 
 /**
@@ -24,13 +24,13 @@ public class ForEachTest implements Test {
             compList.addCompound().setInteger("id", 2);
             compList.addCompound().setInteger("id", 3);
             int count = 0;
-            for (NBTListCompound listComp : compList) {
+            for (ReadWriteNBT listComp : compList) {
                 count++;
             }
             if (count != compList.size())
                 throw new NbtApiException("For loop did not get all Entries!");
             count = 0;
-            ListIterator<NBTListCompound> lit = compList.listIterator();
+            ListIterator<ReadWriteNBT> lit = compList.listIterator();
             while (lit.hasNext()) {
                 lit.next();
                 count++;
