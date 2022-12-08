@@ -18,90 +18,98 @@ import de.tr7zw.changeme.nbtapi.NBTType;
 public interface ReadableNBT {
 
     /**
-     * Getter
+     * Given a key, return the value associated with that key.
      * 
-     * @param key
-     * @return The stored value or NMS fallback
+     * @param key The key to get the value for.
+     * @return The value of the key.
      */
     String getString(String key);
 
     /**
-     * Getter
+     * Given a key, return the value associated with that key as an Integer, or 0 if
+     * the key is not found.
      * 
-     * @param key
-     * @return The stored value or NMS fallback
+     * @param key The key to look up in the properties file.
+     * @return The value of the key.
      */
     Integer getInteger(String key);
 
     /**
-     * Getter
+     * Returns the value associated with the given key as a double, or false of not
+     * found.
      * 
-     * @param key
-     * @return The stored value or NMS fallback
+     * @param key The key of the preference to retrieve.
+     * @return A double value
      */
     Double getDouble(String key);
 
     /**
-     * Getter
+     * Get the value of the given key as a byte, or 0 if the key is not found.
      * 
-     * @param key
-     * @return The stored value or NMS fallback
+     * @param key The key to get the value for.
+     * @return A byte
      */
     Byte getByte(String key);
 
     /**
-     * Getter
+     * Returns the value of the key as a Short, or 0 if the key is not found.
      * 
-     * @param key
-     * @return The stored value or NMS fallback
+     * @param key The key of the value you want to get.
+     * @return A short value
      */
     Short getShort(String key);
 
     /**
-     * Getter
+     * Returns the value associated with the given key as a Long, or 0 if the key is
+     * not found.
      * 
-     * @param key
-     * @return The stored value or NMS fallback
+     * @param key The key of the value you want to get.
+     * @return A Long object
      */
     Long getLong(String key);
 
     /**
-     * Getter
+     * Returns the value of the given key as a Float, or 0 if the key does not
+     * exist.
      * 
-     * @param key
-     * @return The stored value or NMS fallback
+     * @param key The key of the preference to retrieve.
+     * @return A float value
      */
     Float getFloat(String key);
 
     /**
-     * Getter
+     * Returns the value associated with the given key as a byte array, or null if
+     * the key is not found.
      * 
-     * @param key
-     * @return The stored value or NMS fallback
+     * @param key The key to use to retrieve the value.
+     * @return A byte array.
      */
     byte[] getByteArray(String key);
 
     /**
-     * Getter
+     * Returns the value associated with the given key as an array of integers, or
+     * null if the key does not exist.
      * 
-     * @param key
-     * @return The stored value or NMS fallback
+     * @param key The key of the value you want to get.
+     * @return An array of integers.
      */
     int[] getIntArray(String key);
 
     /**
-     * Getter
+     * Returns the value associated with the given key, or false if the key is not
+     * found.
      * 
-     * @param key
-     * @return The stored value or NMS fallback
+     * @param key The key of the preference to retrieve.
+     * @return A boolean value.
      */
     Boolean getBoolean(String key);
 
     /**
-     * Get an ItemStack that was saved at the given key
+     * It returns an ItemStack associated with the given key, or null if the key
+     * does not exist.
      * 
-     * @param key
-     * @return
+     * @param key The key of the itemstack you want to get.
+     * @return An ItemStack
      */
     ItemStack getItemStack(String key);
 
@@ -116,10 +124,10 @@ public interface ReadableNBT {
     ItemStack[] getItemStackArray(String key);
 
     /**
-     * Getter
-     *
-     * @param key
-     * @return The stored value or NMS fallback
+     * Given a key, return the UUID of the key.
+     * 
+     * @param key The key to get the value from
+     * @return A UUID object.
      */
     UUID getUUID(String key);
 
