@@ -30,6 +30,8 @@ public interface ReadableNBTList<T> extends Iterable<T> {
     Object[] toArray();
 
     <E> E[] toArray(E[] a);
+    
+    List<T> subList(int fromIndex, int toIndex);
 
     default List<T> toListCopy() {
         List<T> list = new ArrayList<>();
