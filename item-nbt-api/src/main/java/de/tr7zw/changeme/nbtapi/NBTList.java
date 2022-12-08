@@ -9,7 +9,6 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBTList;
-import de.tr7zw.changeme.nbtapi.iface.ReadableNBTList;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 

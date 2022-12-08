@@ -3,7 +3,6 @@ package de.tr7zw.changeme.nbtapi.utils.nmsmappings;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 
 /**

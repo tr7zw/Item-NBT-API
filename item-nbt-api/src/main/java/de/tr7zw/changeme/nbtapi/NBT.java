@@ -7,6 +7,8 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 
+import com.mojang.authlib.GameProfile;
+
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadableNBT;
 
@@ -85,6 +87,38 @@ public class NBT {
 
     public static void modifyPersistentData(BlockState blockState, Consumer<ReadWriteNBT> consumer) {
         consumer.accept(new NBTTileEntity(blockState).getPersistentDataContainer());
+    }
+
+    public static ReadWriteNBT gameProfileToNBT(GameProfile profile) {
+        return NBTGameProfile.toNBT(profile);
+    }
+
+    public static GameProfile gameProfileFromNBT(ReadableNBT compound) {
+        return NBTGameProfile.fromNBT((NBTCompound) compound);
+    }
+
+    public static ReadWriteNBT itemStackToNBT(ItemStack itemStack) {
+        return NBTItem.convertItemtoNBT(itemStack);
+    }
+
+    public static ItemStack itemStackFromNBT(ReadableNBT compound) {
+        return NBTItem.convertNBTtoItem((NBTCompound) compound);
+    }
+
+    public static ReadWriteNBT itemStackArrayToNBT(ItemStack[] itemStacks) {
+        return NBTItem.convertItemArraytoNBT(itemStacks);
+    }
+
+    public static ItemStack[] itemStackArrayFromNBT(ReadableNBT compound) {
+        return NBTItem.convertNBTtoItemArray((NBTCompound) compound);
+    }
+
+    public static ReadWriteNBT createNBTObject() {
+        return new NBTContainer();
+    }
+
+    public static ReadWriteNBT parseNBT(String nbtString) {
+        return new NBTContainer(nbtString);
     }
 
 }

@@ -2,6 +2,7 @@ package de.tr7zw.changeme.nbtapi.iface;
 
 import java.util.Collection;
 import java.util.ListIterator;
+import java.util.function.Predicate;
 
 public interface ReadWriteNBTList<T> extends ReadableNBTList<T> {
 
@@ -22,6 +23,15 @@ public interface ReadWriteNBTList<T> extends ReadableNBTList<T> {
     boolean removeAll(Collection<?> c);
 
     boolean retainAll(Collection<?> c);
+
+    default void removeIf(Predicate<T> pred) {
+        ListIterator<T> it = listIterator(0);
+        while (it.hasNext()) {
+            if (pred.test(it.next())) {
+                it.remove();
+            }
+        }
+    }
 
     boolean remove(Object o);
 
