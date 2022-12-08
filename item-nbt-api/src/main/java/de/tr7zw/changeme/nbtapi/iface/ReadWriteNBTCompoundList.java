@@ -10,6 +10,6 @@ public interface ReadWriteNBTCompoundList extends ReadableNBTList<ReadWriteNBT> 
 
     void clear();
 
-    void removeIf(Predicate<ReadWriteNBT> pred);
+    boolean removeIf(Predicate<? super ReadWriteNBT> pred);
 
 }

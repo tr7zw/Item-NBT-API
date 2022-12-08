@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBTList;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
@@ -418,6 +419,11 @@ public abstract class NBTList<T> implements List<T>, ReadWriteNBTList<T> {
         } finally {
             parent.getReadLock().unlock();
         }
+    }
+
+    @Override
+    public boolean removeIf(Predicate<? super T> filter) {
+        return List.super.removeIf(filter);
     }
 
     @Override

@@ -24,14 +24,7 @@ public interface ReadWriteNBTList<T> extends ReadableNBTList<T> {
 
     boolean retainAll(Collection<?> c);
 
-    default void removeIf(Predicate<T> pred) {
-        ListIterator<T> it = listIterator(0);
-        while (it.hasNext()) {
-            if (pred.test(it.next())) {
-                it.remove();
-            }
-        }
-    }
+    boolean removeIf(Predicate<? super T> pred);
 
     boolean remove(Object o);
 
