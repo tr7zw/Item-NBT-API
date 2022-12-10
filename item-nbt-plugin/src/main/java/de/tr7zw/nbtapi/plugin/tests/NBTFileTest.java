@@ -38,9 +38,9 @@ public class NBTFileTest implements Test {
         }
         Files.deleteIfExists(fileLoaded.getFile().toPath());
         // String
-        String str = fileLoaded.asNBTString();
+        String str = fileLoaded.toString();
         NBTContainer rebuild = new NBTContainer(str);
-        if (!str.equals(rebuild.asNBTString())) {
+        if (!str.equals(rebuild.toString())) {
             throw new NbtApiException("Wasn't able to parse NBT from a String!");
         }
 

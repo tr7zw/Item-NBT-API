@@ -3,7 +3,6 @@ package de.tr7zw.changeme.nbtapi.utils.nmsmappings;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 
 /**
@@ -97,7 +96,7 @@ public class MojangToMapping {
         }
 
     };
-    
+
     @SuppressWarnings("serial")
     private static Map<String, String> MC1_19R2 = new HashMap<String, String>() {
 

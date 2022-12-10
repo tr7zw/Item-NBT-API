@@ -1,5 +1,7 @@
 package de.tr7zw.changeme.nbtapi;
 
+import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
+import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBTCompoundList;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
@@ -10,7 +12,7 @@ import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
  * @author tr7zw
  *
  */
-public class NBTCompoundList extends NBTList<NBTListCompound> {
+public class NBTCompoundList extends NBTList<ReadWriteNBT> implements ReadWriteNBTCompoundList {
 
     protected NBTCompoundList(NBTCompound owner, String name, NBTType type, Object list) {
         super(owner, name, type, list);
@@ -51,6 +53,13 @@ public class NBTCompoundList extends NBTList<NBTListCompound> {
         }
     }
 
+    public NBTCompound addCompound(ReadWriteNBT comp) {
+        if (comp instanceof NBTCompound) {
+            return addCompound((NBTCompound) comp);
+        }
+        return null;
+    }
+
     /**
      * Adds a new Compound to the end of the List.
      * 
@@ -61,12 +70,12 @@ public class NBTCompoundList extends NBTList<NBTListCompound> {
      */
     @Override
     @Deprecated
-    public boolean add(NBTListCompound empty) {
+    public boolean add(ReadWriteNBT empty) {
         return addCompound(empty) != null;
     }
 
     @Override
-    public void add(int index, NBTListCompound element) {
+    public void add(int index, ReadWriteNBT element) {
         if (element != null) {
             throw new NbtApiException("You need to pass null! ListCompounds from other lists won't work.");
         }
@@ -94,12 +103,12 @@ public class NBTCompoundList extends NBTList<NBTListCompound> {
     }
 
     @Override
-    public NBTListCompound set(int index, NBTListCompound element) {
+    public NBTListCompound set(int index, ReadWriteNBT element) {
         throw new NbtApiException("This method doesn't work in the ListCompound context.");
     }
 
     @Override
-    protected Object asTag(NBTListCompound object) {
+    protected Object asTag(ReadWriteNBT object) {
         return null;
     }
 

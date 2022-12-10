@@ -8,7 +8,7 @@ Add the following Entries to your pom at the correct location:
   <scope>provided</scope>
 </dependency>
 ```
-(Get the current Version from [here](https://www.spigotmc.org/resources/nbt-api.7939/))
+(Get the current Version from [here](https://modrinth.com/plugin/nbtapi/versions))
 ```
 <repositories>
 ...
@@ -35,7 +35,7 @@ Add the following Entries to your pom at the correct location:
   <version>VERSION</version>
 </dependency>
 ```
-(Get the current Version from [here](https://www.spigotmc.org/resources/nbt-api.7939/))
+(Get the current Version from [here](https://modrinth.com/plugin/nbtapi/versions))
 ```
 <repositories>
 ...
@@ -53,7 +53,7 @@ Add the following Entries to your pom at the correct location:
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.2.1</version>
+        <version>3.4.1</version>
         <executions>
           <execution>
             <id>shade</id>

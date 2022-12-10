@@ -28,6 +28,7 @@ import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
  * @author tr7zw
  *
  */
+@SuppressWarnings("deprecation")
 public class NBTReflectionUtil {
 
     private static Field field_unhandledTags = null;
@@ -526,7 +527,6 @@ public class NBTReflectionUtil {
      * @param key
      * @param value
      */
-    @SuppressWarnings("deprecation")
     public static void setObject(NBTCompound comp, String key, Object value) {
         if (!MinecraftVersion.hasGsonSupport())
             return;
@@ -546,7 +546,6 @@ public class NBTReflectionUtil {
      * @param type
      * @return The loaded Object or null, if not found
      */
-    @SuppressWarnings("deprecation")
     public static <T> T getObject(NBTCompound comp, String key, Class<T> type) {
         if (!MinecraftVersion.hasGsonSupport())
             return null;
