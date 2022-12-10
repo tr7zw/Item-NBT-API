@@ -10,6 +10,7 @@ import de.tr7zw.nbtapi.plugin.tests.Test;
 
 public class GsonTest implements Test {
 
+    @SuppressWarnings("deprecation")
     @Override
     public void test() throws Exception {
         if (!MinecraftVersion.hasGsonSupport()) {

@@ -896,6 +896,7 @@ public class NBTCompound implements ReadWriteNBT {
             return uuid == null ? defaultValue : (T) uuid;
         }
         if (clazz.isEnum()) {
+            @SuppressWarnings("rawtypes")
             Object obj = getEnum(key, (Class) defaultValue.getClass());
             return obj == null ? defaultValue : (T) obj;
         }
@@ -916,7 +917,7 @@ public class NBTCompound implements ReadWriteNBT {
      * @return Stored or provided value
      */
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public <T> T getOrNull(String key, Class<?> type) {
         if (type == null)
             throw new NullPointerException("Default type in getOrNull can't be null!");

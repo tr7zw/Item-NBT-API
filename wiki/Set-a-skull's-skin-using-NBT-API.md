@@ -1,3 +1,6 @@
+
+# This is an old example and needs to be updated! Proceed with caution!
+
 We'll be using [this head](https://minecraft-heads.com/custom-heads/decoration/32112-dragonsbreath-opal "Dragonsbreath Opal") for this demonstration.
 ```java
 String textureValue = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWY1MjQxNjZmN2NlODhhNTM3MTU4NzY2YTFjNTExZTMyMmE5M2E1ZTExZGJmMzBmYTZlODVlNzhkYTg2MWQ4In19fQ=="; // Pulled from the head link, scroll to the bottom and the "Other Value" field has this texture id.

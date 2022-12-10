@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import de.tr7zw.changeme.nbtapi.iface.ReadWriteItemNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadableNBT;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
@@ -17,7 +18,7 @@ import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
  * @author tr7zw
  *
  */
-public class NBTItem extends NBTCompound {
+public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
 
     private ItemStack bukkitItem;
     private boolean directApply;

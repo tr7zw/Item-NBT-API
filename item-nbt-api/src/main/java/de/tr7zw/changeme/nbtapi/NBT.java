@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.mojang.authlib.GameProfile;
 
+import de.tr7zw.changeme.nbtapi.iface.ReadWriteItemNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadableNBT;
 
@@ -100,7 +101,7 @@ public class NBT {
      * @param function The function that will be applied to the item.
      * @return The return value of the function.
      */
-    public static <T> T modify(ItemStack item, Function<ReadWriteNBT, T> function) {
+    public static <T> T modify(ItemStack item, Function<ReadWriteItemNBT, T> function) {
         NBTItem nbti = new NBTItem(item, true);
         T val = function.apply(nbti);
         nbti.applyNBT(item);
@@ -114,7 +115,7 @@ public class NBT {
      * @param item     The item you want to modify
      * @param consumer The consumer that will be used to modify the NBT.
      */
-    public static void modify(ItemStack item, Consumer<ReadWriteNBT> consumer) {
+    public static void modify(ItemStack item, Consumer<ReadWriteItemNBT> consumer) {
         NBTItem nbti = new NBTItem(item, true);
         consumer.accept(nbti);
         nbti.applyNBT(item);
