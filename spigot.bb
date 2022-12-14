@@ -112,7 +112,7 @@ Just use the Plugin as Maven dependency and remember to add "NBTAPI" as dependen
 <dependency>
   <groupId>de.tr7zw</groupId>
   <artifactId>item-nbt-api-plugin</artifactId>
-  <version>2.11.0</version>
+  <version>2.11.1-SNAPSHOT</version>
 </dependency>
 [/CODE]
 [/SPOILER]
@@ -122,7 +122,7 @@ Using this method the API gets copied into your plugin. Server owners don't have
 <dependency>
   <groupId>de.tr7zw</groupId>
   <artifactId>item-nbt-api</artifactId>
-  <version>2.11.0</version>
+  <version>2.11.1-SNAPSHOT</version>
 </dependency>
 ...
     <plugins>
