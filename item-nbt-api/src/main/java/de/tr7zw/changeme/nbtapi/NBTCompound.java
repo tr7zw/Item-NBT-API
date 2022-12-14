@@ -96,7 +96,7 @@ public class NBTCompound implements ReadWriteNBT {
     @Override
     public void mergeCompound(ReadableNBT comp) {
         if (comp instanceof NBTCompound) {
-            mergeCompound(comp);
+            mergeCompound((NBTCompound) comp);
         } else {
             throw new NbtApiException("Unknown NBT object: " + comp);
         }
