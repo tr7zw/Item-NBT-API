@@ -23,6 +23,7 @@ import de.tr7zw.nbtapi.plugin.tests.compounds.EnumTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.EqualsTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.ForEachTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.GetterSetterTest;
+import de.tr7zw.nbtapi.plugin.tests.compounds.InterfaceTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.IteratorTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.ListTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.MergeTest;
@@ -96,6 +97,7 @@ public class NBTAPI extends JavaPlugin {
         apiTests.add(new TypeTest());
         apiTests.add(new RemovingKeys());
         apiTests.add(new EnumTest());
+        apiTests.add(new InterfaceTest());
         if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) // 1.7.10 list support is not complete at all
             apiTests.add(new ListTest());
         apiTests.add(new SubCompoundsTest());
