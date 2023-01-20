@@ -15,7 +15,7 @@ Add the following Entries to your pom at the correct location:
 <!-- CodeMC -->
 <repository>
 <id>codemc-repo</id>
-<url>https://repo.codemc.org/repository/maven-public/</url>
+<url>https://repo.codemc.io/repository/maven-public/</url>
 <layout>default</layout>
 </repository>
 ...
@@ -42,7 +42,7 @@ Add the following Entries to your pom at the correct location:
 <!-- CodeMC -->
 <repository>
 <id>codemc-repo</id>
-<url>https://repo.codemc.org/repository/maven-public/</url>
+<url>https://repo.codemc.io/repository/maven-public/</url>
 <layout>default</layout>
 </repository>
 ...
