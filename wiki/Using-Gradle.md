@@ -11,7 +11,7 @@ repositories {
     ...
     maven {
         name = "CodeMC"
-        url = uri("https://repo.codemc.org/repository/maven-public/")
+        url = uri("https://repo.codemc.io/repository/maven-public/")
     }
     ...
 }
@@ -46,7 +46,7 @@ repositories {
     ...
     maven {
         name = "CodeMC"
-        url = uri("https://repo.codemc.org/repository/maven-public/")
+        url = uri("https://repo.codemc.io/repository/maven-public/")
     }
     ...
 }
