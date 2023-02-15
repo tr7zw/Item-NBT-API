@@ -129,7 +129,13 @@ public interface ReadWriteNBT extends ReadableNBT {
      * @param name
      * @return
      */
-    ReadableNBT getOrCreateCompound(String name);
+    ReadWriteNBT getOrCreateCompound(String name);
+
+    /**
+     * @param name
+     * @return The Compound instance or null
+     */
+    ReadWriteNBT getCompound(String name);
 
     /**
      * Set a key to the given Enum value. It gets stored as a String. Passing null
