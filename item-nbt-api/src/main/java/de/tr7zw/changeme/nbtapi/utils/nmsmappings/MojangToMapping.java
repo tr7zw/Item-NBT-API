@@ -108,8 +108,19 @@ public class MojangToMapping {
 
     };
 
+    @SuppressWarnings("serial")
+    private static Map<String, String> MC1_19R3 = new HashMap<String, String>() {
+
+        {
+            putAll(MC1_19R2);
+        }
+
+    };
+
     public static Map<String, String> getMapping() {
         switch (MinecraftVersion.getVersion()) {
+        case MC1_19_R3:
+            return MC1_19R3;
         case MC1_19_R2:
             return MC1_19R2;
         case MC1_19_R1:
@@ -119,7 +130,7 @@ public class MojangToMapping {
         case MC1_18_R1:
             return MC1_18R1;
         default:
-            return MC1_19R2;// throw new NbtApiException("This version of the NBTAPI is not compatible with
+            return MC1_19R3;// throw new NbtApiException("This version of the NBTAPI is not compatible with
                             // this server version!");
         }
     }
