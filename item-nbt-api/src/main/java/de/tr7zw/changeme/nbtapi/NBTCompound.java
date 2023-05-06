@@ -600,6 +600,8 @@ public class NBTCompound implements ReadWriteNBT {
     }
 
     /**
+     * Checks whether the provided key exists
+     *
      * @param key String key
      * @return True if the key is set
      * @deprecated Use {@link #hasTag(String)} instead
@@ -610,6 +612,8 @@ public class NBTCompound implements ReadWriteNBT {
     }
 
     /**
+     * Checks whether the provided key exists
+     *
      * @param key String key
      * @return true, if the key is set
      */

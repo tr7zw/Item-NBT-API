@@ -132,10 +132,23 @@ public interface ReadableNBT {
     UUID getUUID(String key);
 
     /**
+     * Checks whether the provided key exists
+     *
      * @param key String key
      * @return true, if the key is set
      */
     boolean hasTag(String key);
+
+    /**
+     * Checks whether the provided key exists and has the specified type
+     *
+     * @param key  String key
+     * @param type nbt tag type
+     * @return whether the key is set and has the specified type
+     */
+    default boolean hasTag(String key, NBTType type) {
+        return hasTag(key) && getType(key) == type;
+    }
 
     /**
      * @return Set of all stored Keys
