@@ -856,8 +856,8 @@ public class NBTCompound implements ReadWriteNBT {
      * Returns the stored value if exists, or provided value otherwise.
      * <p>
      * Supported types:
-     * {@code byte/Byte, short/Short, int/Integer, long/Long, float/Float, double/Double, byte[], int[]},
-     * {@link String}, {@link UUID}
+     * {@code Boolean, Byte, Short, Integer, Long, Float, Double, byte[], int[]},
+     * {@link String}, {@link UUID}, and {@link Enum}
      *
      * @param key          key
      * @param defaultValue default non-null value
@@ -873,6 +873,8 @@ public class NBTCompound implements ReadWriteNBT {
             return defaultValue;
 
         Class<?> clazz = defaultValue.getClass();
+        if (clazz == Boolean.class)
+            return (T) getBoolean(key);
         if (clazz == Byte.class)
             return (T) getByte(key);
         if (clazz == Short.class)
@@ -908,13 +910,13 @@ public class NBTCompound implements ReadWriteNBT {
      * Returns the stored value if exists, or null.
      * <p>
      * Supported types:
-     * {@code Byte, Short, Integer, Long, Float, Double, byte[], int[]},
-     * {@link String}, {@link UUID}
+     * {@code Boolean, Byte, Short, Integer, Long, Float, Double, byte[], int[]},
+     * {@link String}, {@link UUID}, and {@link Enum}
      *
      * @param key  key
      * @param type data type
      * @param <T>  value type
-     * @return Stored or provided value
+     * @return Stored value or null
      */
     @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -924,6 +926,8 @@ public class NBTCompound implements ReadWriteNBT {
         if (!hasTag(key))
             return null;
 
+        if (type == Boolean.class)
+            return (T) getBoolean(key);
         if (type == Byte.class)
             return (T) getByte(key);
         if (type == Short.class)
