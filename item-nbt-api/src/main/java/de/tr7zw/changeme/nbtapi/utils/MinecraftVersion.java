@@ -116,7 +116,7 @@ public enum MinecraftVersion {
             logger.info("[NBTAPI] NMS support '" + version.name() + "' loaded!");
         } else {
             logger.warning("[NBTAPI] This Server-Version(" + ver + ") is not supported by this NBT-API Version("
-                    + VERSION + ") located at " + MinecraftVersion.class.getName()
+                    + VERSION + ") located in " + VersionChecker.getPlugin()
                     + ". The NBT-API will try to work as good as it can! Some functions may not work!");
         }
         init();
@@ -153,6 +153,18 @@ public enum MinecraftVersion {
             logger.warning(
                     "Maven Shade plugin to relocate the api to your personal location! If you are not the developer,");
             logger.warning("please check your plugins and contact their developer, so they can fix this issue.");
+            logger.warning(
+                    "#########################################- NBTAPI -#########################################");
+        }
+        if (!disablePackageWarning && !"NBTAPI".equals(VersionChecker.getPlugin())
+                && MinecraftVersion.class.getPackage().getName().equals("de.tr7zw.nbtapi.utils")) {
+            logger.warning(
+                    "#########################################- NBTAPI -#########################################");
+            logger.warning(
+                    "The NBT-API inside " + VersionChecker.getPlugin() + " is located at 'de.tr7zw.nbtapi.utils'!");
+            logger.warning(
+                    "This package name is reserved for the official NBTAPI plugin, and not intended to be used for shading!");
+            logger.warning("Please change the relocate to something else. For example: com.example.util.nbtapi");
             logger.warning(
                     "#########################################- NBTAPI -#########################################");
         }

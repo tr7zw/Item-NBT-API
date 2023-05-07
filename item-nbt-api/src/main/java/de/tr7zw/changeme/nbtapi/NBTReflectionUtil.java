@@ -294,7 +294,7 @@ public class NBTReflectionUtil {
             if ((boolean) ReflectionMethod.COMPOUND_HAS_KEY.run(compound, name)) {
                 return ReflectionMethod.COMPOUND_GET_COMPOUND.run(compound, name);
             } else {
-                throw new NbtApiException("Tried getting invalide compound '" + name + "' from '" + compound + "'!");
+                throw new NbtApiException("Tried getting invalid compound '" + name + "' from '" + compound + "'!");
             }
         } catch (Exception e) {
             throw new NbtApiException("Exception while getting NBT subcompounds!", e);
@@ -445,7 +445,7 @@ public class NBTReflectionUtil {
      * @param key
      * @param type
      * @param clazz
-     * @return The list at that key. Null if it's an invalide type
+     * @return The list at that key. Null if it's an invalid type
      */
     @SuppressWarnings("unchecked")
     public static <T> NBTList<T> getList(NBTCompound comp, String key, NBTType type, Class<T> clazz) {
