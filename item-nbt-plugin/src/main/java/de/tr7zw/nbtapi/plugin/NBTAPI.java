@@ -78,6 +78,8 @@ public class NBTAPI extends JavaPlugin {
         if (!getConfig().getBoolean("updateCheck.enabled")) {
             getLogger().info("Update check disabled");
             MinecraftVersion.disableUpdateCheck();
+        } else {
+            MinecraftVersion.enableUpdateCheck();
         }
 
         // Disabled by default since 2.1. Enable it yourself by calling

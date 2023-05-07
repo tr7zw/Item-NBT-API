@@ -26,7 +26,7 @@ public enum MinecraftVersion {
     private static Boolean isForgePresent;
     private static boolean bStatsDisabled = false;
     private static boolean disablePackageWarning = false;
-    private static boolean updateCheckDisabled = false;
+    private static boolean updateCheckDisabled = true;
     /**
      * Logger used by the api
      */
@@ -208,6 +208,14 @@ public enum MinecraftVersion {
      */
     public static void disableUpdateCheck() {
         updateCheckDisabled = true;
+    }
+
+    /**
+     * Enables the update check. Uses Spiget to get the current version and prints a
+     * warning when outdated.
+     */
+    public static void enableUpdateCheck() {
+        updateCheckDisabled = false;
     }
 
     /**
