@@ -52,7 +52,7 @@ public class NBTInjector {
         if (MinecraftVersion.getVersion() == MinecraftVersion.MC1_7_R4
                 || MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_16_R1)) {
             logger.warning(
-                    "[NBTINJECTOR] The NBT-Injector is not compatibel with this Minecraft Version! For 1.16+ please use the persistent storage API.");
+                    "[NBTINJECTOR] The NBT-Injector is not compatible with this Minecraft Version! For 1.16+ please use the persistent storage API.");
             return;
         }
         isInjected = true;
