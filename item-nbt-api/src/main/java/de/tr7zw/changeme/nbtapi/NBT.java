@@ -12,6 +12,7 @@ import com.mojang.authlib.GameProfile;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteItemNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadableNBT;
+import de.tr7zw.changeme.nbtapi.wrapper.ProxyBuilder;
 
 /**
  * General utility class for a clean and simple nbt access.
@@ -295,6 +296,18 @@ public class NBT {
      */
     public static ReadWriteNBT parseNBT(String nbtString) {
         return new NBTContainer(nbtString);
+    }
+
+    /**
+     * Create a proxy class for NBT, given an annotated interface.
+     * 
+     * @param <T>
+     * @param item
+     * @param wrapper
+     * @return
+     */
+    public static <T> T wrapNBT(ItemStack item, Class<T> wrapper) {
+        return new ProxyBuilder<>(new NBTItem(item, true), wrapper).build();
     }
 
 }
