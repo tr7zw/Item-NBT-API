@@ -16,7 +16,7 @@ public class SimpleProxyTest implements Test {
         TestInterface ti = NBT.wrapNBT(item, TestInterface.class);
         ti.setKills(42);
         ti.addKill();
-        if(!"{kills:43}".equals(ti.toString())) {
+        if (!"{kills:43}".equals(ti.toString())) {
             throw new NbtApiException("ToString returned the wrong string. " + ti.toString());
         }
         if (new NBTItem(item).getInteger("kills") != 43) {
