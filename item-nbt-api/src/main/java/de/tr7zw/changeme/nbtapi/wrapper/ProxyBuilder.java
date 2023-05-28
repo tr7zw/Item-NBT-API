@@ -6,13 +6,13 @@ import java.lang.reflect.Proxy;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 
 public class ProxyBuilder<T> implements InvocationHandler {
 
-    private static final Map<Method, BiFunction<ReadWriteNBT, Object[], Object>> METHOD_CACHE = new ConcurrentHashMap<>();
+    private static final Map<Method, Function<Arguments, Object>> METHOD_CACHE = new ConcurrentHashMap<>();
 
     private final Class<T> target;
     private final ReadWriteNBT nbt;
@@ -30,21 +30,39 @@ public class ProxyBuilder<T> implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         METHOD_CACHE.computeIfAbsent(method, ProxyBuilder::createFunction);
-        return METHOD_CACHE.get(method).apply(nbt, args);
+        return METHOD_CACHE.get(method).apply(new Arguments(target, proxy, nbt, args));
     }
 
-    private static BiFunction<ReadWriteNBT, Object[], Object> createFunction(Method method) {
+    private static class Arguments {
+        Class<?> target;
+        Object proxy;
+        ReadWriteNBT nbt;
+        Object[] args;
+
+        public Arguments(Class<?> target, Object proxy, ReadWriteNBT nbt, Object[] args) {
+            this.target = target;
+            this.proxy = proxy;
+            this.nbt = nbt;
+            this.args = args;
+        }
+    }
+
+    private static Function<Arguments, Object> createFunction(Method method) {
         if ("toString".equals(method.getName()) && method.getParameterCount() == 0
                 && method.getReturnType() == String.class) {
-            return (nbt, args) -> nbt.toString();
+            return (arguments) -> arguments.nbt.toString();
+        }
+        if (method.isDefault()) {
+            return (arguments) -> DefaultMethodInvoker.invokeDefault(arguments.target, arguments.proxy, method,
+                    arguments.args);
         }
         if (method.getName().startsWith("set") && method.getParameterCount() == 1) {
             String fieldName = method.getName().substring(3).toLowerCase(); // TODO: annotation to set custom names
-            return (nbt, args) -> setNBT(nbt, fieldName, args[0]);
+            return (arguments) -> setNBT(arguments.nbt, fieldName, arguments.args[0]);
         }
         if (method.getName().startsWith("get") && method.getParameterCount() == 0) {
             String fieldName = method.getName().substring(3).toLowerCase(); // TODO: annotation to set custom names
-            return (nbt, args) -> nbt.getOrNull(fieldName, method.getReturnType());
+            return (arguments) -> arguments.nbt.getOrNull(fieldName, method.getReturnType());
         }
         throw new IllegalArgumentException(
                 "The method '" + method.getName() + "' in '" + method.getDeclaringClass().getName()
