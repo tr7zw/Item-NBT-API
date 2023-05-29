@@ -6,6 +6,8 @@ import org.bukkit.inventory.ItemStack;
 import de.tr7zw.changeme.nbtapi.NBT;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
+import de.tr7zw.changeme.nbtapi.wrapper.NBTTarget;
+import de.tr7zw.changeme.nbtapi.wrapper.NBTTarget.Type;
 import de.tr7zw.nbtapi.plugin.tests.Test;
 
 public class SimpleProxyTest implements Test {
@@ -22,6 +24,9 @@ public class SimpleProxyTest implements Test {
         if (new NBTItem(item).getInteger("kills") != 43) {
             throw new NbtApiException("The item was not modified correctly by the proxy!");
         }
+        if (ti.theKillsWithADifferentMethodNameAndNoGet() != 43) {
+            throw new NbtApiException("The annotation didn't work correctly!");
+        }
     }
 
     public interface TestInterface {
@@ -33,6 +38,9 @@ public class SimpleProxyTest implements Test {
         public default void addKill() {
             setKills(getKills() + 1);
         }
+
+        @NBTTarget(value = "kills", type = Type.GET)
+        public int theKillsWithADifferentMethodNameAndNoGet();
 
     }
 

@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
+import de.tr7zw.changeme.nbtapi.wrapper.NBTTarget.Type;
 
 public class ProxyBuilder<T> implements InvocationHandler {
 
@@ -56,17 +57,45 @@ public class ProxyBuilder<T> implements InvocationHandler {
             return (arguments) -> DefaultMethodInvoker.invokeDefault(arguments.target, arguments.proxy, method,
                     arguments.args);
         }
-        if (method.getName().startsWith("set") && method.getParameterCount() == 1) {
-            String fieldName = method.getName().substring(3).toLowerCase(); // TODO: annotation to set custom names
+        Type action = getAction(method);
+        if (action == Type.SET) {
+            String fieldName = getNBTName(method);
             return (arguments) -> setNBT(arguments.nbt, fieldName, arguments.args[0]);
         }
-        if (method.getName().startsWith("get") && method.getParameterCount() == 0) {
-            String fieldName = method.getName().substring(3).toLowerCase(); // TODO: annotation to set custom names
+        if (action == Type.GET) {
+            String fieldName = getNBTName(method);
             return (arguments) -> arguments.nbt.getOrNull(fieldName, method.getReturnType());
         }
         throw new IllegalArgumentException(
                 "The method '" + method.getName() + "' in '" + method.getDeclaringClass().getName()
                         + "' can not be handled by the NBT-API. Please check the Wiki for examples!");
+    }
+
+    private static Type getAction(Method method) {
+        NBTTarget target = method.getAnnotation(NBTTarget.class);
+        if (target != null) {
+            if (target.type() == Type.GET && method.getParameterCount() == 0) {
+                return Type.GET;
+            }
+            if (target.type() == Type.SET && method.getParameterCount() == 1) {
+                return Type.SET;
+            }
+        }
+        if (method.getName().startsWith("set") && method.getParameterCount() == 1) {
+            return Type.SET;
+        }
+        if (method.getName().startsWith("get") && method.getParameterCount() == 0) {
+            return Type.GET;
+        }
+        return null;
+    }
+
+    private static String getNBTName(Method method) {
+        NBTTarget target = method.getAnnotation(NBTTarget.class);
+        if (target != null) {
+            return target.value();
+        }
+        return method.getName().substring(3).toLowerCase();
     }
 
     private static Object setNBT(ReadWriteNBT nbt, String key, Object value) {
