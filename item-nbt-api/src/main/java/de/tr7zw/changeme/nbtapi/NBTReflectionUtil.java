@@ -105,7 +105,8 @@ public class NBTReflectionUtil {
     }
 
     /**
-     * Gets the nms handle ItemStack from a CraftItemStack. Passing Spigot ItemStacks will cause an error!
+     * Gets the nms handle ItemStack from a CraftItemStack. Passing Spigot
+     * ItemStacks will cause an error!
      * 
      * @param item
      * @return
