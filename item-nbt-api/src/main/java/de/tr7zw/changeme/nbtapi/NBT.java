@@ -36,7 +36,7 @@ public class NBT {
      * @return The function is being returned.
      */
     public static <T> T get(ItemStack item, Function<ReadableNBT, T> getter) {
-        return getter.apply(new NBTItem(item));
+        return getter.apply(new NBTItem(item, false, true));
     }
 
     /**

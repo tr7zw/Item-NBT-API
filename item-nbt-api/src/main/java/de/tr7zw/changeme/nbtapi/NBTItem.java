@@ -9,6 +9,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteItemNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadableNBT;
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 
 /**
@@ -22,6 +23,7 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
 
     private ItemStack bukkitItem;
     private boolean directApply;
+    private boolean readOnly;
     private ItemStack originalSrcStack = null;
 
     /**
@@ -31,6 +33,30 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
      */
     public NBTItem(ItemStack item) {
         this(item, false);
+    }
+
+    /**
+     * @param item
+     * @param directApply
+     * @param readOnly    When turned on, no copy of the source item is created.
+     *                    Modifying the stack in that case is not valid! Also
+     *                    overwrites directApply
+     */
+    protected NBTItem(ItemStack item, boolean directApply, boolean readOnly) {
+        super(null, null);
+        if (item == null || item.getType() == Material.AIR || item.getAmount() <= 0) {
+            throw new NullPointerException("ItemStack can't be null/air/amount of 0! This is not a NBTAPI bug!");
+        }
+        if (readOnly) {
+            bukkitItem = item;
+            this.readOnly = true;
+        } else {
+            this.directApply = directApply;
+            bukkitItem = item.clone();
+            if (directApply) {
+                this.originalSrcStack = item;
+            }
+        }
     }
 
     /**
@@ -55,11 +81,17 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
 
     @Override
     public Object getCompound() {
+        if (readOnly && ClassWrapper.CRAFT_ITEMSTACK.getClazz().isAssignableFrom(bukkitItem.getClass())) {
+            return NBTReflectionUtil.getItemRootNBTTagCompound(NBTReflectionUtil.getCraftItemHandle(bukkitItem));
+        }
         return NBTReflectionUtil.getItemRootNBTTagCompound(ReflectionMethod.ITEMSTACK_NMSCOPY.run(null, bukkitItem));
     }
 
     @Override
     protected void setCompound(Object compound) {
+        if (readOnly) {
+            throw new NbtApiException("Tried setting data in read only mode!");
+        }
         Object stack = ReflectionMethod.ITEMSTACK_NMSCOPY.run(null, bukkitItem);
         ReflectionMethod.ITEMSTACK_SET_TAG.run(stack, compound);
         bukkitItem = (ItemStack) ReflectionMethod.ITEMSTACK_BUKKITMIRROR.run(null, stack);
