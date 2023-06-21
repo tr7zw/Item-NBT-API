@@ -1,6 +1,8 @@
 # Option 1) NBT-API as a dependency
+
 Add the following Entries to your pom at the correct location:
-```
+
+```xml
 <dependency>
   <groupId>de.tr7zw</groupId>
   <artifactId>item-nbt-api-plugin</artifactId>
@@ -8,8 +10,10 @@ Add the following Entries to your pom at the correct location:
   <scope>provided</scope>
 </dependency>
 ```
+
 (Get the current Version from [here](https://modrinth.com/plugin/nbtapi/versions))
-```
+
+```xml
 <repositories>
 ...
 <!-- CodeMC -->
@@ -21,22 +25,30 @@ Add the following Entries to your pom at the correct location:
 ...
 </repositories>
 ```
+
 Add the API as dependency to your plugin.yml
-```
+
+```yaml
 depend: [NBTAPI]
 ```
 
 # Option 2) Shading the NBT-API into your plugin
+
 Add the following Entries to your pom at the correct location:
-```
+
+```xml
 <dependency>
   <groupId>de.tr7zw</groupId>
   <artifactId>item-nbt-api</artifactId>
   <version>VERSION</version>
 </dependency>
 ```
+
 (Get the current Version from [here](https://modrinth.com/plugin/nbtapi/versions))
-```
+
+**IMPORTANT: This is not the same ``artifactId`` as using it as dependency! Never shade the ``-plugin`` artifact!**
+
+```xml
 <repositories>
 ...
 <!-- CodeMC -->
@@ -48,7 +60,8 @@ Add the following Entries to your pom at the correct location:
 ...
 </repositories>
 ```
-```
+
+```xml
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -73,4 +86,13 @@ Add the following Entries to your pom at the correct location:
         </configuration>
       </plugin>
    </plugins>
+```
+
+Example:
+
+```xml
+            <relocation>
+              <pattern>de.tr7zw.changeme.nbtapi</pattern>
+              <shadedPattern>com.yourname.pluginname.nbtapi</shadedPattern>
+            </relocation>
 ```
