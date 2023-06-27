@@ -123,6 +123,10 @@ public enum MinecraftVersion {
         return version;
     }
 
+    public static String getNBTAPIVersion() {
+        return VERSION;
+    }
+
     private static void init() {
         try {
             if (hasGsonSupport() && !bStatsDisabled)
