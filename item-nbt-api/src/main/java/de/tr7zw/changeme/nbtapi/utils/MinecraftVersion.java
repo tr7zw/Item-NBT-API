@@ -147,6 +147,8 @@ public enum MinecraftVersion {
         // little "trick" ... :D (from bStats)
         final String defaultPackage = new String(new byte[] { 'd', 'e', '.', 't', 'r', '7', 'z', 'w', '.', 'c', 'h',
                 'a', 'n', 'g', 'e', 'm', 'e', '.', 'n', 'b', 't', 'a', 'p', 'i', '.', 'u', 't', 'i', 'l', 's' });
+        final String reservedPackage = new String(new byte[] { 'd', 'e', '.', 't', 'r', '7', 'z', 'w', '.', 'n', 'b',
+                't', 'a', 'p', 'i', '.', 'u', 't', 'i', 'l', 's' });
         if (!disablePackageWarning && MinecraftVersion.class.getPackage().getName().equals(defaultPackage)) {
             logger.warning(
                     "#########################################- NBTAPI -#########################################");
@@ -160,17 +162,32 @@ public enum MinecraftVersion {
             logger.warning(
                     "#########################################- NBTAPI -#########################################");
         }
-        if (!disablePackageWarning && !"NBTAPI".equals(VersionChecker.getPlugin())
-                && MinecraftVersion.class.getPackage().getName().equals("de.tr7zw.nbtapi.utils")) {
-            logger.warning(
-                    "#########################################- NBTAPI -#########################################");
-            logger.warning(
-                    "The NBT-API inside " + VersionChecker.getPlugin() + " is located at 'de.tr7zw.nbtapi.utils'!");
-            logger.warning(
-                    "This package name is reserved for the official NBTAPI plugin, and not intended to be used for shading!");
-            logger.warning("Please change the relocate to something else. For example: com.example.util.nbtapi");
-            logger.warning(
-                    "#########################################- NBTAPI -#########################################");
+        if (!disablePackageWarning && !"NBTAPI".equals(VersionChecker.getPlugin())) { // we are not the nbtapi, check
+                                                                                      // for common shading errors
+            if (!"de.tr7zw.nbtapi.utils".equals(reservedPackage)) {
+                logger.warning(
+                        "#########################################- NBTAPI -#########################################");
+                logger.warning(
+                        "The NBT-API inside " + VersionChecker.getPlugin() + " is the plugin version, not the API!");
+                logger.warning(
+                        "The plugin itself should never be shaded! Remove the `-plugin` from the dependency and fix your shading setup.");
+                logger.warning(
+                        "For more info check: https://github.com/tr7zw/Item-NBT-API/wiki/Using-Maven#option-2-shading-the-nbt-api-into-your-plugin");
+                logger.warning(
+                        "#########################################- NBTAPI -#########################################");
+                return; // don't also print the second error
+            }
+            if (MinecraftVersion.class.getPackage().getName().equals("de.tr7zw.nbtapi.utils")) {
+                logger.warning(
+                        "#########################################- NBTAPI -#########################################");
+                logger.warning(
+                        "The NBT-API inside " + VersionChecker.getPlugin() + " is located at 'de.tr7zw.nbtapi.utils'!");
+                logger.warning(
+                        "This package name is reserved for the official NBTAPI plugin, and not intended to be used for shading!");
+                logger.warning("Please change the relocate to something else. For example: com.example.util.nbtapi");
+                logger.warning(
+                        "#########################################- NBTAPI -#########################################");
+            }
         }
     }
 
