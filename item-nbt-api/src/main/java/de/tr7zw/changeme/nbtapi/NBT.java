@@ -48,7 +48,7 @@ public class NBT {
      * @return The NBTEntity class is being returned.
      */
     public static <T> T get(Entity entity, Function<ReadableNBT, T> getter) {
-        return getter.apply(new NBTEntity(entity));
+        return getter.apply(new NBTEntity(entity, true));
     }
 
     /**
@@ -62,7 +62,7 @@ public class NBT {
      * @return The return type is the same as the type of the getter function.
      */
     public static <T> T get(BlockState blockState, Function<ReadableNBT, T> getter) {
-        return getter.apply(new NBTTileEntity(blockState));
+        return getter.apply(new NBTTileEntity(blockState, true));
     }
 
     /**
