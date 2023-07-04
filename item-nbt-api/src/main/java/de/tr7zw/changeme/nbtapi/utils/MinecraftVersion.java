@@ -200,7 +200,7 @@ public enum MinecraftVersion {
             return hasGsonSupport;
         }
         try {
-            logger.info("[NBTAPI] Found Gson: " + Class.forName("com.google.gson.Gson"));
+            Class.forName("com.google.gson.Gson");
             hasGsonSupport = true;
         } catch (Exception ex) {
             logger.info("[NBTAPI] Gson not found! This will not allow the usage of some methods!");

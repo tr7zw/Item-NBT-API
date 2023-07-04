@@ -170,8 +170,7 @@ public class NBTAPI extends JavaPlugin {
         }
         getLogger().info("Adding listeners...");
         Bukkit.getPluginManager().registerEvents(new ReloadListener(), this);
-        getLogger().info("Gson:");
-        MinecraftVersion.hasGsonSupport();
+        MinecraftVersion.hasGsonSupport(); // init gson(if it hasn't already)
         getLogger().info("Checking bindings...");
         MinecraftVersion.getVersion();
 
