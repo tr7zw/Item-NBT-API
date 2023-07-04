@@ -121,6 +121,8 @@ public class ProxyBuilder<T> implements InvocationHandler {
             nbt.setByteArray(key, (byte[]) value);
         } else if (value instanceof int[]) {
             nbt.setIntArray(key, (int[]) value);
+        } else if (value instanceof long[]) {
+            nbt.setLongArray(key, (long[]) value);
         } else if (value instanceof String) {
             nbt.setString(key, (String) value);
         } else if (value instanceof UUID) {
