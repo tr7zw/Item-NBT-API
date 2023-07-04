@@ -14,12 +14,15 @@ public class TileTest implements Test {
 
     @Override
     public void test() throws Exception {
+        if (MinecraftVersion.isFoliaPresent()) {
+            return;
+        }
         if (!Bukkit.getWorlds().isEmpty()) {
             World world = Bukkit.getWorlds().get(0);
             try {
                 Block block = world.getBlockAt(world.getSpawnLocation().getBlockX(), 254,
                         world.getSpawnLocation().getBlockZ());
-                if (block.getType() == Material.AIR) {
+                if (block.getChunk().isLoaded() && block.getType() == Material.AIR) {
                     block.setType(Material.CHEST);
                     NBTTileEntity tile = new NBTTileEntity(block.getState());
                     if (!MinecraftVersion.isNewerThan(MinecraftVersion.MC1_17_R1)) {

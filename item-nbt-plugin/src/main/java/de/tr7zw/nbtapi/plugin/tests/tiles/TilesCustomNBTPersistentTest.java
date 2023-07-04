@@ -17,6 +17,9 @@ public class TilesCustomNBTPersistentTest implements Test {
     public void test() throws Exception {
         if (MinecraftVersion.getVersion().getVersionId() < MinecraftVersion.MC1_14_R1.getVersionId())
             return;
+        if (MinecraftVersion.isFoliaPresent()) {
+            return;
+        }
         if (!Bukkit.getWorlds().isEmpty()) {
             World world = Bukkit.getWorlds().get(0);
             try {
