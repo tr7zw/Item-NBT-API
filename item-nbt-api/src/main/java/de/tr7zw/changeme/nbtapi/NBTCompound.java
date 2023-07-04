@@ -900,7 +900,7 @@ public class NBTCompound implements ReadWriteNBT {
      * Returns the stored value if exists, or provided value otherwise.
      * <p>
      * Supported types:
-     * {@code Boolean, Byte, Short, Integer, Long, Float, Double, byte[], int[]},
+     * {@code Boolean, Byte, Short, Integer, Long, Float, Double, byte[], int[], long[]},
      * {@link String}, {@link UUID}, and {@link Enum}
      *
      * @param key          key
@@ -956,7 +956,7 @@ public class NBTCompound implements ReadWriteNBT {
      * Returns the stored value if exists, or null.
      * <p>
      * Supported types:
-     * {@code Boolean, Byte, Short, Integer, Long, Float, Double, byte[], int[]},
+     * {@code Boolean, Byte, Short, Integer, Long, Float, Double, byte[], int[], long[]},
      * {@link String}, {@link UUID}, and {@link Enum}
      *
      * @param key  key

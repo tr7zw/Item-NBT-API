@@ -232,8 +232,8 @@ public interface ReadableNBT {
      * Returns the stored value if exists, or provided value otherwise.
      * <p>
      * Supported types:
-     * {@code byte/Byte, short/Short, int/Integer, long/Long, float/Float, double/Double, byte[], int[]},
-     * {@link String}, {@link UUID}
+     * {@code Boolean, Byte, Short, Integer, Long, Float, Double, byte[], int[], long[]},
+     * {@link String}, {@link UUID}, and {@link Enum}
      *
      * @param key          key
      * @param defaultValue default non-null value
@@ -246,8 +246,8 @@ public interface ReadableNBT {
      * Returns the stored value if exists, or null.
      * <p>
      * Supported types:
-     * {@code Byte, Short, Integer, Long, Float, Double, byte[], int[]},
-     * {@link String}, {@link UUID}
+     * {@code Boolean, Byte, Short, Integer, Long, Float, Double, byte[], int[], long[]},
+     * {@link String}, {@link UUID}, and {@link Enum}
      *
      * @param key  key
      * @param type data type
