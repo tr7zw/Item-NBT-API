@@ -496,7 +496,13 @@ public class NBTReflectionUtil {
             if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_17_R1)) {
                 fieldname = "w";
             }
-            Field f = nbt.getClass().getDeclaredField(fieldname);
+            Field f;
+            try {
+                f = nbt.getClass().getDeclaredField(fieldname);
+            } catch (NoSuchFieldException ignore) {
+                // fallback try mojang mapped/legacy
+                f = nbt.getClass().getDeclaredField("type");
+            }
             f.setAccessible(true);
             return NBTType.valueOf(f.getByte(nbt));
         } catch (Exception ex) {
