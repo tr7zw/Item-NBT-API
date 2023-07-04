@@ -36,7 +36,7 @@ public class NBT {
      * @return The function is being returned.
      */
     public static <T> T get(ItemStack item, Function<ReadableNBT, T> getter) {
-        return getter.apply(new NBTItem(item));
+        return getter.apply(new NBTItem(item, false, true));
     }
 
     /**
@@ -48,7 +48,7 @@ public class NBT {
      * @return The NBTEntity class is being returned.
      */
     public static <T> T get(Entity entity, Function<ReadableNBT, T> getter) {
-        return getter.apply(new NBTEntity(entity));
+        return getter.apply(new NBTEntity(entity, true));
     }
 
     /**
@@ -62,7 +62,7 @@ public class NBT {
      * @return The return type is the same as the type of the getter function.
      */
     public static <T> T get(BlockState blockState, Function<ReadableNBT, T> getter) {
-        return getter.apply(new NBTTileEntity(blockState));
+        return getter.apply(new NBTTileEntity(blockState, true));
     }
 
     /**
@@ -130,7 +130,11 @@ public class NBT {
      * @return The return type is the same as the return type of the function.
      */
     public static <T> T modify(Entity entity, Function<ReadWriteNBT, T> function) {
-        return function.apply(new NBTEntity(entity));
+        NBTEntity nbtEnt = new NBTEntity(entity);
+        NBTContainer cont = new NBTContainer(nbtEnt.getCompound());
+        T ret = function.apply(cont);
+        nbtEnt.setCompound(cont.getCompound());
+        return ret;
     }
 
     /**
@@ -141,7 +145,10 @@ public class NBT {
      * @param consumer The consumer that will be called with the NBTEntity.
      */
     public static void modify(Entity entity, Consumer<ReadWriteNBT> consumer) {
-        consumer.accept(new NBTEntity(entity));
+        NBTEntity nbtEnt = new NBTEntity(entity);
+        NBTContainer cont = new NBTContainer(nbtEnt.getCompound());
+        consumer.accept(cont);
+        nbtEnt.setCompound(cont.getCompound());
     }
 
     /**
@@ -177,7 +184,11 @@ public class NBT {
      * @return The return type is the same as the return type of the function.
      */
     public static <T> T modify(BlockState blockState, Function<ReadWriteNBT, T> function) {
-        return function.apply(new NBTTileEntity(blockState));
+        NBTTileEntity blockEnt = new NBTTileEntity(blockState);
+        NBTContainer cont = new NBTContainer(blockEnt.getCompound());
+        T ret = function.apply(cont);
+        blockEnt.setCompound(cont);
+        return ret;
     }
 
     /**
@@ -190,7 +201,10 @@ public class NBT {
      *                   takes a ReadWriteNBT and does something with it.
      */
     public static void modify(BlockState blockState, Consumer<ReadWriteNBT> consumer) {
-        consumer.accept(new NBTTileEntity(blockState));
+        NBTTileEntity blockEnt = new NBTTileEntity(blockState);
+        NBTContainer cont = new NBTContainer(blockEnt.getCompound());
+        consumer.accept(cont);
+        blockEnt.setCompound(cont);
     }
 
     /**

@@ -19,6 +19,26 @@ import de.tr7zw.changeme.nbtapi.utils.annotations.CheckUtil;
 public class NBTEntity extends NBTCompound {
 
     private final Entity ent;
+    private final boolean readonly;
+    private final Object compound;
+
+    /**
+     * @param entity   Any valid Bukkit Entity
+     * @param readonly Readonly makes a copy at init, only reading from that copy
+     */
+    protected NBTEntity(Entity entity, boolean readonly) {
+        super(null, null);
+        if (entity == null) {
+            throw new NullPointerException("Entity can't be null!");
+        }
+        this.readonly = readonly;
+        ent = entity;
+        if (readonly) {
+            this.compound = getCompound();
+        } else {
+            this.compound = null;
+        }
+    }
 
     /**
      * @param entity Any valid Bukkit Entity
@@ -28,11 +48,17 @@ public class NBTEntity extends NBTCompound {
         if (entity == null) {
             throw new NullPointerException("Entity can't be null!");
         }
+        this.readonly = false;
+        this.compound = null;
         ent = entity;
     }
 
     @Override
     public Object getCompound() {
+        // this runs before async check, since it's just a copy
+        if (readonly && compound != null) {
+            return compound;
+        }
         if (!Bukkit.isPrimaryThread())
             throw new NbtApiException("Entity NBT needs to be accessed sync!");
         return NBTReflectionUtil.getEntityNBTTagCompound(NBTReflectionUtil.getNMSEntity(ent));
@@ -40,6 +66,9 @@ public class NBTEntity extends NBTCompound {
 
     @Override
     protected void setCompound(Object compound) {
+        if (readonly) {
+            throw new NbtApiException("Tried setting data in read only mode!");
+        }
         if (!Bukkit.isPrimaryThread())
             throw new NbtApiException("Entity NBT needs to be accessed sync!");
         NBTReflectionUtil.setEntityNBTTag(compound, NBTReflectionUtil.getNMSEntity(ent));
