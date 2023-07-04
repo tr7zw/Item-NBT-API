@@ -92,6 +92,14 @@ public interface ReadWriteNBT extends ReadableNBT {
      * @param key
      * @param value
      */
+    void setLongArray(String key, long[] value);
+
+    /**
+     * Setter
+     * 
+     * @param key
+     * @param value
+     */
     void setBoolean(String key, Boolean value);
 
     /**

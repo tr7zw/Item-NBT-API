@@ -32,6 +32,8 @@ public class MojangToMapping {
             put("net.minecraft.nbt.CompoundTag#putBoolean(java.lang.String,boolean)", "a");
             put("net.minecraft.nbt.CompoundTag#getTagType(java.lang.String)", "d");
             put("net.minecraft.nbt.CompoundTag#putLong(java.lang.String,long)", "a");
+            put("net.minecraft.nbt.CompoundTag#putLongArray(java.lang.String,long[])", "a");
+            put("net.minecraft.nbt.CompoundTag#getLongArray(java.lang.String)", "o");
             put("net.minecraft.nbt.CompoundTag#getString(java.lang.String)", "l");
             put("net.minecraft.nbt.CompoundTag#getInt(java.lang.String)", "h");
             put("net.minecraft.nbt.CompoundTag#putString(java.lang.String,java.lang.String)", "a");

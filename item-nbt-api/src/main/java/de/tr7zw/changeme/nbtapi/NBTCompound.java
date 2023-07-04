@@ -410,6 +410,39 @@ public class NBTCompound implements ReadWriteNBT {
      * @param value
      */
     @Override
+    public void setLongArray(String key, long[] value) {
+        try {
+            writeLock.lock();
+            NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_LONGARRAY, key, value);
+            saveCompound();
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
+    /**
+     * Getter
+     * 
+     * @param key
+     * @return The stored value or NMS fallback
+     */
+    @Override
+    public long[] getLongArray(String key) {
+        try {
+            readLock.lock();
+            return (long[]) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_LONGARRAY, key);
+        } finally {
+            readLock.unlock();
+        }
+    }
+
+    /**
+     * Setter
+     * 
+     * @param key
+     * @param value
+     */
+    @Override
     public void setBoolean(String key, Boolean value) {
         try {
             writeLock.lock();
@@ -895,6 +928,8 @@ public class NBTCompound implements ReadWriteNBT {
             return (T) getByteArray(key);
         if (clazz == int[].class)
             return (T) getIntArray(key);
+        if (clazz == long[].class)
+            return (T) getLongArray(key);
         if (clazz == String.class)
             return (T) getString(key);
         if (clazz == UUID.class) {
@@ -948,6 +983,8 @@ public class NBTCompound implements ReadWriteNBT {
             return (T) getByteArray(key);
         if (type == int[].class)
             return (T) getIntArray(key);
+        if (type == long[].class)
+            return (T) getLongArray(key);
         if (type == String.class)
             return (T) getString(key);
         if (type == UUID.class)
@@ -1147,6 +1184,8 @@ public class NBTCompound implements ReadWriteNBT {
             return compA.getShort(key).equals(compB.getShort(key));
         case NBTTagString:
             return compA.getString(key).equals(compB.getString(key));
+        case NBTTagLongArray:
+            return Arrays.equals(compA.getLongArray(key), compB.getLongArray(key));
         }
         return false;
     }

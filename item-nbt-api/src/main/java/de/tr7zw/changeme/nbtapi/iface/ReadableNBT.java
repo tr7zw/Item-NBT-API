@@ -96,6 +96,15 @@ public interface ReadableNBT {
     int[] getIntArray(String key);
 
     /**
+     * Returns the value associated with the given key as an array of longs, or null
+     * if the key does not exist.
+     * 
+     * @param key The key of the value you want to get.
+     * @return An array of integers.
+     */
+    long[] getLongArray(String key);
+
+    /**
      * Returns the value associated with the given key, or false if the key is not
      * found.
      * 
