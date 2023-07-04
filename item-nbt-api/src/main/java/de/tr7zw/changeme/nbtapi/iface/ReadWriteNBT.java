@@ -89,6 +89,8 @@ public interface ReadWriteNBT extends ReadableNBT {
     /**
      * Setter
      * 
+     * Requires 1.16+
+     * 
      * @param key
      * @param value
      */

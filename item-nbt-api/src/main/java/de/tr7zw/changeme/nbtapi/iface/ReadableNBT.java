@@ -99,6 +99,8 @@ public interface ReadableNBT {
      * Returns the value associated with the given key as an array of longs, or null
      * if the key does not exist.
      * 
+     * Requires 1.16+
+     * 
      * @param key The key of the value you want to get.
      * @return An array of integers.
      */

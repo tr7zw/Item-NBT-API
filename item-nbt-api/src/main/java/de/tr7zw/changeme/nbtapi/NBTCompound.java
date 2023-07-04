@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadableNBT;
+import de.tr7zw.changeme.nbtapi.utils.CheckUtil;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.Forge1710Mappings;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
@@ -406,11 +407,14 @@ public class NBTCompound implements ReadWriteNBT {
     /**
      * Setter
      * 
+     * Requires at least 1.16
+     * 
      * @param key
      * @param value
      */
     @Override
     public void setLongArray(String key, long[] value) {
+        CheckUtil.assertAvailable(MinecraftVersion.MC1_16_R1);
         try {
             writeLock.lock();
             NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_LONGARRAY, key, value);
@@ -423,11 +427,14 @@ public class NBTCompound implements ReadWriteNBT {
     /**
      * Getter
      * 
+     * Requires at least 1.16
+     * 
      * @param key
      * @return The stored value or NMS fallback
      */
     @Override
     public long[] getLongArray(String key) {
+        CheckUtil.assertAvailable(MinecraftVersion.MC1_16_R1);
         try {
             readLock.lock();
             return (long[]) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_LONGARRAY, key);
