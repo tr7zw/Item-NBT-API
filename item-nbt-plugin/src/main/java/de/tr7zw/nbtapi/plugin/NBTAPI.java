@@ -26,6 +26,7 @@ import de.tr7zw.nbtapi.plugin.tests.compounds.GetterSetterTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.InterfaceTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.IteratorTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.ListTest;
+import de.tr7zw.nbtapi.plugin.tests.compounds.LongArrayTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.MergeTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.ModernSubCompoundsTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.RemovingKeys;
@@ -113,6 +114,8 @@ public class NBTAPI extends JavaPlugin {
         apiTests.add(new EqualsTest());
         if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) // 1.7.10 list support is not complete at all
             apiTests.add(new IteratorTest());
+        if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_16_R1))
+            apiTests.add(new LongArrayTest());
 
         // Items
         if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) { // 1.7.10 not a thing

@@ -5,7 +5,7 @@
   <parent>
     <groupId>de.tr7zw</groupId>
     <artifactId>item-nbt-parent</artifactId>
-    <version>2.11.3-SNAPSHOT</version>
+    <version>2.12.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>item-nbt-api</artifactId>
@@ -32,7 +32,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.4.1</version>
+        <version>3.5.0</version>
         <configuration>
           <createDependencyReducedPom>false</createDependencyReducedPom>
           <relocations>

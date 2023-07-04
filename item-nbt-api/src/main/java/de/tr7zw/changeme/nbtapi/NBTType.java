@@ -9,7 +9,7 @@ package de.tr7zw.changeme.nbtapi;
 @SuppressWarnings("javadoc")
 public enum NBTType {
     NBTTagEnd(0), NBTTagByte(1), NBTTagShort(2), NBTTagInt(3), NBTTagLong(4), NBTTagFloat(5), NBTTagDouble(6),
-    NBTTagByteArray(7), NBTTagIntArray(11), NBTTagString(8), NBTTagList(9), NBTTagCompound(10);
+    NBTTagByteArray(7), NBTTagString(8), NBTTagList(9), NBTTagCompound(10), NBTTagIntArray(11), NBTTagLongArray(12);
 
     NBTType(int i) {
         id = i;
