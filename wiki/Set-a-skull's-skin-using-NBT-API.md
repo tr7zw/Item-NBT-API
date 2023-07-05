@@ -1,5 +1,4 @@
-**
-We will be using [this head](https://minecraft-heads.com/custom-heads/food%20&%20drinks/28194-cup-of-soda) as example.
+### We will be using [this head](https://minecraft-heads.com/custom-heads/food%20&%20drinks/28194-cup-of-soda) as example.
 
 ```java
 // This is the base64 texture value from the bottom of the previously mentioned website.
