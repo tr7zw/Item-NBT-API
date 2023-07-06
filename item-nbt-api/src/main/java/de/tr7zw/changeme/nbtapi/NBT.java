@@ -12,6 +12,7 @@ import com.mojang.authlib.GameProfile;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteItemNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadableNBT;
+import de.tr7zw.changeme.nbtapi.wrapper.NBTProxy;
 import de.tr7zw.changeme.nbtapi.wrapper.ProxyBuilder;
 
 /**
@@ -320,7 +321,7 @@ public class NBT {
      * @param wrapper
      * @return
      */
-    public static <T> T wrapNBT(ItemStack item, Class<T> wrapper) {
+    public static <T extends NBTProxy> T wrapNBT(ItemStack item, Class<T> wrapper) {
         return new ProxyBuilder<>(new NBTItem(item, true), wrapper).build();
     }
 

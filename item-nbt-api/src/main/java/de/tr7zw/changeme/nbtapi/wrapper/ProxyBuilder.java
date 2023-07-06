@@ -8,10 +8,12 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
+import de.tr7zw.changeme.nbtapi.NBTType;
+import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.changeme.nbtapi.wrapper.NBTTarget.Type;
 
-public class ProxyBuilder<T> implements InvocationHandler {
+public class ProxyBuilder<T extends NBTProxy> implements InvocationHandler {
 
     private static final Map<Method, Function<Arguments, Object>> METHOD_CACHE = new ConcurrentHashMap<>();
 
@@ -19,6 +21,9 @@ public class ProxyBuilder<T> implements InvocationHandler {
     private final ReadWriteNBT nbt;
 
     public ProxyBuilder(ReadWriteNBT nbt, Class<T> target) {
+        if (!target.isInterface()) {
+            throw new NbtApiException("A proxy can only be built from an interface! Check the wiki for examples.");
+        }
         this.target = target;
         this.nbt = nbt;
     }
@@ -63,8 +68,20 @@ public class ProxyBuilder<T> implements InvocationHandler {
             return (arguments) -> setNBT(arguments.nbt, fieldName, arguments.args[0]);
         }
         if (action == Type.GET) {
+            Class<?> retType = method.getReturnType();
             String fieldName = getNBTName(method);
-            return (arguments) -> arguments.nbt.getOrNull(fieldName, method.getReturnType());
+            // Allow stacking of proxies
+            if (retType.isInterface() && NBTProxy.class.isAssignableFrom(retType)) {
+                return (arguments) -> {
+                    if (arguments.nbt.hasTag(fieldName) && arguments.nbt.getType(fieldName) != NBTType.NBTTagCompound) {
+                        throw new NbtApiException("Tried getting a '" + retType + "' proxy from the field '" + fieldName
+                                + "', but it's not a TagCompound!");
+                    }
+                    return new ProxyBuilder<NBTProxy>(arguments.nbt.getOrCreateCompound(fieldName),
+                            (Class<NBTProxy>) retType).build();
+                };
+            }
+            return (arguments) -> arguments.nbt.getOrNull(fieldName, retType);
         }
         throw new IllegalArgumentException(
                 "The method '" + method.getName() + "' in '" + method.getDeclaringClass().getName()

@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import de.tr7zw.changeme.nbtapi.NBT;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
+import de.tr7zw.changeme.nbtapi.wrapper.NBTProxy;
 import de.tr7zw.changeme.nbtapi.wrapper.NBTTarget;
 import de.tr7zw.changeme.nbtapi.wrapper.NBTTarget.Type;
 import de.tr7zw.nbtapi.plugin.tests.Test;
@@ -27,9 +28,15 @@ public class SimpleProxyTest implements Test {
         if (ti.theKillsWithADifferentMethodNameAndNoGet() != 43) {
             throw new NbtApiException("The annotation didn't work correctly!");
         }
+        Statistic jumps = ti.getJumps();
+        jumps.setPoints(9000);
+        jumps.addPoint();
+        if (ti.getJumps().getPoints() != 9001) {
+            throw new NbtApiException("The stacked proxy didn't work correctly!");
+        }
     }
 
-    public interface TestInterface {
+    public interface TestInterface extends NBTProxy {
 
         public void setKills(int amount);
 
@@ -41,6 +48,19 @@ public class SimpleProxyTest implements Test {
 
         @NBTTarget(value = "kills", type = Type.GET)
         public int theKillsWithADifferentMethodNameAndNoGet();
+
+        public Statistic getJumps();
+
+    }
+
+    public interface Statistic extends NBTProxy {
+        public void setPoints(int amount);
+
+        public int getPoints();
+
+        public default void addPoint() {
+            setPoints(getPoints() + 1);
+        }
 
     }
 
