@@ -99,7 +99,7 @@ public class NBTFile extends NBTCompound {
             if (!file.createNewFile())
                 throw new IOException("Unable to create file at " + file.getAbsolutePath());
         }
-        NBTReflectionUtil.writeNBT(nbt.getCompound(), Files.newOutputStream(file.toPath()));
+        nbt.writeCompound(Files.newOutputStream(file.toPath()));
     }
 
 }

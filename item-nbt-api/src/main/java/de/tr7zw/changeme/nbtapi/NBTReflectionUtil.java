@@ -358,7 +358,7 @@ public class NBTReflectionUtil {
      * @param comp
      * @return true if this is a valide Compound, else false
      */
-    public static Boolean valideCompound(NBTCompound comp) {
+    public static boolean valideCompound(NBTCompound comp) {
         Object root = comp.getCompound();
         if (root == null) {
             root = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
