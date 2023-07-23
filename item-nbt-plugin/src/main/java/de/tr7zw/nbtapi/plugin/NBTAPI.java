@@ -49,6 +49,7 @@ import de.tr7zw.nbtapi.plugin.tests.tiles.TilesCustomNBTPersistentTest;
 import de.tr7zw.nbtinjector.NBTInjector;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemMergingTest;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemStackConversionTest;
+import de.tr7zw.nbtapi.plugin.tests.items.NBTModifyItemTest;
 
 public class NBTAPI extends JavaPlugin {
 
@@ -126,6 +127,7 @@ public class NBTAPI extends JavaPlugin {
             apiTests.add(new ItemMergingTest());
             apiTests.add(new DirectApplyTest());
             apiTests.add(new DirectApplyMetaTest());
+            apiTests.add(new NBTModifyItemTest());
         }
 
         // Entity

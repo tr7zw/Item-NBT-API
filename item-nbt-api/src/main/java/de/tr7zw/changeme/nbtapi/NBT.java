@@ -36,7 +36,7 @@ public class NBT {
      * @return The function is being returned.
      */
     public static <T> T get(ItemStack item, Function<ReadableNBT, T> getter) {
-        return getter.apply(new NBTItem(item, false, true));
+        return getter.apply(new NBTItem(item, false, true, false));
     }
 
     /**
@@ -102,9 +102,9 @@ public class NBT {
      * @return The return value of the function.
      */
     public static <T> T modify(ItemStack item, Function<ReadWriteItemNBT, T> function) {
-        NBTItem nbti = new NBTItem(item, true);
+        NBTItem nbti = new NBTItem(item, false, false, true);
         T val = function.apply(nbti);
-        nbti.applyNBT(item);
+        nbti.finalizeChanges();
         return val;
     }
 
@@ -116,9 +116,9 @@ public class NBT {
      * @param consumer The consumer that will be used to modify the NBT.
      */
     public static void modify(ItemStack item, Consumer<ReadWriteItemNBT> consumer) {
-        NBTItem nbti = new NBTItem(item, true);
+        NBTItem nbti = new NBTItem(item, false, false, true);
         consumer.accept(nbti);
-        nbti.applyNBT(item);
+        nbti.finalizeChanges();
     }
 
     /**
