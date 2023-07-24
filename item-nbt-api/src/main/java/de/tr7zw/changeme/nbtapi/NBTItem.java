@@ -91,8 +91,13 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
 
     @Override
     public Object getCompound() {
-        if (readOnly && ClassWrapper.CRAFT_ITEMSTACK.getClazz().isAssignableFrom(bukkitItem.getClass())) {
-            return NBTReflectionUtil.getItemRootNBTTagCompound(NBTReflectionUtil.getCraftItemHandle(bukkitItem));
+        if (readOnly && (cachedCompound != null
+                || ClassWrapper.CRAFT_ITEMSTACK.getClazz().isAssignableFrom(bukkitItem.getClass()))) {
+            if (cachedCompound == null) {
+                cachedCompound = NBTReflectionUtil
+                        .getItemRootNBTTagCompound(NBTReflectionUtil.getCraftItemHandle(bukkitItem));
+            }
+            return cachedCompound;
         }
         if (finalizer) {
             if (cachedCompound == null) {
