@@ -134,9 +134,14 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
         if (finalizer) {
             cachedCompound = compound;
         }
-        Object stack = ReflectionMethod.ITEMSTACK_NMSCOPY.run(null, bukkitItem);
-        ReflectionMethod.ITEMSTACK_SET_TAG.run(stack, compound);
-        bukkitItem = (ItemStack) ReflectionMethod.ITEMSTACK_BUKKITMIRROR.run(null, stack);
+        if (ClassWrapper.CRAFT_ITEMSTACK.getClazz().isAssignableFrom(bukkitItem.getClass())) {
+            Object nmsStack = NBTReflectionUtil.getCraftItemHandle(bukkitItem);
+            ReflectionMethod.ITEMSTACK_SET_TAG.run(nmsStack, compound);
+        } else {
+            Object stack = ReflectionMethod.ITEMSTACK_NMSCOPY.run(null, bukkitItem);
+            ReflectionMethod.ITEMSTACK_SET_TAG.run(stack, compound);
+            bukkitItem = (ItemStack) ReflectionMethod.ITEMSTACK_BUKKITMIRROR.run(null, stack);
+        }
     }
 
     /**
