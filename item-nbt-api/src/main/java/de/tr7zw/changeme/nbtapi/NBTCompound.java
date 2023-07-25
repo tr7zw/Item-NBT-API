@@ -1258,8 +1258,10 @@ public class NBTCompound implements ReadWriteNBT {
             return compA.getByte(key).equals(compB.getByte(key));
         case NBTTagByteArray:
             return Arrays.equals(compA.getByteArray(key), compB.getByteArray(key));
-        case NBTTagCompound:
-            return compA.getCompound(key).equals(compB.getCompound(key));
+        case NBTTagCompound: {
+            NBTCompound tmp = compA.getCompound(key);
+            return tmp != null && tmp.equals(compB.getCompound(key));
+        }
         case NBTTagDouble:
             return compA.getDouble(key).equals(compB.getDouble(key));
         case NBTTagEnd:

@@ -59,13 +59,15 @@ public class MappingsParser {
             mojangName = line.trim().split(" ")[1];
             unmappedName = line.trim().split(" ")[3];
             classes.remove(currentClass);
-            for (ReflectionMethod method : mappedNames.keySet()) {
-                if (method.getSelectedVersionInfo() == null)
-                    continue;
-                if (!mojangName.contains("("))
-                    continue;
-                if (mojangName.equals(method.getSelectedVersionInfo().name)) {
-                    mappedNames.put(method, unmappedName);
+            if (mappedNames != null) {
+                for (ReflectionMethod method : mappedNames.keySet()) {
+                    if (method.getSelectedVersionInfo() == null)
+                        continue;
+                    if (!mojangName.contains("("))
+                        continue;
+                    if (mojangName.equals(method.getSelectedVersionInfo().name)) {
+                        mappedNames.put(method, unmappedName);
+                    }
                 }
             }
             // System.out.println(currentClass + ": " + mojangName + " -> " + unmappedName);

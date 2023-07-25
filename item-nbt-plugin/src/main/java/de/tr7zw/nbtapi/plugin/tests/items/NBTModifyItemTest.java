@@ -31,10 +31,13 @@ public class NBTModifyItemTest implements Test {
             return nbt.getString("SomeKey");
         });
         String outside = NBT.get(baseItem, nbt -> nbt.getString("SomeKey"));
+        if (baseItem == null) {
+            throw new NbtApiException("Base item was null!");
+        }
         if (!new NBTItem(baseItem).hasTag("SomeKey")) {
             throw new NbtApiException("The data was not applied!");
         }
-        if (new NBTItem(baseItem).getCompound("sub").getInteger("val") != 42) {
+        if (new NBTItem(baseItem).getOrCreateCompound("sub").getInteger("val") != 42) {
             throw new NbtApiException("The sub value was not applied!");
         }
         if (!"SomeValue".equals(inside)) {
@@ -60,7 +63,7 @@ public class NBTModifyItemTest implements Test {
         if (!new NBTItem(baseItem).hasTag("SomeKey")) {
             throw new NbtApiException("The data was not applied!");
         }
-        if (new NBTItem(baseItem).getCompound("sub").getInteger("val") != 42) {
+        if (new NBTItem(baseItem).getOrCreateCompound("sub").getInteger("val") != 42) {
             throw new NbtApiException("The sub value was not applied!");
         }
         if (!"SomeValue".equals(inside)) {

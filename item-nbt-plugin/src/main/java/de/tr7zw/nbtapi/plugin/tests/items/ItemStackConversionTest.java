@@ -16,7 +16,7 @@ public class ItemStackConversionTest implements Test {
                 new ItemStack(Material.AIR), new ItemStack(Material.STONE) };
         NBTCompound comp = NBTItem.convertItemArraytoNBT(src);
         ItemStack[] recreated = NBTItem.convertNBTtoItemArray(comp);
-        if (src.length != recreated.length) {
+        if (recreated == null || src.length != recreated.length) {
             throw new NbtApiException("Size did not match!");
         }
         for (int i = 0; i < src.length; i++) {

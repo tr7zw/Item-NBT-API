@@ -2,6 +2,8 @@ package de.tr7zw.changeme.nbtapi;
 
 import java.util.function.BiConsumer;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -293,6 +295,7 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
      * @param comp
      * @return ItemStack using the {@link NBTCompound}'s data
      */
+    @Nullable
     public static ItemStack convertNBTtoItem(NBTCompound comp) {
         return (ItemStack) ReflectionMethod.ITEMSTACK_BUKKITMIRROR.run(null,
                 NBTReflectionUtil.convertNBTCompoundtoNMSItem(comp));
@@ -333,6 +336,7 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
      * @param comp
      * @return ItemStack[] using the {@link NBTCompound}'s data
      */
+    @Nullable
     public static ItemStack[] convertNBTtoItemArray(NBTCompound comp) {
         if (!comp.hasTag("size")) {
             return null;

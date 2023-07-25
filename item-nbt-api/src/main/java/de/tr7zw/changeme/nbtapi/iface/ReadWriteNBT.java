@@ -2,6 +2,8 @@ package de.tr7zw.changeme.nbtapi.iface;
 
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.inventory.ItemStack;
 
 public interface ReadWriteNBT extends ReadableNBT {
@@ -145,6 +147,7 @@ public interface ReadWriteNBT extends ReadableNBT {
      * @param name
      * @return The Compound instance or null
      */
+    @Nullable
     ReadWriteNBT getCompound(String name);
 
     /**

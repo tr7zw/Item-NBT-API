@@ -3,6 +3,8 @@ package de.tr7zw.changeme.nbtapi;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
@@ -268,6 +270,7 @@ public class NBT {
      * @param compound The NBT tag to convert to an ItemStack
      * @return An ItemStack
      */
+    @Nullable
     public static ItemStack itemStackFromNBT(ReadableNBT compound) {
         return NBTItem.convertNBTtoItem((NBTCompound) compound);
     }
@@ -288,6 +291,7 @@ public class NBT {
      * @param compound The NBT tag to convert to an ItemStack array.
      * @return An array of ItemStacks.
      */
+    @Nullable
     public static ItemStack[] itemStackArrayFromNBT(ReadableNBT compound) {
         return NBTItem.convertNBTtoItemArray((NBTCompound) compound);
     }
