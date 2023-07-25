@@ -4,6 +4,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.locks.Lock;
@@ -16,6 +17,7 @@ import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadableNBT;
 import de.tr7zw.changeme.nbtapi.utils.CheckUtil;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
+import de.tr7zw.changeme.nbtapi.utils.PathUtil;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.Forge1710Mappings;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 
@@ -1034,6 +1036,58 @@ public class NBTCompound implements ReadWriteNBT {
             return (T) getEnum(key, (Class) type);
 
         throw new NbtApiException("Unsupported type for getOrNull: " + type.getName());
+    }
+
+    @Override
+    public <T> T resolveOrNull(String key, Class<?> type) {
+        List<String> keys = PathUtil.splitPath(key);
+        NBTCompound tag = this;
+        for (int i = 0; i < keys.size() - 1; i++) {
+            tag = tag.getCompound(keys.get(i));
+            if (tag == null) {
+                return null;
+            }
+        }
+        return tag.getOrNull(keys.get(keys.size() - 1), type);
+    }
+
+    @Override
+    public <T> T resolveOrDefault(String key, T defaultValue) {
+        List<String> keys = PathUtil.splitPath(key);
+        NBTCompound tag = this;
+        for (int i = 0; i < keys.size() - 1; i++) {
+            tag = tag.getCompound(keys.get(i));
+            if (tag == null) {
+                return null;
+            }
+        }
+        return tag.getOrDefault(keys.get(keys.size() - 1), defaultValue);
+    }
+
+    @Override
+    public ReadWriteNBT resolveCompound(String key) {
+        List<String> keys = PathUtil.splitPath(key);
+        NBTCompound tag = this;
+        for (int i = 0; i < keys.size(); i++) {
+            tag = tag.getCompound(keys.get(i));
+            if (tag == null) {
+                return null;
+            }
+        }
+        return tag;
+    }
+
+    @Override
+    public ReadWriteNBT resolveOrCreateCompound(String key) {
+        List<String> keys = PathUtil.splitPath(key);
+        NBTCompound tag = this;
+        for (int i = 0; i < keys.size(); i++) {
+            tag = tag.getOrCreateCompound(keys.get(i));
+            if (tag == null) {
+                return null;
+            }
+        }
+        return tag;
     }
 
     /**

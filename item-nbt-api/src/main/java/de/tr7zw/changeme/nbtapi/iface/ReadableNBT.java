@@ -257,6 +257,46 @@ public interface ReadableNBT {
     <T> T getOrNull(String key, Class<?> type);
 
     /**
+     * Returns the resolved value if exists, or null.
+     * <p>
+     * Supported types:
+     * {@code Boolean, Byte, Short, Integer, Long, Float, Double, byte[], int[], long[]},
+     * {@link String}, {@link UUID}, and {@link Enum}
+     *
+     * @param key  Path key, seperated by '.'. For example: "foo.bar.baz". Dots can
+     *             be escaped with a backslash.
+     * @param type data type
+     * @param <T>  value type
+     * @return resolved or provided value
+     */
+    <T> T resolveOrNull(String key, Class<?> type);
+
+    /**
+     * Returns the resolved value if exists, or provided value otherwise.
+     * <p>
+     * Supported types:
+     * {@code Boolean, Byte, Short, Integer, Long, Float, Double, byte[], int[], long[]},
+     * {@link String}, {@link UUID}, and {@link Enum}
+     *
+     * @param key          Path key, seperated by '.'. For example: "foo.bar.baz".
+     *                     Dots can be escaped with a backslash.
+     * @param defaultValue default non-null value
+     * @param <T>          value type
+     * @return resolved or provided value
+     */
+    <T> T resolveOrDefault(String key, T defaultValue);
+
+    /**
+     * Returns the resolved Compound if exists, or null.
+     * <p>
+     * 
+     * @param key Path key, seperated by '.'. For example: "foo.bar.baz". Dots can
+     *            be escaped with a backslash.
+     * @return The resolved value if exists, or null.
+     */
+    ReadableNBT resolveCompound(String key);
+
+    /**
      * Get an Enum value that has been set via setEnum or setString(key,
      * value.name()). Passing null/invalid keys will return null.
      * 

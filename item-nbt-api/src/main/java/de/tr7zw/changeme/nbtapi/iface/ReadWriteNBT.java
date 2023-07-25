@@ -148,6 +148,16 @@ public interface ReadWriteNBT extends ReadableNBT {
     ReadWriteNBT getCompound(String name);
 
     /**
+     * Returns the resolved and creates compounds as required.
+     * <p>
+     * 
+     * @param key Path key, seperated by '.'. For example: "foo.bar.baz". Dots can
+     *            be escaped with a backslash.
+     * @return The resolved compound.
+     */
+    ReadWriteNBT resolveOrCreateCompound(String key);
+
+    /**
      * Set a key to the given Enum value. It gets stored as a String. Passing null
      * as value will call removeKey(key) instead.
      * 
