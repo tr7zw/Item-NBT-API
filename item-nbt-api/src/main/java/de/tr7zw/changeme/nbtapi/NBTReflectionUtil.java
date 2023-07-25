@@ -127,13 +127,7 @@ public class NBTReflectionUtil {
      */
     public static void writeApiNBT(NBTCompound comp, OutputStream stream) {
         try {
-            Object nbttag = comp.getCompound();
-            if (nbttag == null) {
-                nbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
-            }
-            if (!valideCompound(comp))
-                return;
-            Object workingtag = gettoCompount(nbttag, comp);
+            Object workingtag = comp.getResolvedObject();
             ReflectionMethod.NBTFILE_WRITE.run(null, workingtag, stream);
         } catch (Exception e) {
             throw new NbtApiException("Exception while writing NBT!", e);
@@ -363,7 +357,9 @@ public class NBTReflectionUtil {
         if (root == null) {
             root = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
         }
-        return (gettoCompount(root, comp)) != null;
+        Object tmp = gettoCompount(root, comp);
+        comp.setResolvedObject(tmp);
+        return tmp != null;
     }
 
     protected static Object gettoCompount(Object nbttag, NBTCompound comp) {
@@ -396,13 +392,7 @@ public class NBTReflectionUtil {
         if (!valideCompound(comp))
             throw new NbtApiException("The Compound wasn't able to be linked back to the root!");
         Object workingtag = gettoCompount(rootnbttag, comp);
-        Object rootnbttagSrc = nbtcompoundSrc.getCompound();
-        if (rootnbttagSrc == null) {
-            rootnbttagSrc = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
-        }
-        if (!valideCompound(nbtcompoundSrc))
-            throw new NbtApiException("The Compound wasn't able to be linked back to the root!");
-        Object workingtagSrc = gettoCompount(rootnbttagSrc, nbtcompoundSrc);
+        Object workingtagSrc = nbtcompoundSrc.getResolvedObject();
         try {
             ReflectionMethod.COMPOUND_MERGE.run(workingtag, workingtagSrc);
             comp.setCompound(rootnbttag);
@@ -419,13 +409,7 @@ public class NBTReflectionUtil {
      * @return Content saved under this key
      */
     public static String getContent(NBTCompound comp, String key) {
-        Object rootnbttag = comp.getCompound();
-        if (rootnbttag == null) {
-            rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
-        }
-        if (!valideCompound(comp))
-            throw new NbtApiException("The Compound wasn't able to be linked back to the root!");
-        Object workingtag = gettoCompount(rootnbttag, comp);
+        Object workingtag = comp.getResolvedObject();
         try {
             return ReflectionMethod.COMPOUND_GET.run(workingtag, key).toString();
         } catch (Exception e) {
@@ -472,13 +456,7 @@ public class NBTReflectionUtil {
      */
     @SuppressWarnings("unchecked")
     public static <T> NBTList<T> getList(NBTCompound comp, String key, NBTType type, Class<T> clazz) {
-        Object rootnbttag = comp.getCompound();
-        if (rootnbttag == null) {
-            rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
-        }
-        if (!valideCompound(comp))
-            return null;
-        Object workingtag = gettoCompount(rootnbttag, comp);
+        Object workingtag = comp.getResolvedObject();
         try {
             Object nbt = ReflectionMethod.COMPOUND_GET_LIST.run(workingtag, key, type.getId());
             if (clazz == String.class) {
@@ -506,13 +484,7 @@ public class NBTReflectionUtil {
     }
 
     public static NBTType getListType(NBTCompound comp, String key) {
-        Object rootnbttag = comp.getCompound();
-        if (rootnbttag == null) {
-            rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
-        }
-        if (!valideCompound(comp))
-            return null;
-        Object workingtag = gettoCompount(rootnbttag, comp);
+        Object workingtag = comp.getResolvedObject();
         try {
             Object nbt = ReflectionMethod.COMPOUND_GET.run(workingtag, key);
             String fieldname = "type";
@@ -534,16 +506,9 @@ public class NBTReflectionUtil {
     }
 
     public static Object getEntry(NBTCompound comp, String key) {
-        Object rootnbttag = comp.getCompound();
-        if (rootnbttag == null) {
-            rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
-        }
-        if (!valideCompound(comp))
-            return null;
-        Object workingtag = gettoCompount(rootnbttag, comp);
+        Object workingtag = comp.getResolvedObject();
         try {
-            Object nbt = ReflectionMethod.COMPOUND_GET.run(workingtag, key);
-            return nbt;
+            return ReflectionMethod.COMPOUND_GET.run(workingtag, key);
         } catch (Exception ex) {
             throw new NbtApiException("Exception while getting an Entry!", ex);
         }
@@ -611,13 +576,7 @@ public class NBTReflectionUtil {
      */
     @SuppressWarnings("unchecked")
     public static Set<String> getKeys(NBTCompound comp) {
-        Object rootnbttag = comp.getCompound();
-        if (rootnbttag == null) {
-            rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
-        }
-        if (!valideCompound(comp))
-            throw new NbtApiException("The Compound wasn't able to be linked back to the root!");
-        Object workingtag = gettoCompount(rootnbttag, comp);
+        Object workingtag = comp.getResolvedObject();
         return (Set<String>) ReflectionMethod.COMPOUND_GET_KEYS.run(workingtag);
     }
 
@@ -654,13 +613,7 @@ public class NBTReflectionUtil {
      * @return The value or default fallback from NMS
      */
     public static Object getData(NBTCompound comp, ReflectionMethod type, String key) {
-        Object rootnbttag = comp.getCompound();
-        if (rootnbttag == null) {
-            return null;
-        }
-        if (!valideCompound(comp))
-            throw new NbtApiException("The Compound wasn't able to be linked back to the root!");
-        Object workingtag = gettoCompount(rootnbttag, comp);
+        Object workingtag = comp.getResolvedObject();
         return type.run(workingtag, key);
     }
 

@@ -23,7 +23,6 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
 
     private ItemStack bukkitItem;
     private final boolean directApply;
-    private final boolean readOnly;
     private final boolean finalizer;
     private ItemStack originalSrcStack = null;
     private Object cachedCompound = null;
@@ -45,17 +44,16 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
      *                    overwrites directApply
      */
     protected NBTItem(ItemStack item, boolean directApply, boolean readOnly, boolean finalizer) {
-        super(null, null);
+        super(null, null, readOnly);
         if (item == null || item.getType() == Material.AIR || item.getAmount() <= 0) {
             throw new NullPointerException("ItemStack can't be null/air/amount of 0! This is not a NBTAPI bug!");
         }
-        this.readOnly = readOnly;
         this.finalizer = finalizer;
         if (finalizer) {
             this.bukkitItem = item;
             this.originalSrcStack = item;
             this.directApply = false;
-        } else if (this.readOnly) {
+        } else if (readOnly) {
             bukkitItem = item;
             this.directApply = false;
         } else {
@@ -80,7 +78,6 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
         if (item == null || item.getType() == Material.AIR || item.getAmount() <= 0) {
             throw new NullPointerException("ItemStack can't be null/air/amount of 0! This is not a NBTAPI bug!");
         }
-        this.readOnly = false;
         this.finalizer = false;
         this.directApply = directApply;
         bukkitItem = item.clone();
@@ -91,7 +88,7 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
 
     @Override
     public Object getCompound() {
-        if (readOnly && (cachedCompound != null
+        if (isReadOnly() && (cachedCompound != null
                 || ClassWrapper.CRAFT_ITEMSTACK.getClazz().isAssignableFrom(bukkitItem.getClass()))) {
             if (cachedCompound == null) {
                 cachedCompound = NBTReflectionUtil
@@ -133,7 +130,7 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
 
     @Override
     protected void setCompound(Object compound) {
-        if (readOnly) {
+        if (isReadOnly()) {
             throw new NbtApiException("Tried setting data in read only mode!");
         }
         if (finalizer) {

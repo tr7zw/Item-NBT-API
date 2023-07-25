@@ -34,10 +34,17 @@ public class NBTCompound implements ReadWriteNBT {
 
     private String compundName;
     private NBTCompound parent;
+    private final boolean readOnly;
+    private Object readOnlyCache;
 
     protected NBTCompound(NBTCompound owner, String name) {
+        this(owner, name, false);
+    }
+
+    protected NBTCompound(NBTCompound owner, String name, boolean readOnly) {
         this.compundName = name;
         this.parent = owner;
+        this.readOnly = readOnly;
     }
 
     protected Lock getReadLock() {
@@ -51,6 +58,33 @@ public class NBTCompound implements ReadWriteNBT {
     protected void saveCompound() {
         if (parent != null)
             parent.saveCompound();
+    }
+
+    protected void setResolvedObject(Object object) {
+        if (readOnly) {
+            this.readOnlyCache = object;
+        }
+    }
+
+    protected boolean isReadOnly() {
+        return readOnly;
+    }
+
+    protected Object getResolvedObject() {
+        if (readOnlyCache != null) {
+            return readOnlyCache;
+        }
+        Object rootnbttag = getCompound();
+        if (rootnbttag == null) {
+            return null;
+        }
+        if (!NBTReflectionUtil.valideCompound(this))
+            throw new NbtApiException("The Compound wasn't able to be linked back to the root!");
+        Object workingtag = NBTReflectionUtil.gettoCompount(rootnbttag, this);
+        if (readOnly) {
+            this.readOnlyCache = workingtag;
+        }
+        return workingtag;
     }
 
     /**
@@ -729,7 +763,7 @@ public class NBTCompound implements ReadWriteNBT {
             readLock.lock();
             if (getType(name) != NBTType.NBTTagCompound)
                 return null;
-            NBTCompound next = new NBTCompound(this, name);
+            NBTCompound next = new NBTCompound(this, name, readOnly);
             if (NBTReflectionUtil.valideCompound(next))
                 return next;
             return null;
@@ -1121,7 +1155,7 @@ public class NBTCompound implements ReadWriteNBT {
     public String asNBTString() {
         try {
             readLock.lock();
-            Object comp = NBTReflectionUtil.gettoCompount(getCompound(), this);
+            Object comp = getResolvedObject();
             if (comp == null)
                 return "{}";
             if (MinecraftVersion.isForgePresent() && MinecraftVersion.getVersion() == MinecraftVersion.MC1_7_R4) {
