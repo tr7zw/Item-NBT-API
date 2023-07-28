@@ -115,7 +115,7 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
     }
 
     protected void finalizeChanges() {
-        if (!finalizer) {
+        if (!finalizer || cachedCompound == null) {
             return;
         }
         if (ClassWrapper.CRAFT_ITEMSTACK.getClazz().isAssignableFrom(originalSrcStack.getClass())) {
@@ -137,6 +137,7 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
         }
         if (finalizer) {
             cachedCompound = compound;
+            return;
         }
         if (ClassWrapper.CRAFT_ITEMSTACK.getClazz().isAssignableFrom(bukkitItem.getClass())) {
             Object nmsStack = NBTReflectionUtil.getCraftItemHandle(bukkitItem);

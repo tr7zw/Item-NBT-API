@@ -12,7 +12,7 @@ public class StreamTest implements Test {
     @Override
     public void test() throws Exception {
         NBTContainer base = new NBTContainer();
-        base.addCompound("sub").setString("hello", "world");
+        base.getOrCreateCompound("sub").setString("hello", "world");
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         base.getOrCreateCompound("sub").writeCompound(outStream);
         byte[] data = outStream.toByteArray();

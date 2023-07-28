@@ -75,6 +75,21 @@ public class NBTModifyItemTest implements Test {
         if (!"Test".equals(baseItem.getItemMeta().getDisplayName())) {
             throw new NbtApiException("The display name was not applied!");
         }
+        // other ordering
+        baseItem = new ItemStack(Material.STONE);
+        NBT.modify(baseItem, nbti -> {
+            nbti.setString("a", "SomeValue");
+        });
+        NBT.modify(baseItem, nbt -> {
+            nbt.modifyMeta((r, meta) -> {
+                meta.setDisplayName("Test");
+            });
+            nbt.setInteger("b", 12);
+        });
+        if (!new NBTItem(baseItem).hasTag("a") || !new NBTItem(baseItem).hasTag("b")
+                || !"Test".equals(baseItem.getItemMeta().getDisplayName())) {
+            throw new NbtApiException("The data was not applied: " + new NBTItem(baseItem).toString());
+        }
     }
 
 }
