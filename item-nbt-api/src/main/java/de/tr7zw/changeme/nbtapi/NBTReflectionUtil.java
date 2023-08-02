@@ -388,7 +388,7 @@ public class NBTReflectionUtil {
      */
     public static void mergeOtherNBTCompound(NBTCompound comp, NBTCompound nbtcompoundSrc) {
         Object workingtagSrc = nbtcompoundSrc.getResolvedObject();
-        if(workingtagSrc == null) {
+        if (workingtagSrc == null) {
             return;
         }
         Object rootnbttag = comp.getCompound();
