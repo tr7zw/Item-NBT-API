@@ -387,6 +387,10 @@ public class NBTReflectionUtil {
      * @param nbtcompoundSrc Data to merge
      */
     public static void mergeOtherNBTCompound(NBTCompound comp, NBTCompound nbtcompoundSrc) {
+        Object workingtagSrc = nbtcompoundSrc.getResolvedObject();
+        if(workingtagSrc == null) {
+            return;
+        }
         Object rootnbttag = comp.getCompound();
         if (rootnbttag == null) {
             rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
@@ -394,7 +398,6 @@ public class NBTReflectionUtil {
         if (!valideCompound(comp))
             throw new NbtApiException("The Compound wasn't able to be linked back to the root!");
         Object workingtag = gettoCompount(rootnbttag, comp);
-        Object workingtagSrc = nbtcompoundSrc.getResolvedObject();
         try {
             ReflectionMethod.COMPOUND_MERGE.run(workingtag, workingtagSrc);
             comp.setCompound(rootnbttag);
