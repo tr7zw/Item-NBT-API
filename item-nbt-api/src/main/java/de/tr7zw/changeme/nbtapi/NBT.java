@@ -13,6 +13,7 @@ import com.mojang.authlib.GameProfile;
 
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteItemNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
+import de.tr7zw.changeme.nbtapi.iface.ReadableItemNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadableNBT;
 
 /**
@@ -37,7 +38,7 @@ public class NBT {
      *               T.
      * @return The function is being returned.
      */
-    public static <T> T get(ItemStack item, Function<ReadableNBT, T> getter) {
+    public static <T> T get(ItemStack item, Function<ReadableItemNBT, T> getter) {
         return getter.apply(new NBTItem(item, false, true, false));
     }
 

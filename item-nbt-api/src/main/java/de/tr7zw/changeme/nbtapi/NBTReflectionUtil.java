@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
+
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
@@ -144,7 +146,7 @@ public class NBTReflectionUtil {
     public static Object getItemRootNBTTagCompound(Object nmsitem) {
         try {
             Object answer = ReflectionMethod.NMSITEM_GETTAG.run(nmsitem);
-            return answer != null ? answer : ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
+            return answer;
         } catch (Exception e) {
             throw new NbtApiException("Exception while getting an Itemstack's NBTCompound!", e);
         }
@@ -604,6 +606,8 @@ public class NBTReflectionUtil {
         comp.setCompound(rootnbttag);
     }
 
+    private final static NBTContainer dummyNBT = new NBTContainer();
+
     /**
      * Gets data from the Compound
      * 
@@ -614,6 +618,10 @@ public class NBTReflectionUtil {
      */
     public static Object getData(NBTCompound comp, ReflectionMethod type, String key) {
         Object workingtag = comp.getResolvedObject();
+        // return default behavior data as if there was a compound
+        if (workingtag == null) {
+            workingtag = dummyNBT.getCompound();
+        }
         return type.run(workingtag, key);
     }
 

@@ -1,5 +1,6 @@
 package de.tr7zw.changeme.nbtapi;
 
+import java.util.Set;
 import java.util.function.BiConsumer;
 
 import javax.annotation.Nullable;
@@ -118,6 +119,10 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
         if (!finalizer || cachedCompound == null) {
             return;
         }
+        // There was data, but not anymore, delete the tag from the itemstack
+        if (NBTReflectionUtil.getKeys(this).isEmpty()) {
+            cachedCompound = null;
+        }
         if (ClassWrapper.CRAFT_ITEMSTACK.getClazz().isAssignableFrom(originalSrcStack.getClass())) {
             Object nmsStack = NBTReflectionUtil.getCraftItemHandle(originalSrcStack);
             ReflectionMethod.ITEMSTACK_SET_TAG.run(nmsStack, cachedCompound);
@@ -130,6 +135,7 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void setCompound(Object compound) {
         if (isReadOnly()) {
@@ -138,6 +144,9 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
         if (finalizer) {
             cachedCompound = compound;
             return;
+        }
+        if (compound != null && ((Set<String>) ReflectionMethod.COMPOUND_GET_KEYS.run(compound)).isEmpty()) {
+            compound = null;
         }
         if (ClassWrapper.CRAFT_ITEMSTACK.getClazz().isAssignableFrom(bukkitItem.getClass())) {
             Object nmsStack = NBTReflectionUtil.getCraftItemHandle(bukkitItem);
@@ -227,7 +236,7 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
     }
 
     /**
-     * This may return true even when the NBT is empty.
+     * Returns true if the item has NBT data.
      * 
      * @return Does the ItemStack have a NBTCompound.
      */
