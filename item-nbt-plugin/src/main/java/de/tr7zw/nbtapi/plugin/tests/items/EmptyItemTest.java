@@ -56,7 +56,7 @@ public class EmptyItemTest implements Test {
             }
             return nbt.hasNBTData();
         });
-        
+
         ItemStack testItem = new ItemStack(Material.STONE);
         NBTItem nbt = new NBTItem(testItem, true);
         nbt.removeKey("not there");
