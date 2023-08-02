@@ -121,6 +121,9 @@ public class NBTCompound implements ReadWriteNBT {
      * @param comp
      */
     public void mergeCompound(NBTCompound comp) {
+        if(comp == null) {
+            return;
+        }
         try {
             writeLock.lock();
             NBTReflectionUtil.mergeOtherNBTCompound(this, comp);
