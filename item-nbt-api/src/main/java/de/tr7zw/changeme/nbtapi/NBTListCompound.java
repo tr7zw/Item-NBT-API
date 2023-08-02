@@ -47,6 +47,9 @@ public class NBTListCompound extends NBTCompound {
         if (isClosed()) {
             throw new NbtApiException("Tried using closed NBT data!");
         }
+        if (isReadOnly()) {
+            throw new NbtApiException("Tried setting data in read only mode!");
+        }
         this.compound = compound;
     }
 

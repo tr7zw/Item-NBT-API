@@ -54,6 +54,12 @@ public abstract class NBTList<T> implements List<T>, ReadWriteNBTList<T> {
         }
     }
 
+    private void validateWritable() {
+        if (getParent().isReadOnly()) {
+            throw new NbtApiException("Tried setting data in read only mode!");
+        }
+    }
+
     protected void save() {
         validateClosed();
         parent.set(listName, listObject);
@@ -64,6 +70,7 @@ public abstract class NBTList<T> implements List<T>, ReadWriteNBTList<T> {
     @Override
     public boolean add(T element) {
         validateClosed();
+        validateWritable();
         try {
             parent.getWriteLock().lock();
             if (MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_14_R1.getVersionId()) {
@@ -83,6 +90,7 @@ public abstract class NBTList<T> implements List<T>, ReadWriteNBTList<T> {
     @Override
     public void add(int index, T element) {
         validateClosed();
+        validateWritable();
         try {
             parent.getWriteLock().lock();
             if (MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_14_R1.getVersionId()) {
@@ -101,6 +109,7 @@ public abstract class NBTList<T> implements List<T>, ReadWriteNBTList<T> {
     @Override
     public T set(int index, T element) {
         validateClosed();
+        validateWritable();
         try {
             parent.getWriteLock().lock();
             T prev = get(index);
@@ -117,6 +126,7 @@ public abstract class NBTList<T> implements List<T>, ReadWriteNBTList<T> {
     @Override
     public T remove(int i) {
         validateClosed();
+        validateWritable();
         try {
             parent.getWriteLock().lock();
             T old = get(i);

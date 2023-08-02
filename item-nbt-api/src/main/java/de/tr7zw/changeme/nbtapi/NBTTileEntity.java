@@ -64,6 +64,11 @@ public class NBTTileEntity extends NBTCompound {
     }
 
     @Override
+    protected boolean isReadOnly() {
+        return readonly;
+    }
+
+    @Override
     public Object getCompound() {
         // this runs before async check, since it's just a copy
         if (readonly && compound != null) {
