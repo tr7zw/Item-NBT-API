@@ -20,6 +20,7 @@ public class NBTTileEntity extends NBTCompound {
     private final BlockState tile;
     private final boolean readonly;
     private final Object compound;
+    private boolean closed = false;
 
     /**
      * @param tile     BlockState from any TileEntity
@@ -50,6 +51,16 @@ public class NBTTileEntity extends NBTCompound {
         this.readonly = false;
         this.compound = null;
         this.tile = tile;
+    }
+
+    @Override
+    protected void setClosed() {
+        this.closed = true;
+    }
+
+    @Override
+    protected boolean isClosed() {
+        return closed;
     }
 
     @Override

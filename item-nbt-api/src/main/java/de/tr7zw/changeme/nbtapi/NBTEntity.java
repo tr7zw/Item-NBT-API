@@ -19,6 +19,7 @@ public class NBTEntity extends NBTCompound {
     private final Entity ent;
     private final boolean readonly;
     private final Object compound;
+    private boolean closed = false;
 
     /**
      * @param entity   Any valid Bukkit Entity
@@ -49,6 +50,16 @@ public class NBTEntity extends NBTCompound {
         this.readonly = false;
         this.compound = null;
         ent = entity;
+    }
+
+    @Override
+    protected void setClosed() {
+        this.closed = true;
+    }
+
+    @Override
+    protected boolean isClosed() {
+        return closed;
     }
 
     @Override

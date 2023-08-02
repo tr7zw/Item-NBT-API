@@ -25,12 +25,28 @@ public class NBTListCompound extends NBTCompound {
     }
 
     @Override
+    protected boolean isClosed() {
+        return owner.getParent().isClosed();
+    }
+
+    @Override
+    protected boolean isReadOnly() {
+        return owner.getParent().isReadOnly();
+    }
+
+    @Override
     public Object getCompound() {
+        if (isClosed()) {
+            throw new NbtApiException("Tried using closed NBT data!");
+        }
         return compound;
     }
 
     @Override
     protected void setCompound(Object compound) {
+        if (isClosed()) {
+            throw new NbtApiException("Tried using closed NBT data!");
+        }
         this.compound = compound;
     }
 

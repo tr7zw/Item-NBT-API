@@ -63,9 +63,25 @@ public class NBTCompound implements ReadWriteNBT {
     }
 
     protected void setResolvedObject(Object object) {
+        if (isClosed()) {
+            throw new NbtApiException("Tried using closed NBT data!");
+        }
         if (readOnly) {
             this.readOnlyCache = object;
         }
+    }
+
+    protected void setClosed() {
+        if (parent != null) {
+            parent.setClosed();
+        }
+    }
+
+    protected boolean isClosed() {
+        if (parent != null) {
+            return parent.isClosed();
+        }
+        return false;
     }
 
     protected boolean isReadOnly() {
@@ -73,6 +89,9 @@ public class NBTCompound implements ReadWriteNBT {
     }
 
     protected Object getResolvedObject() {
+        if (isClosed()) {
+            throw new NbtApiException("Tried using closed NBT data!");
+        }
         if (readOnlyCache != null) {
             return readOnlyCache;
         }

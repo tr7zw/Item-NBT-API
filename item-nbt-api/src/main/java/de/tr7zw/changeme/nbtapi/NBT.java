@@ -40,10 +40,12 @@ public class NBT {
      * @return The function is being returned.
      */
     public static <T> T get(ItemStack item, Function<ReadableItemNBT, T> getter) {
-        T ret = getter.apply(new NBTItem(item, false, true, false));
+        NBTItem nbt = new NBTItem(item, false, true, false);
+        T ret = getter.apply(nbt);
         if (ret instanceof ReadableNBT || ret instanceof ReadableNBTList<?>) {
             throw new NbtApiException("Tried returning part of the NBT to outside of the NTB scope!");
         }
+        nbt.setClosed();
         return ret;
     }
 
@@ -56,10 +58,12 @@ public class NBT {
      * @return The NBTEntity class is being returned.
      */
     public static <T> T get(Entity entity, Function<ReadableNBT, T> getter) {
-        T ret = getter.apply(new NBTEntity(entity, true));
+        NBTEntity nbt = new NBTEntity(entity, true);
+        T ret = getter.apply(nbt);
         if (ret instanceof ReadableNBT || ret instanceof ReadableNBTList<?>) {
             throw new NbtApiException("Tried returning part of the NBT to outside of the NTB scope!");
         }
+        nbt.setClosed();
         return ret;
     }
 
@@ -74,10 +78,12 @@ public class NBT {
      * @return The return type is the same as the type of the getter function.
      */
     public static <T> T get(BlockState blockState, Function<ReadableNBT, T> getter) {
-        T ret = getter.apply(new NBTTileEntity(blockState, true));
+        NBTTileEntity nbt = new NBTTileEntity(blockState, true);
+        T ret = getter.apply(nbt);
         if (ret instanceof ReadableNBT || ret instanceof ReadableNBTList<?>) {
             throw new NbtApiException("Tried returning part of the NBT to outside of the NTB scope!");
         }
+        nbt.setClosed();
         return ret;
     }
 
@@ -132,6 +138,7 @@ public class NBT {
         if (val instanceof ReadableNBT || val instanceof ReadableNBTList<?>) {
             throw new NbtApiException("Tried returning part of the NBT to outside of the NTB scope!");
         }
+        nbti.setClosed();
         return val;
     }
 
@@ -146,6 +153,7 @@ public class NBT {
         NBTItem nbti = new NBTItem(item, false, false, true);
         consumer.accept(nbti);
         nbti.finalizeChanges();
+        nbti.setClosed();
     }
 
     /**
@@ -164,6 +172,7 @@ public class NBT {
         if (ret instanceof ReadableNBT || ret instanceof ReadableNBTList<?>) {
             throw new NbtApiException("Tried returning part of the NBT to outside of the NTB scope!");
         }
+        nbtEnt.setClosed();
         return ret;
     }
 
@@ -179,6 +188,7 @@ public class NBT {
         NBTContainer cont = new NBTContainer(nbtEnt.getCompound());
         consumer.accept(cont);
         nbtEnt.setCompound(cont.getCompound());
+        nbtEnt.setClosed();
     }
 
     /**
@@ -225,6 +235,7 @@ public class NBT {
         if (ret instanceof ReadableNBT || ret instanceof ReadableNBTList<?>) {
             throw new NbtApiException("Tried returning part of the NBT to outside of the NTB scope!");
         }
+        blockEnt.setClosed();
         return ret;
     }
 
@@ -242,6 +253,7 @@ public class NBT {
         NBTContainer cont = new NBTContainer(blockEnt.getCompound());
         consumer.accept(cont);
         blockEnt.setCompound(cont);
+        blockEnt.setClosed();
     }
 
     /**

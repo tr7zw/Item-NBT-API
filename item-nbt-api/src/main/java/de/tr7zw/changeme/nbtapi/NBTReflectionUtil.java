@@ -462,6 +462,9 @@ public class NBTReflectionUtil {
     @SuppressWarnings("unchecked")
     public static <T> NBTList<T> getList(NBTCompound comp, String key, NBTType type, Class<T> clazz) {
         Object workingtag = comp.getResolvedObject();
+        if (workingtag == null) {
+            workingtag = dummyNBT.getCompound(); // it creates a new ListTag if needed, but its unlinked
+        }
         try {
             Object nbt = ReflectionMethod.COMPOUND_GET_LIST.run(workingtag, key, type.getId());
             if (clazz == String.class) {
@@ -490,6 +493,9 @@ public class NBTReflectionUtil {
 
     public static NBTType getListType(NBTCompound comp, String key) {
         Object workingtag = comp.getResolvedObject();
+        if (workingtag == null) {
+            workingtag = dummyNBT.getCompound(); // it creates a new ListTag if needed, but its unlinked
+        }
         try {
             Object nbt = ReflectionMethod.COMPOUND_GET.run(workingtag, key);
             String fieldname = "type";

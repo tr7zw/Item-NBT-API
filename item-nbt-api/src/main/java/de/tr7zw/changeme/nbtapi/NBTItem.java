@@ -29,6 +29,7 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
     private final boolean finalizer;
     private ItemStack originalSrcStack = null;
     private Object cachedCompound = null;
+    private boolean closed = false;
 
     /**
      * Constructor for NBTItems. The ItemStack will be cloned!
@@ -91,6 +92,9 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
 
     @Override
     public Object getCompound() {
+        if (closed) {
+            throw new NbtApiException("Tried using closed NBT data!");
+        }
         if (isReadOnly() && (cachedCompound != null
                 || ClassWrapper.CRAFT_ITEMSTACK.getClazz().isAssignableFrom(bukkitItem.getClass()))) {
             if (cachedCompound == null) {
@@ -135,11 +139,24 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
         }
     }
 
+    @Override
+    protected void setClosed() {
+        this.closed = true;
+    }
+
+    @Override
+    protected boolean isClosed() {
+        return closed;
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     protected void setCompound(Object compound) {
         if (isReadOnly()) {
             throw new NbtApiException("Tried setting data in read only mode!");
+        }
+        if (closed) {
+            throw new NbtApiException("Tried using closed NBT data!");
         }
         if (finalizer) {
             cachedCompound = compound;
