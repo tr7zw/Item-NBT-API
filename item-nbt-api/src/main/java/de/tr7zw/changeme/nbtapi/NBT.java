@@ -43,7 +43,7 @@ public class NBT {
         NBTItem nbt = new NBTItem(item, false, true, false);
         T ret = getter.apply(nbt);
         if (ret instanceof ReadableNBT || ret instanceof ReadableNBTList<?>) {
-            throw new NbtApiException("Tried returning part of the NBT to outside of the NTB scope!");
+            throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
         }
         nbt.setClosed();
         return ret;
@@ -61,7 +61,7 @@ public class NBT {
         NBTEntity nbt = new NBTEntity(entity, true);
         T ret = getter.apply(nbt);
         if (ret instanceof ReadableNBT || ret instanceof ReadableNBTList<?>) {
-            throw new NbtApiException("Tried returning part of the NBT to outside of the NTB scope!");
+            throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
         }
         nbt.setClosed();
         return ret;
@@ -81,7 +81,7 @@ public class NBT {
         NBTTileEntity nbt = new NBTTileEntity(blockState, true);
         T ret = getter.apply(nbt);
         if (ret instanceof ReadableNBT || ret instanceof ReadableNBTList<?>) {
-            throw new NbtApiException("Tried returning part of the NBT to outside of the NTB scope!");
+            throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
         }
         nbt.setClosed();
         return ret;
@@ -100,7 +100,7 @@ public class NBT {
     public static <T> T getPersistentData(Entity entity, Function<ReadableNBT, T> getter) {
         T ret = getter.apply(new NBTEntity(entity).getPersistentDataContainer());
         if (ret instanceof ReadableNBT || ret instanceof ReadableNBTList<?>) {
-            throw new NbtApiException("Tried returning part of the NBT to outside of the NTB scope!");
+            throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
         }
         return ret;
     }
@@ -118,7 +118,7 @@ public class NBT {
     public static <T> T getPersistentData(BlockState blockState, Function<ReadableNBT, T> getter) {
         T ret = getter.apply(new NBTTileEntity(blockState).getPersistentDataContainer());
         if (ret instanceof ReadableNBT || ret instanceof ReadableNBTList<?>) {
-            throw new NbtApiException("Tried returning part of the NBT to outside of the NTB scope!");
+            throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
         }
         return ret;
     }
@@ -136,7 +136,7 @@ public class NBT {
         T val = function.apply(nbti);
         nbti.finalizeChanges();
         if (val instanceof ReadableNBT || val instanceof ReadableNBTList<?>) {
-            throw new NbtApiException("Tried returning part of the NBT to outside of the NTB scope!");
+            throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
         }
         nbti.setClosed();
         return val;
@@ -170,7 +170,7 @@ public class NBT {
         T ret = function.apply(cont);
         nbtEnt.setCompound(cont.getCompound());
         if (ret instanceof ReadableNBT || ret instanceof ReadableNBTList<?>) {
-            throw new NbtApiException("Tried returning part of the NBT to outside of the NTB scope!");
+            throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
         }
         nbtEnt.setClosed();
         return ret;
@@ -203,7 +203,7 @@ public class NBT {
     public static <T> T modifyPersistentData(Entity entity, Function<ReadWriteNBT, T> function) {
         T ret = function.apply(new NBTEntity(entity).getPersistentDataContainer());
         if (ret instanceof ReadableNBT || ret instanceof ReadableNBTList<?>) {
-            throw new NbtApiException("Tried returning part of the NBT to outside of the NTB scope!");
+            throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
         }
         return ret;
     }
@@ -233,7 +233,7 @@ public class NBT {
         T ret = function.apply(cont);
         blockEnt.setCompound(cont);
         if (ret instanceof ReadableNBT || ret instanceof ReadableNBTList<?>) {
-            throw new NbtApiException("Tried returning part of the NBT to outside of the NTB scope!");
+            throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
         }
         blockEnt.setClosed();
         return ret;
@@ -268,7 +268,7 @@ public class NBT {
     public static <T> T modifyPersistentData(BlockState blockState, Function<ReadWriteNBT, T> function) {
         T ret = function.apply(new NBTTileEntity(blockState).getPersistentDataContainer());
         if (ret instanceof ReadableNBT || ret instanceof ReadableNBTList<?>) {
-            throw new NbtApiException("Tried returning part of the NBT to outside of the NTB scope!");
+            throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
         }
         return ret;
     }
