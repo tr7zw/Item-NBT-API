@@ -8,7 +8,7 @@ import de.tr7zw.changeme.nbtapi.iface.NBTHandler;
 
 public interface NBTProxy {
 
-    static final Map<Class<?>, NBTHandler<Object>> handlers = new HashMap<>();
+    final Map<Class<?>, NBTHandler<Object>> handlers = new HashMap<>();
 
     public default void init() {
 
