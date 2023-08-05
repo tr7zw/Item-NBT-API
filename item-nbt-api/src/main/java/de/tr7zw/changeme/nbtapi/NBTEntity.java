@@ -3,10 +3,8 @@ package de.tr7zw.changeme.nbtapi;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 
-import de.tr7zw.annotations.FAUtil;
+import de.tr7zw.changeme.nbtapi.utils.CheckUtil;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
-import de.tr7zw.changeme.nbtapi.utils.annotations.AvailableSince;
-import de.tr7zw.changeme.nbtapi.utils.annotations.CheckUtil;
 
 /**
  * NBT class to access vanilla tags from Entities. Entities don't support custom
@@ -21,6 +19,7 @@ public class NBTEntity extends NBTCompound {
     private final Entity ent;
     private final boolean readonly;
     private final Object compound;
+    private boolean closed = false;
 
     /**
      * @param entity   Any valid Bukkit Entity
@@ -54,6 +53,21 @@ public class NBTEntity extends NBTCompound {
     }
 
     @Override
+    protected void setClosed() {
+        this.closed = true;
+    }
+
+    @Override
+    protected boolean isClosed() {
+        return closed;
+    }
+
+    @Override
+    protected boolean isReadOnly() {
+        return readonly;
+    }
+
+    @Override
     public Object getCompound() {
         // this runs before async check, since it's just a copy
         if (readonly && compound != null) {
@@ -80,9 +94,8 @@ public class NBTEntity extends NBTCompound {
      * 
      * @return NBTCompound containing the data of the PersistentDataAPI
      */
-    @AvailableSince(version = MinecraftVersion.MC1_14_R1)
     public NBTCompound getPersistentDataContainer() {
-        FAUtil.check(this::getPersistentDataContainer, CheckUtil::isAvaliable);
+        CheckUtil.assertAvailable(MinecraftVersion.MC1_14_R1);
         return new NBTPersistentDataContainer(ent.getPersistentDataContainer());
     }
 

@@ -35,6 +35,9 @@ public class NBTCompoundList extends NBTList<ReadWriteNBT> implements ReadWriteN
      * @return
      */
     public NBTCompound addCompound(NBTCompound comp) {
+        if (getParent().isReadOnly()) {
+            throw new NbtApiException("Tried setting data in read only mode!");
+        }
         try {
             Object compound = ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance();
             if (MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_14_R1.getVersionId()) {
@@ -78,6 +81,9 @@ public class NBTCompoundList extends NBTList<ReadWriteNBT> implements ReadWriteN
     public void add(int index, ReadWriteNBT element) {
         if (element != null) {
             throw new NbtApiException("You need to pass null! ListCompounds from other lists won't work.");
+        }
+        if (getParent().isReadOnly()) {
+            throw new NbtApiException("Tried setting data in read only mode!");
         }
         try {
             Object compound = ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance();

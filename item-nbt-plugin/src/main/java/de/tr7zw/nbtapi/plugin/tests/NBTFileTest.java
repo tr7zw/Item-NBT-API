@@ -19,6 +19,9 @@ public class NBTFileTest implements Test {
         NBTFile file = new NBTFile(testFile);
         file.addCompound("testcomp").setString("test1", "ok");
         NBTCompound comp = file.getCompound("testcomp");
+        if (comp == null) {
+            throw new NbtApiException("Error getting compound!");
+        }
         comp.setString("test2", "ok");
         file.setLong("time", System.currentTimeMillis());
         file.setString("test", "test");

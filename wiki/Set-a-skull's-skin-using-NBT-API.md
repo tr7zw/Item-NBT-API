@@ -1,27 +1,28 @@
+### We will be using [this head](https://minecraft-heads.com/custom-heads/food%20&%20drinks/28194-cup-of-soda) as example.
 
-# This is an old example and needs to be updated! Proceed with caution!
-
-We'll be using [this head](https://minecraft-heads.com/custom-heads/decoration/32112-dragonsbreath-opal "Dragonsbreath Opal") for this demonstration.
 ```java
-String textureValue = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWY1MjQxNjZmN2NlODhhNTM3MTU4NzY2YTFjNTExZTMyMmE5M2E1ZTExZGJmMzBmYTZlODVlNzhkYTg2MWQ4In19fQ=="; // Pulled from the head link, scroll to the bottom and the "Other Value" field has this texture id.
+// This is the base64 texture value from the bottom of the previously mentioned website.
+final String textureValue = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTQyY2M5MjAzYzkwYjg5YmRhYzFkZjI4NDE2NzI2NmI5NTNkZmViZjNjNDY5MGE3Y2QwYjE1NzkxYTYyZTU4MiJ9fX0=";
 
-ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1); // Creating the ItemStack, your input may vary.
-NBTItem nbti = new NBTItem(head); // Creating the wrapper.
+// Creating ItemStack
 
-NBTCompound disp = nbti.addCompound("display");
-disp.setString("Name", "Testitem"); // Setting the name of the Item
+// For Minecraft 1.12 and above
+final ItemStack item = new ItemStack(Material.SKULL_ITEM);
+item.setDurability((short) 3);
 
-NBTList l = disp.getStringList("Lore");
-l.add("Some lore"); // Adding a bit of lore.
+// For Minecraft 1.13 and newer
+final ItemStack item = new ItemStack(Material.PLAYER_HEAD);
 
-NBTCompound skull = nbti.addCompound("SkullOwner"); // Getting the compound, that way we can set the skin information
-skull.setString("Name", "Dragonsbreath Opal"); // Owner's name
-skull.setString("Id", "fce0323d-7f50-4317-9720-5f6b14cf78ea");
-// The UUID, note that skulls with the same UUID but different textures will misbehave and only one texture will load
-// (They'll share it), if skulls have different UUIDs and same textures they won't stack. See UUID.randomUUID();
+NBT.modify(item, nbt -> {
+  final ReadWriteNBT skullOwnerCompound = nbt.getOrCreateCompound("SkullOwner");
 
-NBTListCompound texture = skull.addCompound("Properties").getCompoundList("textures").addCompound();
-texture.setString("Value",  textureValue);
+  // The owner UUID. Note that skulls with the same UUID but different textures will misbehave and only one texture will load.
+  // They will share the texture. To avoid this limitation, it is recommended to use a random UUID.
+  skullOwnerCompound.setUUID("Id", UUID.randomUUID());
 
-head = nbti.getItem(); // Refresh the ItemStack
+  skullOwnerCompound.getOrCreateCompound("Properties")
+    .getCompoundList("textures")
+    .addCompound()
+    .setString("Value", textureValue);
+});
 ```

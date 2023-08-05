@@ -4,6 +4,8 @@ import java.io.OutputStream;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.inventory.ItemStack;
 
 import de.tr7zw.changeme.nbtapi.NBTType;
@@ -84,6 +86,7 @@ public interface ReadableNBT {
      * @param key The key to use to retrieve the value.
      * @return A byte array.
      */
+    @Nullable
     byte[] getByteArray(String key);
 
     /**
@@ -93,15 +96,19 @@ public interface ReadableNBT {
      * @param key The key of the value you want to get.
      * @return An array of integers.
      */
+    @Nullable
     int[] getIntArray(String key);
 
     /**
      * Returns the value associated with the given key as an array of longs, or null
      * if the key does not exist.
      * 
+     * Requires 1.16+
+     * 
      * @param key The key of the value you want to get.
      * @return An array of integers.
      */
+    @Nullable
     long[] getLongArray(String key);
 
     /**
@@ -120,6 +127,7 @@ public interface ReadableNBT {
      * @param key The key of the itemstack you want to get.
      * @return An ItemStack
      */
+    @Nullable
     ItemStack getItemStack(String key);
 
     /**
@@ -130,6 +138,7 @@ public interface ReadableNBT {
      * @return The stored {@link ItemStack} array, or null if stored data wasn't
      *         found
      */
+    @Nullable
     ItemStack[] getItemStackArray(String key);
 
     /**
@@ -138,6 +147,7 @@ public interface ReadableNBT {
      * @param key The key to get the value from
      * @return A UUID object.
      */
+    @Nullable
     UUID getUUID(String key);
 
     /**
@@ -168,6 +178,7 @@ public interface ReadableNBT {
      * @param name
      * @return The Compound instance or null
      */
+    @Nullable
     ReadableNBT getCompound(String name);
 
     /**
@@ -218,6 +229,7 @@ public interface ReadableNBT {
      * @param name
      * @return
      */
+    @Nullable
     NBTType getListType(String name);
 
     /**
@@ -230,8 +242,8 @@ public interface ReadableNBT {
      * Returns the stored value if exists, or provided value otherwise.
      * <p>
      * Supported types:
-     * {@code byte/Byte, short/Short, int/Integer, long/Long, float/Float, double/Double, byte[], int[]},
-     * {@link String}, {@link UUID}
+     * {@code Boolean, Byte, Short, Integer, Long, Float, Double, byte[], int[], long[]},
+     * {@link String}, {@link UUID}, and {@link Enum}
      *
      * @param key          key
      * @param defaultValue default non-null value
@@ -244,15 +256,58 @@ public interface ReadableNBT {
      * Returns the stored value if exists, or null.
      * <p>
      * Supported types:
-     * {@code Byte, Short, Integer, Long, Float, Double, byte[], int[]},
-     * {@link String}, {@link UUID}
+     * {@code Boolean, Byte, Short, Integer, Long, Float, Double, byte[], int[], long[]},
+     * {@link String}, {@link UUID}, and {@link Enum}
      *
      * @param key  key
      * @param type data type
      * @param <T>  value type
      * @return Stored or provided value
      */
+    @Nullable
     <T> T getOrNull(String key, Class<?> type);
+
+    /**
+     * Returns the resolved value if exists, or null.
+     * <p>
+     * Supported types:
+     * {@code Boolean, Byte, Short, Integer, Long, Float, Double, byte[], int[], long[]},
+     * {@link String}, {@link UUID}, and {@link Enum}
+     *
+     * @param key  Path key, seperated by '.'. For example: "foo.bar.baz". Dots can
+     *             be escaped with a backslash.
+     * @param type data type
+     * @param <T>  value type
+     * @return resolved or provided value
+     */
+    @Nullable
+    <T> T resolveOrNull(String key, Class<?> type);
+
+    /**
+     * Returns the resolved value if exists, or provided value otherwise.
+     * <p>
+     * Supported types:
+     * {@code Boolean, Byte, Short, Integer, Long, Float, Double, byte[], int[], long[]},
+     * {@link String}, {@link UUID}, and {@link Enum}
+     *
+     * @param key          Path key, seperated by '.'. For example: "foo.bar.baz".
+     *                     Dots can be escaped with a backslash.
+     * @param defaultValue default non-null value
+     * @param <T>          value type
+     * @return resolved or provided value
+     */
+    <T> T resolveOrDefault(String key, T defaultValue);
+
+    /**
+     * Returns the resolved Compound if exists, or null.
+     * <p>
+     * 
+     * @param key Path key, seperated by '.'. For example: "foo.bar.baz". Dots can
+     *            be escaped with a backslash.
+     * @return The resolved value if exists, or null.
+     */
+    @Nullable
+    ReadableNBT resolveCompound(String key);
 
     /**
      * Get an Enum value that has been set via setEnum or setString(key,
@@ -263,6 +318,7 @@ public interface ReadableNBT {
      * @param type
      * @return
      */
+    @Nullable
     <E extends Enum<E>> E getEnum(String key, Class<E> type);
 
     /**

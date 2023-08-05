@@ -37,20 +37,23 @@ public class WorldData {
     }
 
     public String getWorldName() {
-        return file.getCompound("Data").getString("LevelName");
+        return file.resolveOrNull("Data.LevelName", String.class);
     }
 
     public void setWorldName(String name) {
-        file.getCompound("Data").setString("LevelName", name);
+        file.getOrCreateCompound("Data").setString("LevelName", name);
     }
 
     public Vector getSpawnPosition() {
         NBTCompound data = file.getCompound("Data");
+        if (data == null) {
+            return null;
+        }
         return new Vector(data.getInteger("SpawnX"), data.getInteger("SpawnY"), data.getInteger("SpawnZ"));
     }
 
     public void setSpawnPosition(Vector vec) {
-        NBTCompound data = file.getCompound("Data");
+        NBTCompound data = file.getOrCreateCompound("Data");
         data.setInteger("SpawnX", vec.getBlockX());
         data.setInteger("SpawnY", vec.getBlockY());
         data.setInteger("SpawnZ", vec.getBlockZ());

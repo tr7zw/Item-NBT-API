@@ -7,7 +7,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 
-public interface ReadWriteItemNBT extends ReadWriteNBT {
+public interface ReadWriteItemNBT extends ReadWriteNBT, ReadableItemNBT {
 
     /**
      * True, if the item has any tags now known for this item type.

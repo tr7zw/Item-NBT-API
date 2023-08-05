@@ -10,6 +10,7 @@ import de.tr7zw.changeme.nbtapi.NBTList;
 import de.tr7zw.changeme.nbtapi.NBTListCompound;
 import de.tr7zw.changeme.nbtapi.NBTType;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
+import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.nbtapi.plugin.tests.Test;
 
 public class ListTest implements Test {
@@ -50,20 +51,22 @@ public class ListTest implements Test {
         taglist = comp.getCompoundList("complist");
         if (taglist.size() == 1) {
             lcomp = taglist.get(0);
+            ReadWriteNBT sublist = lcomp.getCompound("listsubkey");
             if (lcomp.getKeys().size() != 4) {
                 throw new NbtApiException("Wrong key amount in Taglist (" + lcomp.getKeys().size() + ")!");
+            } else if (sublist == null) {
+                throw new NbtApiException("The sublist is null! The Item-NBT-API may not work!");
             } else if (!(lcomp.getDouble("double1") == 0.3333 && lcomp.getInteger("int1") == 42
                     && lcomp.getString("test2").equals("test2") && !lcomp.hasTag("test1"))) {
                 throw new NbtApiException("One key in the Taglist changed! The Item-NBT-API may not work!");
-            } else if (lcomp.getCompound("listsubkey") == null
-                    || !"String".equals(lcomp.getCompound("listsubkey").getString("deep"))) {
+            } else if (!"String".equals(sublist.getString("deep"))) {
                 throw new NbtApiException(
                         "The Compound nested in the listcompound was not correct! The Item-NBT-API may not work!");
-            } else if (lcomp.getCompound("listsubkey").getType("deep") != NBTType.NBTTagString) {
+            } else if (sublist.getType("deep") != NBTType.NBTTagString) {
                 throw new NbtApiException("The nested key's type wasn't correct! The Item-NBT-API may not work!");
-            } else if (lcomp.getCompound("listsubkey").getType("deeplist") != NBTType.NBTTagList) {
-                throw new NbtApiException("The nested list's type wasn't correct '"
-                        + lcomp.getCompound("listsubkey").getType("deeplist") + "'! The Item-NBT-API may not work!");
+            } else if (sublist.getType("deeplist") != NBTType.NBTTagList) {
+                throw new NbtApiException("The nested list's type wasn't correct '" + sublist.getType("deeplist")
+                        + "'! The Item-NBT-API may not work!");
             }
         } else {
             throw new NbtApiException("Taglist is empty! The Item-NBT-API may not work!");

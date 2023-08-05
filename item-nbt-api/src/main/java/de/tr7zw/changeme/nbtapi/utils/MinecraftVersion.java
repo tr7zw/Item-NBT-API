@@ -24,6 +24,7 @@ public enum MinecraftVersion {
     private static MinecraftVersion version;
     private static Boolean hasGsonSupport;
     private static Boolean isForgePresent;
+    private static Boolean isFoliaPresent;
     private static boolean bStatsDisabled = false;
     private static boolean disablePackageWarning = false;
     private static boolean updateCheckDisabled = true;
@@ -199,7 +200,7 @@ public enum MinecraftVersion {
             return hasGsonSupport;
         }
         try {
-            logger.info("[NBTAPI] Found Gson: " + Class.forName("com.google.gson.Gson"));
+            Class.forName("com.google.gson.Gson");
             hasGsonSupport = true;
         } catch (Exception ex) {
             logger.info("[NBTAPI] Gson not found! This will not allow the usage of some methods!");
@@ -224,6 +225,23 @@ public enum MinecraftVersion {
             isForgePresent = false;
         }
         return isForgePresent;
+    }
+
+    /**
+     * @return True, if Folia is present
+     */
+    public static boolean isFoliaPresent() {
+        if (isFoliaPresent != null) {
+            return isFoliaPresent;
+        }
+        try {
+            logger.info("[NBTAPI] Found Folia: "
+                    + Class.forName("io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler"));
+            isFoliaPresent = true;
+        } catch (Exception ex) {
+            isFoliaPresent = false;
+        }
+        return isFoliaPresent;
     }
 
     /**

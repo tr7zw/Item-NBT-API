@@ -12,13 +12,13 @@ public class StreamTest implements Test {
     @Override
     public void test() throws Exception {
         NBTContainer base = new NBTContainer();
-        base.addCompound("sub").setString("hello", "world");
+        base.getOrCreateCompound("sub").setString("hello", "world");
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        base.getCompound("sub").writeCompound(outStream);
+        base.getOrCreateCompound("sub").writeCompound(outStream);
         byte[] data = outStream.toByteArray();
         ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
         NBTContainer container = new NBTContainer(inputStream);
-        if (!container.toString().equals(base.getCompound("sub").toString())) {
+        if (!container.toString().equals(base.getOrCreateCompound("sub").toString())) {
             throw new NbtApiException("Component content did not match! " + base.getCompound("sub") + " " + container);
         }
     }

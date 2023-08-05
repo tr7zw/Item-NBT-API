@@ -28,7 +28,7 @@ public class ItemConversionTest implements Test {
 
         NBTContainer cont = new NBTContainer();
         cont.setItemStack("testItem", item);
-        if (!cont.getItemStack("testItem").isSimilar(item))
+        if (!item.isSimilar(cont.getItemStack("testItem")))
             throw new NbtApiException("Rebuilt item did not match the original!");
     }
 

@@ -3,6 +3,8 @@ package de.tr7zw.changeme.nbtapi;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
@@ -11,9 +13,11 @@ import com.mojang.authlib.GameProfile;
 
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteItemNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
+import de.tr7zw.changeme.nbtapi.iface.ReadableItemNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadableNBT;
 import de.tr7zw.changeme.nbtapi.wrapper.NBTProxy;
 import de.tr7zw.changeme.nbtapi.wrapper.ProxyBuilder;
+import de.tr7zw.changeme.nbtapi.iface.ReadableNBTList;
 
 /**
  * General utility class for a clean and simple nbt access.
@@ -37,8 +41,14 @@ public class NBT {
      *               T.
      * @return The function is being returned.
      */
-    public static <T> T get(ItemStack item, Function<ReadableNBT, T> getter) {
-        return getter.apply(new NBTItem(item, false, true));
+    public static <T> T get(ItemStack item, Function<ReadableItemNBT, T> getter) {
+        NBTItem nbt = new NBTItem(item, false, true, false);
+        T ret = getter.apply(nbt);
+        if (ret instanceof ReadableNBT || ret instanceof ReadableNBTList<?>) {
+            throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
+        }
+        nbt.setClosed();
+        return ret;
     }
 
     /**
@@ -50,7 +60,13 @@ public class NBT {
      * @return The NBTEntity class is being returned.
      */
     public static <T> T get(Entity entity, Function<ReadableNBT, T> getter) {
-        return getter.apply(new NBTEntity(entity, true));
+        NBTEntity nbt = new NBTEntity(entity, true);
+        T ret = getter.apply(nbt);
+        if (ret instanceof ReadableNBT || ret instanceof ReadableNBTList<?>) {
+            throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
+        }
+        nbt.setClosed();
+        return ret;
     }
 
     /**
@@ -64,7 +80,13 @@ public class NBT {
      * @return The return type is the same as the type of the getter function.
      */
     public static <T> T get(BlockState blockState, Function<ReadableNBT, T> getter) {
-        return getter.apply(new NBTTileEntity(blockState, true));
+        NBTTileEntity nbt = new NBTTileEntity(blockState, true);
+        T ret = getter.apply(nbt);
+        if (ret instanceof ReadableNBT || ret instanceof ReadableNBTList<?>) {
+            throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
+        }
+        nbt.setClosed();
+        return ret;
     }
 
     /**
@@ -78,7 +100,11 @@ public class NBT {
      * @return The return type is T, which is a generic type.
      */
     public static <T> T getPersistentData(Entity entity, Function<ReadableNBT, T> getter) {
-        return getter.apply(new NBTEntity(entity).getPersistentDataContainer());
+        T ret = getter.apply(new NBTEntity(entity).getPersistentDataContainer());
+        if (ret instanceof ReadableNBT || ret instanceof ReadableNBTList<?>) {
+            throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
+        }
+        return ret;
     }
 
     /**
@@ -92,7 +118,11 @@ public class NBT {
      * @return The value of the NBT tag.
      */
     public static <T> T getPersistentData(BlockState blockState, Function<ReadableNBT, T> getter) {
-        return getter.apply(new NBTTileEntity(blockState).getPersistentDataContainer());
+        T ret = getter.apply(new NBTTileEntity(blockState).getPersistentDataContainer());
+        if (ret instanceof ReadableNBT || ret instanceof ReadableNBTList<?>) {
+            throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
+        }
+        return ret;
     }
 
     /**
@@ -104,9 +134,13 @@ public class NBT {
      * @return The return value of the function.
      */
     public static <T> T modify(ItemStack item, Function<ReadWriteItemNBT, T> function) {
-        NBTItem nbti = new NBTItem(item, true);
+        NBTItem nbti = new NBTItem(item, false, false, true);
         T val = function.apply(nbti);
-        nbti.applyNBT(item);
+        nbti.finalizeChanges();
+        if (val instanceof ReadableNBT || val instanceof ReadableNBTList<?>) {
+            throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
+        }
+        nbti.setClosed();
         return val;
     }
 
@@ -118,9 +152,10 @@ public class NBT {
      * @param consumer The consumer that will be used to modify the NBT.
      */
     public static void modify(ItemStack item, Consumer<ReadWriteItemNBT> consumer) {
-        NBTItem nbti = new NBTItem(item, true);
+        NBTItem nbti = new NBTItem(item, false, false, true);
         consumer.accept(nbti);
-        nbti.applyNBT(item);
+        nbti.finalizeChanges();
+        nbti.setClosed();
     }
 
     /**
@@ -136,6 +171,10 @@ public class NBT {
         NBTContainer cont = new NBTContainer(nbtEnt.getCompound());
         T ret = function.apply(cont);
         nbtEnt.setCompound(cont.getCompound());
+        if (ret instanceof ReadableNBT || ret instanceof ReadableNBTList<?>) {
+            throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
+        }
+        nbtEnt.setClosed();
         return ret;
     }
 
@@ -151,6 +190,7 @@ public class NBT {
         NBTContainer cont = new NBTContainer(nbtEnt.getCompound());
         consumer.accept(cont);
         nbtEnt.setCompound(cont.getCompound());
+        nbtEnt.setClosed();
     }
 
     /**
@@ -163,7 +203,11 @@ public class NBT {
      * @return The return type is the same as the return type of the function.
      */
     public static <T> T modifyPersistentData(Entity entity, Function<ReadWriteNBT, T> function) {
-        return function.apply(new NBTEntity(entity).getPersistentDataContainer());
+        T ret = function.apply(new NBTEntity(entity).getPersistentDataContainer());
+        if (ret instanceof ReadableNBT || ret instanceof ReadableNBTList<?>) {
+            throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
+        }
+        return ret;
     }
 
     /**
@@ -190,6 +234,10 @@ public class NBT {
         NBTContainer cont = new NBTContainer(blockEnt.getCompound());
         T ret = function.apply(cont);
         blockEnt.setCompound(cont);
+        if (ret instanceof ReadableNBT || ret instanceof ReadableNBTList<?>) {
+            throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
+        }
+        blockEnt.setClosed();
         return ret;
     }
 
@@ -207,6 +255,7 @@ public class NBT {
         NBTContainer cont = new NBTContainer(blockEnt.getCompound());
         consumer.accept(cont);
         blockEnt.setCompound(cont);
+        blockEnt.setClosed();
     }
 
     /**
@@ -219,7 +268,11 @@ public class NBT {
      * @return The return type is the same as the return type of the function.
      */
     public static <T> T modifyPersistentData(BlockState blockState, Function<ReadWriteNBT, T> function) {
-        return function.apply(new NBTTileEntity(blockState).getPersistentDataContainer());
+        T ret = function.apply(new NBTTileEntity(blockState).getPersistentDataContainer());
+        if (ret instanceof ReadableNBT || ret instanceof ReadableNBTList<?>) {
+            throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
+        }
+        return ret;
     }
 
     /**
@@ -270,6 +323,7 @@ public class NBT {
      * @param compound The NBT tag to convert to an ItemStack
      * @return An ItemStack
      */
+    @Nullable
     public static ItemStack itemStackFromNBT(ReadableNBT compound) {
         return NBTItem.convertNBTtoItem((NBTCompound) compound);
     }
@@ -290,6 +344,7 @@ public class NBT {
      * @param compound The NBT tag to convert to an ItemStack array.
      * @return An array of ItemStacks.
      */
+    @Nullable
     public static ItemStack[] itemStackArrayFromNBT(ReadableNBT compound) {
         return NBTItem.convertNBTtoItemArray((NBTCompound) compound);
     }
