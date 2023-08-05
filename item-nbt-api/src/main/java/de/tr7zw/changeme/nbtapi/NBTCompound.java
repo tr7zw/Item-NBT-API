@@ -1080,7 +1080,7 @@ public class NBTCompound implements ReadWriteNBT {
         for (int i = 0; i < keys.size() - 1; i++) {
             tag = tag.getCompound(keys.get(i));
             if (tag == null) {
-                return null;
+                return defaultValue;
             }
         }
         return tag.getOrDefault(keys.get(keys.size() - 1), defaultValue);

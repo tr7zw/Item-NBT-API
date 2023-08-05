@@ -30,6 +30,18 @@ public class NBT {
     }
 
     /**
+     * Get a read only instance of the items NBT. This method is slightly slower
+     * than calling NBT.get due to having to create a copy of the ItemStack, but
+     * allows context free access to the data.
+     * 
+     * @param item
+     * @return
+     */
+    public static ReadableNBT readNbt(ItemStack item) {
+        return new NBTItem(item.clone(), false, true, false);
+    }
+
+    /**
      * It takes an ItemStack, and a function that takes a ReadableNBT and returns a
      * generic type T. It then returns the result of the function applied to a new
      * NBTItem
