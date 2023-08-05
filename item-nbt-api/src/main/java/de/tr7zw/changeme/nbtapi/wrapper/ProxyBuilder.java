@@ -10,6 +10,7 @@ import java.util.function.Function;
 
 import de.tr7zw.changeme.nbtapi.NBTType;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
+import de.tr7zw.changeme.nbtapi.iface.NBTHandler;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.changeme.nbtapi.wrapper.NBTTarget.Type;
 
@@ -30,22 +31,24 @@ public class ProxyBuilder<T extends NBTProxy> implements InvocationHandler {
 
     @SuppressWarnings("unchecked")
     public T build() {
-        return (T) Proxy.newProxyInstance(this.getClass().getClassLoader(), new Class[] { target }, this);
+        T inst = (T) Proxy.newProxyInstance(this.getClass().getClassLoader(), new Class[] { target }, this);
+        inst.init();
+        return inst;
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        METHOD_CACHE.computeIfAbsent(method, ProxyBuilder::createFunction);
-        return METHOD_CACHE.get(method).apply(new Arguments(target, proxy, nbt, args));
+        METHOD_CACHE.computeIfAbsent(method, m -> ProxyBuilder.createFunction((NBTProxy) proxy, m));
+        return METHOD_CACHE.get(method).apply(new Arguments(target, (NBTProxy) proxy, nbt, args));
     }
 
     private static class Arguments {
         Class<?> target;
-        Object proxy;
+        NBTProxy proxy;
         ReadWriteNBT nbt;
         Object[] args;
 
-        public Arguments(Class<?> target, Object proxy, ReadWriteNBT nbt, Object[] args) {
+        public Arguments(Class<?> target, NBTProxy proxy, ReadWriteNBT nbt, Object[] args) {
             this.target = target;
             this.proxy = proxy;
             this.nbt = nbt;
@@ -53,7 +56,8 @@ public class ProxyBuilder<T extends NBTProxy> implements InvocationHandler {
         }
     }
 
-    private static Function<Arguments, Object> createFunction(Method method) {
+    @SuppressWarnings("unchecked")
+    private static Function<Arguments, Object> createFunction(NBTProxy proxy, Method method) {
         if ("toString".equals(method.getName()) && method.getParameterCount() == 0
                 && method.getReturnType() == String.class) {
             return (arguments) -> arguments.nbt.toString();
@@ -65,7 +69,7 @@ public class ProxyBuilder<T extends NBTProxy> implements InvocationHandler {
         Type action = getAction(method);
         if (action == Type.SET) {
             String fieldName = getNBTName(method);
-            return (arguments) -> setNBT(arguments.nbt, fieldName, arguments.args[0]);
+            return (arguments) -> setNBT(arguments.nbt, arguments.proxy, fieldName, arguments.args[0]);
         }
         if (action == Type.GET) {
             Class<?> retType = method.getReturnType();
@@ -80,6 +84,10 @@ public class ProxyBuilder<T extends NBTProxy> implements InvocationHandler {
                     return new ProxyBuilder<NBTProxy>(arguments.nbt.getOrCreateCompound(fieldName),
                             (Class<NBTProxy>) retType).build();
                 };
+            }
+            NBTHandler<Object> handler = (NBTHandler<Object>) proxy.getHandler(retType);
+            if (handler != null) {
+                return (arguments) -> handler.get(arguments.nbt, fieldName);
             }
             return (arguments) -> arguments.nbt.getOrNull(fieldName, retType);
         }
@@ -115,7 +123,7 @@ public class ProxyBuilder<T extends NBTProxy> implements InvocationHandler {
         return method.getName().substring(3).toLowerCase();
     }
 
-    private static Object setNBT(ReadWriteNBT nbt, String key, Object value) {
+    private static Object setNBT(ReadWriteNBT nbt, NBTProxy proxy, String key, Object value) {
         // welcome to the "I wish we all could use java 17" method. Thanks, legacy mc
         // versions
         if (value == null) {
@@ -147,8 +155,20 @@ public class ProxyBuilder<T extends NBTProxy> implements InvocationHandler {
         } else if (value.getClass().isEnum()) {
             nbt.setEnum(key, (Enum<?>) value);
         } else {
-            throw new IllegalArgumentException("Tried setting an object of type '" + value.getClass().getName()
-                    + "'. This is not a supported NBT value. Please check the Wiki for examples!");
+            @SuppressWarnings("unchecked")
+            NBTHandler<Object> handler = (NBTHandler<Object>) proxy.getHandler(value.getClass());
+            if (handler != null) {
+                handler.set(nbt, key, value);
+            } else {
+                for (NBTHandler<Object> nbth : proxy.getHandlers()) {
+                    if (nbth.fuzzyMatch(value)) {
+                        nbth.set(nbt, key, value);
+                        return null;
+                    }
+                }
+                throw new IllegalArgumentException("Tried setting an object of type '" + value.getClass().getName()
+                        + "'. This is not a supported NBT value. Please check the Wiki for examples!");
+            }
         }
         return null;
     }

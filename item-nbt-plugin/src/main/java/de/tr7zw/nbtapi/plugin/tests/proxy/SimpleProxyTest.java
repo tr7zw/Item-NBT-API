@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import de.tr7zw.changeme.nbtapi.NBT;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
+import de.tr7zw.changeme.nbtapi.handler.NBTHandlers;
 import de.tr7zw.changeme.nbtapi.wrapper.NBTProxy;
 import de.tr7zw.changeme.nbtapi.wrapper.NBTTarget;
 import de.tr7zw.changeme.nbtapi.wrapper.NBTTarget.Type;
@@ -34,9 +35,19 @@ public class SimpleProxyTest implements Test {
         if (ti.getJumps().getPoints() != 9001) {
             throw new NbtApiException("The stacked proxy didn't work correctly!");
         }
+        ItemStack stack = new ItemStack(Material.STONE, 42);
+        ti.setItem(stack);
+        if (!stack.equals(ti.getItem())) {
+            throw new NbtApiException("The handler in the proxy didn't work correctly!");
+        }
     }
 
     public interface TestInterface extends NBTProxy {
+
+        @Override
+        default void init() {
+            registerHandler(ItemStack.class, NBTHandlers.ITEM_STACK);
+        }
 
         public void setKills(int amount);
 
@@ -50,6 +61,10 @@ public class SimpleProxyTest implements Test {
         public int theKillsWithADifferentMethodNameAndNoGet();
 
         public Statistic getJumps();
+
+        public ItemStack getItem();
+
+        public void setItem(ItemStack item);
 
     }
 
