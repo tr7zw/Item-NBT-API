@@ -77,6 +77,7 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
      * @param item
      * @param directApply
      */
+    @Deprecated
     public NBTItem(ItemStack item, boolean directApply) {
         super(null, null);
         if (item == null || item.getType() == Material.AIR || item.getAmount() <= 0) {

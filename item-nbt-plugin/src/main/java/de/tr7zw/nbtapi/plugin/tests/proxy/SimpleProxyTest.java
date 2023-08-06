@@ -17,29 +17,32 @@ public class SimpleProxyTest implements Test {
     @Override
     public void test() throws Exception {
         ItemStack item = new ItemStack(Material.STONE);
-        TestInterface ti = NBT.wrapNBT(item, TestInterface.class);
-        ti.setKills(42);
-        ti.addKill();
-        if (!"{kills:43}".equals(ti.toString())) {
-            throw new NbtApiException("ToString returned the wrong string. " + ti.toString());
-        }
+        NBT.modify(item, TestInterface.class, ti -> {
+            ti.setKills(42);
+            ti.addKill();
+            if (!"{kills:43}".equals(ti.toString())) {
+                throw new NbtApiException("ToString returned the wrong string. " + ti.toString());
+            }
+        });
         if (new NBTItem(item).getInteger("kills") != 43) {
             throw new NbtApiException("The item was not modified correctly by the proxy!");
         }
-        if (ti.theKillsWithADifferentMethodNameAndNoGet() != 43) {
-            throw new NbtApiException("The annotation didn't work correctly!");
-        }
-        Statistic jumps = ti.getJumps();
-        jumps.setPoints(9000);
-        jumps.addPoint();
-        if (ti.getJumps().getPoints() != 9001) {
-            throw new NbtApiException("The stacked proxy didn't work correctly!");
-        }
-        ItemStack stack = new ItemStack(Material.STONE, 42);
-        ti.setItem(stack);
-        if (!stack.equals(ti.getItem())) {
-            throw new NbtApiException("The handler in the proxy didn't work correctly!");
-        }
+        NBT.modify(item, TestInterface.class, ti -> {
+            if (ti.theKillsWithADifferentMethodNameAndNoGet() != 43) {
+                throw new NbtApiException("The annotation didn't work correctly!");
+            }
+            Statistic jumps = ti.getJumps();
+            jumps.setPoints(9000);
+            jumps.addPoint();
+            if (ti.getJumps().getPoints() != 9001) {
+                throw new NbtApiException("The stacked proxy didn't work correctly!");
+            }
+            ItemStack stack = new ItemStack(Material.STONE, 42);
+            ti.setItem(stack);
+            if (!stack.equals(ti.getItem())) {
+                throw new NbtApiException("The handler in the proxy didn't work correctly!");
+            }
+        });
     }
 
     public interface TestInterface extends NBTProxy {

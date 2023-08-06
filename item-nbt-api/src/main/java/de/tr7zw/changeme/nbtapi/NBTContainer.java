@@ -16,6 +16,7 @@ import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 public class NBTContainer extends NBTCompound {
 
     private Object nbt;
+    private boolean closed;
 
     /**
      * Creates an empty, standalone NBTCompound
@@ -77,6 +78,16 @@ public class NBTContainer extends NBTCompound {
     @Override
     public void setCompound(Object tag) {
         nbt = tag;
+    }
+
+    @Override
+    protected void setClosed() {
+        this.closed = true;
+    }
+
+    @Override
+    protected boolean isClosed() {
+        return closed;
     }
 
 }

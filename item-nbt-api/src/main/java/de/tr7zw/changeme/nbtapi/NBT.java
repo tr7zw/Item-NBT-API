@@ -417,15 +417,137 @@ public class NBT {
     }
 
     /**
-     * Create a proxy class for NBT, given an annotated interface.
+     * Create a read only proxy class for NBT, given an annotated interface.
      * 
      * @param <T>
      * @param item
      * @param wrapper
      * @return
      */
-    public static <T extends NBTProxy> T wrapNBT(ItemStack item, Class<T> wrapper) {
-        return new ProxyBuilder<>(new NBTItem(item, true), wrapper).build();
+    public static <T extends NBTProxy> T readNbt(ItemStack item, Class<T> wrapper) {
+        return new ProxyBuilder<>(new NBTItem(item, false, true, false), wrapper).readOnly().build();
+    }
+
+    /**
+     * Create a read only proxy class for NBT, given an annotated interface.
+     * 
+     * @param <T>
+     * @param entity
+     * @param wrapper
+     * @return
+     */
+    public static <T extends NBTProxy> T readNbt(Entity entity, Class<T> wrapper) {
+        return new ProxyBuilder<>(new NBTEntity(entity, true), wrapper).readOnly().build();
+    }
+
+    /**
+     * Create a read only proxy class for NBT, given an annotated interface.
+     * 
+     * @param <T>
+     * @param blockState
+     * @param wrapper
+     * @return
+     */
+    public static <T extends NBTProxy> T readNbt(BlockState blockState, Class<T> wrapper) {
+        return new ProxyBuilder<>(new NBTTileEntity(blockState, true), wrapper).readOnly().build();
+    }
+
+    /**
+     * It takes an ItemStack, applies a function to its NBT wrapped in a proxy, and
+     * returns the result of the function
+     * 
+     * @param item     The item you want to
+     * @param wrapper  The target Proxy class
+     * @param function The function that will be applied to the item.
+     * @return The return value of the function.
+     */
+    public static <T, X extends NBTProxy> T modify(ItemStack item, Class<X> wrapper, Function<X, T> function) {
+        NBTItem nbti = new NBTItem(item, false, false, true);
+        T val = function.apply(new ProxyBuilder<>(nbti, wrapper).build());
+        nbti.finalizeChanges();
+        if (val instanceof ReadableNBT || val instanceof ReadableNBTList<?>) {
+            throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
+        }
+        nbti.setClosed();
+        return val;
+    }
+
+    /**
+     * It takes an ItemStack, applies a function to its NBT wrapped in a proxy.
+     * 
+     * @param item     The item you want to modify
+     * @param wrapper  The target Proxy class
+     * @param consumer The consumer that will be used to modify the NBT.
+     */
+    public static <X extends NBTProxy> void modify(ItemStack item, Class<X> wrapper, Consumer<X> consumer) {
+        NBTItem nbti = new NBTItem(item, false, false, true);
+        consumer.accept(new ProxyBuilder<>(nbti, wrapper).build());
+        nbti.finalizeChanges();
+        nbti.setClosed();
+    }
+
+    /**
+     * It takes an entity and a function to modify the entity via the proxy
+     * 
+     * @param entity   The entity to modify
+     * @param wrapper  The target Proxy class
+     * @param consumer The consumer that will be called with the proxy.
+     */
+    public static <X extends NBTProxy> void modify(Entity entity, Class<X> wrapper, Consumer<X> consumer) {
+        NBTEntity nbtEnt = new NBTEntity(entity);
+        NBTContainer cont = new NBTContainer(nbtEnt.getCompound());
+        consumer.accept(new ProxyBuilder<>(cont, wrapper).build());
+        nbtEnt.setCompound(cont.getCompound());
+        cont.setClosed();
+    }
+
+    /**
+     * It takes an entity and a function to modify the entity via the proxy
+     * 
+     * @param entity   The entity to modify
+     * @param wrapper  The target Proxy class
+     * @param function The Function that will be called with the proxy.
+     * @return The return value of the function.
+     */
+    public static <T, X extends NBTProxy> T modify(Entity entity, Class<X> wrapper, Function<X, T> function) {
+        NBTEntity nbtEnt = new NBTEntity(entity);
+        NBTContainer cont = new NBTContainer(nbtEnt.getCompound());
+        T val = function.apply(new ProxyBuilder<>(cont, wrapper).build());
+        nbtEnt.setCompound(cont.getCompound());
+        cont.setClosed();
+        return val;
+    }
+
+    /**
+     * It takes an block entity and a function to modify the entity via the proxy
+     * 
+     * @param blockState The blockstate you want to modify
+     * @param wrapper    The target Proxy class
+     * @param consumer   The Consumer that will be called.
+     */
+    public static <X extends NBTProxy> void modify(BlockState blockState, Class<X> wrapper, Consumer<X> consumer) {
+        NBTTileEntity blockEnt = new NBTTileEntity(blockState);
+        NBTContainer cont = new NBTContainer(blockEnt.getCompound());
+        consumer.accept(new ProxyBuilder<>(cont, wrapper).build());
+        blockEnt.setCompound(cont);
+        cont.setClosed();
+    }
+
+    /**
+     * It takes an block entity and a function to modify the entity via the proxy
+     * 
+     * @param blockState The blockstate you want to modify
+     * @param wrapper    The target Proxy class
+     * @param function   The function that will be called.
+     * @return The return value of the function.
+     */
+    public static <T, X extends NBTProxy> T modify(BlockState blockState, Class<X> wrapper, Function<X, T> function) {
+        NBTTileEntity blockEnt = new NBTTileEntity(blockState);
+        NBTContainer cont = new NBTContainer(blockEnt.getCompound());
+        T val = function.apply(new ProxyBuilder<>(cont, wrapper).build());
+        blockEnt.setCompound(cont);
+        cont.setClosed();
+        return val;
     }
 
 }

@@ -20,6 +20,7 @@ public class ProxyBuilder<T extends NBTProxy> implements InvocationHandler {
 
     private final Class<T> target;
     private final ReadWriteNBT nbt;
+    private boolean readOnly;
 
     public ProxyBuilder(ReadWriteNBT nbt, Class<T> target) {
         if (!target.isInterface()) {
@@ -27,6 +28,11 @@ public class ProxyBuilder<T extends NBTProxy> implements InvocationHandler {
         }
         this.target = target;
         this.nbt = nbt;
+    }
+
+    public ProxyBuilder<T> readOnly() {
+        this.readOnly = true;
+        return this;
     }
 
     @SuppressWarnings("unchecked")
@@ -39,7 +45,7 @@ public class ProxyBuilder<T extends NBTProxy> implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         METHOD_CACHE.computeIfAbsent(method, m -> ProxyBuilder.createFunction((NBTProxy) proxy, m));
-        return METHOD_CACHE.get(method).apply(new Arguments(target, (NBTProxy) proxy, nbt, args));
+        return METHOD_CACHE.get(method).apply(new Arguments(target, (NBTProxy) proxy, readOnly, nbt, args));
     }
 
     private static class Arguments {
@@ -47,12 +53,14 @@ public class ProxyBuilder<T extends NBTProxy> implements InvocationHandler {
         NBTProxy proxy;
         ReadWriteNBT nbt;
         Object[] args;
+        boolean readOnly;
 
-        public Arguments(Class<?> target, NBTProxy proxy, ReadWriteNBT nbt, Object[] args) {
+        public Arguments(Class<?> target, NBTProxy proxy, boolean readOnly, ReadWriteNBT nbt, Object[] args) {
             this.target = target;
             this.proxy = proxy;
             this.nbt = nbt;
             this.args = args;
+            this.readOnly = readOnly;
         }
     }
 
@@ -69,7 +77,12 @@ public class ProxyBuilder<T extends NBTProxy> implements InvocationHandler {
         Type action = getAction(method);
         if (action == Type.SET) {
             String fieldName = getNBTName(method);
-            return (arguments) -> setNBT(arguments.nbt, arguments.proxy, fieldName, arguments.args[0]);
+            return (arguments) -> {
+                if (arguments.readOnly) {
+                    throw new NbtApiException("Tried calling a set method on a read only object.");
+                }
+                return setNBT(arguments.nbt, arguments.proxy, fieldName, arguments.args[0]);
+            };
         }
         if (action == Type.GET) {
             Class<?> retType = method.getReturnType();
