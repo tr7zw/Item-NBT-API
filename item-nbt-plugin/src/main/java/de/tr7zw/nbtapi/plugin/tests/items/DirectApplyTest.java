@@ -25,7 +25,9 @@ public class DirectApplyTest implements Test {
         });
         baseItem = NBT.itemStackFromNBT(NBT.itemStackToNBT(baseItem)); // trick to force the item to be "real", not a
                                                                        // Spigot only item
-        String outside = NBT.get(baseItem, nbt -> nbt.getString("SomeKey"));
+        String outside = NBT.get(baseItem, nbt -> {
+            return nbt.getString("SomeKey");
+        });
         if (!new NBTItem(baseItem).hasTag("SomeKey")) {
             throw new NbtApiException("The data was not applied!");
         }

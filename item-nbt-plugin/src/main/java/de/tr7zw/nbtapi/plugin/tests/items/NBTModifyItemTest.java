@@ -30,7 +30,9 @@ public class NBTModifyItemTest implements Test {
             nbt.getOrCreateCompound("sub").setInteger("val", 42);
             return nbt.getString("SomeKey");
         });
-        String outside = NBT.get(baseItem, nbt -> nbt.getString("SomeKey"));
+        String outside = NBT.get(baseItem, nbt -> {
+           return nbt.getString("SomeKey"); 
+        });
         if (baseItem == null) {
             throw new NbtApiException("Base item was null!");
         }
@@ -59,7 +61,7 @@ public class NBTModifyItemTest implements Test {
             nbt.getOrCreateCompound("sub").setInteger("val", 42);
             return nbt.getString("SomeKey");
         });
-        outside = NBT.get(baseItem, nbt -> nbt.getString("SomeKey"));
+        outside = NBT.get(baseItem, nbt -> (String)nbt.getString("SomeKey"));
         if (!new NBTItem(baseItem).hasTag("SomeKey")) {
             throw new NbtApiException("The data was not applied!");
         }
