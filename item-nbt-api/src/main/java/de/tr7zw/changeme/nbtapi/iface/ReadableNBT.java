@@ -308,7 +308,7 @@ public interface ReadableNBT {
      */
     @Nullable
     ReadableNBT resolveCompound(String key);
-    
+
     /**
      * Get the object at the specified key via the handler.
      * 

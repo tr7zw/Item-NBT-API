@@ -169,7 +169,7 @@ public interface ReadWriteNBT extends ReadableNBT {
      * @param handler
      */
     <T> void set(String key, T value, NBTHandler<T> handler);
-    
+
     /**
      * Set a key to the given Enum value. It gets stored as a String. Passing null
      * as value will call removeKey(key) instead.

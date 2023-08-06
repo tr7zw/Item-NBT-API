@@ -1186,7 +1186,7 @@ public class NBTCompound implements ReadWriteNBT {
             writeLock.unlock();
         }
     }
-    
+
     @Override
     public <T> T get(String key, NBTHandler<T> handler) {
         return handler.get(this, key);
