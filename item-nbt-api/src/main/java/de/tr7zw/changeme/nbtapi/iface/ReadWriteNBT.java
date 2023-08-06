@@ -161,6 +161,16 @@ public interface ReadWriteNBT extends ReadableNBT {
     ReadWriteNBT resolveOrCreateCompound(String key);
 
     /**
+     * Set an Object to a key via the provided handler.
+     * 
+     * @param <T>
+     * @param key
+     * @param value
+     * @param handler
+     */
+    <T> void set(String key, T value, NBTHandler<T> handler);
+    
+    /**
      * Set a key to the given Enum value. It gets stored as a String. Passing null
      * as value will call removeKey(key) instead.
      * 

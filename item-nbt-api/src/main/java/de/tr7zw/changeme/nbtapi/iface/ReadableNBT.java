@@ -308,6 +308,16 @@ public interface ReadableNBT {
      */
     @Nullable
     ReadableNBT resolveCompound(String key);
+    
+    /**
+     * Get the object at the specified key via the handler.
+     * 
+     * @param <T>
+     * @param key
+     * @param handler
+     * @return
+     */
+    <T> T get(String key, NBTHandler<T> handler);
 
     /**
      * Get an Enum value that has been set via setEnum or setString(key,

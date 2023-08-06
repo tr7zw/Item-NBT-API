@@ -13,6 +13,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.bukkit.inventory.ItemStack;
 
+import de.tr7zw.changeme.nbtapi.iface.NBTHandler;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadableNBT;
 import de.tr7zw.changeme.nbtapi.utils.CheckUtil;
@@ -1184,6 +1185,16 @@ public class NBTCompound implements ReadWriteNBT {
         } finally {
             writeLock.unlock();
         }
+    }
+    
+    @Override
+    public <T> T get(String key, NBTHandler<T> handler) {
+        return handler.get(this, key);
+    }
+
+    @Override
+    public <T> void set(String key, T value, NBTHandler<T> handler) {
+        handler.set(this, key, value);
     }
 
     @Override
