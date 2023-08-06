@@ -62,6 +62,18 @@ public class NBT {
     }
 
     /**
+     * It takes an ItemStack, and a Consumer that takes a ReadableNBT. Applies the
+     * Consumer on the NBT of the item
+     * 
+     * @param item The itemstack you want to get the NBT from
+     */
+    public static void get(ItemStack item, Consumer<ReadableItemNBT> getter) {
+        NBTItem nbt = new NBTItem(item, false, true, false);
+        getter.accept(nbt);
+        nbt.setClosed();
+    }
+
+    /**
      * It takes an entity and a function that takes a ReadableNBT and returns a
      * generic type T, and returns the result of the function
      * 
@@ -77,6 +89,18 @@ public class NBT {
         }
         nbt.setClosed();
         return ret;
+    }
+
+    /**
+     * It takes an Entity, and a Consumer that takes a ReadableNBT. Applies the
+     * Consumer on the NBT of the Entity
+     * 
+     * @param entity The entity to get the NBT from
+     */
+    public static void get(Entity entity, Consumer<ReadableNBT> getter) {
+        NBTEntity nbt = new NBTEntity(entity, true);
+        getter.accept(nbt);
+        nbt.setClosed();
     }
 
     /**
@@ -97,6 +121,18 @@ public class NBT {
         }
         nbt.setClosed();
         return ret;
+    }
+
+    /**
+     * It takes an BlockEntity, and a Consumer that takes a ReadableNBT. Applies the
+     * Consumer on the NBT of the BlockEntity
+     * 
+     * @param blockState The block state of the block you want to get the NBT from.
+     */
+    public static void get(BlockState blockState, Consumer<ReadableNBT> getter) {
+        NBTTileEntity nbt = new NBTTileEntity(blockState, true);
+        getter.accept(nbt);
+        nbt.setClosed();
     }
 
     /**
