@@ -16,6 +16,7 @@ import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 public class NBTContainer extends NBTCompound {
 
     private Object nbt;
+    private boolean readOnly;
 
     /**
      * Creates an empty, standalone NBTCompound
@@ -77,6 +78,16 @@ public class NBTContainer extends NBTCompound {
     @Override
     public void setCompound(Object tag) {
         nbt = tag;
+    }
+
+    @Override
+    protected boolean isReadOnly() {
+        return readOnly;
+    }
+
+    protected NBTContainer setReadOnly(boolean readOnly) {
+        this.readOnly = true;
+        return this;
     }
 
 }
