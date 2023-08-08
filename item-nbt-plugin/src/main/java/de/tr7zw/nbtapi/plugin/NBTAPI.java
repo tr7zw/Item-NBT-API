@@ -50,6 +50,7 @@ import de.tr7zw.nbtapi.plugin.tests.tiles.TilesCustomNBTPersistentTest;
 import de.tr7zw.nbtinjector.NBTInjector;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemMergingTest;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemStackConversionTest;
+import de.tr7zw.nbtapi.plugin.tests.items.MetaTest;
 import de.tr7zw.nbtapi.plugin.tests.items.NBTModifyItemTest;
 import de.tr7zw.nbtapi.plugin.tests.items.SmuggleTest;
 
