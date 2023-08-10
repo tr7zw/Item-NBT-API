@@ -24,6 +24,7 @@ public interface NBTItemMeta extends NBTProxy {
     @NBTTarget(type = Type.GET, value = "Unbreakable")
     public boolean isUnbreakable();
 
+    @NBTTarget(type = Type.SET, value = "Unbreakable")
     public void setUnbreakable(boolean unbreakable);
 
     public ReadWriteNBT getBlockStateTag();
