@@ -169,7 +169,6 @@
           <formats>
             <format>
               <includes>
-                <include>*.java</include>
                 <include>.gitignore</include>
               </includes>
               <trimTrailingWhitespace></trimTrailingWhitespace>
@@ -179,7 +178,12 @@
           <!-- define a language-specific format -->
           <java>
             <!-- no need to specify files, inferred automatically, but you can if you want -->
-
+            <excludes>
+              <exclude>Metrics.java</exclude>
+            </excludes>
+            <includes>
+              <include>*.java</include>
+            </includes>
             <eclipse>
               <file>formatter.xml</file>
             </eclipse>
