@@ -5,6 +5,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import de.tr7zw.changeme.nbtapi.NBT;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.changeme.nbtapi.data.proxy.NBTItemMeta;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
@@ -35,8 +36,8 @@ public class DataItemProxyTest implements Test {
 
         if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_16_R1)) {
             meta = item.getItemMeta();
-            if (meta.getCustomModelData() != 123) {
-                throw new NbtApiException("Custom Model Data did not match!");
+            if (!meta.hasCustomModelData() || meta.getCustomModelData() != 123) {
+                throw new NbtApiException("Custom Model Data did not match! " + new NBTItem(item));
             }
             if (!meta.isUnbreakable()) {
                 throw new NbtApiException("Unbreakable did not set!");
