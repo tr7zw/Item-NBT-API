@@ -1,4 +1,3 @@
-
 ```java
 Zombie zombie = (Zombie) b.getWorld().spawnEntity(b.getLocation().add(0, 1, 0), EntityType.ZOMBIE);
 NBT.modify(zombie, nbt -> {
@@ -12,3 +11,4 @@ NBT.modify(zombie, nbt -> {
     }
 });
 ```
+
