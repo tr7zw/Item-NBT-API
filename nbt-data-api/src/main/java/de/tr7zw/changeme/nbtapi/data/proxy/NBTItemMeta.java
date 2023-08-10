@@ -15,8 +15,10 @@ public interface NBTItemMeta extends NBTProxy {
         registerHandler(ReadWriteNBT.class, NBTHandlers.STORE_READWRITE_TAG);
     }
 
+    @NBTTarget(type = Type.GET, value = "CustomModelData")
     public int getCustomModelData();
 
+    @NBTTarget(type = Type.SET, value = "CustomModelData")
     public void setCustomModelData(int customModelData);
 
     @NBTTarget(type = Type.GET, value = "Unbreakable")
