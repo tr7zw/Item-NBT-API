@@ -23,22 +23,22 @@ public interface NBTItemMeta extends NBTProxy {
     public boolean isUnbreakable();
 
     public void setUnbreakable(boolean unbreakable);
-    
+
     public ReadWriteNBT getBlockStateTag();
-    
+
     public void setBlockStateTag(ReadableNBT blockState);
-    
+
     @NBTTarget(type = Type.GET, value = "display")
     public DisplayData getDisplayData();
 
     public interface DisplayData extends NBTProxy {
-        
+
         @NBTTarget(type = Type.SET, value = "Name")
         public void setRawName(String rawName);
-        
+
         @NBTTarget(type = Type.GET, value = "Name")
         public String getRawName();
-        
+
     }
-    
+
 }
