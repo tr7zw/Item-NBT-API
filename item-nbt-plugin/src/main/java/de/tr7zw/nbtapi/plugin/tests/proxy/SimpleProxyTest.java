@@ -18,8 +18,14 @@ public class SimpleProxyTest implements Test {
     public void test() throws Exception {
         ItemStack item = new ItemStack(Material.STONE);
         NBT.modify(item, TestInterface.class, ti -> {
+            if(ti.hasKills()) {
+                throw new NbtApiException("Item reported to have kills before setting data!");
+            }
             ti.setKills(42);
             ti.addKill();
+            if(!ti.hasKills()) {
+                throw new NbtApiException("Item reported to not have kills after setting data!");
+            }
             if (!"{Kills:43}".equals(ti.toString())) {
                 throw new NbtApiException("ToString returned the wrong string. " + ti.toString());
             }
@@ -52,6 +58,8 @@ public class SimpleProxyTest implements Test {
             registerHandler(ItemStack.class, NBTHandlers.ITEM_STACK);
         }
 
+        public boolean hasKills();
+        
         public void setKills(int amount);
 
         public int getKills();

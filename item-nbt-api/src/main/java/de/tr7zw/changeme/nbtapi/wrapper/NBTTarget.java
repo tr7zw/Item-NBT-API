@@ -14,6 +14,6 @@ public @interface NBTTarget {
     public Type type() default Type.AUTOMATIC;
     
     public enum Type {
-        AUTOMATIC, GET, SET
+        AUTOMATIC, GET, SET, HAS
     }
 }

@@ -104,6 +104,10 @@ public class ProxyBuilder<T extends NBTProxy> implements InvocationHandler {
             }
             return (arguments) -> arguments.nbt.getOrNull(fieldName, retType);
         }
+        if(action == Type.HAS) {
+            String fieldName = getNBTName(proxy.getCasing(), method);
+            return (arguments) -> arguments.nbt.hasTag(fieldName);
+        }
         throw new IllegalArgumentException(
                 "The method '" + method.getName() + "' in '" + method.getDeclaringClass().getName()
                         + "' can not be handled by the NBT-API. Please check the Wiki for examples!");
@@ -112,6 +116,9 @@ public class ProxyBuilder<T extends NBTProxy> implements InvocationHandler {
     private static Type getAction(Method method) {
         NBTTarget target = method.getAnnotation(NBTTarget.class);
         if (target != null) {
+            if (target.type() == Type.HAS && method.getParameterCount() == 0 && method.getReturnType() == boolean.class) {
+                return Type.HAS;
+            }
             if (target.type() == Type.GET && method.getParameterCount() == 0) {
                 return Type.GET;
             }
@@ -124,6 +131,9 @@ public class ProxyBuilder<T extends NBTProxy> implements InvocationHandler {
         }
         if (method.getName().startsWith("get") && method.getParameterCount() == 0) {
             return Type.GET;
+        }
+        if (method.getName().startsWith("has") && method.getParameterCount() == 0 && method.getReturnType() == boolean.class) {
+            return Type.HAS;
         }
         return null;
     }
