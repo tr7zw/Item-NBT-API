@@ -26,3 +26,4 @@ NBT.modify(item, nbt -> {
     .setString("Value", textureValue);
 });
 ```
+

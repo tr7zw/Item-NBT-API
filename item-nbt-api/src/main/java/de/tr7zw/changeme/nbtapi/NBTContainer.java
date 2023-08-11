@@ -17,6 +17,7 @@ public class NBTContainer extends NBTCompound {
 
     private Object nbt;
     private boolean closed;
+    private boolean readOnly;
 
     /**
      * Creates an empty, standalone NBTCompound
@@ -88,6 +89,15 @@ public class NBTContainer extends NBTCompound {
     @Override
     protected boolean isClosed() {
         return closed;
+    }
+    
+    protected boolean isReadOnly() {
+        return readOnly;
+    }
+
+    protected NBTContainer setReadOnly(boolean readOnly) {
+        this.readOnly = true;
+        return this;
     }
 
 }

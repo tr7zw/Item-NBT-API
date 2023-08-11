@@ -1,4 +1,3 @@
-
 ## Using the ``NBT`` class (prefered)
 
 ```java
@@ -57,6 +56,7 @@ NBTContainer container =  new NBTContainer(); // Empty NBTCompound
 ```
 
 ## Using the wrapper(NBTCompound/)
+
 ```java
 //Set
 nbti.setString("Stringtest", "Teststring");
@@ -85,3 +85,4 @@ NBTCompound comp = nbti.getCompound("subtag"); // Get the tag or null
 B.mergeCompound(A); // Merge the data from compound A into B (Like the /data merge command)
 comp.toString(); // Get the nbt as a Mojang-Json string
 ```
+

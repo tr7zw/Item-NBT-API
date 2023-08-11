@@ -62,37 +62,38 @@ Add the following Entries to your pom at the correct location:
 ```
 
 ```xml
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>3.4.1</version>
-        <executions>
-          <execution>
-            <id>shade</id>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <relocations>
-            <relocation>
-              <pattern>de.tr7zw.changeme.nbtapi</pattern>
-              <shadedPattern>YOUR PACKAGE WHERE THE API SHOULD END UP</shadedPattern>
-            </relocation>
-          </relocations>
-        </configuration>
-      </plugin>
-   </plugins>
+ <plugins>
+   <plugin>
+     <groupId>org.apache.maven.plugins</groupId>
+     <artifactId>maven-shade-plugin</artifactId>
+     <version>3.4.1</version>
+     <executions>
+       <execution>
+         <id>shade</id>
+         <phase>package</phase>
+         <goals>
+           <goal>shade</goal>
+         </goals>
+       </execution>
+     </executions>
+     <configuration>
+       <relocations>
+         <relocation>
+           <pattern>de.tr7zw.changeme.nbtapi</pattern>
+           <shadedPattern>YOUR PACKAGE WHERE THE API SHOULD END UP</shadedPattern>
+         </relocation>
+       </relocations>
+     </configuration>
+   </plugin>
+</plugins>
 ```
 
 Example:
 
 ```xml
-            <relocation>
-              <pattern>de.tr7zw.changeme.nbtapi</pattern>
-              <shadedPattern>com.yourname.pluginname.nbtapi</shadedPattern>
-            </relocation>
+<relocation>
+  <pattern>de.tr7zw.changeme.nbtapi</pattern>
+  <shadedPattern>com.yourname.pluginname.nbtapi</shadedPattern>
+</relocation>
 ```
+

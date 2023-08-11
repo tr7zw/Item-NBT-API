@@ -52,6 +52,7 @@ import de.tr7zw.nbtapi.plugin.tests.items.ItemMergingTest;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemStackConversionTest;
 import de.tr7zw.nbtapi.plugin.tests.proxy.DataItemProxyTest;
 import de.tr7zw.nbtapi.plugin.tests.proxy.SimpleProxyTest;
+import de.tr7zw.nbtapi.plugin.tests.items.MetaTest;
 import de.tr7zw.nbtapi.plugin.tests.items.NBTModifyItemTest;
 import de.tr7zw.nbtapi.plugin.tests.items.SmuggleTest;
 
@@ -130,6 +131,7 @@ public class NBTAPI extends JavaPlugin {
         apiTests.add(new EmptyItemTest());
         apiTests.add(new SmuggleTest());
         apiTests.add(new DataItemProxyTest());
+        apiTests.add(new MetaTest());
         if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) { // 1.7.10 not a thing
             apiTests.add(new ItemMergingTest());
             apiTests.add(new DirectApplyTest());

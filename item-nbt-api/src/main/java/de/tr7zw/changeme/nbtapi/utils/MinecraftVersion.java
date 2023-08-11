@@ -4,6 +4,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * This class acts as the "Brain" of the NBTApi. It contains the main logger for
@@ -130,8 +132,16 @@ public enum MinecraftVersion {
 
     private static void init() {
         try {
-            if (hasGsonSupport() && !bStatsDisabled)
-                new ApiMetricsLite();
+            if (hasGsonSupport() && !bStatsDisabled) {
+                Plugin plugin = Bukkit.getPluginManager().getPlugin(VersionChecker.getPlugin());
+                if (plugin != null && plugin instanceof JavaPlugin) {
+                    getLogger()
+                            .info("[NBTAPI] Using the plugin '" + plugin.getName() + "' to create a bStats instance!");
+                    new Metrics((JavaPlugin) plugin, 1058);
+                } else if (plugin == null) {
+                    getLogger().info("[NBTAPI] Unable to create a bStats instance!!");
+                }
+            }
         } catch (Exception ex) {
             logger.log(Level.WARNING, "[NBTAPI] Error enabling Metrics!", ex);
         }

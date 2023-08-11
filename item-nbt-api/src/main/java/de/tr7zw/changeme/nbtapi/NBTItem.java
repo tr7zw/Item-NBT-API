@@ -275,7 +275,7 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
     public void modifyMeta(BiConsumer<ReadableNBT, ItemMeta> handler) {
         finalizeChanges();
         ItemMeta meta = bukkitItem.getItemMeta();
-        handler.accept(this, meta);
+        handler.accept(new NBTContainer(getResolvedObject()).setReadOnly(true), meta);
         bukkitItem.setItemMeta(meta);
         updateCachedCompound();
         if (directApply) {
@@ -297,7 +297,7 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
         finalizeChanges();
         @SuppressWarnings("unchecked")
         T meta = (T) bukkitItem.getItemMeta();
-        handler.accept(this, meta);
+        handler.accept(new NBTContainer(getResolvedObject()).setReadOnly(true), meta);
         bukkitItem.setItemMeta(meta);
         updateCachedCompound();
         if (directApply) {

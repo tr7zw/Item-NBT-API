@@ -39,3 +39,4 @@ In general "new NBTEntity(entity).mergeCompound(nbt)", but you might want to rem
 // Gameprofile
 GameProfile profile = NBT.nbtToGameProfile(nbt);
 ```
+
