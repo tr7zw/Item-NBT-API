@@ -15,31 +15,28 @@ public interface NBTItemMeta extends NBTProxy {
         registerHandler(ReadWriteNBT.class, NBTHandlers.STORE_READWRITE_TAG);
     }
 
-    @NBTTarget(type = Type.GET, value = "CustomModelData")
     public int getCustomModelData();
 
-    @NBTTarget(type = Type.SET, value = "CustomModelData")
     public void setCustomModelData(int customModelData);
 
     @NBTTarget(type = Type.GET, value = "Unbreakable")
     public boolean isUnbreakable();
 
-    @NBTTarget(type = Type.SET, value = "Unbreakable")
     public void setUnbreakable(boolean unbreakable);
 
     public ReadWriteNBT getBlockStateTag();
 
     public void setBlockStateTag(ReadableNBT blockState);
 
-    @NBTTarget(type = Type.GET, value = "display")
+    @NBTTarget(value = "display")
     public DisplayData getDisplayData();
 
     public interface DisplayData extends NBTProxy {
 
-        @NBTTarget(type = Type.SET, value = "Name")
+        @NBTTarget(value = "Name")
         public void setRawName(String rawName);
 
-        @NBTTarget(type = Type.GET, value = "Name")
+        @NBTTarget(value = "Name")
         public String getRawName();
 
     }

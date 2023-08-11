@@ -20,11 +20,11 @@ public class SimpleProxyTest implements Test {
         NBT.modify(item, TestInterface.class, ti -> {
             ti.setKills(42);
             ti.addKill();
-            if (!"{kills:43}".equals(ti.toString())) {
+            if (!"{Kills:43}".equals(ti.toString())) {
                 throw new NbtApiException("ToString returned the wrong string. " + ti.toString());
             }
         });
-        if (new NBTItem(item).getInteger("kills") != 43) {
+        if (new NBTItem(item).getInteger("Kills") != 43) {
             throw new NbtApiException("The item was not modified correctly by the proxy!");
         }
         NBT.modify(item, TestInterface.class, ti -> {
@@ -60,7 +60,7 @@ public class SimpleProxyTest implements Test {
             setKills(getKills() + 1);
         }
 
-        @NBTTarget(value = "kills", type = Type.GET)
+        @NBTTarget(value = "Kills", type = Type.GET)
         public int theKillsWithADifferentMethodNameAndNoGet();
 
         public Statistic getJumps();

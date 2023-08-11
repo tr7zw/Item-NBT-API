@@ -76,7 +76,7 @@ public class ProxyBuilder<T extends NBTProxy> implements InvocationHandler {
         }
         Type action = getAction(method);
         if (action == Type.SET) {
-            String fieldName = getNBTName(method);
+            String fieldName = getNBTName(proxy.getCasing(), method);
             return (arguments) -> {
                 if (arguments.readOnly) {
                     throw new NbtApiException("Tried calling a set method on a read only object.");
@@ -86,7 +86,7 @@ public class ProxyBuilder<T extends NBTProxy> implements InvocationHandler {
         }
         if (action == Type.GET) {
             Class<?> retType = method.getReturnType();
-            String fieldName = getNBTName(method);
+            String fieldName = getNBTName(proxy.getCasing(), method);
             // Allow stacking of proxies
             if (retType.isInterface() && NBTProxy.class.isAssignableFrom(retType)) {
                 return (arguments) -> {
@@ -128,12 +128,12 @@ public class ProxyBuilder<T extends NBTProxy> implements InvocationHandler {
         return null;
     }
 
-    private static String getNBTName(Method method) {
+    private static String getNBTName(Casing casing, Method method) {
         NBTTarget target = method.getAnnotation(NBTTarget.class);
         if (target != null) {
             return target.value();
         }
-        return method.getName().substring(3).toLowerCase();
+        return casing.convertString(method.getName().substring(3));
     }
 
     private static Object setNBT(ReadWriteNBT nbt, NBTProxy proxy, String key, Object value) {

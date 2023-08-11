@@ -13,6 +13,10 @@ public interface NBTProxy {
     public default void init() {
 
     }
+    
+    public default Casing getCasing() {
+        return Casing.PascalCase;
+    }
 
     @SuppressWarnings("unchecked")
     public default <T> NBTHandler<T> getHandler(Class<T> clazz) {
@@ -23,6 +27,7 @@ public interface NBTProxy {
         return handlers.values();
     }
 
+    @SuppressWarnings("unchecked")
     public default <T> void registerHandler(Class<T> clazz, NBTHandler<T> handler) {
         handlers.put(clazz, (NBTHandler<Object>) handler);
     }
