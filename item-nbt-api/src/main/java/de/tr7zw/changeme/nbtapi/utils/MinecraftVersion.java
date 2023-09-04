@@ -246,7 +246,7 @@ public enum MinecraftVersion {
         }
         try {
             logger.info("[NBTAPI] Found Folia: "
-                    + Class.forName("io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler"));
+                    + Class.forName("io.papermc.paper.threadedregions.RegionizedServer"));
             isFoliaPresent = true;
         } catch (Exception ex) {
             isFoliaPresent = false;
