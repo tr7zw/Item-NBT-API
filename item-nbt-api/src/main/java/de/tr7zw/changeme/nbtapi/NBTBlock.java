@@ -12,7 +12,7 @@ import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
  * instead!
  * 
  * - The data is really just on the location. If the block gets
- * broken/changed/explodes/moved etc, the data is still on that location!
+ * broken/changed/exploded/moved etc., the data is still on that location!
  * 
  * @author tr7zw
  *
