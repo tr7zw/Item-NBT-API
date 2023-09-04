@@ -330,7 +330,7 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
 
     /**
      * Helper method that converts {@link ItemStack}[] to {@link NBTContainer} with
-     * all it data like Material, Damage, Amount and Tags. This is a custom
+     * all its data like Material, Damage, Amount and Tags. This is a custom
      * implementation and won't work with vanilla code(Shulker content etc).
      * 
      * @param items
@@ -355,7 +355,7 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
     /**
      * Helper method to do the inverse of "convertItemArraytoNBT". Creates an
      * {@link ItemStack}[] using the {@link NBTCompound}. This is a custom
-     * implementation and won't work with vanilla code(Shulker content etc).
+     * implementation and won't work with vanilla code (Shulker content, etc.).
      * 
      * Will return null for invalid data. Empty slots in the array are filled with
      * AIR Stacks!

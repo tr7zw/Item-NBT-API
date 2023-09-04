@@ -154,7 +154,7 @@ public class NBT {
     }
 
     /**
-     * It takes an block entity and a function that takes a ReadableNBT and returns
+     * It takes a block entity and a function that takes a ReadableNBT and returns
      * a generic type T, and returns the result of the function, applied to the
      * block entities persistent data container
      * 

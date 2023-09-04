@@ -18,7 +18,7 @@ public class NBTFile extends NBTCompound {
     private Object nbt;
 
     /**
-     * Creates a NBTFile that uses @param file to store it's data. If this file
+     * Creates a NBTFile that uses @param file to store its data. If this file
      * exists, the data will be loaded.
      * 
      * @param file
