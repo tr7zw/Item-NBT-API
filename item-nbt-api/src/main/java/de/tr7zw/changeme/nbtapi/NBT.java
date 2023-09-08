@@ -156,7 +156,7 @@ public class NBT {
     }
 
     /**
-     * It takes an block entity and a function that takes a ReadableNBT and returns
+     * It takes a block entity and a function that takes a ReadableNBT and returns
      * a generic type T, and returns the result of the function, applied to the
      * block entities persistent data container
      * 
@@ -281,7 +281,7 @@ public class NBT {
         NBTTileEntity blockEnt = new NBTTileEntity(blockState);
         NBTContainer cont = new NBTContainer(blockEnt.getCompound());
         T ret = function.apply(cont);
-        blockEnt.setCompound(cont);
+        blockEnt.setCompound(cont.getCompound());
         if (ret instanceof ReadableNBT || ret instanceof ReadableNBTList<?>) {
             throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
         }
@@ -302,7 +302,7 @@ public class NBT {
         NBTTileEntity blockEnt = new NBTTileEntity(blockState);
         NBTContainer cont = new NBTContainer(blockEnt.getCompound());
         consumer.accept(cont);
-        blockEnt.setCompound(cont);
+        blockEnt.setCompound(cont.getCompound());
         blockEnt.setClosed();
     }
 
