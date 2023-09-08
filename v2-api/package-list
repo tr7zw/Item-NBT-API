@@ -1,4 +1,6 @@
 de.tr7zw.changeme.nbtapi
+de.tr7zw.changeme.nbtapi.handler
 de.tr7zw.changeme.nbtapi.iface
 de.tr7zw.changeme.nbtapi.utils
 de.tr7zw.changeme.nbtapi.utils.nmsmappings
+de.tr7zw.changeme.nbtapi.wrapper
