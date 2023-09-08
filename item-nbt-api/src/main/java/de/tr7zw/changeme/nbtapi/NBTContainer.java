@@ -16,6 +16,7 @@ import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 public class NBTContainer extends NBTCompound {
 
     private Object nbt;
+    private boolean closed;
     private boolean readOnly;
 
     /**
@@ -81,6 +82,15 @@ public class NBTContainer extends NBTCompound {
     }
 
     @Override
+    protected void setClosed() {
+        this.closed = true;
+    }
+
+    @Override
+    protected boolean isClosed() {
+        return closed;
+    }
+    
     protected boolean isReadOnly() {
         return readOnly;
     }

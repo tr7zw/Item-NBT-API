@@ -13,6 +13,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.bukkit.inventory.ItemStack;
 
+import de.tr7zw.changeme.nbtapi.iface.NBTHandler;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadableNBT;
 import de.tr7zw.changeme.nbtapi.utils.CheckUtil;
@@ -975,19 +976,19 @@ public class NBTCompound implements ReadWriteNBT {
             return defaultValue;
 
         Class<?> clazz = defaultValue.getClass();
-        if (clazz == Boolean.class)
+        if (clazz == Boolean.class || clazz == boolean.class)
             return (T) getBoolean(key);
-        if (clazz == Byte.class)
+        if (clazz == Byte.class || clazz == byte.class)
             return (T) getByte(key);
-        if (clazz == Short.class)
+        if (clazz == Short.class || clazz == short.class)
             return (T) getShort(key);
-        if (clazz == Integer.class)
+        if (clazz == Integer.class || clazz == int.class)
             return (T) getInteger(key);
-        if (clazz == Long.class)
+        if (clazz == Long.class || clazz == long.class)
             return (T) getLong(key);
-        if (clazz == Float.class)
+        if (clazz == Float.class || clazz == float.class)
             return (T) getFloat(key);
-        if (clazz == Double.class)
+        if (clazz == Double.class || clazz == double.class)
             return (T) getDouble(key);
         if (clazz == byte[].class)
             return (T) getByteArray(key);
@@ -1030,19 +1031,19 @@ public class NBTCompound implements ReadWriteNBT {
         if (!hasTag(key))
             return null;
 
-        if (type == Boolean.class)
+        if (type == Boolean.class || type == boolean.class)
             return (T) getBoolean(key);
-        if (type == Byte.class)
+        if (type == Byte.class || type == byte.class)
             return (T) getByte(key);
-        if (type == Short.class)
+        if (type == Short.class || type == short.class)
             return (T) getShort(key);
-        if (type == Integer.class)
+        if (type == Integer.class || type == int.class)
             return (T) getInteger(key);
-        if (type == Long.class)
+        if (type == Long.class || type == long.class)
             return (T) getLong(key);
-        if (type == Float.class)
+        if (type == Float.class || type == float.class)
             return (T) getFloat(key);
-        if (type == Double.class)
+        if (type == Double.class || type == double.class)
             return (T) getDouble(key);
         if (type == byte[].class)
             return (T) getByteArray(key);
@@ -1184,6 +1185,16 @@ public class NBTCompound implements ReadWriteNBT {
         } finally {
             writeLock.unlock();
         }
+    }
+
+    @Override
+    public <T> T get(String key, NBTHandler<T> handler) {
+        return handler.get(this, key);
+    }
+
+    @Override
+    public <T> void set(String key, T value, NBTHandler<T> handler) {
+        handler.set(this, key, value);
     }
 
     @Override
