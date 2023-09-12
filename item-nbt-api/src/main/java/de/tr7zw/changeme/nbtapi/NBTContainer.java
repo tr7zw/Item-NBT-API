@@ -35,7 +35,7 @@ public class NBTContainer extends NBTCompound {
     public NBTContainer(Object nbt) {
         super(null, null);
         if (nbt == null) {
-            throw new NullPointerException("The NBT-Object can't be null!");
+            nbt = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
         }
         if (!ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().isAssignableFrom(nbt.getClass())) {
             throw new NbtApiException("The object '" + nbt.getClass() + "' is not a valid NBT-Object!");
