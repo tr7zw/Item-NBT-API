@@ -23,6 +23,10 @@ public class EmptyItemTest implements Test {
         if (!nbti.getKeys().isEmpty()) {
             throw new NbtApiException("getKeys() returned keys!");
         }
+        nbti.removeKey("test");
+        if (nbti.hasNBTData()) {
+            throw new NbtApiException("Item reported to have data after remove");
+        }
         nbti.setString("test", "test");
         if (!nbti.hasNBTData()) {
             throw new NbtApiException("Item reported to have no data");

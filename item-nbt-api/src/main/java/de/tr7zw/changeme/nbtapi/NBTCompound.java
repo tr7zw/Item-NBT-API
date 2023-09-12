@@ -195,10 +195,6 @@ public class NBTCompound implements ReadWriteNBT {
         }
     }
 
-    protected String getContent(String key) {
-        return NBTReflectionUtil.getContent(this, key);
-    }
-
     /**
      * Setter
      * 

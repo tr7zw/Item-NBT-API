@@ -408,22 +408,6 @@ public class NBTReflectionUtil {
     }
 
     /**
-     * Returns the content for a given key inside a Compound
-     * 
-     * @param comp
-     * @param key
-     * @return Content saved under this key
-     */
-    public static String getContent(NBTCompound comp, String key) {
-        Object workingtag = comp.getResolvedObject();
-        try {
-            return ReflectionMethod.COMPOUND_GET.run(workingtag, key).toString();
-        } catch (Exception e) {
-            throw new NbtApiException("Exception while getting the Content for key '" + key + "'!", e);
-        }
-    }
-
-    /**
      * Sets a key in a {@link NBTCompound} to a given value
      * 
      * @param comp
@@ -571,7 +555,7 @@ public class NBTReflectionUtil {
     public static void remove(NBTCompound comp, String key) {
         Object rootnbttag = comp.getCompound();
         if (rootnbttag == null) {
-            rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
+            return;
         }
         if (!valideCompound(comp))
             return;
