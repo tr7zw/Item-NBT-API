@@ -254,7 +254,8 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
     }
 
     /**
-     * Returns true if the item has NBT data.
+     * Returns true if the item has NBT data. This needs to be checked before
+     * calling methods like remove, otherwise the value might be wrong!
      * 
      * @return Does the ItemStack have a NBTCompound.
      */
