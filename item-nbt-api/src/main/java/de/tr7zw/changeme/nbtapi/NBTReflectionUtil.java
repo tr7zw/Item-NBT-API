@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayDeque;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.Map;
 import java.util.Set;
@@ -588,6 +589,9 @@ public class NBTReflectionUtil {
     @SuppressWarnings("unchecked")
     public static Set<String> getKeys(NBTCompound comp) {
         Object workingtag = comp.getResolvedObject();
+        if (workingtag == null) {
+            return Collections.emptySet();
+        }
         return (Set<String>) ReflectionMethod.COMPOUND_GET_KEYS.run(workingtag);
     }
 

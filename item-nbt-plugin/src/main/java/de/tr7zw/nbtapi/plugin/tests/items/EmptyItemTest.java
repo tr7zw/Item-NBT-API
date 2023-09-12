@@ -20,6 +20,9 @@ public class EmptyItemTest implements Test {
         if (nbti.getBoolean("test") == null || nbti.getString("test") == null || nbti.getFloatList("test") == null) {
             throw new NbtApiException("Getters return null instead of the default value");
         }
+        if (!nbti.getKeys().isEmpty()) {
+            throw new NbtApiException("getKeys() returned keys!");
+        }
         nbti.setString("test", "test");
         if (!nbti.hasNBTData()) {
             throw new NbtApiException("Item reported to have no data");
