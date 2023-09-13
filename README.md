@@ -25,7 +25,6 @@ Import the API [using Maven](https://github.com/tr7zw/Item-NBT-API/wiki/Using-Ma
 
 <img src="https://starchart.cc/tr7zw/Item-NBT-API.svg" alt="stargazers" width="800"/>
 
-
 ### Supported by YourKit
 
 ![](https://www.yourkit.com/images/yklogo.png)  
