@@ -9,6 +9,7 @@ import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.changeme.nbtapi.handler.NBTHandlers;
 import de.tr7zw.changeme.nbtapi.wrapper.NBTProxy;
 import de.tr7zw.changeme.nbtapi.wrapper.NBTTarget;
+import de.tr7zw.changeme.nbtapi.wrapper.ProxyList;
 import de.tr7zw.changeme.nbtapi.wrapper.NBTTarget.Type;
 import de.tr7zw.nbtapi.plugin.tests.Test;
 
@@ -18,12 +19,12 @@ public class SimpleProxyTest implements Test {
     public void test() throws Exception {
         ItemStack item = new ItemStack(Material.STONE);
         NBT.modify(item, TestInterface.class, ti -> {
-            if(ti.hasKills()) {
+            if (ti.hasKills()) {
                 throw new NbtApiException("Item reported to have kills before setting data!");
             }
             ti.setKills(42);
             ti.addKill();
-            if(!ti.hasKills()) {
+            if (!ti.hasKills()) {
                 throw new NbtApiException("Item reported to not have kills after setting data!");
             }
             if (!"{Kills:43}".equals(ti.toString())) {
@@ -49,6 +50,23 @@ public class SimpleProxyTest implements Test {
                 throw new NbtApiException("The handler in the proxy didn't work correctly!");
             }
         });
+        NBT.modify(item, TestInterface.class, ti -> {
+            Statistic a = ti.getStatistics().addCompound();
+            a.setPoints(1);
+            a.addPoint();
+            a.addPoint();
+            ti.getStatistics().addCompound();
+            if (ti.getStatistics().size() != 2) {
+                throw new NbtApiException("List size not as expected!");
+            }
+            ti.getStatistics().remove(1);
+            if (ti.getStatistics().size() != 1) {
+                throw new NbtApiException("List size not as expected!");
+            }
+            if (ti.getStatistics().iterator().next().getPoints() != 3) {
+                throw new NbtApiException("Points not as expected!");
+            }
+        });
     }
 
     public interface TestInterface extends NBTProxy {
@@ -59,7 +77,7 @@ public class SimpleProxyTest implements Test {
         }
 
         public boolean hasKills();
-        
+
         public void setKills(int amount);
 
         public int getKills();
@@ -76,6 +94,8 @@ public class SimpleProxyTest implements Test {
         public ItemStack getItem();
 
         public void setItem(ItemStack item);
+
+        public ProxyList<Statistic> getStatistics();
 
     }
 

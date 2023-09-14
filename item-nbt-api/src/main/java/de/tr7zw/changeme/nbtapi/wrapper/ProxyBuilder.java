@@ -2,6 +2,7 @@ package de.tr7zw.changeme.nbtapi.wrapper;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.util.Map;
 import java.util.UUID;
@@ -98,13 +99,24 @@ public class ProxyBuilder<T extends NBTProxy> implements InvocationHandler {
                             (Class<NBTProxy>) retType).build();
                 };
             }
+            if (retType == ProxyList.class) {
+                
+                Class<?> parameterType = (Class<?>) ((ParameterizedType) method.getGenericReturnType())
+                        .getActualTypeArguments()[0];
+                if (parameterType != null && parameterType.isInterface()
+                        && NBTProxy.class.isAssignableFrom(parameterType)) {
+                    return (arguments) -> {
+                      return new ProxiedList(arguments.nbt.getCompoundList(fieldName), parameterType);  
+                    };
+                }
+            }
             NBTHandler<Object> handler = (NBTHandler<Object>) proxy.getHandler(retType);
             if (handler != null) {
                 return (arguments) -> handler.get(arguments.nbt, fieldName);
             }
             return (arguments) -> arguments.nbt.getOrNull(fieldName, retType);
         }
-        if(action == Type.HAS) {
+        if (action == Type.HAS) {
             String fieldName = getNBTName(proxy.getCasing(), method);
             return (arguments) -> arguments.nbt.hasTag(fieldName);
         }
@@ -116,7 +128,8 @@ public class ProxyBuilder<T extends NBTProxy> implements InvocationHandler {
     private static Type getAction(Method method) {
         NBTTarget target = method.getAnnotation(NBTTarget.class);
         if (target != null) {
-            if (target.type() == Type.HAS && method.getParameterCount() == 0 && method.getReturnType() == boolean.class) {
+            if (target.type() == Type.HAS && method.getParameterCount() == 0
+                    && method.getReturnType() == boolean.class) {
                 return Type.HAS;
             }
             if (target.type() == Type.GET && method.getParameterCount() == 0) {
@@ -132,7 +145,8 @@ public class ProxyBuilder<T extends NBTProxy> implements InvocationHandler {
         if (method.getName().startsWith("get") && method.getParameterCount() == 0) {
             return Type.GET;
         }
-        if (method.getName().startsWith("has") && method.getParameterCount() == 0 && method.getReturnType() == boolean.class) {
+        if (method.getName().startsWith("has") && method.getParameterCount() == 0
+                && method.getReturnType() == boolean.class) {
             return Type.HAS;
         }
         return null;
