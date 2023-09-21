@@ -24,7 +24,7 @@ public class MappingsParser {
     public static StringBuilder builder = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
-        File input = new File("minecraft_server.1.20.txt");
+        File input = new File("minecraft_server.1.20.2.txt");
         List<String> lines = Files.readAllLines(input.toPath());
 
         Map<String, ClassWrapper> classes = new HashMap<>();
@@ -40,6 +40,9 @@ public class MappingsParser {
         ClassWrapper nmsWrapper = null;
         Map<ReflectionMethod, String> mappedNames = null;
         for (String line : lines) {
+            if (line.startsWith("#")) {
+                continue;
+            }
             if (!line.startsWith(" ")) {
                 if (nmsWrapper != null && mappedNames != null) {
                     proccessMapping(nmsWrapper, mappedNames);
