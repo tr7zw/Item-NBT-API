@@ -125,10 +125,9 @@ public class MojangToMapping {
     private static Map<String, String> MC1_20R2 = new HashMap<String, String>() {
 
         {
-            putAll(MC1_19R2);
+            putAll(MC1_20R1);
 
             put("net.minecraft.world.entity.Entity#getEncodeId()", "bu");
-            put("net.minecraft.world.item.ItemStack#getTag()", "v");
         }
 
     };
