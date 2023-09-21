@@ -105,9 +105,6 @@ public enum MinecraftVersion {
      * @return The enum for the MinecraftVersion this server is running
      */
     public static MinecraftVersion getVersion() {
-        if(true) {
-            return MinecraftVersion.MC1_20_R2;
-        }
         if (version != null) {
             return version;
         }
