@@ -3,6 +3,7 @@ package de.tr7zw.changeme.nbtapi.utils.nmsmappings;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 
 /**
@@ -138,6 +139,8 @@ public class MojangToMapping {
             return MC1_20R2;
         case MC1_20_R1:
             return MC1_20R1;
+        case MC1_19_R3:
+            return MC1_19R2;
         case MC1_19_R2:
             return MC1_19R2;
         case MC1_19_R1:
@@ -146,9 +149,11 @@ public class MojangToMapping {
             return MC1_18R2;
         case MC1_18_R1:
             return MC1_18R1;
+        case UNKNOWN:
+            return MC1_20R2; // assume it's a future version, so try the latest known mappings
         default:
-            return MC1_20R2;// throw new NbtApiException("This version of the NBTAPI is not compatible with
-                            // this server version!");
+            // this should never happen, unless a version is forgotten here(like 1.19R3 which uses the 1.19R2 mappings)
+            throw new NbtApiException("No fitting mapping found for version " + MinecraftVersion.getVersion() + ". This is a bug!");
         }
     }
 
