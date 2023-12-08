@@ -132,9 +132,27 @@ public class MojangToMapping {
         }
 
     };
+    
+    @SuppressWarnings("serial")
+    private static Map<String, String> MC1_20R3 = new HashMap<String, String>() {
+
+        {
+            putAll(MC1_20R2);
+
+            put("net.minecraft.nbt.NbtIo#readCompressed(java.io.InputStream,net.minecraft.nbt.NbtAccounter)", "a");
+            put("net.minecraft.nbt.NbtAccounter#unlimitedHeap()", "a");
+            put("net.minecraft.world.entity.Entity#getEncodeId()", "bw");
+            put("net.minecraft.world.level.block.entity.BlockEntity#saveWithId()", "p");
+            put("net.minecraft.world.level.block.entity.BlockEntity#getBlockState()", "r");
+        }
+
+    };
+
 
     public static Map<String, String> getMapping() {
         switch (MinecraftVersion.getVersion()) {
+        case MC1_20_R3:
+            return MC1_20R3;
         case MC1_20_R2:
             return MC1_20R2;
         case MC1_20_R1:

@@ -82,7 +82,11 @@ public class NBTReflectionUtil {
      */
     public static Object readNBT(InputStream stream) {
         try {
-            return ReflectionMethod.NBTFILE_READ.run(null, stream);
+            if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R3)) {
+                return ReflectionMethod.NBTFILE_READV2.run(null, stream, ReflectionMethod.NBTACCOUNTER_CREATE_UNLIMITED.run(null));
+            } else {
+                return ReflectionMethod.NBTFILE_READ.run(null, stream);
+            }
         } catch (Exception e) {
             try {
                 stream.close();

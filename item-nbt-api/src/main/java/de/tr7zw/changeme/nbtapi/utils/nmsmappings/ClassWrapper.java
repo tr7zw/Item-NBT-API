@@ -62,6 +62,7 @@ public enum ClassWrapper {
             "net.minecraft.nbt.NbtUtils"),
     NMS_IBLOCKDATA(PackageWrapper.NMS, "IBlockData", MinecraftVersion.MC1_8_R3, null,
             "net.minecraft.world.level.block.state", "net.minecraft.world.level.block.state.BlockState"),
+    NMS_NBTACCOUNTER(PackageWrapper.NMS, "NBTReadLimiter", MinecraftVersion.MC1_20_R3, null, "net.minecraft.nbt", "net.minecraft.nbt.NbtAccounter"),
     GAMEPROFILE(PackageWrapper.NONE, "com.mojang.authlib.GameProfile", MinecraftVersion.MC1_8_R3, null);
 
     private Class<?> clazz;
