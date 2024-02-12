@@ -4,6 +4,8 @@ import static de.tr7zw.changeme.nbtapi.utils.MinecraftVersion.getLogger;
 
 import java.util.logging.Level;
 
+import org.bukkit.Bukkit;
+
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 
 /**
@@ -62,7 +64,8 @@ public enum ClassWrapper {
             "net.minecraft.nbt.NbtUtils"),
     NMS_IBLOCKDATA(PackageWrapper.NMS, "IBlockData", MinecraftVersion.MC1_8_R3, null,
             "net.minecraft.world.level.block.state", "net.minecraft.world.level.block.state.BlockState"),
-    NMS_NBTACCOUNTER(PackageWrapper.NMS, "NBTReadLimiter", MinecraftVersion.MC1_20_R3, null, "net.minecraft.nbt", "net.minecraft.nbt.NbtAccounter"),
+    NMS_NBTACCOUNTER(PackageWrapper.NMS, "NBTReadLimiter", MinecraftVersion.MC1_20_R3, null, "net.minecraft.nbt",
+            "net.minecraft.nbt.NbtAccounter"),
     GAMEPROFILE(PackageWrapper.NONE, "com.mojang.authlib.GameProfile", MinecraftVersion.MC1_8_R3, null);
 
     private Class<?> clazz;
@@ -100,7 +103,11 @@ public enum ClassWrapper {
             } else if (MinecraftVersion.isForgePresent() && MinecraftVersion.getVersion() == MinecraftVersion.MC1_7_R4
                     && Forge1710Mappings.getClassMappings().get(this.name()) != null) {
                 clazz = Class.forName(clazzName = Forge1710Mappings.getClassMappings().get(this.name()));
+            } else if (packageId == PackageWrapper.CRAFTBUKKIT) {
+                // this also works for un-remapped Paper 1.20+
+                clazz = Class.forName(Bukkit.getServer().getClass().getPackage().getName() + "." + clazzName);
             } else {
+                // fallback for old versions pre mojmap and in the nms package
                 String version = MinecraftVersion.getVersion().getPackageName();
                 clazz = Class.forName(packageId.getUri() + "." + version + "." + clazzName);
             }

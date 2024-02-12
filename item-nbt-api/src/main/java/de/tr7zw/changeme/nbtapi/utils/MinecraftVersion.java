@@ -1,5 +1,6 @@
 package de.tr7zw.changeme.nbtapi.utils;
 
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,6 +42,9 @@ public enum MinecraftVersion {
     private final int versionId;
     private final boolean mojangMapping;
 
+    private static final Map<String, MinecraftVersion> VERSION_TO_REVISION = Map.of("1.20", MC1_20_R1, "1.20.1",
+            MC1_20_R1, "1.20.2", MC1_20_R2, "1.20.3", MC1_20_R3, "1.20.4", MC1_20_R3);
+
     MinecraftVersion(int versionId) {
         this(versionId, false);
     }
@@ -73,7 +77,11 @@ public enum MinecraftVersion {
      */
     public String getPackageName() {
         if (this == UNKNOWN) {
-            return Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+            try {
+                return Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+            } catch (Exception ex) {
+                // ignore, paper without remap, will fail
+            }
         }
         return this.name().replace("MC", "v");
     }
@@ -108,18 +116,22 @@ public enum MinecraftVersion {
         if (version != null) {
             return version;
         }
-        final String ver = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-        logger.info("[NBTAPI] Found Spigot: " + ver + "! Trying to find NMS support");
         try {
+            final String ver = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+            logger.info("[NBTAPI] Found Minecraft: " + ver + "! Trying to find NMS support");
             version = MinecraftVersion.valueOf(ver.replace("v", "MC"));
-        } catch (IllegalArgumentException ex) {
-            version = MinecraftVersion.UNKNOWN;
+        } catch (Exception ex) {
+            logger.info("[NBTAPI] Found Minecraft: " + Bukkit.getServer().getBukkitVersion().split("-")[0]
+                    + "! Trying to find NMS support");
+            version = VERSION_TO_REVISION.getOrDefault(Bukkit.getServer().getBukkitVersion().split("-")[0],
+                    MinecraftVersion.UNKNOWN);
         }
         if (version != UNKNOWN) {
             logger.info("[NBTAPI] NMS support '" + version.name() + "' loaded!");
         } else {
-            logger.warning("[NBTAPI] This Server-Version(" + ver + ") is not supported by this NBT-API Version("
-                    + VERSION + ") located in " + VersionChecker.getPlugin()
+            logger.warning("[NBTAPI] This Server-Version(" + Bukkit.getServer().getBukkitVersion()
+                    + ") is not supported by this NBT-API Version(" + VERSION + ") located in "
+                    + VersionChecker.getPlugin()
                     + ". The NBT-API will try to work as good as it can! Some functions may not work!");
         }
         init();
@@ -245,8 +257,7 @@ public enum MinecraftVersion {
             return isFoliaPresent;
         }
         try {
-            logger.info("[NBTAPI] Found Folia: "
-                    + Class.forName("io.papermc.paper.threadedregions.RegionizedServer"));
+            logger.info("[NBTAPI] Found Folia: " + Class.forName("io.papermc.paper.threadedregions.RegionizedServer"));
             isFoliaPresent = true;
         } catch (Exception ex) {
             isFoliaPresent = false;
