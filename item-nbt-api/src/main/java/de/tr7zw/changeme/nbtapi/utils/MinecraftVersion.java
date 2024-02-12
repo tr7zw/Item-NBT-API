@@ -1,5 +1,6 @@
 package de.tr7zw.changeme.nbtapi.utils;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,8 +43,17 @@ public enum MinecraftVersion {
     private final int versionId;
     private final boolean mojangMapping;
 
-    private static final Map<String, MinecraftVersion> VERSION_TO_REVISION = Map.of("1.20", MC1_20_R1, "1.20.1",
-            MC1_20_R1, "1.20.2", MC1_20_R2, "1.20.3", MC1_20_R3, "1.20.4", MC1_20_R3);
+    // TODO: not nice
+    @SuppressWarnings("serial")
+    private static final Map<String, MinecraftVersion> VERSION_TO_REVISION = new HashMap<String, MinecraftVersion>() {
+        { 
+            this.put("1.20", MC1_20_R1);
+            this.put("1.20.1",  MC1_20_R1);
+            this.put("1.20.2", MC1_20_R2);
+            this.put("1.20.3", MC1_20_R3);
+            this.put("1.20.4", MC1_20_R3);
+        }
+    };
 
     MinecraftVersion(int versionId) {
         this(versionId, false);
