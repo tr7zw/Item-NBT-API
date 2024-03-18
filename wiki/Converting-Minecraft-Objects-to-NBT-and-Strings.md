@@ -32,11 +32,11 @@ ReadWriteNBT nbt = NBT.parseNBT(json);
 
 ```java
 // Items
-ItemStack itemStack = NBT.nbtToItemStack(nbt);
-ItemStack[] itemStacks = NBT.nbtToItemStackArray(nbt);
+ItemStack itemStack = NBT.itemStackFromNBT(nbt);
+ItemStack[] itemStacks = NBT.itemStackArrayFromNBT(nbt);
 // Entity/Tiles
 In general "new NBTEntity(entity).mergeCompound(nbt)", but you might want to remove some data from the nbt first like the Location, uuid and entityId
 // Gameprofile
-GameProfile profile = NBT.nbtToGameProfile(nbt);
+GameProfile profile = NBT.gameProfileFromNBT(nbt);
 ```
 
