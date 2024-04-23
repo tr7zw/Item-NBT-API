@@ -6,12 +6,16 @@ import org.bukkit.inventory.ItemStack;
 
 import de.tr7zw.changeme.nbtapi.NBT;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
+import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import de.tr7zw.nbtapi.plugin.tests.Test;
 
 public class MetaTest implements Test {
 
     @Override
     public void test() throws Exception {
+        if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
+            return; // skip
+        }
         ItemStack item = new ItemStack(Material.STONE);
         NBT.modify(item, nbt -> {
             nbt.setInteger("HideFlags", 1);

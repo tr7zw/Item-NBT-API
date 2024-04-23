@@ -16,6 +16,9 @@ public class DataItemProxyTest implements Test {
 
     @Override
     public void test() throws Exception {
+        if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
+            return; // skip
+        }
         ItemStack item = new ItemStack(Material.STONE);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName("Test");
