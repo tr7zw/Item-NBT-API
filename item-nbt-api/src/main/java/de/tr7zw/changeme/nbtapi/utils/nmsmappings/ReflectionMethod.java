@@ -208,7 +208,7 @@ public enum ReflectionMethod {
     TILEENTITY_GET_NBT(ClassWrapper.NMS_TILEENTITY, new Class[] { ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz() },
             MinecraftVersion.MC1_7_R4, MinecraftVersion.MC1_17_R1, new Since(MinecraftVersion.MC1_7_R4, "b"),
             new Since(MinecraftVersion.MC1_9_R1, "save")),
-    TILEENTITY_GET_NBT_1181(ClassWrapper.NMS_TILEENTITY, new Class[] {}, MinecraftVersion.MC1_18_R1,
+    TILEENTITY_GET_NBT_1181(ClassWrapper.NMS_TILEENTITY, new Class[] {}, MinecraftVersion.MC1_18_R1, MinecraftVersion.MC1_20_R3,
             new Since(MinecraftVersion.MC1_18_R1, "saveWithId()")),
     TILEENTITY_SET_NBT_LEGACY1151(ClassWrapper.NMS_TILEENTITY,
             new Class[] { ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz() }, MinecraftVersion.MC1_7_R4,
@@ -218,7 +218,7 @@ public enum ReflectionMethod {
             new Class[] { ClassWrapper.NMS_IBLOCKDATA.getClazz(), ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz() },
             MinecraftVersion.MC1_16_R1, MinecraftVersion.MC1_16_R3, new Since(MinecraftVersion.MC1_16_R1, "load")),
     TILEENTITY_SET_NBT(ClassWrapper.NMS_TILEENTITY, new Class[] { ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz() },
-            MinecraftVersion.MC1_17_R1, new Since(MinecraftVersion.MC1_16_R1, "load"),
+            MinecraftVersion.MC1_17_R1, MinecraftVersion.MC1_20_R4, new Since(MinecraftVersion.MC1_16_R1, "load"),
             new Since(MinecraftVersion.MC1_18_R1, "load(net.minecraft.nbt.CompoundTag)")),
     TILEENTITY_GET_BLOCKDATA(ClassWrapper.NMS_TILEENTITY, new Class[] {}, MinecraftVersion.MC1_16_R1,
             new Since(MinecraftVersion.MC1_16_R1, "getBlock"),
@@ -309,6 +309,10 @@ public enum ReflectionMethod {
             MinecraftVersion.MC1_20_R4, new Since(MinecraftVersion.MC1_20_R4, "registryAccess()")),
     NMSSERVER_GETSERVER(ClassWrapper.CRAFT_SERVER, new Class[] {},
             MinecraftVersion.MC1_20_R4, new Since(MinecraftVersion.MC1_20_R4, "getServer()")),
+    TILEENTITY_GET_NBT_1205(ClassWrapper.NMS_TILEENTITY, new Class[] {ClassWrapper.NMS_PROVIDER.getClazz()}, MinecraftVersion.MC1_20_R4,
+            new Since(MinecraftVersion.MC1_20_R4, "saveWithId(net.minecraft.core.HolderLookup$Provider)")),
+    TILEENTITY_SET_NBT_1205(ClassWrapper.NMS_TILEENTITY, new Class[] {ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), ClassWrapper.NMS_PROVIDER.getClazz() },
+            MinecraftVersion.MC1_20_R4, new Since(MinecraftVersion.MC1_20_R4, "loadWithComponents(net.minecraft.nbt.CompoundTag,net.minecraft.core.HolderLookup$Provider)")),
     ;
 
     private MinecraftVersion removedAfter;
