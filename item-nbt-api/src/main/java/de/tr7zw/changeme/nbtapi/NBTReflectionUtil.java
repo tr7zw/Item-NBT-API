@@ -54,18 +54,20 @@ public class NBTReflectionUtil {
         } catch (NoSuchFieldException e) {
 
         }
-        try {
-            Field typeField = ClassWrapper.NMS_DATACOMPONENTS.getClazz().getDeclaredField(
-                    MojangToMapping.getMapping().get("net.minecraft.core.component.DataComponents#CUSTOM_DATA"));
-            type_custom_data = typeField.get(null);
-        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
+        if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
+            try {
+                Field typeField = ClassWrapper.NMS_DATACOMPONENTS.getClazz().getDeclaredField(
+                        MojangToMapping.getMapping().get("net.minecraft.core.component.DataComponents#CUSTOM_DATA"));
+                type_custom_data = typeField.get(null);
+            } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
 
-        }
-        try {
-            Object nmsServer = ReflectionMethod.NMSSERVER_GETSERVER.run(Bukkit.getServer());
-            registry_access = ReflectionMethod.NMSSERVER_GETREGISTRYACCESS.run(nmsServer);
-        } catch (Exception e) {
-            e.printStackTrace();
+            }
+            try {
+                Object nmsServer = ReflectionMethod.NMSSERVER_GETSERVER.run(Bukkit.getServer());
+                registry_access = ReflectionMethod.NMSSERVER_GETREGISTRYACCESS.run(nmsServer);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
