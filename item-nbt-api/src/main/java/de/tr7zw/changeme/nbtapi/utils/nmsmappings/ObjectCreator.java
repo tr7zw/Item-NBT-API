@@ -17,6 +17,7 @@ import static de.tr7zw.changeme.nbtapi.utils.MinecraftVersion.getLogger;
 @SuppressWarnings("javadoc")
 public enum ObjectCreator {
     NMS_NBTTAGCOMPOUND(null, null, ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz()),
+    NMS_CUSTOMDATA(MinecraftVersion.MC1_20_R4, null, ClassWrapper.NMS_CUSTOMDATA.getClazz(), ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz()),
     NMS_BLOCKPOSITION(null, null, ClassWrapper.NMS_BLOCKPOSITION.getClazz(), int.class, int.class, int.class),
     NMS_COMPOUNDFROMITEM(MinecraftVersion.MC1_11_R1, null, ClassWrapper.NMS_ITEMSTACK.getClazz(),
             ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz()),;
