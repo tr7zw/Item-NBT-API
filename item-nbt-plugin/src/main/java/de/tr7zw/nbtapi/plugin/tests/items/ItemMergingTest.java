@@ -6,12 +6,16 @@ import org.bukkit.inventory.meta.BookMeta;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
+import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import de.tr7zw.nbtapi.plugin.tests.Test;
 
 public class ItemMergingTest implements Test {
 
     @Override
     public void test() throws Exception {
+        if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
+            return; // skip, there is no vanilla nbt
+        }
         ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
         BookMeta bookMeta = (BookMeta) item.getItemMeta();
         bookMeta.setAuthor("Author");

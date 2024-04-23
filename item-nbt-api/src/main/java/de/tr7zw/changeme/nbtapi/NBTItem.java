@@ -12,6 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteItemNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadableNBT;
+import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 
@@ -210,9 +211,17 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
      *
      * @param item ItemStack that should get the new NBT data
      */
+    @Deprecated
     public void mergeCustomNBT(ItemStack item) {
         if (item == null || item.getType() == Material.AIR) {
             throw new NullPointerException("ItemStack can't be null/Air!");
+        }
+        if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
+            // 1.20.5+ doesn't have any vanilla tags
+            NBT.modify(item, nbt -> {
+                nbt.mergeCompound(this);
+            });
+            return;
         }
         ItemMeta meta = item.getItemMeta();
         NBTReflectionUtil.getUnhandledNBTTags(meta)
@@ -225,7 +234,12 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
      * 
      * @return true when custom tags are present
      */
+    @Deprecated
     public boolean hasCustomNbtData() {
+        if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
+            // 1.20.5+ doesn't have any vanilla tags
+            return hasNBTData();
+        }
         finalizeChanges();
         ItemMeta meta = bukkitItem.getItemMeta();
         return !NBTReflectionUtil.getUnhandledNBTTags(meta).isEmpty();
@@ -234,8 +248,14 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
     /**
      * Remove all custom (non-vanilla) NBT tags from the NBTItem.
      */
+    @Deprecated
     public void clearCustomNBT() {
         finalizeChanges();
+        if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
+            // 1.20.5+ doesn't have any vanilla tags
+            setCompound(null);
+            return;
+        }
         ItemMeta meta = bukkitItem.getItemMeta();
         NBTReflectionUtil.getUnhandledNBTTags(meta).clear();
         bukkitItem.setItemMeta(meta);
@@ -280,6 +300,9 @@ public class NBTItem extends NBTCompound implements ReadWriteItemNBT {
         bukkitItem.setItemMeta(meta);
         updateCachedCompound();
         if (directApply) {
+            if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
+                throw new NbtApiException("Direct apply mode meta changes don't work anymore in 1.20.5+. Please switch to the modern NBT.modify sytnax!");
+            }
             applyNBT(originalSrcStack);
         }
     }

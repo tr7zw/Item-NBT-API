@@ -246,6 +246,7 @@ public class NBTReflectionUtil {
      * @return Map containing unhandled (custom) NBT tags
      */
     @SuppressWarnings("unchecked")
+    @Deprecated
     public static Map<String, Object> getUnhandledNBTTags(ItemMeta meta) {
         try {
             return (Map<String, Object>) field_unhandledTags.get(meta);
