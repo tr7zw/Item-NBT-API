@@ -313,6 +313,8 @@ public enum ReflectionMethod {
             new Since(MinecraftVersion.MC1_20_R4, "saveWithId(net.minecraft.core.HolderLookup$Provider)")),
     TILEENTITY_SET_NBT_1205(ClassWrapper.NMS_TILEENTITY, new Class[] {ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz(), ClassWrapper.NMS_PROVIDER.getClazz() },
             MinecraftVersion.MC1_20_R4, new Since(MinecraftVersion.MC1_20_R4, "loadWithComponents(net.minecraft.nbt.CompoundTag,net.minecraft.core.HolderLookup$Provider)")),
+    GET_DATAFIXER(ClassWrapper.NMS_DATAFIXERS, new Class[] {}, MinecraftVersion.MC1_20_R4,
+            new Since(MinecraftVersion.MC1_20_R4, "getDataFixer()")),
     ;
 
     private MinecraftVersion removedAfter;

@@ -27,6 +27,12 @@
       <version>2.12.4-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+	    <groupId>com.mojang</groupId>
+	    <artifactId>datafixerupper</artifactId>
+	    <version>7.0.14</version>
+	    <scope>provided</scope>
+	</dependency>
   </dependencies>
   <build>
     <resources>

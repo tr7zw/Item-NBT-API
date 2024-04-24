@@ -50,6 +50,7 @@ import de.tr7zw.nbtapi.plugin.tests.tiles.TilesCustomNBTPersistentTest;
 import de.tr7zw.nbtinjector.NBTInjector;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemMergingTest;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemStackConversionTest;
+import de.tr7zw.nbtapi.plugin.tests.items.LegacyItemTest;
 import de.tr7zw.nbtapi.plugin.tests.proxy.DataItemProxyTest;
 import de.tr7zw.nbtapi.plugin.tests.proxy.SimpleProxyTest;
 import de.tr7zw.nbtapi.plugin.tests.items.MetaTest;
@@ -127,6 +128,9 @@ public class NBTAPI extends JavaPlugin {
         if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) { // 1.7.10 not a thing
             apiTests.add(new ItemConversionTest());
             apiTests.add(new ItemStackConversionTest());
+        }
+        if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
+            apiTests.add(new LegacyItemTest());
         }
         apiTests.add(new EmptyItemTest());
         apiTests.add(new SmuggleTest());

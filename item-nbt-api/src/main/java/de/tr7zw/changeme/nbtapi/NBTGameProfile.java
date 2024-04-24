@@ -34,7 +34,7 @@ public class NBTGameProfile {
             return GameprofileUtil.readGameProfile(compound);
         }
         return (GameProfile) ReflectionMethod.GAMEPROFILE_DESERIALIZE.run(null,
-                NBTReflectionUtil.gettoCompount(compound.getCompound(), compound));
+                NBTReflectionUtil.getToCompount(compound.getCompound(), compound));
     }
 
 }

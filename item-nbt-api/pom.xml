@@ -11,6 +11,15 @@
   <artifactId>item-nbt-api</artifactId>
   <packaging>jar</packaging>
 
+  <dependencies>
+	<dependency>
+	    <groupId>com.mojang</groupId>
+	    <artifactId>datafixerupper</artifactId>
+	    <version>7.0.14</version>
+	    <scope>provided</scope>
+	</dependency>
+  </dependencies>
+
   <build>
     <defaultGoal>clean install javadoc:javadoc</defaultGoal>
     <resources>

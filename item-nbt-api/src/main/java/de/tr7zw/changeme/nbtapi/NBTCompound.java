@@ -103,7 +103,7 @@ public class NBTCompound implements ReadWriteNBT {
         }
         if (!NBTReflectionUtil.valideCompound(this))
             throw new NbtApiException("The Compound wasn't able to be linked back to the root!");
-        Object workingtag = NBTReflectionUtil.gettoCompount(rootnbttag, this);
+        Object workingtag = NBTReflectionUtil.getToCompount(rootnbttag, this);
         if (readOnly) {
             this.readOnlyCache = workingtag;
         }
