@@ -8,14 +8,23 @@ import com.mojang.serialization.DynamicOps;
 import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTContainer;
 import de.tr7zw.changeme.nbtapi.NBTReflectionUtil;
+import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.MojangToMapping;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 
 public class DataFixerUtil {
 
-    public static final int VERSION1_20_4 = 3700; // 1.20.4
-    public static final int VERSION1_20_5 = 3837; // 1.20.5
+    public static final int VERSION1_12_2 = 1343;
+    public static final int VERSION1_16_5 = 2586;
+    public static final int VERSION1_17_1 = 2730;
+    public static final int VERSION1_18_2 = 2975;
+    public static final int VERSION1_19_2 = 3120;
+    public static final int VERSION1_19_4 = 3337;
+    public static final int VERSION1_20_1 = 3465;
+    public static final int VERSION1_20_2 = 3578;
+    public static final int VERSION1_20_4 = 3700;
+    public static final int VERSION1_20_5 = 3837;
 
     @SuppressWarnings("unchecked")
     public static Object fixUpRawItemData(Object nbt, int fromVersion, int toVersion)
@@ -30,9 +39,9 @@ public class DataFixerUtil {
         return fixed.getValue();
     }
     
-    public static NBTCompound fixUpItemData(NBTCompound nbt, int fromVersion, int toVersion)
+    public static ReadWriteNBT fixUpItemData(ReadWriteNBT nbt, int fromVersion, int toVersion)
             throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-        return new NBTContainer(fixUpRawItemData(NBTReflectionUtil.getToCompount(nbt.getCompound(), nbt), fromVersion, toVersion));
+        return new NBTContainer(fixUpRawItemData(NBTReflectionUtil.getToCompount(((NBTCompound) nbt).getCompound(), ((NBTCompound) nbt)), fromVersion, toVersion));
     }
 
 }
