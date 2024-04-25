@@ -15,7 +15,7 @@ import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 public class DataFixerUtil {
 
     public static final int VERSION1_20_4 = 3817; // 1.20.4
-    public static final int VERSION1_20_5 = 3825; // 1.20.5
+    public static final int VERSION1_20_5 = 3837; // 1.20.5
 
     @SuppressWarnings("unchecked")
     public static Object fixUpRawItemData(Object nbt, int fromVersion, int toVersion)
