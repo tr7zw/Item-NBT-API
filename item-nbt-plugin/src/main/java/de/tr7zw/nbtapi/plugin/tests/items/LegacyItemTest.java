@@ -22,7 +22,7 @@ public class LegacyItemTest implements Test {
         }
         ReadWriteNBT nbt = NBT
                 .parseNBT("{id:cobblestone,Count:42,tag:{display:{Name:\"test\"},ench:[{lvl:3,id:34}]}}");
-        nbt = DataFixerUtil.fixUpItemData(nbt, DataFixerUtil.VERSION1_12_2, DataFixerUtil.VERSION1_20_5);
+        nbt = DataFixerUtil.fixUpItemData(nbt, DataFixerUtil.VERSION1_12_2, DataFixerUtil.getCurrentVersion());
         item = NBT.itemStackFromNBT(nbt);
         if (item.getType() != Material.COBBLESTONE || item.getAmount() != 42
                 || item.getEnchantmentLevel(Enchantment.DURABILITY) != 3
