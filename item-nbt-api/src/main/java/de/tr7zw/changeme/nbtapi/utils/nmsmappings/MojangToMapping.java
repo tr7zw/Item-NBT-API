@@ -73,7 +73,7 @@ public class MojangToMapping {
             put("net.minecraft.world.level.block.entity.BlockEntity#saveWithId()", "n");
             put("net.minecraft.world.level.block.entity.BlockEntity#getBlockState()", "q");
             put("net.minecraft.world.level.block.entity.BlockEntity#load(net.minecraft.nbt.CompoundTag)", "a");
-            put("net.minecraft.server.level.ServerLevel#getBlockState(net.minecraft.core.BlockPos)", "c_");
+            put("net.minecraft.server.level.ServerLevel#getBlockEntity(net.minecraft.core.BlockPos)", "c_");
         }
 
     };

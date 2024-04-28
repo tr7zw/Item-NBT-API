@@ -174,7 +174,7 @@ public enum ReflectionMethod {
             new Since(MinecraftVersion.MC1_7_R4, "getHandle")),
     NMS_WORLD_GET_TILEENTITY(ClassWrapper.NMS_WORLDSERVER, new Class[] { ClassWrapper.NMS_BLOCKPOSITION.getClazz() },
             MinecraftVersion.MC1_8_R3, new Since(MinecraftVersion.MC1_8_R3, "getTileEntity"),
-            new Since(MinecraftVersion.MC1_18_R1, "getBlockState(net.minecraft.core.BlockPos)")),
+            new Since(MinecraftVersion.MC1_18_R1, "getBlockEntity(net.minecraft.core.BlockPos)")),
     NMS_WORLD_SET_TILEENTITY(ClassWrapper.NMS_WORLDSERVER,
             new Class[] { ClassWrapper.NMS_BLOCKPOSITION.getClazz(), ClassWrapper.NMS_TILEENTITY.getClazz() },
             MinecraftVersion.MC1_8_R3, MinecraftVersion.MC1_16_R3,
