@@ -27,11 +27,11 @@ GameProfile profile = NBT.nbtToGameProfile(nbt);
 // ItemStack to NBT
 ReadWriteNBT nbt = NBT.itemStackToNBT(itemStack);
 // NBT to ItemStack
-ItemStack itemStack = NBT.nbtToItemStack(nbt);
+ItemStack itemStack = NBT.itemStackFromNBT(nbt);
 // ItemStack Array to NBT
 ReadWriteNBT nbt = NBT.itemStackArrayToNBT(itemStacks);
 // NBT to ItemStack Array
-ItemStack[] itemStacks = NBT.nbtToItemStackArray(nbt);
+ItemStack[] itemStacks = NBT.itemStackArrayFromNBT(nbt);
 // Creating a new NBT tag
 ReadWriteNBT nbt = NBT.createNBTObject();
 // Parsing a Mojang-Json String to NBT
