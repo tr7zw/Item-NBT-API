@@ -38,7 +38,7 @@ public enum MinecraftVersion {
     private static Logger logger = Logger.getLogger("NBTAPI");
 
     // NBT-API Version
-    protected static final String VERSION = "2.12.4";
+    protected static final String VERSION = "2.12.5-SNAPSHOT";
 
     private final int versionId;
     private final boolean mojangMapping;
