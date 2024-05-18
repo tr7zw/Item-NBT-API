@@ -213,8 +213,9 @@ public class NBTReflectionUtil {
         try {
             Object nmsComp = getToCompount(nbtcompound.getCompound(), nbtcompound);
             if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
-                if(nbtcompound.hasTag("tag")) {
-                    nmsComp = DataFixerUtil.fixUpRawItemData(nmsComp, DataFixerUtil.VERSION1_20_4, DataFixerUtil.getCurrentVersion());
+                if (nbtcompound.hasTag("tag")) {
+                    nmsComp = DataFixerUtil.fixUpRawItemData(nmsComp, DataFixerUtil.VERSION1_20_4,
+                            DataFixerUtil.getCurrentVersion());
                 }
                 return ReflectionMethod.NMSITEM_LOAD.run(null, registry_access, nmsComp);
             } else if (MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_11_R1.getVersionId()) {
@@ -314,6 +315,11 @@ public class NBTReflectionUtil {
             } else {
                 Object pos = ObjectCreator.NMS_BLOCKPOSITION.getInstance(tile.getX(), tile.getY(), tile.getZ());
                 o = ReflectionMethod.NMS_WORLD_GET_TILEENTITY.run(nmsworld, pos);
+            }
+
+            if (o == null) {
+                throw new NbtApiException("The passed BlockState(" + tile.getType()
+                        + ") doesn't point to a BlockEntity. Only BlockEntities like Chest/Signs/Furnance/etc have NBT.");
             }
 
             Object answer = null;
