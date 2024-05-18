@@ -40,8 +40,11 @@ public class NBTEntity extends NBTCompound {
     }
 
     /**
+     * Deprecated: Please use the NBT class
+     * 
      * @param entity Any valid Bukkit Entity
      */
+    @Deprecated
     public NBTEntity(Entity entity) {
         super(null, null);
         if (entity == null) {
