@@ -18,6 +18,7 @@ import de.tr7zw.changeme.nbtapi.iface.ReadableNBT;
 import de.tr7zw.changeme.nbtapi.wrapper.NBTProxy;
 import de.tr7zw.changeme.nbtapi.wrapper.ProxyBuilder;
 import de.tr7zw.changeme.nbtapi.iface.ReadableNBTList;
+import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 
 /**
  * General utility class for a clean and simple nbt access.
@@ -25,6 +26,7 @@ import de.tr7zw.changeme.nbtapi.iface.ReadableNBTList;
  * @author tr7zw
  *
  */
+@SuppressWarnings("deprecation")
 public class NBT {
 
     private NBT() {
@@ -223,6 +225,44 @@ public class NBT {
             throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
         }
         nbtEnt.setClosed();
+        return ret;
+    }
+    
+    /**
+     * It takes an ItemStack and a Consumer&lt;ReadWriteNBT&gt;, and then applies
+     * the Consumer to the ItemStacks Components as NBT. This is for 1.20.5+ only.
+     * This method is quiet expensive, so don't overuse it.
+     * 
+     * @param item     The item you want to modify the components of
+     * @param consumer The consumer that will be used to modify the components.
+     */
+    public static void modifyComponents(ItemStack item, Consumer<ReadWriteNBT> consumer) {
+        if(!MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
+            throw new NbtApiException("This method only works for 1.20.5+!");
+        }
+        ReadWriteNBT nbti = NBT.itemStackToNBT(item);
+        consumer.accept(nbti.getOrCreateCompound("components"));
+        ItemStack tmp = NBT.itemStackFromNBT(nbti);
+        item.setItemMeta(tmp.getItemMeta());
+    }
+    
+    /**
+     * It takes an ItemStack and a Consumer&lt;ReadWriteNBT&gt;, and then applies
+     * the Consumer to the ItemStacks Components as NBT. This is for 1.20.5+ only.
+     * This method is quiet expensive, so don't overuse it.
+     * 
+     * @param item     The item you want to modify the components of
+     * @param function The consumer that will be used to modify the components.
+     * @return The return type is the same as the return type of the function.
+     */
+    public static <T> T modifyComponents(ItemStack item, Function<ReadWriteNBT, T> function) {
+        if(!MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
+            throw new NbtApiException("This method only works for 1.20.5+!");
+        }
+        ReadWriteNBT nbti = NBT.itemStackToNBT(item);
+        T ret = function.apply(nbti.getOrCreateCompound("components"));
+        ItemStack tmp = NBT.itemStackFromNBT(nbti);
+        item.setItemMeta(tmp.getItemMeta());
         return ret;
     }
 
