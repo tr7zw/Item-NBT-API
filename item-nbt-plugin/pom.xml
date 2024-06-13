@@ -16,18 +16,6 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>de.tr7zw</groupId>
-      <artifactId>nbt-injector</artifactId>
-      <version>2.12.5-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>de.tr7zw</groupId>
-      <artifactId>nbt-data-api</artifactId>
-      <version>2.12.5-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
 	    <groupId>com.mojang</groupId>
 	    <artifactId>datafixerupper</artifactId>
 	    <version>4.0.26</version>
