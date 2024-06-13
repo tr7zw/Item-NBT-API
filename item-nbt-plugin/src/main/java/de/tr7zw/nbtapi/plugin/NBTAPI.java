@@ -34,29 +34,22 @@ import de.tr7zw.nbtapi.plugin.tests.compounds.ResolveTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.StreamTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.SubCompoundsTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.TypeTest;
-import de.tr7zw.nbtapi.plugin.tests.data.WorldDataTest;
 import de.tr7zw.nbtapi.plugin.tests.entities.EntityCustomNbtPersistentTest;
 import de.tr7zw.nbtapi.plugin.tests.entities.EntityTest;
-import de.tr7zw.nbtapi.plugin.tests.injector.EntityCustomNbtInjectorTest;
-import de.tr7zw.nbtapi.plugin.tests.injector.MergeTileSubCompoundTest;
-import de.tr7zw.nbtapi.plugin.tests.injector.SpawnEntityCustomNbtInjectorTest;
-import de.tr7zw.nbtapi.plugin.tests.injector.TilesCustomNBTInjectorTest;
 import de.tr7zw.nbtapi.plugin.tests.items.ComponentsTest;
 import de.tr7zw.nbtapi.plugin.tests.items.DirectApplyMetaTest;
 import de.tr7zw.nbtapi.plugin.tests.items.DirectApplyTest;
 import de.tr7zw.nbtapi.plugin.tests.items.EmptyItemTest;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemConversionTest;
-import de.tr7zw.nbtapi.plugin.tests.tiles.TileTest;
-import de.tr7zw.nbtapi.plugin.tests.tiles.TilesCustomNBTPersistentTest;
-import de.tr7zw.nbtinjector.NBTInjector;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemMergingTest;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemStackConversionTest;
 import de.tr7zw.nbtapi.plugin.tests.items.LegacyItemTest;
-import de.tr7zw.nbtapi.plugin.tests.proxy.DataItemProxyTest;
-import de.tr7zw.nbtapi.plugin.tests.proxy.SimpleProxyTest;
 import de.tr7zw.nbtapi.plugin.tests.items.MetaTest;
 import de.tr7zw.nbtapi.plugin.tests.items.NBTModifyItemTest;
 import de.tr7zw.nbtapi.plugin.tests.items.SmuggleTest;
+import de.tr7zw.nbtapi.plugin.tests.proxy.SimpleProxyTest;
+import de.tr7zw.nbtapi.plugin.tests.tiles.TileTest;
+import de.tr7zw.nbtapi.plugin.tests.tiles.TilesCustomNBTPersistentTest;
 
 public class NBTAPI extends JavaPlugin {
 
@@ -73,7 +66,6 @@ public class NBTAPI extends JavaPlugin {
     public void onLoad() {
 
         getConfig().options().copyDefaults(true);
-        getConfig().addDefault("nbtInjector.enabled", false);
         getConfig().addDefault("bStats.enabled", true);
         getConfig().addDefault("updateCheck.enabled", true);
         getConfig().addDefault("silentquickstart", false);
@@ -89,19 +81,6 @@ public class NBTAPI extends JavaPlugin {
             MinecraftVersion.disableUpdateCheck();
         } else {
             MinecraftVersion.enableUpdateCheck();
-        }
-
-        // Disabled by default since 2.1. Enable it yourself by calling
-        // NBTInjector.inject(); during onLoad/config
-        if (getConfig().getBoolean("nbtInjector.enabled")) {
-            getLogger().info("Injecting custom NBT");
-            try {
-                NBTInjector.inject();
-                getLogger().info("Injected!");
-            } catch (Throwable ex) { // NOSONAR
-                getLogger().log(Level.SEVERE, "Error while Injecting custom Tile/Entity classes!", ex);
-                compatible = false;
-            }
         }
 
         // NBTCompounds
@@ -136,7 +115,6 @@ public class NBTAPI extends JavaPlugin {
         apiTests.add(new ComponentsTest());
         apiTests.add(new EmptyItemTest());
         apiTests.add(new SmuggleTest());
-        apiTests.add(new DataItemProxyTest());
         apiTests.add(new MetaTest());
         if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) { // 1.7.10 not a thing
             apiTests.add(new ItemMergingTest());
@@ -164,15 +142,6 @@ public class NBTAPI extends JavaPlugin {
         // Files
         apiTests.add(new NBTFileTest());
 
-        // Data
-        apiTests.add(new WorldDataTest());
-
-        // Injector
-        apiTests.add(new TilesCustomNBTInjectorTest());
-        apiTests.add(new MergeTileSubCompoundTest());
-        apiTests.add(new EntityCustomNbtInjectorTest());
-        apiTests.add(new SpawnEntityCustomNbtInjectorTest());
-
         if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3))
             apiTests.add(new GameprofileTest());
 
@@ -187,8 +156,6 @@ public class NBTAPI extends JavaPlugin {
             VersionChecker.hideOk = true;
             return;
         }
-        getLogger().info("Adding listeners...");
-        Bukkit.getPluginManager().registerEvents(new ReloadListener(), this);
         MinecraftVersion.hasGsonSupport(); // init gson(if it hasn't already)
         getLogger().info("Checking bindings...");
         MinecraftVersion.getVersion();
