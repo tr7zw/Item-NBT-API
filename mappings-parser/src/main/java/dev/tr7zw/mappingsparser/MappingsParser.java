@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.MojangToMapping;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 
 /**
@@ -24,7 +25,7 @@ public class MappingsParser {
     public static StringBuilder builder = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
-        File input = new File("minecraft_server.1.20.5.txt");
+        File input = new File("minecraft_server.1.21.txt");
         List<String> lines = Files.readAllLines(input.toPath());
 
         Map<String, ClassWrapper> classes = new HashMap<>();
@@ -84,6 +85,8 @@ public class MappingsParser {
                 System.out.println(
                         "Missing mapping in class " + nmsWrapper.getMojangName() + " method " + entry.getKey().name());
             } else {
+                if(!entry.getValue().equals(MojangToMapping.getMapping().get(nmsWrapper.getMojangName() + "#"
+                        + entry.getKey().getSelectedVersionInfo().name)))
                 builder.append("put(\"" + nmsWrapper.getMojangName() + "#"
                         + entry.getKey().getSelectedVersionInfo().name + "\", \"" + entry.getValue() + "\");\n");
             }
