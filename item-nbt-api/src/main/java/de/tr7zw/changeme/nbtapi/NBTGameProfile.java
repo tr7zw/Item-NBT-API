@@ -15,6 +15,7 @@ public class NBTGameProfile {
      * @param profile
      * @return A NBTContainer with all the GameProfile data
      */
+    @Deprecated
     public static NBTCompound toNBT(GameProfile profile) {
         if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
             return (NBTCompound) GameprofileUtil.writeGameProfile(NBT.createNBTObject(), profile);
@@ -29,6 +30,7 @@ public class NBTGameProfile {
      * @param compound Has to contain GameProfile data
      * @return The reconstructed GameProfile
      */
+    @Deprecated
     public static GameProfile fromNBT(NBTCompound compound) {
         if(MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
             return GameprofileUtil.readGameProfile(compound);
