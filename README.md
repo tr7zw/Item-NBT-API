@@ -1,6 +1,6 @@
 # Item-NBT-API
 
-Add custom NBT tags to Items/Tiles/Entities without NMS! Modify NBT and store it Files, other NBT or as String in yaml/json/SQL/Redis.
+Add custom NBT tags to Items/Tiles/Entities without NMS! Modify NBT and store it in Files, other NBT, or as String in yaml/json/SQL/Redis.
 [Server Owner/Developer Wiki](https://github.com/tr7zw/Item-NBT-API/wiki)
 
 ### Build/Maven/Sonar Status
@@ -15,7 +15,7 @@ Add custom NBT tags to Items/Tiles/Entities without NMS! Modify NBT and store it
 
 ## Getting started
 
-Import the API [using Maven](https://github.com/tr7zw/Item-NBT-API/wiki/Using-Maven), then check out the [basic usage](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API) or code examples like [working with Skulls](https://github.com/tr7zw/Item-NBT-API/wiki/Set-a-skull's-skin-using-NBT-API).
+Import the API using [Maven](https://github.com/tr7zw/Item-NBT-API/wiki/Using-Maven) or [Gradle](https://github.com/tr7zw/Item-NBT-API/wiki/Using-Gradle), then check out the [basic usage](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API) or code examples like [working with Skulls](https://github.com/tr7zw/Item-NBT-API/wiki/Example-Usages#set-a-skulls-skin).
 
 ### bStats
 

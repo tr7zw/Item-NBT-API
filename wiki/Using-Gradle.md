@@ -19,7 +19,7 @@ repositories {
 }
 ```
 
-Finally, add the API as dependency to your ``plugin.yml``
+Add the API as dependency to your ``plugin.yml``:
 
 ```yml
 depend: [NBTAPI]
@@ -48,6 +48,9 @@ implementation("de.tr7zw:item-nbt-api:VERSION")
 
 (Get the current Version from [here](https://www.spigotmc.org/resources/nbt-api.7939/))
 
+> [!IMPORTANT]
+> Make sure you're using ``item-nbt-api`` as ``artifactId``, never shade the ``-plugin`` artifact!
+
 ```groovy
 repositories {
     ...
@@ -74,4 +77,3 @@ build {
     dependsOn(shadowJar)
 }
 ```
-

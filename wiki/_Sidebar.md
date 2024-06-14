@@ -1,21 +1,23 @@
 [Home](https://github.com/tr7zw/Item-NBT-API/wiki)
 
-[Using the NBT API](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API)   
 [Using Maven](https://github.com/tr7zw/Item-NBT-API/wiki/Using-Maven) /
 [Using Gradle](https://github.com/tr7zw/Item-NBT-API/wiki/Using-Gradle)
+
+[FAQ](https://github.com/tr7zw/Item-NBT-API/wiki/FAQ)
 
 ## Code Examples
 
 ### General
 
-* [Converting Minecraft Objects to NBT and Strings](https://github.com/tr7zw/Item-NBT-API/wiki/Converting-Minecraft-Objects-to-NBT-and-Strings)
-* [Merging Compounds](https://github.com/tr7zw/Item-NBT-API/wiki/Merging-Compounds-(Copy-the-data-from-one-onto-another-compound))
+* [Basics](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#basics-overview)
+* [Items](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#working-with-items)
+* [Tiles/Entities](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#working-with-tilesentities)
+* [Blocks](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#working-with-blocks)
 
-### Items
+### Extras
 
-* [Set a skull's skin using NBT API](https://github.com/tr7zw/Item-NBT-API/wiki/Set-a-skull's-skin-using-NBT-API)
-
-### Entities
-
-* [Zombie that can pick up loot and does 0.5 hearths of damage](https://github.com/tr7zw/Item-NBT-API/wiki/Zombie-that-can-pick-up-loot-and-does-0.5-hearths-of-damage)
-
+* [Example usages](https://github.com/tr7zw/Item-NBT-API/wiki/Example-Usages)
+* [NBT files](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#nbt-files)
+* [NBT objects](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#converting-minecraft-objects-to-nbt-and-strings)
+* [NBT proxies](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#nbt-proxies)
+* [Data converter utils](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#data-converter-utils)

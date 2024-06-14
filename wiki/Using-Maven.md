@@ -26,7 +26,7 @@ Add the following Entries to your pom at the correct location:
 </repositories>
 ```
 
-Add the API as dependency to your plugin.yml
+Add the API as dependency to your ``plugin.yml``:
 
 ```yaml
 depend: [NBTAPI]
@@ -46,7 +46,8 @@ Add the following Entries to your pom at the correct location:
 
 (Get the current Version from [here](https://modrinth.com/plugin/nbtapi/versions))
 
-**IMPORTANT: This is not the same ``artifactId`` as using it as dependency! Never shade the ``-plugin`` artifact!**
+> [!IMPORTANT]
+> Make sure you're using ``item-nbt-api`` as ``artifactId``, never shade the ``-plugin`` artifact!
 
 ```xml
 <repositories>
@@ -96,4 +97,3 @@ Example:
   <shadedPattern>com.yourname.pluginname.nbtapi</shadedPattern>
 </relocation>
 ```
-
