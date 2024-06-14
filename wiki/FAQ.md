@@ -21,6 +21,6 @@ The experimental NBTInjector became unsupported since Minecraft 1.14 and was rem
 
 NBTInjector is incompatible with reloads and may break things, and thus is not recommended.
 
-If you're using Minecraft 1.14, you should switch to the persistent storage API instead.
+If you're using Minecraft 1.14+, you should switch to the persistent storage API instead.
 
 In versions prior to 1.14, you may use a workaround like storing data inside an item's nbt that the entity is wearing (e.g. having a button in mob's helmet, and storing data on that button).
