@@ -33,7 +33,7 @@ nbt.getKeys(); // Get all Tags
 nbt.hasTag("key"); // Check whether the Tag exists
 nbt.hasTag("key", NbtType.NBTTagString); // Check whether the Tag exists and matches the type
 nbt.removeKey("key"); // Remove the Tag
-NBTType nbtType = getType("key"); // Get the type of the Tag
+NBTType nbtType = nbt.getType("key"); // Get the type of the Tag
 
 // Subtag compounds
 nbt.getCompound("subtag"); // Get a subtag, or null
@@ -69,17 +69,26 @@ tag1.mergeCompound(tag2);
 
 #### Resolving data
 
+To simplify working with deeply nested NBT, resolve methods allow directly getting or working with these nested tags.
+
+Compounds are separated by dots ``.`` In case you need a ``.`` inside a key, it can be escaped with a backslash ``\``.
+
 ```java
-// For accessing deeply nested subtags, you may use the resolve methods
 // For example, the following code:
 nbt.resolveOrCreateCompound("foo.bar.baz");
 // Will get/create the same subtag compound as:
 nbt.getOrCreateCompound("foo").getOrCreateCompound("bar").getOrCreateCompound("baz");
 
-// Dots in keys may be escaped with a backslash
-nbt.resolveCompound("foo.some\\.key.baz"); // Gets the nested compound, or null
+// Get compound if exists, or null otherwise
+nbt.resolveCompound("foo.some.key.baz");
 
-// Similarly, you may also fetch values from nested subtags
+// Sets foo/bar/baz/test to 42
+nbt.resolveOrCreateCompound("foo.bar.baz").setInteger("test", 42);
+
+// Example of a key with a . in it. Sets the key foo/some.key/baz/other to 123
+nbt.resolveOrCreateCompound("foo.some\\.key.baz").setInteger("other", 123);
+
+// Similarly, you may also fetch values from nested compounds/subtags
 String s = nbt.resolveOrDefault("foo.bar.Stringtest", "fallback_value");
 Integer i = nbt.resolveOrNull("foo\\.bar.baz.Inttest", Integer.class);
 ```
@@ -93,6 +102,9 @@ Integer i = nbt.resolveOrNull("foo\\.bar.baz.Inttest", Integer.class);
 // Get or create a string list
 ReadWriteNBTList<String> stringList = nbt.getStringList("list_key");
 stringList.add("value");
+
+// Get the list type, NBTTagString in this case
+NBTType type = nbt.getListType("list_key");
 
 // You can obtain the value back just like with normal Lists
 nbt.getStringList("list_key").get(0);
@@ -134,7 +146,7 @@ NBT.get(itemStack, nbt -> {
 });
 
 // Getting data
-String string = NBT.get(itemStack, (String) nbt -> nbt.getString("Stringtest"));
+String string = NBT.get(itemStack, nbt -> (String) nbt.getString("Stringtest"));
 
 // Modifying and getting data
 int someValue = NBT.modify(itemStack, nbt -> {
@@ -178,7 +190,7 @@ The example code for entities is applicable for tile entities too.
 
 ```java
 // Obtain data
-boolean silent = NBT.get(entity, (boolean) nbt -> nbt.getBoolean("Silent"));
+boolean silent = NBT.get(entity, nbt -> (boolean) nbt.getBoolean("Silent"));
 // Modify data
 NBT.modify(entity, nbt -> {
     nbt.setBoolean("Silent", true);
@@ -192,7 +204,7 @@ For reading/storing custom data on tiles/entities, you should use methods that e
 
 ```java
 // Obtain data
-boolean test = NBT.getPersistentData(entity, (boolean) nbt -> nbt.getBoolean("custom_key"));
+boolean test = NBT.getPersistentData(entity, nbt -> (boolean) nbt.getBoolean("custom_key"));
 // Modify data
 NBT.modifyPersistentData(entity, nbt -> {
     nbt.setBoolean("custom_key", true);
@@ -211,6 +223,8 @@ NBT.modifyPersistentData(entity, nbt -> {
 > Storage solutions like per-player [NBT files](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#nbt-files) might be more than enough (and is basically what vanilla does, but you'll have your own file instead of using the one inside the world). Cache the file's data on join and save on quit/server shutdown, optionally adding auto saving.
 
 #### Simulate the "/data merge" command
+
+Applicable for items/tiles/entities/etc.
 
 ```java
 NBT.modify(zombie, nbt -> {
@@ -271,21 +285,19 @@ Minecraft Objects <-> NBT <-> String (Mojang-Json)
 
 #### Items
 
-// TODO nbt examples
-
-While ``NBT.get/modify`` works with live item data/nbt, the ItemStack object nbt represents item's serialized data. It includes item type, amount and data components/nbt.
+While ``NBT.get/modify`` allows you to modify item's direct nbt (or only the ``custom_data`` container since 1.20.5), the ItemStack object nbt represents the item's serialized data. It includes item type, amount and all extra item tags.
 
 For example, when ``NBT.get`` looks like this:
 
-`{}`
+`{foo:"bar",points:12,test:1b}`
 
-The ItemStack object nbt would look like this:
+The ItemStack object nbt from ``NBT.itemStackToNBT`` may look like this:
 
-`{}`
+`{components:{"minecraft:custom_data":{foo:"bar",points:12,test:1b}},count:2,id:"minecraft:stone"}`
 
 Or like this in versions prior to 1.20.5:
 
-`{}`
+`{Count:2b,id:"minecraft:stone",tag:{foo:"bar",points:12,test:1b}}`
 
 ###### Serializing/deserializing items
 
@@ -305,10 +317,10 @@ ReadWriteNBT nbt = NBT.parseNBT(json);
 
 ```java
 // Saving
-ReadWriteNBT entityNbt = NBT.parseNBT(NBT.get(entity, (String) nbt -> nbt.toString()));
+ReadWriteNBT entityNbt = NBT.parseNBT(NBT.get(entity, nbt -> (String) nbt.toString()));
 // Restoring
 NBT.modify(entity, nbt -> {
-    // You might want also to filter out entityNbt first,
+    // You might also want to filter out entityNbt first,
     // e.g. remove some data like location, uuid, entityId, etc.
     nbt.mergeCompound(entityNbt);
 });
@@ -323,9 +335,71 @@ ReadWriteNBT nbt = NBT.gameProfileToNBT(profile);
 GameProfile profile = NBT.gameProfileFromNBT(nbt);
 ```
 
-### NBT proxies
+### Interface proxies
 
-// TODO
+You may define your own interfaces extending ``NBTProxy`` to create wrappers around nbt.
+
+Methods starting with ``has``/``get``/``set`` will be interpreted as their respective calls.
+
+```java
+interface TestInterface extends NBTProxy {
+    // Runs: return nbt.hasTag("kills");
+    boolean hasKills();
+    // Runs: nbt.setInteger("kills", amount);
+    void setKills(int amount);
+    // Runs: return nbt.getInteger("kills");
+    int getKills();
+
+    // Also supported
+    default void addKill() {
+        setKills(getKills() + 1);
+    }
+}
+```
+
+Getters are also allowed to return other interfaces extending ``NBTProxy``.
+
+And by using ``@NBTTarget`` annotation you may have a more gradual control over data. It allows to set the type of the method (``has``/``get``/``set``) and the data key.
+
+```java
+interface TestInterface extends NBTProxy {
+    // Will get PointsInterface from data in "other" key
+    @NBTTarget(type = Type.GET, value = "other")
+    PointsInterface getOtherInterface();
+}
+
+interface PointsInterface extends NBTProxy {
+    int getPoints();
+    void setPoints(int points);
+}
+```
+
+To support other data types like ItemStacks, you need to override the init method and register appropriate handlers.
+
+```java
+interface TestInterface extends NBTProxy {
+    @Override
+    default void init() {
+        registerHandler(ItemStack.class, NBTHandlers.ITEM_STACK);
+        registerHandler(ReadableNBT.class, NBTHandlers.STORE_READABLE_TAG);
+        registerHandler(ReadWriteNBT.class, NBTHandlers.STORE_READWRITE_TAG);
+    }
+
+    ItemStack getItem();
+    void setItem(ItemStack item);
+
+    ReadWriteNBT getBlockStateTag();
+    void setBlockStateTag(ReadableNBT blockState);
+}
+```
+
+``NBTHandlers`` class contains some pre-defined handlers.
+
+###### Custom handlers
+
+If you need to support custom data types that aren't available in ``NBTHandlers``, you can write your own by creating a new ``NBTHandler``.
+
+You can refer to [NBTHandlers](https://github.com/tr7zw/Item-NBT-API/blob/master/item-nbt-api/src/main/java/de/tr7zw/changeme/nbtapi/handler/NBTHandlers.java) class to see how the default implementations are done.
 
 ### Data fixer utils
 
