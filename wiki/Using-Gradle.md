@@ -77,3 +77,4 @@ build {
     dependsOn(shadowJar)
 }
 ```
+

@@ -4,13 +4,11 @@ NBT-API supports Spigot and Paper versions starting at 1.8. It runs on 1.7.10 to
 
 Feel free to seek for support in [![Discord](https://img.shields.io/discord/342814924310970398?color=%237289DA&label=Discord&logo=discord&logoColor=white)](https://discordapp.com/invite/yk4caxM).
 
-
 ### What do I have to do as a server owner?
 
 Just download the jar and drop it in the plugins folder. Done!
 
 You might also want to check out some [plugins that use NBT-API](https://github.com/tr7zw/Item-NBT-API/wiki/Plugins).
-
 
 ### How can I use the API as a developer?
 

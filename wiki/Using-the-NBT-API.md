@@ -155,7 +155,7 @@ NBT.modify(itemStack, nbt -> {
 
 > [!IMPORTANT]
 > Since Minecraft 1.20.5 ItemStacks no longer have vanilla nbt during runtime.
-> 
+>
 > As a workaround, you may use the following code:
 
 ```java
@@ -199,7 +199,7 @@ NBT.modifyPersistentData(entity, nbt -> {
 
 > [!IMPORTANT]
 > When working with tile entities, make sure that the block entity exists in the world.
-> 
+>
 > For example, you may not be able to add data to a chest in `BlockPlaceEvent` because the chest hasn't been placed yet. In such case, you can delay your actions by one tick or set the block to chest manually.
 
 #### Simulate the "/data merge" command
@@ -273,6 +273,7 @@ NBT.modify(entity, nbt -> {
 ```
 
 #### Game profiles
+
 ```java
 // Saving
 ReadWriteNBT nbt = NBT.gameProfileToNBT(profile);

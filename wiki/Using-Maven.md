@@ -97,3 +97,4 @@ Example:
   <shadedPattern>com.yourname.pluginname.nbtapi</shadedPattern>
 </relocation>
 ```
+

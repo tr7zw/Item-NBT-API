@@ -1,6 +1,7 @@
 ## Set a skull's skin
 
 // TODO broken link
+
 #### We will be using [this head](https://minecraft-heads.com/custom-heads/food%20&%20drinks/28194-cup-of-soda) as example.
 
 ```java
@@ -34,6 +35,7 @@ NBT.modify(item, nbt -> {
 ```
 
 ## Zombie that can pick up loot and does 0.5 hearts of damage
+
 ```java
 Zombie zombie = (Zombie) world.spawnEntity(location, EntityType.ZOMBIE);
 NBT.modify(zombie, nbt -> {
@@ -47,3 +49,4 @@ NBT.modify(zombie, nbt -> {
     }
 });
 ```
+
