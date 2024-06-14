@@ -1,10 +1,10 @@
 ## Frequently Asked Questions
 
-### I've updated NBT-API, but is keeps saying that it's outdated
+### I've updated NBT-API, but it keeps saying that it's outdated
 
-// TODO
+Some other plugin on your server has a shaded version of NBT-API. Try looking at the logs to find out which plugin is it, or add/remove your plugins until you find a culprit.
 
-### I've downloaded NBT-API, but the plugin keeps asking for ItemNBTAPI
+### I've installed NBT-API, but the plugin keeps asking for ItemNBTAPI
 
 The plugin uses a very outdated version of NBT-API. In this case, download the version 1.8.3 from the versions tab. The outdated "ItemNBTAPI" and "NBTAPI" can be used both at the same time.
 

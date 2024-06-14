@@ -48,5 +48,13 @@ NBT.modify(zombie, nbt -> {
         }
     }
 });
+
+// TODO is this valid in newer versions?
+```
+
+## Reading world data
+
+```java
+// TODO
 ```
 

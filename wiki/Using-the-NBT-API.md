@@ -107,7 +107,7 @@ ReadWriteNBTCompoundList nbtList = nbt.getOrCreateCompound("foo").getCompoundLis
 ReadWriteNBT nbtListEntry = addCompound();
 nbtListEntry.setBoolean("bar", true);
 
-// You can also fetch compounds in lists
+// You can fetch compounds in lists
 nbt.resolveCompound("foo.other_key[0]"); // Get the first compound in list, or null
 nbt.resolveOrCreateCompound("foo.other_key[1]"); // Get the second compound in list, or create it
 // Or fetch data from them
@@ -153,8 +153,11 @@ NBT.modify(itemStack, nbt -> {
 });
 ```
 
+###### Changing vanilla nbt on 1.20.5+
+
 > [!IMPORTANT]
 > Since Minecraft 1.20.5 ItemStacks no longer have vanilla nbt during runtime.
+> Any calls like ``NBT.get`` or ``NBT.modify`` will access only the item's ``custom_data`` component.
 >
 > As a workaround, you may use the following code:
 
@@ -201,6 +204,11 @@ NBT.modifyPersistentData(entity, nbt -> {
 > When working with tile entities, make sure that the block entity exists in the world.
 >
 > For example, you may not be able to add data to a chest in `BlockPlaceEvent` because the chest hasn't been placed yet. In such case, you can delay your actions by one tick or set the block to chest manually.
+>
+> [!NOTE]
+> If you plan to store some data for players, you might also consider using an external storage instead to not clutter the players' data files inside the world folder. Since any data written to the persistent storage is there forever, you can leave redundant data behind when your plugin is removed, but it's perfectly fine to store data in there otherwise.
+>
+> Storage solutions like per-player [NBT files](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#nbt-files) might be more than enough (and is basically what vanilla does, but you'll have your own file instead of using the one inside the world). Cache the file's data on join and save on quit/server shutdown, optionally adding auto saving.
 
 #### Simulate the "/data merge" command
 
@@ -212,9 +220,26 @@ NBT.modify(zombie, nbt -> {
 
 ### Working with blocks
 
-You can store data in tile blocks (tile entities like chest, furnace, etc.) using the examples above, but normal blocks do not have the nbt data.
+You can store data in tile entities (block entities like chest, furnace, etc.) using the examples from section above, but normal blocks do not have the nbt data.
 
-// TODO nbt chunk & nbt block
+Thus, you have to use your own block data storage to store custom block data.
+
+You can store data inside Chunks since 1.16.4, and NBT-API allows you to do so by using ``NBTChunk``:
+
+```java
+ReadWriteNBT nbt = new NBTChunk(chunk).getPersistentDataContainer();
+```
+
+Similarly, there is ``NBTBlock``, which allows you to store block data inside chunk's data.
+
+```java
+// Block's data will be stored in Chunk's data in "blocks.x_y_z" subtag
+ReadWriteNBT nbt = new NBTBlock(block).getData();
+```
+
+**However**, keep in mind that this data is linked only to the location, and if the block gets broken/changed/exploded/moved/etc., the data will still be on that location unless manually cleared/moved!
+
+Moreover, since the data is stored inside Chunk, this will increase the chunk's size on the disk.
 
 ## Extras
 
@@ -246,7 +271,23 @@ Minecraft Objects <-> NBT <-> String (Mojang-Json)
 
 #### Items
 
-// TODO explanation about ItemStack object nbt vs get/setItemStack nbt
+// TODO nbt examples
+
+While ``NBT.get/modify`` works with live item data/nbt, the ItemStack object nbt represents item's serialized data. It includes item type, amount and data components/nbt.
+
+For example, when ``NBT.get`` looks like this:
+
+`{}`
+
+The ItemStack object nbt would look like this:
+
+`{}`
+
+Or like this in versions prior to 1.20.5:
+
+`{}`
+
+###### Serializing/deserializing items
 
 ```java
 // Saving
@@ -255,11 +296,12 @@ ReadWriteNBT nbt = NBT.itemStackArrayToNBT(itemStacks);
 // Restoring
 ItemStack itemStack = NBT.itemStackFromNBT(nbt);
 ItemStack[] itemStacks = NBT.itemStackArrayFromNBT(nbt);
+// Reminder (NBT <-> String)
+String json = nbt.toString();
+ReadWriteNBT nbt = NBT.parseNBT(json);
 ```
 
 #### Tiles/Entities
-
-// TODO is there a more elegant solution?
 
 ```java
 // Saving
@@ -285,6 +327,22 @@ GameProfile profile = NBT.gameProfileFromNBT(nbt);
 
 // TODO
 
-### Data converter utils
+### Data fixer utils
 
-// TODO
+``DataFixerUtil`` allows updating nbt from versions since 1.12.2 to more recent ones.
+
+For example, given the input from 1.12.2:
+
+`{Count:42,id:"cobblestone",tag:{display:{Name:"test"},ench:[{id:34,lvl:3}]}}`
+
+You can update it to 1.20.6:
+
+`{components:{"minecraft:custom_name":'{"text":"test"}',"minecraft:enchantments":{levels:{"minecraft:unbreaking":3}}},count:42,id:"minecraft:cobblestone"}`
+
+By using the following code:
+
+```java
+DataFixerUtil.fixUpItemData(nbt, DataFixerUtil.VERSION1_12_2, DataFixerUtil.VERSION1_20_6);
+```
+
+You can also use `DataFixerUtil.getCurrentVersion()` to update the data to whatever version the server s running.
