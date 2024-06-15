@@ -317,7 +317,8 @@ ReadWriteNBT nbt = NBT.parseNBT(json);
 
 ```java
 // Saving
-ReadWriteNBT entityNbt = NBT.parseNBT(NBT.get(entity, nbt -> (String) nbt.toString()));
+ReadWriteNBT entityNbt = NBT.createNBTObject();
+NBT.get(entity, entityNbt::mergeCompound);
 // Restoring
 NBT.modify(entity, nbt -> {
     // You might also want to filter out entityNbt first,
