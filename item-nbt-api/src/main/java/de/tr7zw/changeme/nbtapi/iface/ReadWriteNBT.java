@@ -205,6 +205,7 @@ public interface ReadWriteNBT extends ReadableNBT {
     ReadWriteNBTCompoundList getCompoundList(String name);
     
     @Override
+    @Nullable
     ReadWriteNBT resolveCompound(String key);
 
     /**
