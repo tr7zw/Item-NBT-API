@@ -44,7 +44,7 @@ nbt.getOrCreateCompound("subtag"); // Get or create a subtag
 
 ```java
 // Parse Mojang-Json string to nbt
-ReadWriteNBT nbt = NBT.parseNBT("{Silent:1b,Invulnerable:1b,Glowing:1b,IsBaby:1b}");
+ReadWriteNBT nbt = NBT.parseNBT("{Health:20.0f,Motion:[0.0d,10.0d,0.0d],Silent:1b}");
 // Get the NBT back as a Mojang-Json string (works with any NBT object)
 String json = nbt.toString();
 // Turn back into nbt again
@@ -202,6 +202,11 @@ NBT.modify(entity, nbt -> {
 
 For reading/storing custom data on tiles/entities, you should use methods that end with PersistentData.
 
+> [!IMPORTANT]
+> When working with tile entities, make sure that the block entity exists in the world.
+>
+> For example, you may not be able to add data to a chest in `BlockPlaceEvent` because the chest hasn't been placed yet. In such case, you can delay your actions by one tick or set the block to chest manually.
+
 ```java
 // Obtain data
 boolean test = NBT.getPersistentData(entity, nbt -> (boolean) nbt.getBoolean("custom_key"));
@@ -212,11 +217,6 @@ NBT.modifyPersistentData(entity, nbt -> {
 });
 ```
 
-> [!IMPORTANT]
-> When working with tile entities, make sure that the block entity exists in the world.
->
-> For example, you may not be able to add data to a chest in `BlockPlaceEvent` because the chest hasn't been placed yet. In such case, you can delay your actions by one tick or set the block to chest manually.
->
 > [!NOTE]
 > If you plan to store some data for players, you might also consider using an external storage instead to not clutter the players' data files inside the world folder. Since any data written to the persistent storage is there forever, you can leave redundant data behind when your plugin is removed, but it's perfectly fine to store data in there otherwise.
 >
