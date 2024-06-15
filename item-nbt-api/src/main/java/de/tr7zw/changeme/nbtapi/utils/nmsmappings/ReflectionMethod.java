@@ -114,7 +114,7 @@ public enum ReflectionMethod {
             new Since(MinecraftVersion.MC1_7_R4, "getCompound"),
             new Since(MinecraftVersion.MC1_18_R1, "getCompound(java.lang.String)")),
 
-    NMSITEM_GETTAG(ClassWrapper.NMS_ITEMSTACK, new Class[] {}, MinecraftVersion.MC1_7_R4,
+    NMSITEM_GETTAG(ClassWrapper.NMS_ITEMSTACK, new Class[] {}, MinecraftVersion.MC1_7_R4, MinecraftVersion.MC1_20_R3,
             new Since(MinecraftVersion.MC1_7_R4, "getTag"), new Since(MinecraftVersion.MC1_18_R1, "getTag()")),
     NMSITEM_SAVE(ClassWrapper.NMS_ITEMSTACK, new Class[] { ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz() },
             MinecraftVersion.MC1_7_R4, MinecraftVersion.MC1_20_R3, new Since(MinecraftVersion.MC1_7_R4, "save"),
@@ -278,7 +278,7 @@ public enum ReflectionMethod {
             MinecraftVersion.MC1_13_R2, MinecraftVersion.MC1_17_R1, new Since(MinecraftVersion.MC1_13_R2, "getKey")),
 
     GAMEPROFILE_DESERIALIZE(ClassWrapper.NMS_GAMEPROFILESERIALIZER,
-            new Class[] { ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz() }, MinecraftVersion.MC1_7_R4,
+            new Class[] { ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz() }, MinecraftVersion.MC1_7_R4, MinecraftVersion.MC1_20_R3,
             new Since(MinecraftVersion.MC1_7_R4, "deserialize"),
             new Since(MinecraftVersion.MC1_18_R1, "readGameProfile(net.minecraft.nbt.CompoundTag)")),
     GAMEPROFILE_SERIALIZE(ClassWrapper.NMS_GAMEPROFILESERIALIZER,
