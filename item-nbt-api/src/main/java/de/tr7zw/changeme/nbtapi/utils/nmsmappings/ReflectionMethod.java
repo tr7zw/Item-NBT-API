@@ -5,8 +5,6 @@ import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.UUID;
-import java.util.stream.Collectors;
-
 import org.bukkit.inventory.ItemStack;
 
 import de.tr7zw.changeme.nbtapi.NbtApiException;
@@ -175,10 +173,6 @@ public enum ReflectionMethod {
     NMS_WORLD_GET_TILEENTITY(ClassWrapper.NMS_WORLDSERVER, new Class[] { ClassWrapper.NMS_BLOCKPOSITION.getClazz() },
             MinecraftVersion.MC1_8_R3, new Since(MinecraftVersion.MC1_8_R3, "getTileEntity"),
             new Since(MinecraftVersion.MC1_18_R1, "getBlockEntity(net.minecraft.core.BlockPos)")),
-    NMS_WORLD_SET_TILEENTITY(ClassWrapper.NMS_WORLDSERVER,
-            new Class[] { ClassWrapper.NMS_BLOCKPOSITION.getClazz(), ClassWrapper.NMS_TILEENTITY.getClazz() },
-            MinecraftVersion.MC1_8_R3, MinecraftVersion.MC1_16_R3,
-            new Since(MinecraftVersion.MC1_8_R3, "setTileEntity")),
     NMS_WORLD_REMOVE_TILEENTITY(ClassWrapper.NMS_WORLDSERVER, new Class[] { ClassWrapper.NMS_BLOCKPOSITION.getClazz() },
             MinecraftVersion.MC1_8_R3, MinecraftVersion.MC1_17_R1, new Since(MinecraftVersion.MC1_8_R3, "t"),
             new Since(MinecraftVersion.MC1_9_R1, "s"), new Since(MinecraftVersion.MC1_13_R1, "n"),
@@ -187,11 +181,9 @@ public enum ReflectionMethod {
     NMS_WORLD_GET_TILEENTITY_1_7_10(ClassWrapper.NMS_WORLDSERVER, new Class[] { int.class, int.class, int.class },
             MinecraftVersion.MC1_7_R4, MinecraftVersion.MC1_7_R4,
             new Since(MinecraftVersion.MC1_7_R4, "getTileEntity")),
-    // FIXME: No Spigot mapping!
     TILEENTITY_LOAD_LEGACY191(ClassWrapper.NMS_TILEENTITY,
             new Class[] { ClassWrapper.NMS_MINECRAFTSERVER.getClazz(), ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz() },
             MinecraftVersion.MC1_9_R1, MinecraftVersion.MC1_9_R1, new Since(MinecraftVersion.MC1_9_R1, "a")),
-    // FIXME: No Spigot mapping!
     TILEENTITY_LOAD_LEGACY183(ClassWrapper.NMS_TILEENTITY, new Class[] { ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz() },
             MinecraftVersion.MC1_8_R3, MinecraftVersion.MC1_9_R2, new Since(MinecraftVersion.MC1_8_R3, "c"),
             new Since(MinecraftVersion.MC1_9_R1, "a"), new Since(MinecraftVersion.MC1_9_R2, "c")),
@@ -264,10 +256,8 @@ public enum ReflectionMethod {
             MinecraftVersion.MC1_13_R1, new Since(MinecraftVersion.MC1_11_R1, "keySet")),
     REGISTRY_GET(ClassWrapper.NMS_REGISTRYSIMPLE, new Class[] { Object.class }, MinecraftVersion.MC1_11_R1,
             MinecraftVersion.MC1_13_R1, new Since(MinecraftVersion.MC1_11_R1, "get")),
-    // FIXME: No Spigot mapping!
     REGISTRY_SET(ClassWrapper.NMS_REGISTRYSIMPLE, new Class[] { Object.class, Object.class },
             MinecraftVersion.MC1_11_R1, MinecraftVersion.MC1_13_R1, new Since(MinecraftVersion.MC1_11_R1, "a")),
-    // FIXME: No Spigot mapping!
     REGISTRY_GET_INVERSE(ClassWrapper.NMS_REGISTRYMATERIALS, new Class[] { Object.class }, MinecraftVersion.MC1_11_R1,
             MinecraftVersion.MC1_13_R1, new Since(MinecraftVersion.MC1_11_R1, "b")),
     REGISTRYMATERIALS_KEYSET(ClassWrapper.NMS_REGISTRYMATERIALS, new Class[] {}, MinecraftVersion.MC1_13_R1,
@@ -442,11 +432,11 @@ public enum ReflectionMethod {
         return parentClassWrapper;
     }
 
-    public static class Since {
-        public final MinecraftVersion version;
-        public final String name;
+    private static class Since {
+        final MinecraftVersion version;
+        final String name;
 
-        public Since(MinecraftVersion version, String name) {
+        private Since(MinecraftVersion version, String name) {
             this.version = version;
             this.name = name;
         }

@@ -32,16 +32,6 @@ public class NbtApiException extends RuntimeException {
     /**
      * @param message
      * @param cause
-     * @param enableSuppression
-     * @param writableStackTrace
-     */
-    public NbtApiException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(generateMessage(message), cause, enableSuppression, writableStackTrace);
-    }
-
-    /**
-     * @param message
-     * @param cause
      */
     public NbtApiException(String message, Throwable cause) {
         super(generateMessage(message), cause);

@@ -1460,7 +1460,7 @@ public class NBTCompound implements ReadWriteNBT {
         return false;
     }
 
-    protected static boolean isEqual(NBTCompound compA, NBTCompound compB, String key) {
+    private static boolean isEqual(NBTCompound compA, NBTCompound compB, String key) {
         if (compA.getType(key) != compB.getType(key))
             return false;
         switch (compA.getType(key)) {

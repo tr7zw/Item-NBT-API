@@ -65,7 +65,7 @@ public class ProxyBuilder<T extends NBTProxy> implements InvocationHandler {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private static Function<Arguments, Object> createFunction(NBTProxy proxy, Method method) {
         if ("toString".equals(method.getName()) && method.getParameterCount() == 0
                 && method.getReturnType() == String.class) {
