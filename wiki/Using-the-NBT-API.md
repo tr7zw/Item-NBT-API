@@ -2,7 +2,7 @@
 
 ### Basics overview
 
-Most of the things are exposed inside the [NBT](https://tr7zw.github.io/Item-NBT-API/v2-api/de/tr7zw/changeme/nbtapi/NBT.html) class.
+Most of the things are exposed inside the [NBT](https://tr7zw.github.io/Item-NBT-API/v2-api/de/tr7zw/changeme/nbtapi/NBT.html) class. Make sure to explore the Javadoc, or ask your IDE for suggestions!
 
 #### Basic getting and setting of data
 
@@ -88,7 +88,7 @@ nbt.resolveOrCreateCompound("foo.bar.baz").setInteger("test", 42);
 // Example of a key with a . in it. Sets the key foo/some.key/baz/other to 123
 nbt.resolveOrCreateCompound("foo.some\\.key.baz").setInteger("other", 123);
 
-// Similarly, you may also fetch values from nested compounds/subtags
+// Similarly, you may also fetch values from nested compounds
 String s = nbt.resolveOrDefault("foo.bar.Stringtest", "fallback_value");
 Integer i = nbt.resolveOrNull("foo\\.bar.baz.Inttest", Integer.class);
 ```
@@ -165,7 +165,7 @@ NBT.modify(itemStack, nbt -> {
 });
 ```
 
-###### Changing vanilla nbt on 1.20.5+
+###### Changing vanilla item nbt on 1.20.5+
 
 > [!IMPORTANT]
 > Since Minecraft 1.20.5 ItemStacks no longer have vanilla nbt during runtime.
@@ -234,7 +234,7 @@ NBT.modify(zombie, nbt -> {
 
 ### Working with blocks
 
-You can store data in tile entities (block entities like chest, furnace, etc.) using the examples from section above, but normal blocks do not have the nbt data.
+You can store data in tile entities (block entities like chest, furnace, etc.) using the examples from the section above, but normal blocks do not have the nbt data.
 
 Thus, you have to use your own block data storage to store custom block data.
 
@@ -253,7 +253,7 @@ ReadWriteNBT nbt = new NBTBlock(block).getData();
 
 **However**, keep in mind that this data is linked only to the location, and if the block gets broken/changed/exploded/moved/etc., the data will still be on that location unless manually cleared/moved!
 
-Moreover, since the data is stored inside Chunk, this will increase the chunk's size on the disk.
+Moreover, since the data is stored inside a Chunk, this will increase the chunk's size on the disk.
 
 ## Extras
 
@@ -360,7 +360,7 @@ interface TestInterface extends NBTProxy {
 
 Getters are also allowed to return other interfaces extending ``NBTProxy``.
 
-And by using ``@NBTTarget`` annotation you may have a more gradual control over data. It allows to set the type of the method (``has``/``get``/``set``) and the data key.
+And by using ``@NBTTarget`` annotation you may have a more gradual control over data. It allows setting the type of the method (``has``/``get``/``set``) and the data key.
 
 ```java
 interface TestInterface extends NBTProxy {
@@ -420,4 +420,4 @@ By using the following code:
 DataFixerUtil.fixUpItemData(nbt, DataFixerUtil.VERSION1_12_2, DataFixerUtil.VERSION1_20_6);
 ```
 
-You can also use `DataFixerUtil.getCurrentVersion()` to update the data to whatever version the server s running.
+You can also use ``DataFixerUtil.getCurrentVersion()`` to update the data to whatever version the server is running.
