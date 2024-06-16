@@ -432,11 +432,11 @@ public enum ReflectionMethod {
         return parentClassWrapper;
     }
 
-    private static class Since {
-        final MinecraftVersion version;
-        final String name;
+    public static class Since {
+        public final MinecraftVersion version;
+        public final String name;
 
-        private Since(MinecraftVersion version, String name) {
+        public Since(MinecraftVersion version, String name) {
             this.version = version;
             this.name = name;
         }
