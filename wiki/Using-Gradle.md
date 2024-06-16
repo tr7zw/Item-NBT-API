@@ -1,12 +1,17 @@
+To start using NB-API, you either need to depend on its plugin version, or shade (include) it inside your plugin.
+
+> [!IMPORTANT]
+> Plugin and shaded versions have different ``artifactId``. Make sure to correctly choose the one you need!
+
 # Option 1) NBT-API as a dependency
 
-Add the following Entries to your Gradle build at the correct location:
+Add the following entries to your Gradle build at the correct locations:
 
 ```groovy
 compileOnly("de.tr7zw:item-nbt-api-plugin:VERSION")
 ```
 
-(Get the current Version from [here](https://www.spigotmc.org/resources/nbt-api.7939/))
+(Get the current ``VERSION`` from [here](https://modrinth.com/plugin/nbtapi/versions))
 
 ```groovy
 repositories {
@@ -38,7 +43,6 @@ plugins {
 ```
 
 The latest version of the shadow plugin can be found [here](https://github.com/johnrengelman/shadow/releases).
-<br/>
 
 Add NBT-API to your dependencies:
 
@@ -46,9 +50,9 @@ Add NBT-API to your dependencies:
 implementation("de.tr7zw:item-nbt-api:VERSION")
 ```
 
-(Get the current Version from [here](https://www.spigotmc.org/resources/nbt-api.7939/))
+(Get the current ``VERSION`` from [here](https://modrinth.com/plugin/nbtapi/versions))
 
-> [!IMPORTANT]
+> [!WARNING]
 > Make sure you're using ``item-nbt-api`` as ``artifactId``, never shade the ``-plugin`` artifact!
 
 ```groovy
@@ -62,7 +66,7 @@ repositories {
 }
 ```
 
-After this you can add the shadowjar configuration to relocate the api package:
+After this you can add the shadowJar configuration to relocate the API package:
 
 ```groovy
 shadowJar {
@@ -70,7 +74,7 @@ shadowJar {
 }
 ```
 
-If you want to run the shadowJar task when the build task is executed, you can write like this:
+If you want to run the shadowJar task when the build task is executed, you can use this:
 
 ```groovy
 build {
