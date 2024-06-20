@@ -11,7 +11,7 @@
 
 * [Basics](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#basics-overview)
 * [Items](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#working-with-items)
-* [Tiles/Entities](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#working-with-tilesentities)
+* [Block-Entities/Entities](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#working-with-(block-)entities)
 * [Blocks](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#working-with-blocks)
 
 ### Extras

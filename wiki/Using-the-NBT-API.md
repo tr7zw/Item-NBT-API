@@ -180,13 +180,13 @@ NBT.modifyComponents(item, nbt -> {
 });
 ```
 
-### Working with tiles/entities
+### Working with (block-)entities
 
-Working with entities and tile entities is similar to working items.
+Working with entities and block entities is similar to working items.
 
 #### Accessing vanilla nbt
 
-The example code for entities is applicable for tile entities too.
+The example code for entities is applicable for block entities too.
 
 ```java
 // Obtain data
@@ -200,10 +200,10 @@ NBT.modify(entity, nbt -> {
 
 #### Accessing custom data
 
-For reading/storing custom data on tiles/entities, you should use methods that end with PersistentData.
+For reading/storing custom data on (block-)entities, you should use methods that end with PersistentData.
 
 > [!IMPORTANT]
-> When working with tile entities, make sure that the block entity exists in the world.
+> When working with block entities, make sure that the block entity exists in the world.
 >
 > For example, you may not be able to add data to a chest in `BlockPlaceEvent` because the chest hasn't been placed yet. In such case, you can delay your actions by one tick or set the block to chest manually.
 
@@ -224,7 +224,7 @@ NBT.modifyPersistentData(entity, nbt -> {
 
 #### Simulate the "/data merge" command
 
-Applicable for items/tiles/entities/etc.
+Applicable for items/block entities/entities/etc.
 
 ```java
 NBT.modify(zombie, nbt -> {
@@ -234,7 +234,7 @@ NBT.modify(zombie, nbt -> {
 
 ### Working with blocks
 
-You can store data in tile entities (block entities like chest, furnace, etc.) using the examples from the section above, but normal blocks do not have the nbt data.
+You can store data in block entities (block entities like chest, furnace, etc.) using the examples from the section above, but normal blocks do not have the nbt data.
 
 Thus, you have to use your own block data storage to store custom block data.
 
@@ -313,7 +313,7 @@ String json = nbt.toString();
 ReadWriteNBT nbt = NBT.parseNBT(json);
 ```
 
-#### Tiles/Entities
+#### (Block-)Entities
 
 ```java
 // Saving
