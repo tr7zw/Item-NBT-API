@@ -20,5 +20,5 @@
 * [NBT files](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#nbt-files)
 * [NBT objects](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#converting-minecraft-objects-to-nbt-and-strings)
 * [Interface proxies](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#interface-proxies)
-* [Data fixer utils](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#data-converter-utils)
+* [Data fixer utils](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#data-fixer-utils)
 
