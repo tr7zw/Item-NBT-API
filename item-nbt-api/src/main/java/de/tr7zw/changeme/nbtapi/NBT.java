@@ -2,6 +2,7 @@ package de.tr7zw.changeme.nbtapi;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.logging.Level;
 
 import javax.annotation.Nullable;
 
@@ -19,6 +20,8 @@ import de.tr7zw.changeme.nbtapi.wrapper.NBTProxy;
 import de.tr7zw.changeme.nbtapi.wrapper.ProxyBuilder;
 import de.tr7zw.changeme.nbtapi.iface.ReadableNBTList;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 
 /**
  * General utility class for a clean and simple nbt access.
@@ -31,6 +34,45 @@ public class NBT {
 
     private NBT() {
         // No instances of NBT. Utility class
+    }
+
+    /**
+     * Utility method for shaded versions to preload and check the API during
+     * onEnable. This method does not throw an exception and instead logs them. Will
+     * return false if something fundamentally is wrong and the NBTAPI is in a non
+     * functioning state. The shading plugin then needs to handle this. Note:
+     * Calling this method during onLoad will cause an failure, so please wait till
+     * onEnable.
+     * 
+     * @return true if everything went fine
+     */
+    public static boolean preloadApi() {
+        try {
+            // boiled down version of the plugin selfcheck without tests
+            if (MinecraftVersion.getVersion() == MinecraftVersion.UNKNOWN) {
+                NbtApiException.confirmedBroken = true;
+                return false;
+            }
+            for (ClassWrapper c : ClassWrapper.values()) {
+                if (c.isEnabled() && c.getClazz() == null) {
+                    NbtApiException.confirmedBroken = true;
+                    return false;
+                }
+            }
+            for (ReflectionMethod method : ReflectionMethod.values()) {
+                if (method.isCompatible() && !method.isLoaded()) {
+                    NbtApiException.confirmedBroken = true;
+                    return false;
+                }
+            }
+            // not settings NbtApiException.confirmedBroken = false, as no actual tests were done. 
+            // This just means the version was found, and all reflections seem to work.
+            return true;
+        } catch (Exception ex) {
+            NbtApiException.confirmedBroken = true;
+            MinecraftVersion.getLogger().log(Level.WARNING, "[NBTAPI] Error during the selfcheck!", ex);
+            return false;
+        }
     }
 
     /**
