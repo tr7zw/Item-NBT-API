@@ -1,26 +1,17 @@
-# Welcome to the NBT API wiki
+# Welcome to the NBT-API wiki
 
-NBT API has been tested on Spigot
-1.7.10-1.19+
+NBT-API supports Spigot and Paper versions starting at 1.8. It runs on 1.7.10 too, but some features might not work (see [1.7 support](https://github.com/tr7zw/Item-NBT-API/wiki/FAQ#17-support)).
 
-Full JavaDoc can be found [here](https://tr7zw.github.io/Item-NBT-API/v2-api/)!
+Feel free to seek for support in [![Discord](https://img.shields.io/discord/342814924310970398?color=%237289DA&label=Discord&logo=discord&logoColor=white)](https://discordapp.com/invite/yk4caxM).
 
 ### What do I have to do as a server owner?
 
-Just download the jar and drop it in the plugins folder. Done.
-Note that outdated plugins may ask for "ItemNBTAPI". In this case, download version 1.8.3 from the versions tab. The outdated "ItemNBTAPI" and "NBTAPI" can be used at the same time.
+Just download the jar and drop it in the plugins folder. Done!
 
-### 1.7 Notes
-
-* Use 1.7.10
-* NBTLists may not work
-* NBTTypes don't work as 1.7.x is missing this feature.
-* TLDR: 1.7.10 is a bit broken and not everything will work! Also it's not supported anymore!
-
-### Don't reload the NBT-Injector
-
-Reloading in general is a horrible thing and it will break the NBTInjector in horrible ways! When updating plugins/changing configs always restart the server normally!
+You might also want to check out some [plugins that use NBT-API](https://github.com/tr7zw/Item-NBT-API/wiki/Plugins).
 
 ### How can I use the API as a developer?
 
-See [Using the NBT API](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API)
+Import the API using [Maven](https://github.com/tr7zw/Item-NBT-API/wiki/Using-Maven) or [Gradle](https://github.com/tr7zw/Item-NBT-API/wiki/Using-Gradle), then see the [basic usage](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API) or code examples like [working with Skulls](https://github.com/tr7zw/Item-NBT-API/wiki/Set-a-skull's-skin-using-NBT-API) to familiarize yourself with the API.
+
+Full Javadoc can be found [here](https://tr7zw.github.io/Item-NBT-API/v2-api/)!
