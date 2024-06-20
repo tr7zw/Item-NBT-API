@@ -12,6 +12,6 @@ You might also want to check out some [plugins that use NBT-API](https://github.
 
 ### How can I use the API as a developer?
 
-Import the API using [Maven](https://github.com/tr7zw/Item-NBT-API/wiki/Using-Maven) or [Gradle](https://github.com/tr7zw/Item-NBT-API/wiki/Using-Gradle), then see the [basic usage](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API) or code examples like [working with Skulls](https://github.com/tr7zw/Item-NBT-API/wiki/Set-a-skull's-skin-using-NBT-API) to familiarize yourself with the API.
+Import the API using [Maven](https://github.com/tr7zw/Item-NBT-API/wiki/Using-Maven) or [Gradle](https://github.com/tr7zw/Item-NBT-API/wiki/Using-Gradle), then see the [basic usage](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API) or code examples like [working with Skulls](https://github.com/tr7zw/Item-NBT-API/wiki/Example-Usages#set-a-skulls-skin) to familiarize yourself with the API.
 
 Full Javadoc can be found [here](https://tr7zw.github.io/Item-NBT-API/v2-api/)!
