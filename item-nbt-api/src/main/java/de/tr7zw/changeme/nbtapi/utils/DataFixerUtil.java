@@ -16,6 +16,9 @@ import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 
 public class DataFixerUtil {
 
+    // these values can be found in DetectedVersion inside mc
+    // Finding pre 1.12.2 values is left as an exercise for the reader, 
+    // as DetectedVersion is not a thing there
     public static final int VERSION1_12_2 = 1343;
     public static final int VERSION1_16_5 = 2586;
     public static final int VERSION1_17_1 = 2730;
@@ -26,6 +29,7 @@ public class DataFixerUtil {
     public static final int VERSION1_20_2 = 3578;
     public static final int VERSION1_20_4 = 3700;
     public static final int VERSION1_20_5 = 3837;
+    public static final int VERSION1_21 = 3953;
 
     @SuppressWarnings("unchecked")
     public static Object fixUpRawItemData(Object nbt, int fromVersion, int toVersion)
@@ -58,7 +62,9 @@ public class DataFixerUtil {
      * @return
      */
     public static int getCurrentVersion() {
-        if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
+        if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_21_R1)) {
+            return VERSION1_21;
+        } else if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
             return VERSION1_20_5;
         } else if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R3)) {
             return VERSION1_20_4;

@@ -404,7 +404,7 @@ You can refer to [NBTHandlers](https://github.com/tr7zw/Item-NBT-API/blob/master
 
 ### Data fixer utils
 
-``DataFixerUtil`` allows updating nbt from versions since 1.12.2 to more recent ones.
+``DataFixerUtil`` allows updating nbt from older versions to more recent ones.
 
 For example, given the input from 1.12.2:
 
