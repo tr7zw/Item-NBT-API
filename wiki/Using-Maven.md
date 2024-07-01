@@ -8,6 +8,19 @@ To start using NB-API, you either need to depend on its plugin version, or shade
 Add the following entries to your pom at the correct locations:
 
 ```xml
+<repositories>
+...
+<!-- CodeMC -->
+<repository>
+  <id>codemc-repo</id>
+  <url>https://repo.codemc.io/repository/maven-public/</url>
+  <layout>default</layout>
+</repository>
+...
+</repositories>
+```
+
+```xml
 <dependency>
   <groupId>de.tr7zw</groupId>
   <artifactId>item-nbt-api-plugin</artifactId>
@@ -17,19 +30,6 @@ Add the following entries to your pom at the correct locations:
 ```
 
 (Get the current ``VERSION`` from [here](https://modrinth.com/plugin/nbtapi/versions))
-
-```xml
-<repositories>
-...
-<!-- CodeMC -->
-<repository>
-<id>codemc-repo</id>
-<url>https://repo.codemc.io/repository/maven-public/</url>
-<layout>default</layout>
-</repository>
-...
-</repositories>
-```
 
 Add the API as dependency to your ``plugin.yml``:
 
@@ -84,6 +84,19 @@ Replace ``YOUR PACKAGE WHERE THE API SHOULD END UP`` with your own unique packag
 Then, add NBT-API to your dependencies by including the following entries to your pom at the correct locations:
 
 ```xml
+<repositories>
+...
+<!-- CodeMC -->
+<repository>
+  <id>codemc-repo</id>
+  <url>https://repo.codemc.io/repository/maven-public/</url>
+  <layout>default</layout>
+</repository>
+...
+</repositories>
+```
+
+```xml
 <dependency>
   <groupId>de.tr7zw</groupId>
   <artifactId>item-nbt-api</artifactId>
@@ -96,16 +109,19 @@ Then, add NBT-API to your dependencies by including the following entries to you
 > [!WARNING]
 > Make sure you're using ``item-nbt-api`` as ``artifactId``, never shade the ``-plugin`` artifact!
 
-```xml
-<repositories>
-...
-<!-- CodeMC -->
-<repository>
-<id>codemc-repo</id>
-<url>https://repo.codemc.io/repository/maven-public/</url>
-<layout>default</layout>
-</repository>
-...
-</repositories>
+###### Initializing NBT-API early
+
+If you are shading NBT-API, you may call ``NBT.preloadApi()`` during ``onEnable`` to initialize NBT-API early and check whether everything works. If you omit this step, NBT-API will be initialized on the first call to the API.
+
+```java
+@Override
+public void onEnable() {
+    if (!NBT.preloadApi()) {
+        getLogger().warning("NBT-API wasn't initialized properly, disabling the plugin");
+        getPluginLoader().disablePlugin(this);
+        return;
+    }
+    // Load other things
+}
 ```
 

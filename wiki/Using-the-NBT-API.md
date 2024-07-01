@@ -128,6 +128,8 @@ boolean bar = nbt.resolveOrDefault("foo.other_key[0].bar", false);
 
 ### Working with items
 
+You can read/write nbt data on items using ``NBT.get``/``NBT.modify`` methods.
+
 ```java
 // Setting data
 NBT.modify(itemStack, nbt -> {
@@ -154,7 +156,14 @@ int someValue = NBT.modify(itemStack, nbt -> {
     nbt.setInteger(i);
     return i;
 });
+```
 
+###### ItemMeta usage
+
+> [!WARNING]
+> Never mix the usage of ItemMeta and NBT.
+
+```java
 // Updating ItemMeta using NBT
 NBT.modify(itemStack, nbt -> {
     nbt.setInteger("kills", nbt.getOrDefault("kills", 0) + 1);
@@ -180,9 +189,9 @@ NBT.modifyComponents(item, nbt -> {
 });
 ```
 
-### Working with (block-)entities
+### Working with entities and block entities
 
-Working with entities and block entities is similar to working items.
+Working with entities and block entities is similar to working with items.
 
 #### Accessing vanilla nbt
 
@@ -313,7 +322,7 @@ String json = nbt.toString();
 ReadWriteNBT nbt = NBT.parseNBT(json);
 ```
 
-#### (Block-)Entities
+#### Entities and block entities
 
 ```java
 // Saving

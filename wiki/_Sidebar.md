@@ -9,9 +9,9 @@
 
 ### General
 
-* [Basics](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#basics-overview)
+* [Basics](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API)
 * [Items](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#working-with-items)
-* [Block-Entities/Entities](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#working-with-(block-)entities)
+* [Block-Entities/Entities](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#working-with-entities-and-block-entities)
 * [Blocks](https://github.com/tr7zw/Item-NBT-API/wiki/Using-the-NBT-API#working-with-blocks)
 
 ### Extras

@@ -8,12 +8,6 @@ To start using NB-API, you either need to depend on its plugin version, or shade
 Add the following entries to your Gradle build at the correct locations:
 
 ```groovy
-compileOnly("de.tr7zw:item-nbt-api-plugin:VERSION")
-```
-
-(Get the current ``VERSION`` from [here](https://modrinth.com/plugin/nbtapi/versions))
-
-```groovy
 repositories {
     ...
     maven {
@@ -23,6 +17,12 @@ repositories {
     ...
 }
 ```
+
+```groovy
+compileOnly("de.tr7zw:item-nbt-api-plugin:VERSION")
+```
+
+(Get the current ``VERSION`` from [here](https://modrinth.com/plugin/nbtapi/versions))
 
 Add the API as dependency to your ``plugin.yml``:
 
@@ -47,15 +47,6 @@ The latest version of the shadow plugin can be found [here](https://github.com/j
 Add NBT-API to your dependencies:
 
 ```groovy
-implementation("de.tr7zw:item-nbt-api:VERSION")
-```
-
-(Get the current ``VERSION`` from [here](https://modrinth.com/plugin/nbtapi/versions))
-
-> [!WARNING]
-> Make sure you're using ``item-nbt-api`` as ``artifactId``, never shade the ``-plugin`` artifact!
-
-```groovy
 repositories {
     ...
     maven {
@@ -65,6 +56,15 @@ repositories {
     ...
 }
 ```
+
+```groovy
+implementation("de.tr7zw:item-nbt-api:VERSION")
+```
+
+(Get the current ``VERSION`` from [here](https://modrinth.com/plugin/nbtapi/versions))
+
+> [!WARNING]
+> Make sure you're using ``item-nbt-api`` as ``artifactId``, never shade the ``-plugin`` artifact!
 
 After this you can add the shadowJar configuration to relocate the API package:
 
@@ -79,6 +79,22 @@ If you want to run the shadowJar task when the build task is executed, you can u
 ```groovy
 build {
     dependsOn(shadowJar)
+}
+```
+
+###### Initializing NBT-API early
+
+If you are shading NBT-API, you may call ``NBT.preloadApi()`` during ``onEnable`` to initialize NBT-API early and check whether everything works. If you omit this step, NBT-API will be initialized on the first call to the API.
+
+```java
+@Override
+public void onEnable() {
+    if (!NBT.preloadApi()) {
+        getLogger().warning("NBT-API wasn't initialized properly, disabling the plugin");
+        getPluginLoader().disablePlugin(this);
+        return;
+    }
+    // Load other things
 }
 ```
 
