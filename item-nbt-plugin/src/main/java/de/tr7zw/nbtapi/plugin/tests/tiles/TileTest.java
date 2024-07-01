@@ -22,7 +22,7 @@ public class TileTest implements Test {
             try {
                 Block block = world.getBlockAt(world.getSpawnLocation().getBlockX(), 254,
                         world.getSpawnLocation().getBlockZ());
-                if (block.getChunk().isLoaded() && block.getType() == Material.AIR) {
+                if (world.isChunkLoaded(block.getX() >> 4, block.getZ() >> 4) && block.getType() == Material.AIR) {
                     block.setType(Material.CHEST);
                     NBTTileEntity tile = new NBTTileEntity(block.getState());
                     if (!MinecraftVersion.isNewerThan(MinecraftVersion.MC1_17_R1)) {
