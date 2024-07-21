@@ -118,5 +118,8 @@ NBTFile playerNbtFile = new NBTFile(playerFile);
 // Change player's health
 float health = playerNbtFile.getFloat("Health");
 playerNbtFile.setFloat("Health", health + 5);
+
+// Once finished, save the file
+playerNbtFile.save();
 ```
 
