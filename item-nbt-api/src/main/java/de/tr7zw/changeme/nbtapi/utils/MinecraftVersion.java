@@ -56,6 +56,7 @@ public enum MinecraftVersion {
             this.put("1.20.5", MC1_20_R4);
             this.put("1.20.6", MC1_20_R4);
             this.put("1.21", MC1_21_R1);
+            this.put("1.21.1", MC1_21_R1);
         }
     };
 
