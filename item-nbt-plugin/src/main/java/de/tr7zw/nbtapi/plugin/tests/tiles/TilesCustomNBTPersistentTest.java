@@ -25,7 +25,7 @@ public class TilesCustomNBTPersistentTest implements Test {
             try {
                 Block block = world.getBlockAt(world.getSpawnLocation().getBlockX(), 250,
                         world.getSpawnLocation().getBlockZ());
-                if (block.getType() == Material.AIR) {
+                if (world.isChunkLoaded(block.getX() >> 4, block.getZ() >> 4) && block.getType() == Material.AIR) {
                     block.setType(Material.CHEST);
                     NBTTileEntity comp = new NBTTileEntity(block.getState());
                     NBTCompound persistentData = comp.getPersistentDataContainer();
