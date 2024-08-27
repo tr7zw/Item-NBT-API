@@ -213,7 +213,7 @@ public class NBTReflectionUtil {
         try {
             Object nmsComp = getToCompount(nbtcompound.getCompound(), nbtcompound);
             if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
-                if (nbtcompound.hasTag("tag")) {
+                if (nbtcompound.hasTag("tag") || nbtcompound.hasTag("Count")) {
                     nmsComp = DataFixerUtil.fixUpRawItemData(nmsComp, DataFixerUtil.VERSION1_20_4,
                             DataFixerUtil.getCurrentVersion());
                 }
