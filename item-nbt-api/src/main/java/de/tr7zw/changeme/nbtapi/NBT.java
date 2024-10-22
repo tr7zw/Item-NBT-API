@@ -273,7 +273,7 @@ public class NBT {
     /**
      * It takes an ItemStack and a Consumer&lt;ReadWriteNBT&gt;, and then applies
      * the Consumer to the ItemStacks Components as NBT. This is for 1.20.5+ only.
-     * This method is quiet expensive, so don't overuse it.
+     * This method is quite expensive, so don't overuse it.
      * 
      * @param item     The item you want to modify the components of
      * @param consumer The consumer that will be used to modify the components.
@@ -291,7 +291,7 @@ public class NBT {
     /**
      * It takes an ItemStack and a Consumer&lt;ReadWriteNBT&gt;, and then applies
      * the Consumer to the ItemStacks Components as NBT. This is for 1.20.5+ only.
-     * This method is quiet expensive, so don't overuse it.
+     * This method is quite expensive, so don't overuse it.
      * 
      * @param item     The item you want to modify the components of
      * @param function The consumer that will be used to modify the components.
@@ -306,6 +306,39 @@ public class NBT {
         ItemStack tmp = NBT.itemStackFromNBT(nbti);
         item.setItemMeta(tmp.getItemMeta());
         return ret;
+    }
+    
+    /**
+     * It takes an ItemStack and a Consumer&lt;ReadWriteNBT&gt;, and then applies
+     * the Consumer to the ItemStacks Components as NBT. This is for 1.20.5+ only.
+     * This method is quite expensive, try to cache the results/use it smartly.
+     * 
+     * @param item     The item you want to read the components of
+     * @param consumer The consumer that will be used to read the components.
+     */
+    public static void getComponents(ItemStack item, Consumer<ReadableNBT> consumer) {
+        if(!MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
+            throw new NbtApiException("This method only works for 1.20.5+!");
+        }
+        ReadWriteNBT nbti = NBT.itemStackToNBT(item);
+        consumer.accept(nbti.getOrCreateCompound("components"));
+    }
+    
+    /**
+     * It takes an ItemStack and a Consumer&lt;ReadWriteNBT&gt;, and then applies
+     * the Consumer to the ItemStacks Components as NBT. This is for 1.20.5+ only.
+     * This method is quite expensive, try to cache the results/use it smartly.
+     * 
+     * @param item     The item you want to read the components of
+     * @param function The consumer that will be used to read the components.
+     * @return The return type is the same as the return type of the function.
+     */
+    public static <T> T getComponents(ItemStack item, Function<ReadableNBT, T> function) {
+        if(!MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
+            throw new NbtApiException("This method only works for 1.20.5+!");
+        }
+        ReadWriteNBT nbti = NBT.itemStackToNBT(item);
+        return function.apply(nbti.getOrCreateCompound("components"));
     }
 
     /**
