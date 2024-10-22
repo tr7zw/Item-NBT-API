@@ -3,24 +3,22 @@ package de.tr7zw.nbtapi.plugin.tests.compounds;
 import java.util.Arrays;
 import java.util.UUID;
 
-import de.tr7zw.changeme.nbtapi.NBTCompound;
-import de.tr7zw.changeme.nbtapi.NBTCompoundList;
-import de.tr7zw.changeme.nbtapi.NBTContainer;
-import de.tr7zw.changeme.nbtapi.NBTList;
-import de.tr7zw.changeme.nbtapi.NBTListCompound;
+import de.tr7zw.changeme.nbtapi.NBT;
 import de.tr7zw.changeme.nbtapi.NBTType;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
+import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBTCompoundList;
+import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBTList;
 import de.tr7zw.nbtapi.plugin.tests.Test;
 
 public class ListTest implements Test {
 
     @Override
     public void test() throws Exception {
-        NBTContainer comp = new NBTContainer();
+        ReadWriteNBT comp = NBT.createNBTObject();
 
         // Strings
-        NBTList<String> list = comp.getStringList("testlist");
+        ReadWriteNBTList<String> list = comp.getStringList("testlist");
         list.add("test1");
         list.add("test2");
         list.add("test3");
@@ -32,14 +30,14 @@ public class ListTest implements Test {
         }
 
         // Compound
-        NBTCompoundList taglist = comp.getCompoundList("complist");
-        NBTListCompound lcomp = taglist.addCompound();
+        ReadWriteNBTCompoundList taglist = comp.getCompoundList("complist");
+        ReadWriteNBT lcomp = taglist.addCompound();
         lcomp.setDouble("double1", 0.3333);
         lcomp.setInteger("int1", 42);
         lcomp.setString("test1", "test1");
         lcomp.setString("test2", "test2");
         lcomp.removeKey("test1");
-        NBTCompound subsubcomp = lcomp.addCompound("listsubkey");
+        ReadWriteNBT subsubcomp = lcomp.getOrCreateCompound("listsubkey");
         subsubcomp.setString("deep", "String");
         subsubcomp.getCompoundList("deeplist").addCompound().setString("test", "test");
         subsubcomp.getCompoundList("clonelist").addCompound(comp);
@@ -77,7 +75,7 @@ public class ListTest implements Test {
         }
 
         // Integer
-        NBTList<Integer> intlist = comp.getIntegerList("inttest");
+        ReadWriteNBTList<Integer> intlist = comp.getIntegerList("inttest");
         intlist.add(42);
         intlist.add(69);
         if (intlist.size() == 2 && intlist.get(0) == 42 && intlist.get(1) == 69) {
@@ -91,7 +89,7 @@ public class ListTest implements Test {
         }
 
         // Double
-        NBTList<Double> doublelist = comp.getDoubleList("doubletest");
+        ReadWriteNBTList<Double> doublelist = comp.getDoubleList("doubletest");
         doublelist.add(42.23d);
         doublelist.add(69.69d);
         if (doublelist.size() == 2 && doublelist.get(0) == 42.23d && doublelist.get(1) == 69.69d) {
@@ -106,7 +104,7 @@ public class ListTest implements Test {
         }
 
         // Float
-        NBTList<Float> floatlist = comp.getFloatList("floattest");
+        ReadWriteNBTList<Float> floatlist = comp.getFloatList("floattest");
         floatlist.add(42.23f);
         floatlist.add(69.69f);
         if (floatlist.size() == 2 && floatlist.get(0) == 42.23f && floatlist.get(1) == 69.69f) {
@@ -120,7 +118,7 @@ public class ListTest implements Test {
         }
 
         // Long
-        NBTList<Long> longlist = comp.getLongList("longtest");
+        ReadWriteNBTList<Long> longlist = comp.getLongList("longtest");
         longlist.add(1241234124124l);
         longlist.add(1231454321312l);
         if (longlist.size() == 2 && longlist.get(0) == 1241234124124l && longlist.get(1) == 1231454321312l) {
@@ -134,7 +132,7 @@ public class ListTest implements Test {
         }
 
         // int[]
-        NBTList<int[]> intArrayList = comp.getIntArrayList("intatest");
+        ReadWriteNBTList<int[]> intArrayList = comp.getIntArrayList("intatest");
         intArrayList.add(new int[] { 1, 2, 3 });
         intArrayList.add(new int[] { 4, 2, 0 });
         if (intArrayList.size() == 2 && Arrays.equals(new int[] { 1, 2, 3 }, intArrayList.get(0))
@@ -149,7 +147,7 @@ public class ListTest implements Test {
         }
 
         // UUID
-        NBTList<UUID> uuidList = comp.getUUIDList("uuidtest");
+        ReadWriteNBTList<UUID> uuidList = comp.getUUIDList("uuidtest");
         uuidList.add(UUID.fromString("fce0323d-7f50-4317-9720-5f6b14cf78ea"));
         uuidList.add(UUID.fromString("853c80ef-3c37-49fd-aa49-938b674adae6"));
         if (uuidList.size() == 2 && UUID.fromString("fce0323d-7f50-4317-9720-5f6b14cf78ea").equals(uuidList.get(0))

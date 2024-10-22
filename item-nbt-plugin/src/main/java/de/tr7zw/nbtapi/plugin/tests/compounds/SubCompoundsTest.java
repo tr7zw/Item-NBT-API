@@ -1,8 +1,8 @@
 package de.tr7zw.nbtapi.plugin.tests.compounds;
 
-import de.tr7zw.changeme.nbtapi.NBTCompound;
-import de.tr7zw.changeme.nbtapi.NBTContainer;
+import de.tr7zw.changeme.nbtapi.NBT;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
+import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.nbtapi.plugin.tests.Test;
 
 public class SubCompoundsTest implements Test {
@@ -19,9 +19,9 @@ public class SubCompoundsTest implements Test {
 
     @Override
     public void test() throws Exception {
-        NBTContainer cont = new NBTContainer();
+        ReadWriteNBT cont = NBT.createNBTObject();
 
-        NBTCompound comp = cont.addCompound(COMP_TEST_KEY);
+        ReadWriteNBT comp = cont.getOrCreateCompound(COMP_TEST_KEY);
         comp.setString(STRING_TEST_KEY, STRING_TEST_VALUE + "2");
         comp.setInteger(INT_TEST_KEY, INT_TEST_VALUE * 2);
         comp.setDouble(DOUBLE_TEST_KEY, DOUBLE_TEST_VALUE * 2);

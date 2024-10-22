@@ -1,5 +1,8 @@
 package de.tr7zw.changeme.nbtapi;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.logging.Level;
@@ -12,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.mojang.authlib.GameProfile;
 
+import de.tr7zw.changeme.nbtapi.iface.NBTFileHandle;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteItemNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadableItemNBT;
@@ -200,9 +204,9 @@ public class NBT {
     }
 
     /**
-     * It takes a block entity and a function that takes a ReadableNBT and returns
-     * a generic type T, and returns the result of the function, applied to the
-     * block entities persistent data container
+     * It takes a block entity and a function that takes a ReadableNBT and returns a
+     * generic type T, and returns the result of the function, applied to the block
+     * entities persistent data container
      * 
      * @param blockState The block state of the block you want to get the data from.
      * @param getter     A function that takes a ReadableNBT and returns a value of
@@ -269,7 +273,7 @@ public class NBT {
         nbtEnt.setClosed();
         return ret;
     }
-    
+
     /**
      * It takes an ItemStack and a Consumer&lt;ReadWriteNBT&gt;, and then applies
      * the Consumer to the ItemStacks Components as NBT. This is for 1.20.5+ only.
@@ -279,7 +283,7 @@ public class NBT {
      * @param consumer The consumer that will be used to modify the components.
      */
     public static void modifyComponents(ItemStack item, Consumer<ReadWriteNBT> consumer) {
-        if(!MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
+        if (!MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
             throw new NbtApiException("This method only works for 1.20.5+!");
         }
         ReadWriteNBT nbti = NBT.itemStackToNBT(item);
@@ -287,7 +291,7 @@ public class NBT {
         ItemStack tmp = NBT.itemStackFromNBT(nbti);
         item.setItemMeta(tmp.getItemMeta());
     }
-    
+
     /**
      * It takes an ItemStack and a Consumer&lt;ReadWriteNBT&gt;, and then applies
      * the Consumer to the ItemStacks Components as NBT. This is for 1.20.5+ only.
@@ -298,7 +302,7 @@ public class NBT {
      * @return The return type is the same as the return type of the function.
      */
     public static <T> T modifyComponents(ItemStack item, Function<ReadWriteNBT, T> function) {
-        if(!MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
+        if (!MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
             throw new NbtApiException("This method only works for 1.20.5+!");
         }
         ReadWriteNBT nbti = NBT.itemStackToNBT(item);
@@ -307,7 +311,7 @@ public class NBT {
         item.setItemMeta(tmp.getItemMeta());
         return ret;
     }
-    
+
     /**
      * It takes an ItemStack and a Consumer&lt;ReadWriteNBT&gt;, and then applies
      * the Consumer to the ItemStacks Components as NBT. This is for 1.20.5+ only.
@@ -317,13 +321,13 @@ public class NBT {
      * @param consumer The consumer that will be used to read the components.
      */
     public static void getComponents(ItemStack item, Consumer<ReadableNBT> consumer) {
-        if(!MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
+        if (!MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
             throw new NbtApiException("This method only works for 1.20.5+!");
         }
         ReadWriteNBT nbti = NBT.itemStackToNBT(item);
         consumer.accept(nbti.getOrCreateCompound("components"));
     }
-    
+
     /**
      * It takes an ItemStack and a Consumer&lt;ReadWriteNBT&gt;, and then applies
      * the Consumer to the ItemStacks Components as NBT. This is for 1.20.5+ only.
@@ -334,7 +338,7 @@ public class NBT {
      * @return The return type is the same as the return type of the function.
      */
     public static <T> T getComponents(ItemStack item, Function<ReadableNBT, T> function) {
-        if(!MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
+        if (!MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
             throw new NbtApiException("This method only works for 1.20.5+!");
         }
         ReadWriteNBT nbti = NBT.itemStackToNBT(item);
@@ -525,10 +529,68 @@ public class NBT {
      * It takes a nbt json string, and returns a ReadWriteNBT object
      * 
      * @param nbtString The NBT string to parse.
-     * @return A new NBTContainer object.
+     * @return A new ReadWriteNBT object.
      */
     public static ReadWriteNBT parseNBT(String nbtString) {
         return new NBTContainer(nbtString);
+    }
+
+    /**
+     * Reads in an NBT stream and returns a ReadWriteNBT object
+     * 
+     * @param stream The NBT stream to read.
+     * @return A new ReadWriteNBT object.
+     */
+    public static ReadWriteNBT readNBT(InputStream stream) {
+        return new NBTContainer(stream);
+    }
+
+    /**
+     * Helper method for other developers using NMS. Allows to wrap any
+     * net.minecraft.nbt.CompoundTag to a NBTAPI ReadWriteNBT object.
+     * 
+     * @param nmsNbtTag Needs to be a valid net.minecraft.nbt.CompoundTag
+     * @return A new ReadWriteNBT object.
+     */
+    public static ReadWriteNBT wrapNMSTag(Object nmsNbtTag) {
+        return new NBTContainer(nmsNbtTag);
+    }
+
+    /**
+     * Creates a NBTFileHandle that uses @param file to store its data. If this file
+     * exists, the data will be loaded, otherwise a new file gets created.
+     * 
+     * @param file
+     * @throws IOException
+     */
+    public static NBTFileHandle getFileHandle(File file) throws IOException {
+        return new NBTFile(file);
+    }
+
+    /**
+     * Reads NBT data from the provided file.
+     * <p>
+     * Returns an empty tag if the file does not exist.
+     *
+     * @param file file to read
+     * @return ReadWriteNBT of the files data
+     * @throws IOException exception
+     */
+    public static ReadWriteNBT readFile(File file) throws IOException {
+        return NBTFile.readFrom(file);
+    }
+
+    /**
+     * Saves NBT data to the provided file.
+     * <p>
+     * Will fully override the file if it already exists.
+     *
+     * @param file file
+     * @param nbt  NBT data
+     * @throws IOException exception
+     */
+    public static void writeFile(File file, ReadWriteNBT nbt) throws IOException {
+        NBTFile.saveTo(file, (NBTCompound) nbt);
     }
 
     /**

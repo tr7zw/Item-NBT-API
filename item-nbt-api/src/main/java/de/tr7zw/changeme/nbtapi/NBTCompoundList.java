@@ -2,6 +2,7 @@ package de.tr7zw.changeme.nbtapi;
 
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBTCompoundList;
+import de.tr7zw.changeme.nbtapi.iface.ReadableNBT;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
@@ -56,7 +57,8 @@ public class NBTCompoundList extends NBTList<ReadWriteNBT> implements ReadWriteN
         }
     }
 
-    public NBTCompound addCompound(ReadWriteNBT comp) {
+    @Override
+    public ReadWriteNBT addCompound(ReadableNBT comp) {
         if (comp instanceof NBTCompound) {
             return addCompound((NBTCompound) comp);
         }

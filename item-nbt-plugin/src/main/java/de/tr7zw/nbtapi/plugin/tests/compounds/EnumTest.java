@@ -1,16 +1,16 @@
 package de.tr7zw.nbtapi.plugin.tests.compounds;
 
-import de.tr7zw.changeme.nbtapi.NBTCompound;
-import de.tr7zw.changeme.nbtapi.NBTContainer;
+import de.tr7zw.changeme.nbtapi.NBT;
 import de.tr7zw.changeme.nbtapi.NBTType;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
+import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.nbtapi.plugin.tests.Test;
 
 public class EnumTest implements Test {
 
     @Override
     public void test() throws Exception {
-        NBTCompound comp = new NBTContainer();
+        ReadWriteNBT comp = NBT.createNBTObject();
         comp.setEnum("test", NBTType.NBTTagEnd);
         NBTType type = comp.getEnum("test", NBTType.class);
         NBTType typeNonNull = comp.getOrNull("test", NBTType.class);

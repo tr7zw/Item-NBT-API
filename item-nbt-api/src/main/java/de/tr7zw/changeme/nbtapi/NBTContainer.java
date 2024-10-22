@@ -22,6 +22,7 @@ public class NBTContainer extends NBTCompound {
     /**
      * Creates an empty, standalone NBTCompound
      */
+    @Deprecated
     public NBTContainer() {
         super(null, null);
         nbt = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
@@ -31,7 +32,9 @@ public class NBTContainer extends NBTCompound {
      * Takes in any NMS Compound to wrap it
      * 
      * @param nbt
+     * @deprecated Use NBT.wrapNMSTag
      */
+    @Deprecated
     public NBTContainer(Object nbt) {
         super(null, null);
         if (nbt == null) {
@@ -47,7 +50,9 @@ public class NBTContainer extends NBTCompound {
      * Reads in a NBT InputStream
      * 
      * @param inputsteam
+     * @deprecated Use NBT.readNBT
      */
+    @Deprecated
     public NBTContainer(InputStream inputsteam) {
         super(null, null);
         this.nbt = NBTReflectionUtil.readNBT(inputsteam);
@@ -58,7 +63,9 @@ public class NBTContainer extends NBTCompound {
      * {@link NbtApiException} in case something goes wrong.
      * 
      * @param nbtString
+     * @deprecated Use NBT.parseNBT
      */
+    @Deprecated
     public NBTContainer(String nbtString) {
         super(null, null);
         if (nbtString == null) {

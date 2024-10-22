@@ -3,9 +3,9 @@ package de.tr7zw.nbtapi.plugin.tests.items;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import de.tr7zw.changeme.nbtapi.NBTCompound;
-import de.tr7zw.changeme.nbtapi.NBTItem;
+import de.tr7zw.changeme.nbtapi.NBT;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
+import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.nbtapi.plugin.tests.Test;
 
 public class ItemStackConversionTest implements Test {
@@ -14,8 +14,8 @@ public class ItemStackConversionTest implements Test {
     public void test() throws Exception {
         ItemStack[] src = new ItemStack[] { new ItemStack(Material.STONE), new ItemStack(Material.STICK),
                 new ItemStack(Material.AIR), new ItemStack(Material.STONE) };
-        NBTCompound comp = NBTItem.convertItemArraytoNBT(src);
-        ItemStack[] recreated = NBTItem.convertNBTtoItemArray(comp);
+        ReadWriteNBT comp = NBT.itemStackArrayToNBT(src);
+        ItemStack[] recreated = NBT.itemStackArrayFromNBT(comp);
         if (recreated == null || src.length != recreated.length) {
             throw new NbtApiException("Size did not match!");
         }

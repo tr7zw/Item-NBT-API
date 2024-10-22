@@ -6,8 +6,7 @@ import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
 
-import de.tr7zw.changeme.nbtapi.NBTCompound;
-import de.tr7zw.changeme.nbtapi.NBTEntity;
+import de.tr7zw.changeme.nbtapi.NBT;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import de.tr7zw.nbtapi.plugin.tests.Test;
@@ -23,14 +22,16 @@ public class EntityCustomNbtPersistentTest implements Test {
             try {
                 if (!world.getEntitiesByClasses(Animals.class, Monster.class).isEmpty()) {
                     Entity ent = world.getEntitiesByClasses(Animals.class, Monster.class).iterator().next();
-                    NBTEntity nbtEnt = new NBTEntity(ent);
-                    NBTCompound comp = nbtEnt.getPersistentDataContainer();
-                    comp.setString("Hello", "World");
-                    NBTEntity nbtent = new NBTEntity(ent);
-                    if (!nbtent.toString().contains("Hello:\"World\"")) {
-                        throw new NbtApiException("Custom Data did not save to the Entity!");
-                    }
-                    comp.removeKey("Hello");
+                    NBT.modifyPersistentData(ent, comp -> {
+                        comp.setString("Hello", "World");
+                    });
+                    
+                    NBT.modifyPersistentData(ent, comp -> {
+                        if (!comp.toString().contains("Hello:\"World\"")) {
+                            throw new NbtApiException("Custom Data did not save to the Entity!");
+                        }
+                        comp.removeKey("Hello");
+                    });
 
                 }
             } catch (Exception ex) {

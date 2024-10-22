@@ -3,10 +3,10 @@ package de.tr7zw.nbtapi.plugin.tests;
 import java.io.File;
 import java.nio.file.Files;
 
-import de.tr7zw.changeme.nbtapi.NBTCompound;
-import de.tr7zw.changeme.nbtapi.NBTContainer;
-import de.tr7zw.changeme.nbtapi.NBTFile;
+import de.tr7zw.changeme.nbtapi.NBT;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
+import de.tr7zw.changeme.nbtapi.iface.NBTFileHandle;
+import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import de.tr7zw.nbtapi.plugin.NBTAPI;
 
 public class NBTFileTest implements Test {
@@ -16,18 +16,18 @@ public class NBTFileTest implements Test {
         NBTAPI.getInstance().getDataFolder().mkdirs();
         File testFile = new File(NBTAPI.getInstance().getDataFolder(), "test.nbt");
         Files.deleteIfExists(testFile.toPath());
-        NBTFile file = new NBTFile(testFile);
-        file.addCompound("testcomp").setString("test1", "ok");
-        NBTCompound comp = file.getCompound("testcomp");
+        NBTFileHandle file = NBT.getFileHandle(testFile);
+        file.getOrCreateCompound("testcomp").setString("test1", "ok");
+        ReadWriteNBT comp = file.getOrCreateCompound("testcomp");
         if (comp == null) {
             throw new NbtApiException("Error getting compound!");
         }
         comp.setString("test2", "ok");
         file.setLong("time", System.currentTimeMillis());
         file.setString("test", "test");
-        NBTCompound chunks = file.addCompound("chunks");
-        NBTCompound chunk = chunks.addCompound("somechunk");
-        NBTCompound block = chunk.addCompound("someblock");
+        ReadWriteNBT chunks = file.getOrCreateCompound("chunks");
+        ReadWriteNBT chunk = chunks.getOrCreateCompound("somechunk");
+        ReadWriteNBT block = chunk.getOrCreateCompound("someblock");
         block.setString("type", "wool");
         file.save();
 
@@ -35,25 +35,25 @@ public class NBTFileTest implements Test {
             throw new NbtApiException("SubCompounds did not work!");
         }
 
-        NBTFile fileLoaded = new NBTFile(testFile);
+        NBTFileHandle fileLoaded = NBT.getFileHandle(testFile);
         if (!fileLoaded.getString("test").equals("test")) {
             throw new NbtApiException("Wasn't able to load NBT File with the correct content!");
         }
         Files.deleteIfExists(fileLoaded.getFile().toPath());
         // String
         String str = fileLoaded.toString();
-        NBTContainer rebuild = new NBTContainer(str);
+        ReadWriteNBT rebuild = NBT.parseNBT(str);
         if (!str.equals(rebuild.toString())) {
             throw new NbtApiException("Wasn't able to parse NBT from a String!");
         }
 
-        NBTCompound dummy = new NBTContainer();
+        ReadWriteNBT dummy = NBT.createNBTObject();
         dummy.setString("test1", "key1");
-        NBTFile.saveTo(testFile, dummy);
-        dummy = new NBTContainer();
+        NBT.writeFile(testFile, dummy);
+        dummy = NBT.createNBTObject();
         dummy.setString("test2", "key2");
-        NBTFile.saveTo(testFile, dummy);
-        dummy = NBTFile.readFrom(testFile);
+        NBT.writeFile(testFile, dummy);
+        dummy = NBT.readFile(testFile);
         if (dummy.hasTag("test1") || !dummy.getString("test2").equals("key2")) {
             throw new NbtApiException("Wasn't able to save NBT File with the correct content!");
         }

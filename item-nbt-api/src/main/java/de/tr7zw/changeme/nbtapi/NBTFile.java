@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
+import de.tr7zw.changeme.nbtapi.iface.NBTFileHandle;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ObjectCreator;
 
 /**
@@ -12,7 +13,7 @@ import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ObjectCreator;
  * @author tr7zw
  *
  */
-public class NBTFile extends NBTCompound {
+public class NBTFile extends NBTCompound implements NBTFileHandle {
 
     private final File file;
     private Object nbt;
@@ -23,7 +24,9 @@ public class NBTFile extends NBTCompound {
      * 
      * @param file
      * @throws IOException
+     * @deprecated Use NBT.getFileHandle(file)
      */
+    @Deprecated
     public NBTFile(File file) throws IOException {
         super(null, null);
         if (file == null) {
@@ -43,6 +46,7 @@ public class NBTFile extends NBTCompound {
      * 
      * @throws IOException
      */
+    @Override
     public void save() throws IOException {
         try {
             getWriteLock().lock();
@@ -55,6 +59,7 @@ public class NBTFile extends NBTCompound {
     /**
      * @return The File used to store the data
      */
+    @Override
     public File getFile() {
         return file;
     }
@@ -77,7 +82,9 @@ public class NBTFile extends NBTCompound {
      * @param file file to read
      * @return NBTCompound holding file's nbt data
      * @throws IOException exception
+     * @deprecated Use NBT.readFile(file)
      */
+    @Deprecated
     public static NBTCompound readFrom(File file) throws IOException {
         if (!file.exists())
             return new NBTContainer();
@@ -92,7 +99,9 @@ public class NBTFile extends NBTCompound {
      * @param file file
      * @param nbt  NBT data
      * @throws IOException exception
+     * @deprecated Use NBT.writeFile(file, nbt)
      */
+    @Deprecated
     public static void saveTo(File file, NBTCompound nbt) throws IOException {
         if (!file.exists()) {
             file.getParentFile().mkdirs();
