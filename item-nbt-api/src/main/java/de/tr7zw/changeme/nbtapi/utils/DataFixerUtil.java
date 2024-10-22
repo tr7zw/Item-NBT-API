@@ -30,6 +30,7 @@ public class DataFixerUtil {
     public static final int VERSION1_20_4 = 3700;
     public static final int VERSION1_20_5 = 3837;
     public static final int VERSION1_21 = 3953;
+    public static final int VERSION1_21_2 = 4080;
 
     @SuppressWarnings("unchecked")
     public static Object fixUpRawItemData(Object nbt, int fromVersion, int toVersion)
