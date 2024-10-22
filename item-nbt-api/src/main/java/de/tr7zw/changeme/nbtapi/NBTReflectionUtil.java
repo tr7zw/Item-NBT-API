@@ -154,6 +154,9 @@ public class NBTReflectionUtil {
     public static void writeApiNBT(NBTCompound comp, OutputStream stream) {
         try {
             Object workingtag = comp.getResolvedObject();
+            if(workingtag == null) {
+                workingtag = ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance();
+            }
             ReflectionMethod.NBTFILE_WRITE.run(null, workingtag, stream);
         } catch (Exception e) {
             throw new NbtApiException("Exception while writing NBT!", e);
