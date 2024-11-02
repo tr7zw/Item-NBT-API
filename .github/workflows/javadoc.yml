@@ -25,7 +25,7 @@ jobs:
     - name: Copy artifacts
       shell: bash
       run: |
-        mkdir -p artifacts/v2-api && cp -r item-nbt-api/target/apidocs/* artifacts/v2-api
+        mkdir -p artifacts/v2-api && cp -r item-nbt-api/target/reports/apidocs/* artifacts/v2-api
         mkdir -p artifacts/v2-plugin && cp -r item-nbt-plugin/target/apidocs/* artifacts/v2-plugin
     - name: Deploy 🚀
       uses: JamesIves/github-pages-deploy-action@v4.4.1
