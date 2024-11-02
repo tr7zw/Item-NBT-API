@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
+import de.tr7zw.changeme.nbtapi.NBT;
 import de.tr7zw.changeme.nbtapi.NBTTileEntity;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
@@ -24,6 +25,14 @@ public class TileTest implements Test {
                         world.getSpawnLocation().getBlockZ());
                 if (world.isChunkLoaded(block.getX() >> 4, block.getZ() >> 4) && block.getType() == Material.AIR) {
                     block.setType(Material.CHEST);
+                    if (MinecraftVersion.isNewerThan(MinecraftVersion.MC1_21_R1)) {
+                        // 1.21 changed the lock logic. So just try to get/set data, dont check for now
+                        NBT.modify(block.getState(), nbt -> {
+                            nbt.setString("foo", "bar");
+                        });
+                        block.setType(Material.AIR);
+                        return;
+                    }
                     NBTTileEntity tile = new NBTTileEntity(block.getState());
                     if (!MinecraftVersion.isNewerThan(MinecraftVersion.MC1_17_R1)) {
                         if (tile.getInteger("y") != 254) {
