@@ -2,7 +2,7 @@
 
 ### Basics overview
 
-Most of the things are exposed inside the [NBT](https://tr7zw.github.io/Item-NBT-API/v2-api/de/tr7zw/changeme/nbtapi/NBT.html) class. Make sure to explore the Javadoc, or ask your IDE for suggestions!
+Most of the things are exposed inside the [NBT](https://tr7zw.github.io/Item-NBT-API/v2-api/de/tr7zw/changeme/nbtapi/NBT.html) class. Your specific use-case might not yet be covered by the wiki, so make sure to explore the [Javadoc](https://tr7zw.github.io/Item-NBT-API/v2-api/), or ask your IDE for suggestions!
 
 #### Basic getting and setting of data
 
@@ -115,9 +115,13 @@ nbt.resolveOrDefault("list_key[-1]", "fallback_value"); // Get the last value in
 
 
 // NBT compound lists
+// Get the list (will create it if needed)
 ReadWriteNBTCompoundList nbtList = nbt.getOrCreateCompound("foo").getCompoundList("other_key");
-ReadWriteNBT nbtListEntry = addCompound();
+// Add new compound to the list
+ReadWriteNBT nbtListEntry = nbtList.addCompound();
 nbtListEntry.setBoolean("bar", true);
+// Add existing nbt compound to the list
+ReadWriteNBT otherNbtListEntry = nbtList.addCompound(NBT.parseNBT("{foo_bar:1b}"));
 
 // You can fetch compounds in lists
 nbt.resolveCompound("foo.other_key[0]"); // Get the first compound in list, or null
@@ -162,6 +166,27 @@ int someValue = NBT.modify(itemStack, nbt -> {
 
 > [!WARNING]
 > Never mix the usage of ItemMeta and NBT.
+> Setting ItemMeta will override any changes made to item's nbt.
+
+```java
+// WRONG, do not do this!
+ItemMeta meta = itemStack.getItemMeta();
+meta.setDisplayName("Modified!");
+NBT.modify(itemStack, nbt -> nbt.setBoolean("modified", true));
+itemStack.setItemMeta(meta); // Will undo all changes to nbt!
+
+
+// Correct, both ItemMeta and NBT will be applied
+NBT.modify(itemStack, nbt -> nbt.setBoolean("modified", true));
+// Taking ItemMeta snapshot after changes to nbt
+ItemMeta meta = itemStack.getItemMeta();
+meta.setDisplayName("Modified!");
+itemStack.setItemMeta(meta);
+// If making any further changes with NBT & ItemMeta,
+// re-take the item's ItemMeta after changing the nbt!
+```
+
+Alternatively, you may safely modify ItemMeta inside the NBT scope:
 
 ```java
 // Updating ItemMeta using NBT
@@ -184,6 +209,15 @@ NBT.modify(itemStack, nbt -> {
 
 ```java
 // NOTE: This code is only for 1.20.5+!
+
+// Only reading vanilla data
+NBT.getComponents(item, nbt -> {
+    if (nbt.hasTag("minecraft:custom_name")) {
+        String customName = nbt.getString("minecraft:custom_name");
+    }
+});
+
+// Modifying vanilla data
 NBT.modifyComponents(item, nbt -> {
     nbt.setString("minecraft:custom_name", "{\"extra\":[\"foobar\"],\"text\":\"\"}");
 });
@@ -271,20 +305,26 @@ Moreover, since the data is stored inside a Chunk, this will increase the chunk'
 
 ### NBT files
 
-```java
-// Creating nbt file
-// NBTFile will automatically create the file if it does not exist
-NBTFile file = new NBTFile(new File("directory"), "test.nbt"); // Will be created at ./directory/test.nbt
-// Setting data 
-file.setString("foo", "bar");
-// Saving file
-file.save();
+NBTFileHandle allows working with nbt files.
 
-// Alternatively, you may use helper methods in NBTFile class
-// To read the file without creating it if does not exist:
-ReadWriteNBT nbt = NBTFile.readFrom(file);
-// To save nbt to the file:
-NBTFile.saveTo(file, nbt);
+```java
+// Will automatically create the file if it does not exist
+NBTFileHandle nbtFile = NBT.getFileHandle(new File("directory", "test.nbt"));
+// Setting data 
+nbtFile.setString("foo", "bar");
+// Saving the file after applying changes
+nbtFile.save();
+```
+
+Alternatively, you may read the nbt file without maintaining the link to it.
+Unlike NBTFileHandle, the file won't be automatically created if it does not exist.
+
+```java
+File file = new File("directory", "test.nbt");
+// Reading data from file (will return an empty compound if the file does not exist)
+ReadWriteNBT nbt = NBT.readFile(file);
+// Saving nbt to file
+NBT.writeFile(file, nbt);
 ```
 
 ### Converting Minecraft Objects to NBT and Strings
