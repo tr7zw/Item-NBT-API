@@ -5,6 +5,7 @@
 - [CommandAPI](https://github.com/JorelAli/CommandAPI)
 - [SkBee](https://github.com/ShaneBeee/SkBee/)
 - [Monumenta](https://github.com/TeamMonumenta/monumenta-plugins-public/)
+- [SummonFriendlyMobs](https://github.com/ArmyFury/SummonFriendlyMobs)
 
 ___
 
