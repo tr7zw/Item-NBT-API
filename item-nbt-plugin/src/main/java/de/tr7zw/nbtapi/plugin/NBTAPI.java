@@ -41,6 +41,7 @@ import de.tr7zw.nbtapi.plugin.tests.items.DirectApplyMetaTest;
 import de.tr7zw.nbtapi.plugin.tests.items.DirectApplyTest;
 import de.tr7zw.nbtapi.plugin.tests.items.EmptyItemTest;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemConversionTest;
+import de.tr7zw.nbtapi.plugin.tests.items.ItemJsonTest;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemMergingTest;
 import de.tr7zw.nbtapi.plugin.tests.items.ItemStackConversionTest;
 import de.tr7zw.nbtapi.plugin.tests.items.LegacyItemTest;
@@ -111,6 +112,7 @@ public class NBTAPI extends JavaPlugin {
         }
         if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
             apiTests.add(new LegacyItemTest());
+            apiTests.add(new ItemJsonTest());
         }
         apiTests.add(new ComponentsTest());
         apiTests.add(new EmptyItemTest());

@@ -145,6 +145,7 @@ public class MojangToMapping {
             put("net.minecraft.world.entity.Entity#getEncodeId()", "bw");
             put("net.minecraft.world.level.block.entity.BlockEntity#saveWithId()", "p");
             put("net.minecraft.world.level.block.entity.BlockEntity#getBlockState()", "r");
+            put("net.minecraft.world.item.ItemStack#CODEC", "a");
         }
 
     };
@@ -169,6 +170,7 @@ public class MojangToMapping {
             put("net.minecraft.util.datafix.DataFixers#getDataFixer()", "a");
             put("net.minecraft.util.datafix.fixes.References#ITEM_STACK", "t");
             put("net.minecraft.nbt.NbtOps#INSTANCE", "a");
+            put("net.minecraft.world.item.ItemStack#CODEC", "b");
         }
 
     };
@@ -193,6 +195,7 @@ public class MojangToMapping {
             put("net.minecraft.server.MinecraftServer#registryAccess()", "ba");
             put("net.minecraft.world.entity.Entity#getEncodeId()", "bK");
             put("net.minecraft.world.level.block.entity.BlockEntity#getBlockState()", "m");
+            put("net.minecraft.world.item.ItemStack#CODEC", "a");
         }
 
     };
