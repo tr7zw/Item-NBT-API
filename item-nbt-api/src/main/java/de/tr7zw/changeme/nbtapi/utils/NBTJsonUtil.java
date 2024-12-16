@@ -24,7 +24,7 @@ public class NBTJsonUtil {
      * @throws NbtApiException
      */
     @SuppressWarnings("unchecked")
-    public static JsonElement itemStackToJson(ItemStack itemStack) throws NbtApiException {
+    public static JsonElement itemStackToJson(ItemStack itemStack) {
         try {
             Codec<Object> itemStackCodec = (Codec<Object>) ClassWrapper.NMS_ITEMSTACK.getClazz()
                     .getField(MojangToMapping.getMapping().get("net.minecraft.world.item.ItemStack#CODEC")).get(null);

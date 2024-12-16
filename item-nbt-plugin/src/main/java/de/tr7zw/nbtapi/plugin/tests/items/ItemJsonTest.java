@@ -6,8 +6,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.google.gson.JsonElement;
 
-import de.tr7zw.changeme.nbtapi.NBT;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.changeme.nbtapi.utils.NBTJsonUtil;
 import de.tr7zw.nbtapi.plugin.tests.Test;
