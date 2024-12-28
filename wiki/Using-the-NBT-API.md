@@ -192,7 +192,7 @@ Alternatively, you may safely modify ItemMeta inside the NBT scope:
 // Updating ItemMeta using NBT
 NBT.modify(itemStack, nbt -> {
     nbt.setInteger("kills", nbt.getOrDefault("kills", 0) + 1);
-    nbt.modifyMeta((meta, readOnlyNbt) -> { // Do not modify the nbt while modifying the meta!
+    nbt.modifyMeta((readOnlyNbt, meta) -> { // Do not modify the nbt while modifying the meta!
         meta.setDisplayName("Kills: " + readOnlyNbt.getOrDefault("kills", 0));
     });
     // Do more stuff
@@ -243,7 +243,12 @@ NBT.modify(entity, nbt -> {
 
 #### Accessing custom data
 
-For reading/storing custom data on (block-)entities, you should use methods that end with PersistentData.
+> [!WARNING]
+> Persistent data storage for custom (block-)entity nbt is only available in 1.14+.
+>
+> If you need to support versions below that, for entities you may use a workaround like storing data inside an item's nbt that the entity is wearing (e.g. having a button in mob's helmet, and storing data on that button).
+
+For reading/storing custom data on (block-)entities, you should use methods that end with ``PersistentData``.
 
 > [!IMPORTANT]
 > When working with block entities, make sure that the block entity exists in the world.
