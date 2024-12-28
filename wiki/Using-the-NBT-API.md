@@ -192,7 +192,7 @@ Alternatively, you may safely modify ItemMeta inside the NBT scope:
 // Updating ItemMeta using NBT
 NBT.modify(itemStack, nbt -> {
     nbt.setInteger("kills", nbt.getOrDefault("kills", 0) + 1);
-    nbt.modifyMeta((meta, readOnlyNbt) -> { // Do not modify the nbt while modifying the meta!
+    nbt.modifyMeta((readOnlyNbt, meta) -> { // Do not modify the nbt while modifying the meta!
         meta.setDisplayName("Kills: " + readOnlyNbt.getOrDefault("kills", 0));
     });
     // Do more stuff
