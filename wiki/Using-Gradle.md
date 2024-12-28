@@ -30,6 +30,17 @@ Add the API as dependency to your ``plugin.yml``:
 depend: [NBTAPI]
 ```
 
+Or, if you are using ``paper-plugin.yml``:
+
+```yml
+dependencies:
+  server:
+    NBTAPI:
+      load: BEFORE
+      required: true
+      join-classpath: true
+```
+
 # Option 2) Shading the NBT-API into your plugin
 
 To include NBT-API directly in your plugin, you can use the [Gradle Shadow Plugin](https://gradleup.com/shadow/).
