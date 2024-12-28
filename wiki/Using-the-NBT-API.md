@@ -243,7 +243,12 @@ NBT.modify(entity, nbt -> {
 
 #### Accessing custom data
 
-For reading/storing custom data on (block-)entities, you should use methods that end with PersistentData.
+> [!WARNING]
+> Persistent data storage for custom (block-)entity nbt is only available in 1.14+.
+>
+> If you need to support versions below that, for entities you may use a workaround like storing data inside an item's nbt that the entity is wearing (e.g. having a button in mob's helmet, and storing data on that button).
+
+For reading/storing custom data on (block-)entities, you should use methods that end with ``PersistentData``.
 
 > [!IMPORTANT]
 > When working with block entities, make sure that the block entity exists in the world.
