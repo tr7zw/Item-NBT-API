@@ -32,17 +32,17 @@ depend: [NBTAPI]
 
 # Option 2) Shading the NBT-API into your plugin
 
-To include NBT-API directly in your plugin, you can use the gradle shadow plugin.
+To include NBT-API directly in your plugin, you can use the [Gradle Shadow Plugin](https://gradleup.com/shadow/).
 
 Add the plugin to the build configuration, as shown here:
 
 ```groovy
 plugins {
-    id("com.github.johnrengelman.shadow") version "VERSION"
+    id("com.gradleup.shadow") version "VERSION"
 }
 ```
 
-The latest version of the shadow plugin can be found [here](https://github.com/johnrengelman/shadow/releases).
+The latest version of the shadow plugin can be found [here](https://plugins.gradle.org/plugin/com.gradleup.shadow).
 
 Add NBT-API to your dependencies:
 
