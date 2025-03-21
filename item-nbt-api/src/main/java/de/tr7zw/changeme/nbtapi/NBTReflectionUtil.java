@@ -215,17 +215,16 @@ public class NBTReflectionUtil {
     public static Object convertNBTCompoundtoNMSItem(NBTCompound nbtcompound) {
         try {
             Object nmsComp = getToCompount(nbtcompound.getCompound(), nbtcompound);
-            if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_12_R1) && nbtcompound.hasTag("DataVersion", NBTType.NBTTagInt)) {
-                int dataVersion = nbtcompound.getInteger("DataVersion");
-                int currentVersion = DataFixerUtil.getCurrentVersion();
-                if (dataVersion < currentVersion) {
-                    nmsComp = DataFixerUtil.fixUpRawItemData(nmsComp, dataVersion, currentVersion);
-                }
-            } else if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)
-                    && (nbtcompound.hasTag("tag") || nbtcompound.hasTag("Count"))) {
-                nmsComp = DataFixerUtil.fixUpRawItemData(nmsComp, DataFixerUtil.VERSION1_20_4, DataFixerUtil.getCurrentVersion());
-            }
             if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
+                if (nbtcompound.hasTag("DataVersion", NBTType.NBTTagInt)) {
+                    int dataVersion = nbtcompound.getInteger("DataVersion");
+                    int currentVersion = DataFixerUtil.getCurrentVersion();
+                    if (dataVersion < currentVersion) {
+                        nmsComp = DataFixerUtil.fixUpRawItemData(nmsComp, dataVersion, currentVersion);
+                    }
+                } else if (nbtcompound.hasTag("tag") || nbtcompound.hasTag("Count")) {
+                    nmsComp = DataFixerUtil.fixUpRawItemData(nmsComp, DataFixerUtil.VERSION1_20_4, DataFixerUtil.getCurrentVersion());
+                }
                 return ReflectionMethod.NMSITEM_LOAD.run(null, registry_access, nmsComp);
             } else if (MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_11_R1.getVersionId()) {
                 return ObjectCreator.NMS_COMPOUNDFROMITEM.getInstance(nmsComp);
