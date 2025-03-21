@@ -29,6 +29,10 @@ public class LegacyItemTest implements Test {
                 || !"test".equals(item.getItemMeta().getDisplayName())) {
             throw new NbtApiException("1.12.2 item didn't load correctly! " + item);
         }
+
+        ItemStack item2 = NBT.itemStackFromNBT(NBT.parseNBT("{DataVersion:" + DataFixerUtil.VERSION1_12_2 + ",id:cobblestone,Count:42,tag:{display:{Name:\"test\"},ench:[{lvl:3,id:34}]}}"));
+        if (!item.equals(item2))
+            throw new NbtApiException("Data-fixed 1.12.2 item didn't load correctly! " + item2);
     }
 
 }
