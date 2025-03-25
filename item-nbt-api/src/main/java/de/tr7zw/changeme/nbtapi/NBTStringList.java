@@ -2,6 +2,7 @@ package de.tr7zw.changeme.nbtapi;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Optional;
 
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
@@ -21,7 +22,11 @@ public class NBTStringList extends NBTList<String> {
     @Override
     public String get(int index) {
         try {
-            return (String) ReflectionMethod.LIST_GET_STRING.run(listObject, index);
+            Object ret = ReflectionMethod.LIST_GET_STRING.run(listObject, index);
+            if (ret instanceof Optional<?>) {
+                return ((Optional<String>) ret).orElse("");
+            }
+            return (String) ret;
         } catch (Exception ex) {
             throw new NbtApiException(ex);
         }

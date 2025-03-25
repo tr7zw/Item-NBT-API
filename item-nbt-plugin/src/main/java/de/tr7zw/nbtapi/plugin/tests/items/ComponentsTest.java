@@ -27,7 +27,11 @@ public class ComponentsTest implements Test {
             throw new NbtApiException("ReadComponent didn't work!");
         }
         NBT.modifyComponents(item, nbt -> {
-            nbt.setString("minecraft:custom_name", "{\"extra\":[\"foobar\"],\"text\":\"\"}");
+            if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_21_R4)) {
+                nbt.mergeCompound(NBT.parseNBT("{\"minecraft:custom_name\":[{\"text\":\"foobar\",\"italic\":false}]}"));
+            } else {
+                nbt.setString("minecraft:custom_name", "{\"extra\":[\"foobar\"],\"text\":\"\"}");
+            }
         });
         if(!item.getItemMeta().getDisplayName().equals("foobar")) {
             throw new NbtApiException("ModifyComponent didn't work!");

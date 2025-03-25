@@ -17,7 +17,7 @@ import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 public class NBTJsonUtil {
 
     /**
-     * 1.20.3+ only. Used to convert items into Json, used in Chat Hover Components.
+     * 1.20.3-1.21.4 only. Used to convert items into Json, used in Chat Hover Components.
      * 
      * @param itemStack
      * @return

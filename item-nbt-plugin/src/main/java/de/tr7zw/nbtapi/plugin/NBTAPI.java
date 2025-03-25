@@ -112,6 +112,8 @@ public class NBTAPI extends JavaPlugin {
         }
         if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
             apiTests.add(new LegacyItemTest());
+        }
+        if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4) && !MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_21_R4)) {
             apiTests.add(new ItemJsonTest());
         }
         apiTests.add(new ComponentsTest());

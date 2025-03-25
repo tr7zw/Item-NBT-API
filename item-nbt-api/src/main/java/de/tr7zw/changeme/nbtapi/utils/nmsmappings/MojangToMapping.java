@@ -210,9 +210,42 @@ public class MojangToMapping {
         }
 
     };
+    
+    @SuppressWarnings("serial")
+    private static Map<String, String> MC1_21R4 = new HashMap<String, String>() {
+
+        {
+            putAll(MC1_21R3);
+
+            put("net.minecraft.nbt.CompoundTag#getShort(java.lang.String)", "d");
+            put("net.minecraft.nbt.CompoundTag#getString(java.lang.String)", "i");
+            put("net.minecraft.nbt.CompoundTag#contains(java.lang.String)", "b");
+            put("net.minecraft.nbt.CompoundTag#getDouble(java.lang.String)", "h");
+            put("net.minecraft.nbt.CompoundTag#getByteArray(java.lang.String)", "j");
+            put("net.minecraft.nbt.CompoundTag#getFloat(java.lang.String)", "g");
+            put("net.minecraft.nbt.CompoundTag#get(java.lang.String)", "a");
+            put("net.minecraft.nbt.CompoundTag#getLong(java.lang.String)", "f");
+            put("net.minecraft.nbt.CompoundTag#getLongArray(java.lang.String)", "l");
+            put("net.minecraft.nbt.CompoundTag#getInt(java.lang.String)", "e");
+            put("net.minecraft.nbt.CompoundTag#getIntArray(java.lang.String)", "k");
+            put("net.minecraft.nbt.CompoundTag#getCompound(java.lang.String)", "m");
+            put("net.minecraft.nbt.CompoundTag#getByte(java.lang.String)", "c");
+            put("net.minecraft.nbt.ListTag#getString(int)", "m");
+            put("net.minecraft.world.entity.Entity#saveWithoutId(net.minecraft.nbt.CompoundTag)", "h");
+            put("net.minecraft.world.entity.Entity#getEncodeId()", "bI");
+            put("net.minecraft.world.entity.Entity#load(net.minecraft.nbt.CompoundTag)", "i");
+            put("net.minecraft.nbt.Tag#getType()", "c");
+            put("net.minecraft.nbt.TagType#getName()", "a");
+            put("net.minecraft.nbt.CompoundTag#getList(java.lang.String)", "o");
+            put("net.minecraft.world.item.ItemStack#parse(net.minecraft.core.HolderLookup$Provider,net.minecraft.nbt.Tag)", "a");
+        }
+
+    };
 
     public static Map<String, String> getMapping() {
         switch (MinecraftVersion.getVersion()) {
+        case MC1_21_R4:
+            return MC1_21R4;
         case MC1_21_R3:
             return MC1_21R3;
         case MC1_21_R2:

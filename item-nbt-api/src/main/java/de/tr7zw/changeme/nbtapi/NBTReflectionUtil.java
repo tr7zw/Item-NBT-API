@@ -9,6 +9,7 @@ import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -154,7 +155,7 @@ public class NBTReflectionUtil {
     public static void writeApiNBT(NBTCompound comp, OutputStream stream) {
         try {
             Object workingtag = comp.getResolvedObject();
-            if(workingtag == null) {
+            if (workingtag == null) {
                 workingtag = ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance();
             }
             ReflectionMethod.NBTFILE_WRITE.run(null, workingtag, stream);
@@ -220,7 +221,13 @@ public class NBTReflectionUtil {
                     nmsComp = DataFixerUtil.fixUpRawItemData(nmsComp, DataFixerUtil.VERSION1_20_4,
                             DataFixerUtil.getCurrentVersion());
                 }
-                return ReflectionMethod.NMSITEM_LOAD.run(null, registry_access, nmsComp);
+                if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_21_R4)) {
+                    Optional<Object> opt = (Optional<Object>) ReflectionMethod.NMSITEM_LOAD_MODERN.run(null,
+                            registry_access, nmsComp);
+                    return opt.orElse(null);
+                } else {
+                    return ReflectionMethod.NMSITEM_LOAD.run(null, registry_access, nmsComp);
+                }
             } else if (MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_11_R1.getVersionId()) {
                 return ObjectCreator.NMS_COMPOUNDFROMITEM.getInstance(nmsComp);
             } else {
@@ -386,7 +393,11 @@ public class NBTReflectionUtil {
     public static Object getSubNBTTagCompound(Object compound, String name) {
         try {
             if ((boolean) ReflectionMethod.COMPOUND_HAS_KEY.run(compound, name)) {
-                return ReflectionMethod.COMPOUND_GET_COMPOUND.run(compound, name);
+                Object comp = ReflectionMethod.COMPOUND_GET_COMPOUND.run(compound, name);
+                if (comp instanceof Optional) {
+                    return ((Optional<?>) comp).orElse(null);
+                }
+                return comp;
             } else {
                 throw new NbtApiException("Tried getting invalid compound '" + name + "' from '" + compound + "'!");
             }
@@ -410,7 +421,7 @@ public class NBTReflectionUtil {
         if (nbttag == null) {
             nbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
         }
-        if (!valideCompound(comp)) {
+        if (!validCompound(comp)) {
             return;
         }
         Object workingtag = getToCompount(nbttag, comp);
@@ -427,10 +438,13 @@ public class NBTReflectionUtil {
      * Checks if the Compound is correctly linked to it's roots
      * 
      * @param comp
-     * @return true if this is a valide Compound, else false
+     * @return true if this is a valid Compound, else false
      */
-    public static boolean valideCompound(NBTCompound comp) {
+    public static boolean validCompound(NBTCompound comp) {
         Object root = comp.getCompound();
+        if (root instanceof Optional) {
+            root = ((Optional<?>) root).orElse(null);
+        }
         if (root == null) {
             root = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
         }
@@ -445,9 +459,15 @@ public class NBTReflectionUtil {
             structure.add(comp.getName());
             comp = comp.getParent();
         }
+        if (nbttag instanceof Optional) {
+            nbttag = ((Optional<?>) nbttag).orElse(null);
+        }
         while (!structure.isEmpty()) {
             String target = structure.pollLast();
             nbttag = getSubNBTTagCompound(nbttag, target);
+            if (nbttag instanceof Optional) {
+                nbttag = ((Optional<?>) nbttag).orElse(null);
+            }
             if (nbttag == null) {
                 throw new NbtApiException("Unable to find tag '" + target + "' in " + nbttag);
             }
@@ -470,7 +490,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
         }
-        if (!valideCompound(comp))
+        if (!validCompound(comp))
             throw new NbtApiException("The Compound wasn't able to be linked back to the root!");
         Object workingtag = getToCompount(rootnbttag, comp);
         try {
@@ -497,7 +517,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
         }
-        if (!valideCompound(comp)) {
+        if (!validCompound(comp)) {
             throw new NbtApiException("The Compound wasn't able to be linked back to the root!");
         }
         Object workingtag = getToCompount(rootnbttag, comp);
@@ -525,7 +545,18 @@ public class NBTReflectionUtil {
             workingtag = dummyNBT.getCompound(); // it creates a new ListTag if needed, but its unlinked
         }
         try {
-            Object nbt = ReflectionMethod.COMPOUND_GET_LIST.run(workingtag, key, type.getId());
+            Object nbt = null;
+            if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_17_R1)) {
+                nbt = ReflectionMethod.COMPOUND_GET_LIST.run(workingtag, key);
+                if (nbt instanceof Optional) {
+                    nbt = ((Optional<?>) nbt).orElse(null);
+                }
+                if (nbt == null) {
+                    nbt = ClassWrapper.NMS_NBTTAGLIST.getClazz().newInstance();
+                }
+            } else {
+                nbt = ReflectionMethod.COMPOUND_GET_LIST_LEGACY.run(workingtag, key, type.getId());
+            }
             if (clazz == String.class) {
                 return (NBTList<T>) new NBTStringList(comp, key, type, nbt);
             } else if (clazz == NBTListCompound.class) {
@@ -557,6 +588,26 @@ public class NBTReflectionUtil {
         }
         try {
             Object nbt = ReflectionMethod.COMPOUND_GET.run(workingtag, key);
+            if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_21_R4)) {
+                if (nbt instanceof Optional) {
+                    nbt = ((Optional<?>) nbt).orElse(null);
+                }
+                if (nbt == null) {
+                    return NBTType.NBTTagEnd;
+                }
+                if (new NBTStringList(comp, key, NBTType.NBTTagString, nbt).isEmpty()) {
+                    return NBTType.NBTTagEnd;
+                }
+                Object compound = ReflectionMethod.LIST_GET.run(nbt, 0);
+                if (compound instanceof Optional) {
+                    compound = ((Optional<?>) compound).orElse(null);
+                }
+                if (compound == null) {
+                    return NBTType.NBTTagEnd;
+                }
+                return NBTType.fromName((String) ReflectionMethod.TAGTYPE_GET_NAME
+                        .run(ReflectionMethod.TAGTYPE_OWN_TYPE.run(compound)));
+            }
             String fieldname = "type";
             if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_17_R1)) {
                 fieldname = "w";
@@ -631,7 +682,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             return;
         }
-        if (!valideCompound(comp))
+        if (!validCompound(comp))
             return;
         Object workingtag = getToCompount(rootnbttag, comp);
         ReflectionMethod.COMPOUND_REMOVE_KEY.run(workingtag, key);
@@ -670,7 +721,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
         }
-        if (!valideCompound(comp))
+        if (!validCompound(comp))
             throw new NbtApiException("The Compound wasn't able to be linked back to the root!");
         Object workingtag = getToCompount(rootnbttag, comp);
         type.run(workingtag, key, data);
@@ -693,7 +744,43 @@ public class NBTReflectionUtil {
         if (workingtag == null) {
             workingtag = dummyNBT.getCompound();
         }
-        return type.run(workingtag, key);
+        if (workingtag instanceof Optional<?>) {
+            workingtag = ((Optional<Object>) workingtag).orElseGet(() -> dummyNBT.getCompound());
+        }
+        Object obj = type.run(workingtag, key);
+        if (obj instanceof Optional<?>) {
+            return ((Optional<Object>) obj).orElseGet(() -> getDefaultValue(type));
+        }
+        return obj;
+    }
+
+    private static Object getDefaultValue(ReflectionMethod type) {
+        if (type == ReflectionMethod.COMPOUND_GET_STRING) {
+            return "";
+        } else if (type == ReflectionMethod.COMPOUND_GET_BYTE) {
+            return (byte) 0;
+        } else if (type == ReflectionMethod.COMPOUND_GET_SHORT) {
+            return (short) 0;
+        } else if (type == ReflectionMethod.COMPOUND_GET_BOOLEAN) {
+            return false;
+        } else if (type == ReflectionMethod.COMPOUND_GET_INT) {
+            return 0;
+        } else if (type == ReflectionMethod.COMPOUND_GET_LONG) {
+            return 0L;
+        } else if (type == ReflectionMethod.COMPOUND_GET_FLOAT) {
+            return 0.0f;
+        } else if (type == ReflectionMethod.COMPOUND_GET_DOUBLE) {
+            return 0.0d;
+        } else if (type == ReflectionMethod.COMPOUND_GET_BYTEARRAY) {
+            return new byte[0];
+        } else if (type == ReflectionMethod.COMPOUND_GET_INTARRAY) {
+            return new int[0];
+        } else if (type == ReflectionMethod.COMPOUND_GET_LONGARRAY) {
+            return new long[0];
+        } else if (type == ReflectionMethod.COMPOUND_GET_COMPOUND) {
+            return ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
+        }
+        return null;
     }
 
 }

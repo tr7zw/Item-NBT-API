@@ -71,7 +71,7 @@ public class ListTest implements Test {
         }
 
         if (comp.getListType("complist") != NBTType.NBTTagCompound) {
-            throw new NbtApiException("complist had the wrong type! The Item-NBT-API may not work!");
+            throw new NbtApiException("complist had the wrong type(" + comp.getListType("complist") + ")! The Item-NBT-API may not work!");
         }
 
         // Integer

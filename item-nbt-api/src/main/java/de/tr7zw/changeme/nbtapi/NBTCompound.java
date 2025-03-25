@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.locks.Lock;
@@ -19,6 +20,7 @@ import de.tr7zw.changeme.nbtapi.iface.ReadableNBT;
 import de.tr7zw.changeme.nbtapi.utils.CheckUtil;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import de.tr7zw.changeme.nbtapi.utils.PathUtil;
+import de.tr7zw.changeme.nbtapi.utils.UUIDUtil;
 import de.tr7zw.changeme.nbtapi.utils.PathUtil.PathSegment;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.Forge1710Mappings;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
@@ -98,10 +100,13 @@ public class NBTCompound implements ReadWriteNBT {
             return readOnlyCache;
         }
         Object rootnbttag = getCompound();
+        if (rootnbttag instanceof Optional<?>) {
+            rootnbttag = ((Optional<Object>) rootnbttag).orElse(null);
+        }
         if (rootnbttag == null) {
             return null;
         }
-        if (!NBTReflectionUtil.valideCompound(this))
+        if (!NBTReflectionUtil.validCompound(this))
             throw new NbtApiException("The Compound wasn't able to be linked back to the root!");
         Object workingtag = NBTReflectionUtil.getToCompount(rootnbttag, this);
         if (readOnly) {
@@ -657,7 +662,9 @@ public class NBTCompound implements ReadWriteNBT {
     public void setUUID(String key, UUID value) {
         try {
             writeLock.lock();
-            if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_16_R1)) {
+            if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_21_R4)) {
+                setIntArray(key, UUIDUtil.uuidToIntArray(value));
+            } else if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_16_R1)) {
                 NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_UUID, key, value);
             } else {
                 setString(key, value.toString());
@@ -678,10 +685,13 @@ public class NBTCompound implements ReadWriteNBT {
     public UUID getUUID(String key) {
         try {
             readLock.lock();
-            if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_16_R1)
-                    && getType(key) == NBTType.NBTTagIntArray) {
+            NBTType type = getType(key);
+            if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_21_R4) && type == NBTType.NBTTagIntArray) {
+                return UUIDUtil.uuidFromIntArray(getIntArray(key));
+            } else if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_16_R1)
+                    && type == NBTType.NBTTagIntArray) {
                 return (UUID) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_UUID, key);
-            } else if (getType(key) == NBTType.NBTTagString) {
+            } else if (type == NBTType.NBTTagString) {
                 try {
                     return UUID.fromString(getString(key));
                 } catch (IllegalArgumentException ex) {
@@ -786,7 +796,7 @@ public class NBTCompound implements ReadWriteNBT {
             if (getType(name) != NBTType.NBTTagCompound)
                 return null;
             NBTCompound next = new NBTCompound(this, name, readOnly);
-            if (NBTReflectionUtil.valideCompound(next))
+            if (NBTReflectionUtil.validCompound(next))
                 return next;
             return null;
         } finally {
@@ -1343,7 +1353,13 @@ public class NBTCompound implements ReadWriteNBT {
                 Object nbtbase = NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET, name);
                 if (nbtbase == null)
                     return null;
-                return NBTType.valueOf((byte) ReflectionMethod.COMPOUND_OWN_TYPE.run(nbtbase));
+                return NBTType.valueOf((byte) ReflectionMethod.COMPOUND_OWN_TYPE_LEGACY.run(nbtbase));
+            }
+            if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_21_R4)) {
+                Object o = NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET, name);
+                if (o == null)
+                    return null;
+                return NBTType.fromName((String)ReflectionMethod.TAGTYPE_GET_NAME.run(ReflectionMethod.TAGTYPE_OWN_TYPE.run(o)));
             }
             Object o = NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_TYPE, name);
             if (o == null)

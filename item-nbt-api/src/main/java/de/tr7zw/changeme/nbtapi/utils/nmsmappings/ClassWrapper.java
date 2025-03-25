@@ -24,6 +24,7 @@ public enum ClassWrapper {
     CRAFT_PERSISTENTDATACONTAINER(PackageWrapper.CRAFTBUKKIT, "persistence.CraftPersistentDataContainer",
             MinecraftVersion.MC1_14_R1, null),
     NMS_NBTBASE(PackageWrapper.NMS, "NBTBase", null, null, "net.minecraft.nbt", "net.minecraft.nbt.Tag"),
+    NMS_TAGTYPE(PackageWrapper.NMS, "NBTTagType", MinecraftVersion.MC1_21_R4, null, "net.minecraft.nbt", "net.minecraft.nbt.TagType"),
     NMS_NBTTAGSTRING(PackageWrapper.NMS, "NBTTagString", null, null, "net.minecraft.nbt",
             "net.minecraft.nbt.StringTag"),
     NMS_NBTTAGINT(PackageWrapper.NMS, "NBTTagInt", null, null, "net.minecraft.nbt", "net.minecraft.nbt.IntTag"),
