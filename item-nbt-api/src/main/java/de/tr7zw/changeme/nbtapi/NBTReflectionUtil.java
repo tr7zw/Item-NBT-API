@@ -546,7 +546,7 @@ public class NBTReflectionUtil {
         }
         try {
             Object nbt = null;
-            if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_17_R1)) {
+            if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_21_R4)) {
                 nbt = ReflectionMethod.COMPOUND_GET_LIST.run(workingtag, key);
                 if (nbt instanceof Optional) {
                     nbt = ((Optional<?>) nbt).orElse(null);
