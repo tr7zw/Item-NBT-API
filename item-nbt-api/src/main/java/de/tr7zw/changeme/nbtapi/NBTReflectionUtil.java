@@ -217,9 +217,14 @@ public class NBTReflectionUtil {
         try {
             Object nmsComp = getToCompount(nbtcompound.getCompound(), nbtcompound);
             if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
-                if (nbtcompound.hasTag("tag") || nbtcompound.hasTag("Count")) {
-                    nmsComp = DataFixerUtil.fixUpRawItemData(nmsComp, DataFixerUtil.VERSION1_20_4,
-                            DataFixerUtil.getCurrentVersion());
+                if (nbtcompound.hasTag("DataVersion", NBTType.NBTTagInt)) {
+                    int dataVersion = nbtcompound.getInteger("DataVersion");
+                    int currentVersion = DataFixerUtil.getCurrentVersion();
+                    if (dataVersion < currentVersion) {
+                        nmsComp = DataFixerUtil.fixUpRawItemData(nmsComp, dataVersion, currentVersion);
+                    }
+                } else if (nbtcompound.hasTag("tag") || nbtcompound.hasTag("Count")) {
+                    nmsComp = DataFixerUtil.fixUpRawItemData(nmsComp, DataFixerUtil.VERSION1_20_4, DataFixerUtil.getCurrentVersion());
                 }
                 if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_21_R4)) {
                     Optional<Object> opt = (Optional<Object>) ReflectionMethod.NMSITEM_LOAD_MODERN.run(null,
@@ -246,13 +251,18 @@ public class NBTReflectionUtil {
      */
     public static NBTContainer convertNMSItemtoNBTCompound(Object nmsitem) {
         try {
+            NBTContainer container;
             if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
-                return new NBTContainer(ReflectionMethod.NMSITEM_SAVE_MODERN.run(nmsitem, registry_access));
+                container = new NBTContainer(ReflectionMethod.NMSITEM_SAVE_MODERN.run(nmsitem, registry_access));
             } else {
                 Object answer = ReflectionMethod.NMSITEM_SAVE.run(nmsitem,
                         ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance());
-                return new NBTContainer(answer);
+                container = new NBTContainer(answer);
             }
+            if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_12_R1)) {
+                container.setInteger("DataVersion", DataFixerUtil.getCurrentVersion());
+            }
+            return container;
         } catch (Exception e) {
             throw new NbtApiException("Exception while converting NMS ItemStack to NBTCompound!", e);
         }

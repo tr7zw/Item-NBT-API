@@ -21,6 +21,8 @@ public class NBTContainer extends NBTCompound {
 
     /**
      * Creates an empty, standalone NBTCompound
+     *
+     * @deprecated use {@link NBT#createNBTObject()}
      */
     @Deprecated
     public NBTContainer() {
