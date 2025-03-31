@@ -100,7 +100,7 @@ NBT.modifyPersistentData(zombie, nbt -> {
 File worldDataFolder = Bukkit.getWorlds().getFirst().getWorldFolder();
 
 // Read level data
-NBTFile levelNbtFile = new NBTFile(new File(worldDataFolder, "level.dat"));
+NBTFileHandle levelNbtFile = NBT.getFileHandle(new File(worldDataFolder, "level.dat"));
 
 // Obtain world name
 String worldName = levelNbtFile.resolveOrNull("Data.LevelName", String.class);
@@ -113,7 +113,7 @@ if (!playerFile.exists()) {
     return;
 }
 
-NBTFile playerNbtFile = new NBTFile(playerFile);
+NBTFileHandle playerNbtFile = NBT.getFileHandle(playerFile);
 
 // Change player's health
 float health = playerNbtFile.getFloat("Health");
