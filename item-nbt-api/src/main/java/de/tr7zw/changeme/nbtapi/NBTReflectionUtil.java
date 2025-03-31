@@ -787,8 +787,6 @@ public class NBTReflectionUtil {
             return new int[0];
         } else if (type == ReflectionMethod.COMPOUND_GET_LONGARRAY) {
             return new long[0];
-        } else if (type == ReflectionMethod.COMPOUND_GET_COMPOUND) {
-            return ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
         }
         return null;
     }
