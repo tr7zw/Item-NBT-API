@@ -345,6 +345,17 @@ public interface ReadableNBT {
     void writeCompound(OutputStream stream);
 
     /**
+     * Compares this readable nbt to the other one
+     * and returns the difference.
+     * <p>Note: the result will only contain data that is present
+     * in this readable nbt and is missing/different in the provided one.
+     *
+     * @param other other readable nbt
+     * @return difference between readable nbts
+     */
+    ReadWriteNBT extractDifference(ReadableNBT other);
+
+    /**
      * @return The NBT as printable NBT-Json.
      */
     String toString();

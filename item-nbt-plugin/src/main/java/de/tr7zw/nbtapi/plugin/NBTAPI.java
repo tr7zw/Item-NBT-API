@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.tr7zw.changeme.nbtapi.NbtApiException;
@@ -19,6 +18,7 @@ import de.tr7zw.nbtapi.plugin.tests.GameprofileTest;
 import de.tr7zw.nbtapi.plugin.tests.NBTFileTest;
 import de.tr7zw.nbtapi.plugin.tests.blocks.BlockNBTTest;
 import de.tr7zw.nbtapi.plugin.tests.chunks.ChunkNBTPersistentTest;
+import de.tr7zw.nbtapi.plugin.tests.compounds.CompoundDifferenceTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.EnumTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.EqualsTest;
 import de.tr7zw.nbtapi.plugin.tests.compounds.ForEachTest;
@@ -100,6 +100,7 @@ public class NBTAPI extends JavaPlugin {
         apiTests.add(new ForEachTest());
         apiTests.add(new StreamTest());
         apiTests.add(new EqualsTest());
+        apiTests.add(new CompoundDifferenceTest());
         if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_8_R3)) // 1.7.10 list support is not complete at all
             apiTests.add(new IteratorTest());
         if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_16_R1))
