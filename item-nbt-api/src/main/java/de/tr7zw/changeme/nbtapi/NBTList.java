@@ -304,8 +304,8 @@ public abstract class NBTList<T> implements List<T>, ReadWriteNBTList<T> {
         try {
             parent.getWriteLock().lock();
             int size = size();
-            int id = -1;
-            while ((id = indexOf(o)) != -1) {
+            int id = indexOf(o);
+            if (id != -1) {
                 remove(id);
             }
             return size != size();
