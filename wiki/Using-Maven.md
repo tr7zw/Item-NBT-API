@@ -3,7 +3,10 @@ To start using NB-API, you either need to depend on its plugin version, or shade
 > [!IMPORTANT]
 > Plugin and shaded versions have different ``artifactId``. Make sure to correctly choose the one you need!
 
-# Option 1) NBT-API as a dependency
+> [!IMPORTANT]
+> Alternative ways of loading the api like Libby are not supported on Discord/Github issues.
+
+# Option 1) NBT-API as a dependency (recommended)
 
 Add the following entries to your pom at the correct locations:
 
@@ -48,9 +51,17 @@ dependencies:
       join-classpath: true
 ```
 
-# Option 2) Shading the NBT-API into your plugin
+# Option 2) Shading the NBT-API into your plugin (Not recommended)
+
+> [!WARNING]
+> Due to the increasing amount of pitfalls in modern Paper, shading is not recommended. Please test with the normal plugin dependency before reporting issues.
 
 To include NBT-API directly in your plugin, you can use the maven shade plugin.
+
+Create an empty ``.mojang-mapped`` file in the META-INF folder of your plugin for 1.20+ Paper support.
+
+> [!WARNING]
+> Not adding this flag will make the shaded api not work on the latest Paper. It might also break other reflections/nms logic!
 
 Add the plugin to the build configuration, as shown here:
 

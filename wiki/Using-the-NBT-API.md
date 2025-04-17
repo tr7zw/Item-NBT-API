@@ -43,12 +43,12 @@ nbt.getOrCreateCompound("subtag"); // Get or create a subtag
 #### Converting NBT to String and the String back to NBT
 
 ```java
-// Parse Mojang-Json string to nbt
+// Parse SNBT to nbt
 ReadWriteNBT nbt = NBT.parseNBT("{Health:20.0f,Motion:[0.0d,10.0d,0.0d],Silent:1b}");
-// Get the NBT back as a Mojang-Json string (works with any NBT object)
-String json = nbt.toString();
+// Get the NBT back as a SNBT (works with any NBT object)
+String snbt = nbt.toString();
 // Turn back into nbt again
-ReadWriteNBT nbt2 = NBT.parseNBT(json);
+ReadWriteNBT nbt2 = NBT.parseNBT(snbt);
 ```
 
 #### Comparing NBT data
@@ -355,7 +355,7 @@ NBT.writeFile(file, nbt);
 ### Converting Minecraft Objects to NBT and Strings
 
 The basic idea is that you can convert data into different representations:
-Minecraft Objects <-> NBT <-> String (Mojang-Json)
+Minecraft Objects <-> NBT <-> String (SNBT)
 
 #### Items
 
@@ -383,8 +383,8 @@ ReadWriteNBT nbt = NBT.itemStackArrayToNBT(itemStacks);
 ItemStack itemStack = NBT.itemStackFromNBT(nbt);
 ItemStack[] itemStacks = NBT.itemStackArrayFromNBT(nbt);
 // Reminder (NBT <-> String)
-String json = nbt.toString();
-ReadWriteNBT nbt = NBT.parseNBT(json);
+String snbt = nbt.toString();
+ReadWriteNBT nbt = NBT.parseNBT(snbt);
 ```
 
 #### Entities and block entities
