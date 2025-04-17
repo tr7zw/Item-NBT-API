@@ -2,7 +2,7 @@ To start using NB-API, you either need to depend on its plugin version, or shade
 
 > [!IMPORTANT]
 > Plugin and shaded versions have different ``artifactId``. Make sure to correctly choose the one you need!
->
+
 > [!IMPORTANT]
 > Alternative ways of loading the api like Libby are not supported on Discord/Github issues.
 
