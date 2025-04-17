@@ -51,6 +51,26 @@ String json = nbt.toString();
 ReadWriteNBT nbt2 = NBT.parseNBT(json);
 ```
 
+#### Comparing NBT data
+
+As with other objects in Java, you may compare nbt using `equals`.
+
+To see what exactly mismatched, you can use `ReadableNBT#extractDifference`:
+
+```java
+ReadWriteNBT nbt1 = NBT.parseNBT("{intTag:1,compoundTag:{floatTag:20.0f,booleanTag:1b}},intArray:[I;1,2]");
+ReadWriteNBT nbt2 = NBT.parseNBT("{intTag:1,compoundTag:{floatTag:20.0f,booleanTag:0b}},intArray:[I;1,2,3],alsoIntTag:2");
+
+ReadWriteNBT diff1 = nbt1.extractDifference(nbt2);
+ReadWriteNBT diff2 = nbt2.extractDifference(nbt1);
+```
+
+For the example above, `ReadableNBT#toString` will produce:
+
+diff1: `{compoundTag:{booleanTag:1b},intArray:[I;1,2]}`
+
+diff2: `{compoundTag:{booleanTag:0b},intArray:[I;1,2,3],alsoIntTag:2}`
+
 #### Merging Compounds
 
 You can "merge" the data from any given Compound onto some other Compound. This will overwrite the tags with the same name.

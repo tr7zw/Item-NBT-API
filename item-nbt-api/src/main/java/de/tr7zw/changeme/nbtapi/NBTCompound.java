@@ -1476,6 +1476,106 @@ public class NBTCompound implements ReadWriteNBT {
         return false;
     }
 
+    @Override
+    public NBTCompound extractDifference(ReadableNBT other) {
+        if (this == other)
+            return new NBTContainer();
+
+        if (other instanceof NBTCompound) {
+            return saveDiff(new NBTContainer(), this, (NBTCompound) other);
+        } else {
+            throw new NbtApiException("Unknown NBT object: " + other);
+        }
+    }
+
+    private static NBTCompound saveDiff(NBTCompound saveTo, NBTCompound compA, NBTCompound compB) {
+        for (String key : compA.getKeys()) {
+            saveDiff(saveTo, compA, compB, key);
+        }
+        return saveTo;
+    }
+
+    private static void saveDiff(NBTCompound saveTo, NBTCompound compA, NBTCompound compB, String key) {
+        boolean typeMismatch = compA.getType(key) != compB.getType(key);
+        switch (compA.getType(key)) {
+            case NBTTagByte:
+                if (typeMismatch || !isEqual(compA, compB, key)) {
+                    saveTo.setByte(key, compA.getByte(key));
+                }
+                return;
+            case NBTTagByteArray:
+                if (typeMismatch || !isEqual(compA, compB, key)) {
+                    saveTo.setByteArray(key, compA.getByteArray(key));
+                }
+                return;
+            case NBTTagCompound: {
+                NBTCompound tmp1 = compA.getCompound(key);
+                if (tmp1 == null) return;
+                if (typeMismatch) {
+                    saveTo.addCompound(key).mergeCompound(tmp1);
+                } else {
+                    NBTCompound tmp2 = compB.getCompound(key);
+                    if (tmp2 == null) {
+                        saveTo.addCompound(key).mergeCompound(tmp1);
+                        return;
+                    }
+                    NBTCompound tmpDiff = tmp1.extractDifference(tmp2);
+                    if (!tmpDiff.getKeys().isEmpty()) {
+                        saveTo.addCompound(key).mergeCompound(tmpDiff);
+                    }
+                }
+                return;
+            }
+            case NBTTagDouble:
+                if (typeMismatch || !isEqual(compA, compB, key)) {
+                    saveTo.setDouble(key, compA.getDouble(key));
+                }
+                return;
+            case NBTTagEnd:
+                return; // ??
+            case NBTTagFloat:
+                if (typeMismatch || !isEqual(compA, compB, key)) {
+                    saveTo.setFloat(key, compA.getFloat(key));
+                }
+                return;
+            case NBTTagInt:
+                if (typeMismatch || !isEqual(compA, compB, key)) {
+                    saveTo.setInteger(key, compA.getInteger(key));
+                }
+                return;
+            case NBTTagIntArray:
+                if (typeMismatch || !isEqual(compA, compB, key)) {
+                    saveTo.setIntArray(key, compA.getIntArray(key));
+                }
+                return;
+            case NBTTagList:
+                if (typeMismatch || !isEqual(compA, compB, key)) {
+                    saveTo.set(key, NBTReflectionUtil.getEntry(compA, key));
+                }
+                return;
+            case NBTTagLong:
+                if (typeMismatch || !isEqual(compA, compB, key)) {
+                    saveTo.setLong(key, compA.getLong(key));
+                }
+                return;
+            case NBTTagShort:
+                if (typeMismatch || !isEqual(compA, compB, key)) {
+                    saveTo.setShort(key, compA.getShort(key));
+                }
+                return;
+            case NBTTagString:
+                if (typeMismatch || !isEqual(compA, compB, key)) {
+                    saveTo.setString(key, compA.getString(key));
+                }
+                return;
+            case NBTTagLongArray:
+                if (typeMismatch || !isEqual(compA, compB, key)) {
+                    saveTo.setLongArray(key, compA.getLongArray(key));
+                }
+                return;
+        }
+    }
+
     private static boolean isEqual(NBTCompound compA, NBTCompound compB, String key) {
         if (compA.getType(key) != compB.getType(key))
             return false;
