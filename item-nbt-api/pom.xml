@@ -18,6 +18,12 @@
 	    <version>4.0.26</version>
 	    <scope>provided</scope>
 	</dependency>
+	<dependency>
+	  <groupId>org.bstats</groupId>
+	  <artifactId>bstats-bukkit</artifactId>
+	  <version>3.1.0</version>
+	  <scope>compile</scope>
+	</dependency>
   </dependencies>
 
   <build>
@@ -34,7 +40,13 @@
         <artifactId>maven-shade-plugin</artifactId>
         <version>3.6.0</version>
         <configuration>
-          <createDependencyReducedPom>false</createDependencyReducedPom>
+	        <relocations>
+	          <relocation>
+	            <pattern>org.bstats</pattern>
+	            <shadedPattern>de.tr7zw.changeme.nbtapi.utils.metrics</shadedPattern>
+	          </relocation>
+	        </relocations>
+          <createDependencyReducedPom>true</createDependencyReducedPom>
           <transformers>
             <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
               <resource>LICENSE</resource>
