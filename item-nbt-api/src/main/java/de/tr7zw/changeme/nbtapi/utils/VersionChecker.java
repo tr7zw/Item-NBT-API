@@ -121,5 +121,20 @@ public class VersionChecker {
         }
         return NBTItem.class.getPackage().getName();
     }
+    
+    protected static String getPluginforBStats() {
+        ClassLoader classLoader = VersionChecker.class.getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream("plugin.yml");
+
+        if (inputStream != null) {
+            try (InputStreamReader reader = new InputStreamReader(inputStream)) {
+                YamlConfiguration pluginYml = YamlConfiguration.loadConfiguration(reader);
+                return pluginYml.getString("name");
+            } catch (IOException e) {
+                // ignored
+            }
+        }
+        return "UnknownPlugin";
+    }
 
 }

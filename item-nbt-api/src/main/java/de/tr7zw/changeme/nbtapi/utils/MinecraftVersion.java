@@ -6,9 +6,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bstats.bukkit.Metrics;
+import org.bstats.charts.DrilldownPie;
+import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 
 /**
  * This class acts as the "Brain" of the NBTApi. It contains the main logger for
@@ -30,6 +35,8 @@ public enum MinecraftVersion {
     private static MinecraftVersion version;
     private static Boolean hasGsonSupport;
     private static Boolean isForgePresent;
+    private static Boolean isNeoForgePresent;
+    private static Boolean isFabricPresent;
     private static Boolean isFoliaPresent;
     private static boolean bStatsDisabled = false;
     private static boolean disablePackageWarning = false;
@@ -163,13 +170,67 @@ public enum MinecraftVersion {
     }
 
     private static void init() {
+        // Maven's Relocate is clever and changes strings, too. So we have to use this
+        // little "trick" ... :D (from bStats)
+        final String defaultPackage = new String(new byte[] { 'd', 'e', '.', 't', 'r', '7', 'z', 'w', '.', 'c', 'h',
+                'a', 'n', 'g', 'e', 'm', 'e', '.', 'n', 'b', 't', 'a', 'p', 'i', '.', 'u', 't', 'i', 'l', 's' });
+        final String reservedPackage = new String(new byte[] { 'd', 'e', '.', 't', 'r', '7', 'z', 'w', '.', 'n', 'b',
+                't', 'a', 'p', 'i', '.', 'u', 't', 'i', 'l', 's' });
         try {
             if (hasGsonSupport() && !bStatsDisabled) {
                 Plugin plugin = Bukkit.getPluginManager().getPlugin(VersionChecker.getPlugin());
                 if (plugin != null && plugin instanceof JavaPlugin) {
                     getLogger()
                             .info("[NBTAPI] Using the plugin '" + plugin.getName() + "' to create a bStats instance!");
-                    new Metrics((JavaPlugin) plugin, 1058);
+                    Metrics metrics = new Metrics((JavaPlugin) plugin, 1058);
+                    metrics.addCustomChart(new SimplePie("nbtapi_version", () -> {
+                        return VERSION;
+                    }));
+                    metrics.addCustomChart(new DrilldownPie("nms_version", () -> {
+                        Map<String, Map<String, Integer>> map = new HashMap<>();
+                        Map<String, Integer> entry = new HashMap<>();
+                        entry.put(Bukkit.getName(), 1);
+                        map.put(getVersion().name(), entry);
+                        return map;
+                    }));
+                    metrics.addCustomChart(new SimplePie("shaded", () -> {
+                        return Boolean.toString(!"NBTAPI".equals(VersionChecker.getPlugin()));
+                    }));
+                    metrics.addCustomChart(new SimplePie("server_software", () -> {
+                        return Bukkit.getName();
+                    }));
+                    metrics.addCustomChart(new SimplePie("parent_plugin", () -> {
+                        return VersionChecker.getPluginforBStats();
+                    }));
+                    metrics.addCustomChart(new SimplePie("special_environment", () -> {
+                        if (isFoliaPresent()) {
+                            return "Folia";
+                        } else if (isForgePresent()) {
+                            return "Forge";
+                        } else if (isFabricPresent()) {
+                            return "Fabric";
+                        } else if (isNeoForgePresent()) {
+                            return "NeoForge";
+                        } else {
+                            return "None";
+                        }
+                    }));
+                    metrics.addCustomChart(new SimplePie("bindings_check", () -> {
+                        
+                        boolean failedBinding = false;
+                        for (ClassWrapper c : ClassWrapper.values()) {
+                            if (c.isEnabled() && c.getClazz() == null) {
+                                failedBinding = true;
+                            }
+                        }
+                        for (ReflectionMethod method : ReflectionMethod.values()) {
+                            if (method.isCompatible() && !method.isLoaded()) {
+                                failedBinding = true;
+                            }
+                        }
+                        
+                        return failedBinding ? "Failed" : "Pass";
+                    }));
                 } else if (plugin == null) {
                     getLogger().info("[NBTAPI] Unable to create a bStats instance!!");
                 }
@@ -186,12 +247,6 @@ public enum MinecraftVersion {
                     logger.log(Level.WARNING, "[NBTAPI] Error while checking for updates! Error: " + ex.getMessage());
                 }
             }).start();
-        // Maven's Relocate is clever and changes strings, too. So we have to use this
-        // little "trick" ... :D (from bStats)
-        final String defaultPackage = new String(new byte[] { 'd', 'e', '.', 't', 'r', '7', 'z', 'w', '.', 'c', 'h',
-                'a', 'n', 'g', 'e', 'm', 'e', '.', 'n', 'b', 't', 'a', 'p', 'i', '.', 'u', 't', 'i', 'l', 's' });
-        final String reservedPackage = new String(new byte[] { 'd', 'e', '.', 't', 'r', '7', 'z', 'w', '.', 'n', 'b',
-                't', 'a', 'p', 'i', '.', 'u', 't', 'i', 'l', 's' });
         if (!disablePackageWarning && MinecraftVersion.class.getPackage().getName().equals(defaultPackage)) {
             logger.warning(
                     "#########################################- NBTAPI -#########################################");
@@ -252,6 +307,22 @@ public enum MinecraftVersion {
     }
 
     /**
+     * @return True, if Fabric is present
+     */
+    public static boolean isFabricPresent() {
+        if (isFabricPresent != null) {
+            return isFabricPresent;
+        }
+        try {
+            logger.info("[NBTAPI] Found Fabric: " + Class.forName("net.fabricmc.api.ModInitializer"));
+            isFabricPresent = true;
+        } catch (Exception ex) {
+            isFabricPresent = false;
+        }
+        return isFabricPresent;
+    }
+    
+    /**
      * @return True, if Forge is present
      */
     public static boolean isForgePresent() {
@@ -267,6 +338,22 @@ public enum MinecraftVersion {
             isForgePresent = false;
         }
         return isForgePresent;
+    }
+    
+    /**
+     * @return True, if NeoForge is present
+     */
+    public static boolean isNeoForgePresent() {
+        if (isNeoForgePresent != null) {
+            return isNeoForgePresent;
+        }
+        try {
+            logger.info("[NBTAPI] Found NeoForge: " + Class.forName("net.neoforged.neoforge.common.NeoForge"));
+            isNeoForgePresent = true;
+        } catch (Exception ex) {
+            isNeoForgePresent = false;
+        }
+        return isNeoForgePresent;
     }
 
     /**
