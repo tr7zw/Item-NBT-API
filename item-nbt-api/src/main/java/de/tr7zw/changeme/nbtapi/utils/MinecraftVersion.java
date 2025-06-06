@@ -202,6 +202,9 @@ public enum MinecraftVersion {
                     metrics.addCustomChart(new SimplePie("parent_plugin", () -> {
                         return VersionChecker.getPluginforBStats();
                     }));
+                    metrics.addCustomChart(new SimplePie("parent_plugin_type", () -> {
+                        return VersionChecker.getPluginType();
+                    }));
                     metrics.addCustomChart(new SimplePie("special_environment", () -> {
                         if (isFoliaPresent()) {
                             return "Folia";

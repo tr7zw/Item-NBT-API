@@ -109,7 +109,17 @@ public class VersionChecker {
 
     protected static String getPlugin() {
         ClassLoader classLoader = VersionChecker.class.getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream("plugin.yml");
+        InputStream inputStream = classLoader.getResourceAsStream("paper-plugin.yml");
+        if (inputStream != null) {
+            try (InputStreamReader reader = new InputStreamReader(inputStream)) {
+                YamlConfiguration pluginYml = YamlConfiguration.loadConfiguration(reader);
+                return pluginYml.getString("name");
+            } catch (IOException e) {
+                // ignored
+            }
+        }
+        
+        inputStream = classLoader.getResourceAsStream("plugin.yml");
 
         if (inputStream != null) {
             try (InputStreamReader reader = new InputStreamReader(inputStream)) {
@@ -124,7 +134,17 @@ public class VersionChecker {
     
     protected static String getPluginforBStats() {
         ClassLoader classLoader = VersionChecker.class.getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream("plugin.yml");
+        InputStream inputStream = classLoader.getResourceAsStream("paper-plugin.yml");
+        if (inputStream != null) {
+            try (InputStreamReader reader = new InputStreamReader(inputStream)) {
+                YamlConfiguration pluginYml = YamlConfiguration.loadConfiguration(reader);
+                return pluginYml.getString("name");
+            } catch (IOException e) {
+                // ignored
+            }
+        }
+        
+        inputStream = classLoader.getResourceAsStream("plugin.yml");
 
         if (inputStream != null) {
             try (InputStreamReader reader = new InputStreamReader(inputStream)) {
@@ -133,6 +153,30 @@ public class VersionChecker {
             } catch (IOException e) {
                 // ignored
             }
+        }
+        return "UnknownPlugin";
+    }
+    
+    protected static String getPluginType() {
+        ClassLoader classLoader = VersionChecker.class.getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream("paper-plugin.yml");
+        if (inputStream != null) {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                // ignored
+            }
+            return "PaperPlugin";
+        }
+        
+        inputStream = classLoader.getResourceAsStream("plugin.yml");
+        if (inputStream != null) {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                // ignored
+            }
+            return "SpigotPlugin";
         }
         return "UnknownPlugin";
     }
