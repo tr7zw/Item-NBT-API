@@ -116,6 +116,9 @@ public class VersionChecker {
                 return pluginYml.getString("name");
             } catch (IOException e) {
                 // ignored
+            } catch (IllegalArgumentException e) {
+                // This can happen if the paper-plugin.yml is not formatted correctly
+                MinecraftVersion.getLogger().log(Level.WARNING, "[NBTAPI] Error reading paper-plugin.yml: " + e.getMessage());
             }
         }
         
@@ -127,6 +130,9 @@ public class VersionChecker {
                 return pluginYml.getString("name");
             } catch (IOException e) {
                 // ignored
+            } catch (IllegalArgumentException e) {
+                // This can happen if the plugin.yml is not formatted correctly
+                MinecraftVersion.getLogger().log(Level.WARNING, "[NBTAPI] Error reading plugin.yml: " + e.getMessage());
             }
         }
         return NBTItem.class.getPackage().getName();
@@ -141,6 +147,9 @@ public class VersionChecker {
                 return pluginYml.getString("name");
             } catch (IOException e) {
                 // ignored
+            } catch (IllegalArgumentException e) {
+                // This can happen if the paper-plugin.yml is not formatted correctly
+                MinecraftVersion.getLogger().log(Level.WARNING, "[NBTAPI] Error reading paper-plugin.yml: " + e.getMessage());
             }
         }
         
@@ -152,6 +161,9 @@ public class VersionChecker {
                 return pluginYml.getString("name");
             } catch (IOException e) {
                 // ignored
+            } catch (IllegalArgumentException e) {
+                // This can happen if the plugin.yml is not formatted correctly
+                MinecraftVersion.getLogger().log(Level.WARNING, "[NBTAPI] Error reading plugin.yml: " + e.getMessage());
             }
         }
         return "UnknownPlugin";
