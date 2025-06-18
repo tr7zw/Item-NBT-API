@@ -30,7 +30,8 @@ public enum MinecraftVersion {
     MC1_13_R1(1131), MC1_13_R2(1132), MC1_14_R1(1141), MC1_15_R1(1151), MC1_16_R1(1161), MC1_16_R2(1162),
     MC1_16_R3(1163), MC1_17_R1(1171), MC1_18_R1(1181, true), MC1_18_R2(1182, true), MC1_19_R1(1191, true),
     MC1_19_R2(1192, true), MC1_19_R3(1193, true), MC1_20_R1(1201, true), MC1_20_R2(1202, true), MC1_20_R3(1203, true),
-    MC1_20_R4(1204, true), MC1_21_R1(1211, true), MC1_21_R2(1212, true), MC1_21_R3(1213, true), MC1_21_R4(1214, true);
+    MC1_20_R4(1204, true), MC1_21_R1(1211, true), MC1_21_R2(1212, true), MC1_21_R3(1213, true), MC1_21_R4(1214, true), 
+    MC1_21_R5(1215, true);
 
     private static MinecraftVersion version;
     private static Boolean hasGsonSupport;
@@ -69,6 +70,7 @@ public enum MinecraftVersion {
             this.put("1.21.3", MC1_21_R2);
             this.put("1.21.4", MC1_21_R3);
             this.put("1.21.5", MC1_21_R4);
+            this.put("1.21.6", MC1_21_R5);
         }
     };
 

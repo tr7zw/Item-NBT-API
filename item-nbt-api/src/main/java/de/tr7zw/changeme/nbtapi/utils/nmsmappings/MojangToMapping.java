@@ -241,9 +241,22 @@ public class MojangToMapping {
         }
 
     };
+    
+    @SuppressWarnings("serial")
+    private static Map<String, String> MC1_21R5 = new HashMap<String, String>() {
+
+        {
+            putAll(MC1_21R3);
+            
+        }
+
+    };
+    
 
     public static Map<String, String> getMapping() {
         switch (MinecraftVersion.getVersion()) {
+        case MC1_21_R5:
+            return MC1_21R5;
         case MC1_21_R4:
             return MC1_21R4;
         case MC1_21_R3:

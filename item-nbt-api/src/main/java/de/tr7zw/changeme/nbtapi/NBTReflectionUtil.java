@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
@@ -22,7 +23,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import de.tr7zw.changeme.nbtapi.utils.DataFixerUtil;
 import de.tr7zw.changeme.nbtapi.utils.GsonWrapper;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
+import de.tr7zw.changeme.nbtapi.utils.ReflectionUtil;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
+import de.tr7zw.changeme.nbtapi.utils.nmsmappings.CodecHelper;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.MojangToMapping;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ObjectCreator;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
@@ -57,11 +60,12 @@ public class NBTReflectionUtil {
         }
         if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
             try {
-                Field typeField = ClassWrapper.NMS_DATACOMPONENTS.getClazz().getDeclaredField(
-                        MojangToMapping.getMapping().get("net.minecraft.core.component.DataComponents#CUSTOM_DATA"));
+                Field typeField = ReflectionUtil.getMappedField(ClassWrapper.NMS_DATACOMPONENTS.getClazz(), "net.minecraft.core.component.DataComponents#CUSTOM_DATA");
                 type_custom_data = typeField.get(null);
-            } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
-
+            } catch (Exception e) {
+                MinecraftVersion.getLogger().log(Level.WARNING,
+                        "Unable to find DataComponents#CUSTOM_DATA, NBTApi will not be able to read/write custom data on 1.20+",
+                        e);
             }
             try {
                 Object nmsServer = ReflectionMethod.NMSSERVER_GETSERVER.run(Bukkit.getServer());
@@ -226,7 +230,9 @@ public class NBTReflectionUtil {
                 } else if (nbtcompound.hasTag("tag") || nbtcompound.hasTag("Count")) {
                     nmsComp = DataFixerUtil.fixUpRawItemData(nmsComp, DataFixerUtil.VERSION1_20_4, DataFixerUtil.getCurrentVersion());
                 }
-                if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_21_R4)) {
+                if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_21_R5)) {
+                    return CodecHelper.convertNbtToItemStack(nmsComp);
+                } else if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_21_R4)) {
                     Optional<Object> opt = (Optional<Object>) ReflectionMethod.NMSITEM_LOAD_MODERN.run(null,
                             registry_access, nmsComp);
                     return opt.orElse(null);
@@ -252,7 +258,9 @@ public class NBTReflectionUtil {
     public static NBTContainer convertNMSItemtoNBTCompound(Object nmsitem) {
         try {
             NBTContainer container;
-            if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
+            if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_21_R5)) {
+                container = new NBTContainer(CodecHelper.convertItemStackToNbt(nmsitem));
+            } else if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
                 container = new NBTContainer(ReflectionMethod.NMSITEM_SAVE_MODERN.run(nmsitem, registry_access));
             } else {
                 Object answer = ReflectionMethod.NMSITEM_SAVE.run(nmsitem,
