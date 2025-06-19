@@ -316,6 +316,9 @@ public enum ReflectionMethod {
             MinecraftVersion.MC1_20_R4, new Since(MinecraftVersion.MC1_20_R4, "loadWithComponents(net.minecraft.nbt.CompoundTag,net.minecraft.core.HolderLookup$Provider)")),
     GET_DATAFIXER(ClassWrapper.NMS_DATAFIXERS, new Class[] {}, MinecraftVersion.MC1_20_R4,
             new Since(MinecraftVersion.MC1_20_R4, "getDataFixer()")),
+    // 1.21.6 Stuff
+    GET_SERIALIZATION_CONTEXT(ClassWrapper.NMS_PROVIDER, new Class[] {ClassWrapper.NMS_DYNAMICOPS.getClazz()}, MinecraftVersion.MC1_21_R5,
+            new Since(MinecraftVersion.MC1_21_R5, "createSerializationContext(com.mojang.serialization.DynamicOps)")),
     ;
 
     private MinecraftVersion removedAfter;

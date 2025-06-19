@@ -86,6 +86,8 @@ public enum ClassWrapper {
             "net.minecraft.util.datafix.fixes", "net.minecraft.util.datafix.fixes.References"),
     NMS_NBTOPS(PackageWrapper.NMS, "DynamicOpsNBT", MinecraftVersion.MC1_20_R4, null,
             "net.minecraft.nbt", "net.minecraft.nbt.NbtOps"),
+    NMS_DYNAMICOPS(PackageWrapper.NONE, "DynamicOps", MinecraftVersion.MC1_21_R5, null,
+            "com.mojang.serialization", "com.mojang.serialization.DynamicOps"),
     GAMEPROFILE(PackageWrapper.NONE, "com.mojang.authlib.GameProfile", MinecraftVersion.MC1_8_R3, null);
 
     private Class<?> clazz;

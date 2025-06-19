@@ -20,13 +20,15 @@ import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DynamicOps;
+
 import de.tr7zw.changeme.nbtapi.utils.DataFixerUtil;
 import de.tr7zw.changeme.nbtapi.utils.GsonWrapper;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import de.tr7zw.changeme.nbtapi.utils.ReflectionUtil;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ClassWrapper;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.CodecHelper;
-import de.tr7zw.changeme.nbtapi.utils.nmsmappings.MojangToMapping;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ObjectCreator;
 import de.tr7zw.changeme.nbtapi.utils.nmsmappings.ReflectionMethod;
 
@@ -44,6 +46,9 @@ public class NBTReflectionUtil {
     private static Field field_handle = null;
     private static Object type_custom_data = null;
     private static Object registry_access = null;
+    public static Codec<Object> itemstack_codec = null;
+    public static DynamicOps<Object> nbtOps = null;
+    public static DynamicOps<Object> nbtRegistryOps = null;
 
     static {
         try {
@@ -70,6 +75,10 @@ public class NBTReflectionUtil {
             try {
                 Object nmsServer = ReflectionMethod.NMSSERVER_GETSERVER.run(Bukkit.getServer());
                 registry_access = ReflectionMethod.NMSSERVER_GETREGISTRYACCESS.run(nmsServer);
+                itemstack_codec = (Codec<Object>) ReflectionUtil.getMappedField(ClassWrapper.NMS_ITEMSTACK.getClazz(), "net.minecraft.world.item.ItemStack#CODEC").get(null);
+                nbtOps = (DynamicOps<Object>) ReflectionUtil.getMappedField(ClassWrapper.NMS_NBTOPS.getClazz(), "net.minecraft.nbt.NbtOps#INSTANCE").get(null);
+                nbtRegistryOps = (DynamicOps<Object>) ReflectionMethod.GET_SERIALIZATION_CONTEXT.run(registry_access, nbtOps);
+                System.out.println("NbtOps: " + nbtOps + " RegistryOps: " + nbtRegistryOps);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -218,8 +227,9 @@ public class NBTReflectionUtil {
      * @return NMS ItemStack
      */
     public static Object convertNBTCompoundtoNMSItem(NBTCompound nbtcompound) {
+        Object nmsComp = null;
         try {
-            Object nmsComp = getToCompount(nbtcompound.getCompound(), nbtcompound);
+            nmsComp = getToCompount(nbtcompound.getCompound(), nbtcompound);
             if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
                 if (nbtcompound.hasTag("DataVersion", NBTType.NBTTagInt)) {
                     int dataVersion = nbtcompound.getInteger("DataVersion");
@@ -245,7 +255,7 @@ public class NBTReflectionUtil {
                 return ReflectionMethod.NMSITEM_CREATESTACK.run(null, nmsComp);
             }
         } catch (Exception e) {
-            throw new NbtApiException("Exception while converting NBTCompound to NMS ItemStack!", e);
+            throw new NbtApiException("Exception while converting NBTCompound to NMS ItemStack! " + nmsComp, e);
         }
     }
 
