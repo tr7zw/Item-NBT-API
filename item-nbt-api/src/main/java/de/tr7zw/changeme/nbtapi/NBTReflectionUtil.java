@@ -77,8 +77,9 @@ public class NBTReflectionUtil {
                 registry_access = ReflectionMethod.NMSSERVER_GETREGISTRYACCESS.run(nmsServer);
                 itemstack_codec = (Codec<Object>) ReflectionUtil.getMappedField(ClassWrapper.NMS_ITEMSTACK.getClazz(), "net.minecraft.world.item.ItemStack#CODEC").get(null);
                 nbtOps = (DynamicOps<Object>) ReflectionUtil.getMappedField(ClassWrapper.NMS_NBTOPS.getClazz(), "net.minecraft.nbt.NbtOps#INSTANCE").get(null);
-                nbtRegistryOps = (DynamicOps<Object>) ReflectionMethod.GET_SERIALIZATION_CONTEXT.run(registry_access, nbtOps);
-                System.out.println("NbtOps: " + nbtOps + " RegistryOps: " + nbtRegistryOps);
+                if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_21_R5)) {
+                    nbtRegistryOps = (DynamicOps<Object>) ReflectionMethod.GET_SERIALIZATION_CONTEXT.run(registry_access, nbtOps);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
