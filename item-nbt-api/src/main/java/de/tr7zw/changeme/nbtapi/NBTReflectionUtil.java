@@ -49,6 +49,7 @@ public class NBTReflectionUtil {
     public static Codec<Object> itemstack_codec = null;
     public static DynamicOps<Object> nbtOps = null;
     public static DynamicOps<Object> nbtRegistryOps = null;
+    public static Object problemReporter = null;
 
     static {
         try {
@@ -79,6 +80,7 @@ public class NBTReflectionUtil {
                 nbtOps = (DynamicOps<Object>) ReflectionUtil.getMappedField(ClassWrapper.NMS_NBTOPS.getClazz(), "net.minecraft.nbt.NbtOps#INSTANCE").get(null);
                 if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_21_R5)) {
                     nbtRegistryOps = (DynamicOps<Object>) ReflectionMethod.GET_SERIALIZATION_CONTEXT.run(registry_access, nbtOps);
+                    problemReporter = ReflectionUtil.getMappedField(ClassWrapper.NMS_PROBLEM_REPORTER.getClazz(), "net.minecraft.util.ProblemReporter#DISCARDING").get(null);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -312,7 +314,16 @@ public class NBTReflectionUtil {
     public static Object getEntityNBTTagCompound(Object nmsEntity) {
         try {
             Object nbt = ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance();
-            Object answer = ReflectionMethod.NMS_ENTITY_GET_NBT.run(nmsEntity, nbt);
+            Object answer;
+            if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_21_R5)) {
+                Object output = ReflectionMethod.NMS_GET_TAG_VALUE_OUTPUT.run(null, problemReporter, registry_access);
+
+                ReflectionMethod.NMS_ENTITY_GET_NBT_1216.run(nmsEntity, output);
+
+                answer = ReflectionMethod.NMS_TAG_VALUE_OUTPUT_TO_TAG_COMPOUND.run(output);
+            } else {
+                answer = ReflectionMethod.NMS_ENTITY_GET_NBT.run(nmsEntity, nbt);
+            }
             if (answer == null)
                 answer = nbt;
             return answer;
@@ -330,7 +341,14 @@ public class NBTReflectionUtil {
      */
     public static Object setEntityNBTTag(Object nbtTag, Object nmsEntity) {
         try {
-            ReflectionMethod.NMS_ENTITY_SET_NBT.run(nmsEntity, nbtTag);
+            if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_21_R5)) {
+                Object valueInputTag = ReflectionMethod.NMS_GET_TAG_VALUE_INPUT.run(null, problemReporter, registry_access, nbtTag);
+
+                ReflectionMethod.NMS_ENTITY_SET_NBT_1216.run(nmsEntity, valueInputTag);
+            } else {
+                ReflectionMethod.NMS_ENTITY_SET_NBT.run(nmsEntity, nbtTag);
+            }
+
             return nmsEntity;
         } catch (Exception ex) {
             throw new NbtApiException("Exception while setting the NBTCompound of an Entity", ex);
@@ -362,7 +380,13 @@ public class NBTReflectionUtil {
             }
 
             Object answer = null;
-            if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
+            if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_21_R5)) {
+                Object output = ReflectionMethod.NMS_GET_TAG_VALUE_OUTPUT.run(null, problemReporter, registry_access);
+
+                ReflectionMethod.TILEENTITY_GET_NBT_1216.run(o, output);
+
+                answer = ReflectionMethod.NMS_TAG_VALUE_OUTPUT_TO_TAG_COMPOUND.run(output);
+            } else if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
                 answer = ReflectionMethod.TILEENTITY_GET_NBT_1205.run(o, registry_access);
             } else if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_18_R1)) {
                 answer = ReflectionMethod.TILEENTITY_GET_NBT_1181.run(o);
@@ -397,7 +421,11 @@ public class NBTReflectionUtil {
                 Object pos = ObjectCreator.NMS_BLOCKPOSITION.getInstance(tile.getX(), tile.getY(), tile.getZ());
                 o = ReflectionMethod.NMS_WORLD_GET_TILEENTITY.run(nmsworld, pos);
             }
-            if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
+            if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_21_R5)) {
+                Object valueInput = ReflectionMethod.NMS_GET_TAG_VALUE_INPUT.run(null, problemReporter, registry_access, comp);
+
+                ReflectionMethod.TILEENTITY_SET_NBT_1216.run(o, valueInput);
+            } else if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_20_R4)) {
                 ReflectionMethod.TILEENTITY_SET_NBT_1205.run(o, comp, registry_access);
             } else if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_17_R1)) {
                 ReflectionMethod.TILEENTITY_SET_NBT.run(o, comp);
