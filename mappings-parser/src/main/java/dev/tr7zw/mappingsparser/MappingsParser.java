@@ -24,7 +24,7 @@ public class MappingsParser {
     public static StringBuilder builder = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
-        File input = new File("minecraft_server.1.21.4.txt");
+        File input = new File("minecraft_server.1.21.6.txt");
         List<String> lines = Files.readAllLines(input.toPath());
 
         Map<String, ClassWrapper> classes = new HashMap<>();
@@ -74,6 +74,33 @@ public class MappingsParser {
                 }
             }
             // System.out.println(currentClass + ": " + mojangName + " -> " + unmappedName);
+        }
+        for(String type : MojangToMapping.getMapping().keySet()) {
+            if(type.contains("(")) {
+                continue;
+            }
+            // Field
+            String clazz = type.split("#")[0];
+            String fieldName = type.split("#")[1];
+            for (String line : lines) {
+                if (line.startsWith("#")) {
+                    continue;
+                }
+                if (!line.startsWith(" ")) {
+                    currentClass = line.split(" ")[0];
+                    continue;
+                }
+                mojangName = line.trim().split(" ")[1];
+                unmappedName = line.trim().split(" ")[3];
+                if (currentClass.equals(clazz) && mojangName.equals(fieldName)) {
+                    if (MojangToMapping.getMapping().get(type) == null) {
+                        System.out.println("Missing mapping for " + type);
+                    } else if (!MojangToMapping.getMapping().get(type)
+                            .equals(unmappedName)) {
+                        builder.append("put(\"" + type + "\", \"" + unmappedName + "\");\n");
+                    }
+                }
+            }
         }
         System.out.println(builder);
     }

@@ -247,7 +247,38 @@ public class MojangToMapping {
 
         {
             putAll(MC1_21R3);
-            
+            put("net.minecraft.core.HolderLookup$Provider#createSerializationContext(com.mojang.serialization.DynamicOps)", "a");
+            put("net.minecraft.nbt.CompoundTag#getByteArray(java.lang.String)", "j");
+            put("net.minecraft.nbt.CompoundTag#getDouble(java.lang.String)", "h");
+            put("net.minecraft.nbt.CompoundTag#keySet()", "e");
+            put("net.minecraft.nbt.CompoundTag#getLong(java.lang.String)", "f");
+            put("net.minecraft.nbt.CompoundTag#getList(java.lang.String)", "o");
+            put("net.minecraft.nbt.CompoundTag#getInt(java.lang.String)", "e");
+            put("net.minecraft.nbt.CompoundTag#getCompound(java.lang.String)", "m");
+            put("net.minecraft.nbt.CompoundTag#getByte(java.lang.String)", "c");
+            put("net.minecraft.nbt.CompoundTag#getShort(java.lang.String)", "d");
+            put("net.minecraft.nbt.CompoundTag#getIntArray(java.lang.String)", "k");
+            put("net.minecraft.nbt.CompoundTag#get(java.lang.String)", "a");
+            put("net.minecraft.nbt.CompoundTag#getString(java.lang.String)", "i");
+            put("net.minecraft.nbt.CompoundTag#getFloat(java.lang.String)", "g");
+            put("net.minecraft.nbt.CompoundTag#getLongArray(java.lang.String)", "l");
+            put("net.minecraft.nbt.CompoundTag#contains(java.lang.String)", "b");
+            put("net.minecraft.nbt.ListTag#getString(int)", "m");
+            put("net.minecraft.nbt.Tag#getType()", "c");
+            put("net.minecraft.nbt.TagParser#parseCompoundFully(java.lang.String)", "a");
+            put("net.minecraft.nbt.TagType#getName()", "a");
+            put("net.minecraft.world.entity.Entity#load(net.minecraft.world.level.storage.ValueInput)", "e");
+            put("net.minecraft.world.entity.Entity#getEncodeId()", "bN");
+            put("net.minecraft.world.entity.Entity#saveWithoutId(net.minecraft.world.level.storage.ValueOutput)", "d");
+            put("net.minecraft.world.level.block.entity.BlockEntity#saveWithId(net.minecraft.world.level.storage.ValueOutput)", "d");
+            put("net.minecraft.world.level.block.entity.BlockEntity#loadWithComponents(net.minecraft.world.level.storage.ValueInput)", "b");
+            put("net.minecraft.world.level.storage.TagValueInput#create(net.minecraft.util.ProblemReporter,net.minecraft.core.HolderLookup$Provider,net.minecraft.nbt.CompoundTag)", "a");
+            put("net.minecraft.world.level.storage.TagValueOutput#createWithContext(net.minecraft.util.ProblemReporter,net.minecraft.core.HolderLookup$Provider)", "a");
+            put("net.minecraft.world.level.storage.TagValueOutput#buildResult()", "b");
+            put("net.minecraft.world.item.ItemStack#CODEC", "b");
+            put("net.minecraft.util.ProblemReporter#DISCARDING", "a");
+            put("net.minecraft.util.datafix.fixes.References#ITEM_STACK", "u");
+
         }
 
     };
