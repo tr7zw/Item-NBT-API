@@ -7,6 +7,7 @@
 - [Monumenta](https://github.com/TeamMonumenta/monumenta-plugins-public/)
 - [SummonFriendlyMobs](https://github.com/ArmyFury/SummonFriendlyMobs)
 - [EvenMoreFish](https://github.com/Oheers/EvenMoreFish)
+- [TurboVehicles](https://www.youtube.com/watch?v=rscKWvPYtBw)
 
 ___
 
