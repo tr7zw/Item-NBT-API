@@ -238,6 +238,7 @@ public class MojangToMapping {
             put("net.minecraft.nbt.TagType#getName()", "a");
             put("net.minecraft.nbt.CompoundTag#getList(java.lang.String)", "o");
             put("net.minecraft.world.item.ItemStack#parse(net.minecraft.core.HolderLookup$Provider,net.minecraft.nbt.Tag)", "a");
+            put("net.minecraft.world.item.ItemStack#CODEC", "b");
         }
 
     };
