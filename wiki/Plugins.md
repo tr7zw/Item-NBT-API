@@ -1,5 +1,6 @@
 ## List of some plugins on GitHub that utilize NBT-API
 
+- [TurboCustomItems](https://github.com/goncalodelima/TurboCustomItems/)
 - [IllegalStack](https://github.com/dniym/IllegalStack)
 - [Prison](https://github.com/PrisonTeam/Prison)
 - [CommandAPI](https://github.com/CommandAPI/CommandAPI)
@@ -7,7 +8,6 @@
 - [Monumenta](https://github.com/TeamMonumenta/monumenta-plugins-public/)
 - [SummonFriendlyMobs](https://github.com/ArmyFury/SummonFriendlyMobs)
 - [EvenMoreFish](https://github.com/Oheers/EvenMoreFish)
-- [TurboVehicles](https://www.youtube.com/watch?v=rscKWvPYtBw)
 
 ___
 
