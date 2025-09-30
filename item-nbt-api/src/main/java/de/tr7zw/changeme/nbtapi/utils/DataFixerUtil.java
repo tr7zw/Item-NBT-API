@@ -31,6 +31,7 @@ public class DataFixerUtil {
     public static final int VERSION1_21R3 = 4189;
     public static final int VERSION1_21R4 = 4323;
     public static final int VERSION1_21R5 = 4435;
+    public static final int VERSION1_21R6 = 4554;
     // There was a mixup between version numbers and revisions, kept for compatibility, use the above revision numbers
     @Deprecated
     public static final int VERSION1_12_2 = 1343;
@@ -92,7 +93,9 @@ public class DataFixerUtil {
      * @return
      */
     public static int getCurrentVersion() {
-        if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_21_R5)) {
+        if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_21_R6)) {
+            return VERSION1_21R6;
+        }else if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_21_R5)) {
             return VERSION1_21R5;
         } else if (MinecraftVersion.isAtLeastVersion(MinecraftVersion.MC1_21_R4)) {
             return VERSION1_21R4;

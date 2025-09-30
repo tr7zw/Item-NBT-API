@@ -15,9 +15,8 @@ public class GameprofileTest implements Test {
         UUID uuid = UUID.randomUUID();
         GameProfile profile = new GameProfile(uuid, "random");
         ReadWriteNBT nbt = NBT.gameProfileToNBT(profile);
-        profile = null;
-        profile = NBT.gameProfileFromNBT(nbt);
-        if (profile == null || !profile.getId().equals(uuid)) {
+        GameProfile profile2 = NBT.gameProfileFromNBT(nbt);
+        if (profile == null || !profile.equals(profile2)) {
             throw new NbtApiException("Error when converting a GameProfile from/to NBT!");
         }
     }
