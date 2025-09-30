@@ -24,7 +24,7 @@ public class MappingsParser {
     public static StringBuilder builder = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
-        File input = new File("minecraft_server.1.21.6.txt");
+        File input = new File("minecraft_server.1.21.9.txt");
         List<String> lines = Files.readAllLines(input.toPath());
 
         Map<String, ClassWrapper> classes = new HashMap<>();

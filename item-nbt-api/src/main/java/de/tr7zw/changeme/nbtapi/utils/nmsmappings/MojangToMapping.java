@@ -290,6 +290,12 @@ public class MojangToMapping {
         {
             putAll(MC1_21R5);
 
+            put("net.minecraft.server.MinecraftServer#registryAccess()", "bg");
+            put("net.minecraft.world.entity.Entity#load(net.minecraft.world.level.storage.ValueInput)", "d");
+            put("net.minecraft.world.entity.Entity#getEncodeId()", "bW");
+            put("net.minecraft.world.item.component.CustomData#copyTag()", "b");
+            put("net.minecraft.world.level.block.entity.BlockEntity#getBlockState()", "o");
+            put("net.minecraft.util.datafix.fixes.References#ITEM_STACK", "v");
 
         }
 
