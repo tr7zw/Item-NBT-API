@@ -300,9 +300,27 @@ public class MojangToMapping {
         }
 
     };
+    
+    @SuppressWarnings("serial")
+    private static Map<String, String> MC1_21R7 = new HashMap<String, String>() {
+
+        {
+            putAll(MC1_21R6);
+
+            put("net.minecraft.nbt.NbtAccounter#unlimitedHeap()", "c");
+            put("net.minecraft.server.MinecraftServer#registryAccess()", "bc");
+            put("net.minecraft.world.entity.Entity#getEncodeId()", "ca");
+            put("net.minecraft.util.datafix.fixes.References#ITEM_STACK", "x");
+
+        }
+
+    };
+
 
     public static Map<String, String> getMapping() {
         switch (MinecraftVersion.getVersion()) {
+        case MC1_21_R7:
+            return MC1_21R7;
         case MC1_21_R6:
             return MC1_21R6;
         case MC1_21_R5:
