@@ -1,5 +1,6 @@
 ## List of some plugins on GitHub that utilize NBT-API
 
+- [TurboCustomItems](https://github.com/goncalodelima/TurboCustomItems/)
 - [IllegalStack](https://github.com/dniym/IllegalStack)
 - [Prison](https://github.com/PrisonTeam/Prison)
 - [CommandAPI](https://github.com/CommandAPI/CommandAPI)
