@@ -33,6 +33,11 @@ public class LegacyItemTest implements Test {
         ItemStack item2 = NBT.itemStackFromNBT(NBT.parseNBT("{DataVersion:" + DataFixerUtil.VERSION1_12_2 + ",id:cobblestone,Count:42,tag:{display:{Name:\"test\"},ench:[{lvl:3,id:34}]}}"));
         if (!item.equals(item2))
             throw new NbtApiException("Data-fixed 1.12.2 item didn't load correctly! " + item2);
+        
+        ReadWriteNBT testNBT = NBT.parseNBT("{id:cobblestone,Count:42,tag:{display:{Name:\"test\"},ench:[{lvl:3,id:34}]},DataVersion:1343}");
+        testNBT = DataFixerUtil.fixUpItemData(testNBT, DataFixerUtil.VERSION1_12R1);
+        if (testNBT.getInteger("DataVersion") != DataFixerUtil.getCurrentVersion())
+            throw new NbtApiException("DataVersion wasn't updated correctly! " + testNBT);
     }
 
 }

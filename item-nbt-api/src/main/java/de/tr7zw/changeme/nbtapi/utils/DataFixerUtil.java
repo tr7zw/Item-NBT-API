@@ -80,9 +80,16 @@ public class DataFixerUtil {
 
     public static ReadWriteNBT fixUpItemData(ReadWriteNBT nbt, int fromVersion, int toVersion)
             throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-        return NBT.wrapNMSTag(fixUpRawItemData(
+        ReadWriteNBT tag = NBT.wrapNMSTag(fixUpRawItemData(
                 NBTReflectionUtil.getToCompount(((NBTCompound) nbt).getCompound(), ((NBTCompound) nbt)), fromVersion,
                 toVersion));
+        tag.setInteger("DataVersion", toVersion);
+        return tag;
+    }
+    
+    public static ReadWriteNBT fixUpItemData(ReadWriteNBT nbt, int fromVersion)
+            throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+        return fixUpItemData(nbt, fromVersion, getCurrentVersion());
     }
 
     /**
