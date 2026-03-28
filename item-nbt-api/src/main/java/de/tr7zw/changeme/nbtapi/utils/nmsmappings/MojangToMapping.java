@@ -1,5 +1,6 @@
 package de.tr7zw.changeme.nbtapi.utils.nmsmappings;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -318,6 +319,10 @@ public class MojangToMapping {
 
 
     public static Map<String, String> getMapping() {
+        // No mappings after 26.1
+        if(MinecraftVersion.getVersion() != MinecraftVersion.UNKNOWN && MinecraftVersion.getVersion().isAtLeastVersion(MinecraftVersion.MC26_1)) {
+            return Collections.EMPTY_MAP;
+        }
         switch (MinecraftVersion.getVersion()) {
         case MC1_21_R7:
             return MC1_21R7;
@@ -352,7 +357,7 @@ public class MojangToMapping {
         case MC1_18_R1:
             return MC1_18R1;
         case UNKNOWN:
-            return MC1_20R2; // assume it's a future version, so try the latest known mappings
+            return MC1_21R7; // assume it's a future version, so try the latest known mappings
         default:
             // this should never happen, unless a version is forgotten here(like 1.19R3 which uses the 1.19R2 mappings)
             throw new NbtApiException("No fitting mapping found for version " + MinecraftVersion.getVersion() + ". This is a bug!");
