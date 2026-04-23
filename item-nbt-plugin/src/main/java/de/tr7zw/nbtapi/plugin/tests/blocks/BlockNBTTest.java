@@ -6,6 +6,8 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import de.tr7zw.changeme.nbtapi.NBTBlock;
+import de.tr7zw.changeme.nbtapi.NBTChunk;
+import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import de.tr7zw.nbtapi.plugin.tests.Test;
@@ -23,7 +25,27 @@ public class BlockNBTTest implements Test {
                     Chunk chunk = world.getLoadedChunks()[0];
                     Block block = chunk.getBlock(0, 254, 0);
                     NBTBlock comp = new NBTBlock(block);
+                    NBTCompound persistentData = new NBTChunk(chunk).getPersistentDataContainer();
+                    String blockKey = block.getX() + "_" + block.getY() + "_" + block.getZ();
+                    NBTCompound blocks = persistentData.getCompound("blocks");
+                    if (blocks != null) {
+                        blocks.removeKey(blockKey);
+                        if (blocks.getKeys().isEmpty()) {
+                            persistentData.removeKey("blocks");
+                        }
+                    }
+                    if (comp.getData().hasTag("Too")) {
+                        throw new NbtApiException("Empty Block data reported an existing key!");
+                    }
+                    blocks = persistentData.getCompound("blocks");
+                    if (blocks != null && blocks.hasTag(blockKey)) {
+                        throw new NbtApiException("Reading empty Block data created a persistent block compound!");
+                    }
                     comp.getData().removeKey("Too");
+                    blocks = persistentData.getCompound("blocks");
+                    if (blocks != null && blocks.hasTag(blockKey)) {
+                        throw new NbtApiException("Removing a missing Block key created a persistent block compound!");
+                    }
                     if (comp.getData().hasTag("Too")) {
                         throw new NbtApiException("Unable to remove key from Block!");
                     }

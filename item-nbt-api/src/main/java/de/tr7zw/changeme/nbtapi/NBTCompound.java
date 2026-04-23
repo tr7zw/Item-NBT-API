@@ -66,6 +66,12 @@ public class NBTCompound implements ReadWriteNBT {
             parent.saveCompound();
     }
 
+    /**
+     * Gives virtual compounds a chance to create their backing data before a write.
+     */
+    protected void prepareWrite() {
+    }
+
     protected void setResolvedObject(Object object) {
         if (isClosed()) {
             throw new NbtApiException("Tried using closed NBT data!");

@@ -474,6 +474,7 @@ public class NBTReflectionUtil {
             remove(comp, name);
             return;
         }
+        comp.prepareWrite();
         Object nbttag = comp.getCompound();
         if (nbttag == null) {
             nbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
@@ -543,6 +544,7 @@ public class NBTReflectionUtil {
         if (workingtagSrc == null) {
             return;
         }
+        comp.prepareWrite();
         Object rootnbttag = comp.getCompound();
         if (rootnbttag == null) {
             rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
@@ -570,6 +572,7 @@ public class NBTReflectionUtil {
             remove(comp, key);
             return;
         }
+        comp.prepareWrite();
         Object rootnbttag = comp.getCompound();
         if (rootnbttag == null) {
             rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
@@ -774,6 +777,7 @@ public class NBTReflectionUtil {
             remove(comp, key);
             return;
         }
+        comp.prepareWrite();
         Object rootnbttag = comp.getCompound();
         if (rootnbttag == null) {
             rootnbttag = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();
