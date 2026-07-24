@@ -56,8 +56,8 @@ public class Forge1710Mappings {
         methodMap.put("COMPOUND_MERGE", "merge");// Only present on Crucible
         methodMap.put("COMPOUND_SET", "func_74782_a");
         methodMap.put("COMPOUND_GET", "func_74781_a");
-        methodMap.put("COMPOUND_GET_LIST", "func_150295_c");
-        methodMap.put("COMPOUND_OWN_TYPE", "func_74732_a");
+        methodMap.put("COMPOUND_GET_LIST_LEGACY", "func_150295_c");
+        methodMap.put("COMPOUND_OWN_TYPE_LEGACY", "func_74732_a");
         methodMap.put("COMPOUND_GET_FLOAT", "func_74760_g");
         methodMap.put("COMPOUND_GET_STRING", "func_74779_i");
         methodMap.put("COMPOUND_GET_INT", "func_74762_e");
