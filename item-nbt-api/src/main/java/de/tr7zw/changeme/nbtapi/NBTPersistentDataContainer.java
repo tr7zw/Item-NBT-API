@@ -11,7 +11,11 @@ public class NBTPersistentDataContainer extends NBTCompound {
     private final PersistentDataContainer container;
 
     public NBTPersistentDataContainer(PersistentDataContainer container) {
-        super(null, null);
+        this(container, false);
+    }
+
+    protected NBTPersistentDataContainer(PersistentDataContainer container, boolean readOnly) {
+        super(null, null, readOnly);
         this.container = container;
     }
 

@@ -175,6 +175,15 @@ public interface ReadableNBT {
     Set<String> getKeys();
 
     /**
+     * Checks whether this NBT is empty (has no stored data).
+     *
+     * @return whether this NBT is empty
+     */
+    default boolean isEmpty() {
+        return getKeys().isEmpty();
+    }
+
+    /**
      * @param name
      * @return The Compound instance or null
      */
@@ -274,7 +283,7 @@ public interface ReadableNBT {
      * {@code Boolean, Byte, Short, Integer, Long, Float, Double, byte[], int[], long[]},
      * {@link String}, {@link UUID}, and {@link Enum}
      *
-     * @param key  Path key, seperated by '.'. For example: "foo.bar.baz". Dots can
+     * @param key  Path key, separated by '.'. For example: "foo.bar.baz". Dots can
      *             be escaped with a backslash.
      * @param type data type
      * @param <T>  value type
@@ -290,7 +299,7 @@ public interface ReadableNBT {
      * {@code Boolean, Byte, Short, Integer, Long, Float, Double, byte[], int[], long[]},
      * {@link String}, {@link UUID}, and {@link Enum}
      *
-     * @param key          Path key, seperated by '.'. For example: "foo.bar.baz".
+     * @param key          Path key, separated by '.'. For example: "foo.bar.baz".
      *                     Dots can be escaped with a backslash.
      * @param defaultValue default non-null value
      * @param <T>          value type
@@ -302,7 +311,7 @@ public interface ReadableNBT {
      * Returns the resolved Compound if exists, or null.
      * <p>
      * 
-     * @param key Path key, seperated by '.'. For example: "foo.bar.baz". Dots can
+     * @param key Path key, separated by '.'. For example: "foo.bar.baz". Dots can
      *            be escaped with a backslash.
      * @return The resolved value if exists, or null.
      */

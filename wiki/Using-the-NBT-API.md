@@ -306,20 +306,26 @@ You can store data in block entities (block entities like chest, furnace, etc.) 
 
 Thus, you have to use your own block data storage to store custom block data.
 
-You can store data inside Chunks since 1.16.4, and NBT-API allows you to do so by using ``NBTChunk``:
+You can store data inside Chunks using their PDC (Persistent Data Container) since Minecraft **1.16.4**. The NBT‑API provides read and modify methods in the `NBT` class to interact with it:
 
 ```java
-ReadWriteNBT nbt = new NBTChunk(chunk).getPersistentDataContainer();
+// Read the entire PDC or a specific value
+NBT.readChunkPDC(chunk, nbt -> { /* ... */ });
+String str = NBT.readAndGetChunkPDC(chunk, nbt -> nbt.getOrNull("key", String.class));
 ```
 
-Similarly, there is ``NBTBlock``, which allows you to store block data inside chunk's data.
+For convenience, you can also pass Blocks into `NBT#read/modify[AndGet]ChunkPDC` methods to store block data inside Chunk's PDC.
+Blocks are stored inside their chunk's PDC under a `blocks` compound, using the block's location (`X_Y_Z`) as the key for a subcompound.
 
 ```java
-// Block's data will be stored in Chunk's data in "blocks.x_y_z" subtag
-ReadWriteNBT nbt = new NBTBlock(block).getData();
+// Modify and retrieve data for a specific block
+boolean bool = NBT.modifyAndGetChunkPDC(block, nbt -> {
+    nbt.setString("owner_name", "Player123");
+    return nbt.getOrDefault("key", false);
+});
 ```
 
-**However**, keep in mind that this data is linked only to the location, and if the block gets broken/changed/exploded/moved/etc., the data will still be on that location unless manually cleared/moved!
+**However**, keep in mind that the block's data is linked only to the location, and if the block gets broken/changed/exploded/moved/etc., the data will still be on that location unless manually cleared/moved!
 
 Moreover, since the data is stored inside a Chunk, this will increase the chunk's size on the disk.
 

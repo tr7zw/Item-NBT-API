@@ -5,6 +5,12 @@ import org.bukkit.Chunk;
 import de.tr7zw.changeme.nbtapi.utils.CheckUtil;
 import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 
+/**
+ * Helper class to store NBT data to {@link Chunk}'s PDC (persistent data container).
+ *
+ * @deprecated use methods in {@link NBT} class to read/modify chunk's nbt
+ */
+@Deprecated
 public class NBTChunk {
 
     private final Chunk chunk;
