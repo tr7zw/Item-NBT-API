@@ -852,7 +852,6 @@ public class NBT {
             throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
         }
 
-        chunkData.setClosed();
         return result;
     }
 
@@ -928,7 +927,6 @@ public class NBT {
             throw new NbtApiException("Tried returning part of the NBT to outside of the NBT scope!");
         }
 
-        chunkData.setClosed();
         return result;
     }
 
