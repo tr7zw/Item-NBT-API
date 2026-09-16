@@ -175,7 +175,8 @@ public enum ReflectionMethod {
     ITEMSTACK_NMSCOPY(ClassWrapper.CRAFT_ITEMSTACK, new Class[] { ItemStack.class }, MinecraftVersion.MC1_7_R4,
             new Since(MinecraftVersion.MC1_7_R4, "asNMSCopy")),
     ITEMSTACK_BUKKITMIRROR(ClassWrapper.CRAFT_ITEMSTACK, new Class[] { ClassWrapper.NMS_ITEMSTACK.getClazz() },
-            MinecraftVersion.MC1_7_R4, new Since(MinecraftVersion.MC1_7_R4, "asCraftMirror")),
+            MinecraftVersion.MC1_7_R4,
+            new Since(MinecraftVersion.MC1_7_R4, resolveItemStackBukkitMirrorMethodName())),
 
     CRAFT_WORLD_GET_HANDLE(ClassWrapper.CRAFT_WORLD, new Class[] {}, MinecraftVersion.MC1_7_R4,
             new Since(MinecraftVersion.MC1_7_R4, "getHandle")),
@@ -411,6 +412,16 @@ public enum ReflectionMethod {
 
     ReflectionMethod(ClassWrapper targetClass, Class<?>[] args, MinecraftVersion addedSince, Since... methodnames) {
         this(targetClass, args, addedSince, null, methodnames);
+    }
+
+    private static String resolveItemStackBukkitMirrorMethodName() {
+        try {
+            ClassWrapper.CRAFT_ITEMSTACK.getClazz().getDeclaredMethod("asCraftMirror",
+                    ClassWrapper.NMS_ITEMSTACK.getClazz());
+            return "asCraftMirror";
+        } catch (NullPointerException | NoSuchMethodException | SecurityException ignored) {
+            return "asBukkitMirror";
+        }
     }
 
     /**
